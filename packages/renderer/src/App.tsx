@@ -1,0 +1,77 @@
+import clsx from 'clsx';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import { useIpc, useSetting } from './hooks';
+import { IpcChannel, SettingsKey } from 'shared';
+import { HomePage } from './features/home/HomePage';
+import { AppMasthead } from './components/AppMasthead';
+import { clearLogAtom, pushToLogAtom } from './atoms/log';
+import { Route, Routes, MemoryRouter } from 'react-router';
+import { SettingsPage } from './features/settings/SettingsPage';
+import { workingAtom, updatingAtom, resetAppAtom } from './atoms/app';
+
+export const App = () => {
+	const [showWindowFrame]           = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
+	const [,clearLog]                 = useAtom(clearLogAtom);
+	const [,pushToLog]                = useAtom(pushToLogAtom);
+	const [,resetApp]                 = useAtom(resetAppAtom);
+	const [isWorking, setIsWorking]   = useAtom(workingAtom);
+	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
+	const [onDownloadStarted]         = useIpc(IpcChannel.DownloadStarted);
+	const [onDownloadOutput]          = useIpc(IpcChannel.DownloadOutput);
+	const [onDownloadFinished]        = useIpc(IpcChannel.DownloadFinished);
+	const [onDownloadCanceled]        = useIpc(IpcChannel.DownloadCanceled);
+	const [onUpdatingYtdlpBinary]     = useIpc(IpcChannel.UpdatingYtdlpBinary);
+	const [onUpdatedYtdlpBinary]      = useIpc(IpcChannel.UpdatedYtdlpBinary);
+
+	const accentClassNames = clsx(
+		'absolute -z-10',
+		{
+			'inset-0 [background-image:linear-gradient(90deg,_#FF0033_0%,_#FF2790_100%)]': !isWorking,
+			'inset-[-550px] [background-image:linear-gradient(90deg,_#000_0%,_#FF2790_100%)] animate-[spin_1s_linear_infinite]': isWorking
+		}
+	);
+
+	useEffect(() => {
+		onDownloadStarted(() => {
+			setIsWorking(true);
+			clearLog();
+			pushToLog('OPERATION STARTED');
+		});
+
+		onDownloadOutput((line: string) => pushToLog(line));
+
+		onDownloadFinished(() => {
+			resetApp();
+			pushToLog('OPERATION FINISHED')
+		});
+
+		onDownloadCanceled(() => pushToLog('OPERATION CANCELED'));
+
+		onUpdatingYtdlpBinary(() => setIsUpdating(true));
+
+		onUpdatedYtdlpBinary(() => setIsUpdating(false));
+	}, []);
+
+	return (
+		<div className="relative p-[1px] w-screen h-screen overflow-hidden">
+			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-black">
+				{isUpdating ? (
+					<div className="flex flex-col items-center justify-center h-full">
+						<p>Updating yt-dlp, please wait...</p>
+					</div>
+				) : (
+					<MemoryRouter>
+						<AppMasthead/>
+						<Routes>
+							<Route index element={<HomePage/>}/>
+							<Route path="settings" element={<SettingsPage/>}/>
+							<Route path="*" element={<HomePage/>}/>
+						</Routes>
+					</MemoryRouter>
+				)}
+			</div>
+			{!showWindowFrame && <div className={accentClassNames}/>}
+		</div>
+	);
+};

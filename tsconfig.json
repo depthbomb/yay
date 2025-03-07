@@ -1,0 +1,10 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"esModuleInterop": true,
+		"resolveJsonModule": true
+	},
+	"include": [
+		"scripts/**/*.ts"
+	]
+}

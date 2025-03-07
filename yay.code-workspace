@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"name": "App",
+			"path": "packages/app"
+		},
+		{
+			"name": "Renderer",
+			"path": "packages/renderer"
+		},
+		{
+			"name": "Shared",
+			"path": "packages/shared"
+		},
+		{
+			"name": "Root",
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"**/Thumbs.db": true,
+			".yarn": true,
+			"**/build": true,
+			"dist": true,
+			"node_modules": true
+		},
+		"typescript.tsdk": "Root\\node_modules\\typescript\\lib",
+	},
+	"extensions": {
+		"recommendations": [
+			"christian-kohler.npm-intellisense",
+			"dbaeumer.vscode-eslint"
+		]
+	}
+}

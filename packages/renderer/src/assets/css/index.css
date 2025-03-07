@@ -1,0 +1,35 @@
+@config '../../../tailwind.config.ts';
+@import '@fontsource-variable/noto-sans';
+@import '@fontsource-variable/noto-sans-mono';
+@import 'tailwindcss';
+
+@utility popup-* {
+	box-shadow: inset 0 -2px 0 0 --value(--color-*);
+}
+
+@utility styled-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: #fff #000;
+	scroll-behavior: smooth;
+}
+
+:root {
+	color-scheme: dark;
+}
+
+* {
+	@apply outline-none;
+}
+
+body {
+	@apply select-none;
+}
+
+button {
+	@apply cursor-pointer;
+}
+
+a {
+	@apply text-brand-500 hover:text-brand-600 active:text-brand-700;
+	@apply transition-colors;
+}

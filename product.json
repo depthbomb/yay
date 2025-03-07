@@ -1,0 +1,13 @@
+{
+	"version": "1.0.0",
+	"author": "Caprine Logic",
+	"nameLong": "yay",
+	"applicationName": "yay",
+	"description": "Yet Another YouTube Downloader",
+	"mutexName": "yay",
+	"dirName": "yay",
+	"appId": "{{B1626C8A-95AF-4CB6-A6A2-6902B3E8FD3E}",
+	"appUserModelId": "CaprineLogic.yay",
+	"urlProtocol": "yay",
+	"repoURL": "https://github.com/depthbomb/yay"
+}

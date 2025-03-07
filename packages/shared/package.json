@@ -1,0 +1,20 @@
+{
+	"private": true,
+	"name": "shared",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build:d": "tsup",
+		"build:p": "tsup"
+	},
+	"devDependencies": {
+		"@swc/core": "1.11.7",
+		"tslib": "^2.8.1",
+		"tsup": "^8.4.0",
+		"typescript": "^5.8.2"
+	}
+}

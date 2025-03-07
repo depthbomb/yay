@@ -1,0 +1,57 @@
+{
+	"compilerOptions": {
+		"baseUrl": "./",
+		"paths": {
+			"~/*": ["./src/*"],
+		},
+
+		"ignoreDeprecations": "5.0",
+
+		// Type Checking
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		// "exactOptionalPropertyTypes": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"strict": true,
+		"useUnknownInCatchVariables": true,
+
+		// Modules
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+
+		// Emit
+		"declaration": false,
+		"importHelpers": true,
+		"inlineSources": true,
+		"newLine": "lf",
+		"noEmitHelpers": true,
+		"outDir": "dist",
+		"preserveConstEnums": false,
+		"removeComments": true,
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+
+		// Language and Environment
+		"emitDecoratorMetadata": false,
+		"experimentalDecorators": false,
+		"lib": ["ESNext"],
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+
+		// Projects
+		//"incremental": true,
+
+		// Completeness
+		"skipLibCheck": true
+	},
+	"include": [
+		"./src/**/*.ts",
+		"./electron-builder.config.js"
+	]
+}
