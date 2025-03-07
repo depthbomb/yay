@@ -3,7 +3,6 @@ import { product } from 'shared';
 import { app, Menu } from 'electron';
 
 app.setPath('userData', join(app.getPath('appData'), product.author, product.dirName));
-app.commandLine.appendSwitch('wm-window-animations-disabled');
 
 if (import.meta.env.DEV) {
 	import('@swc-node/sourcemap-support').then(({ installSourceMapSupport }) => installSourceMapSupport());
@@ -29,7 +28,6 @@ app.whenReady().then(async () => {
 	lib.HttpClientManagerModule.bootstrap(container);
 	lib.GithubModule.bootstrap(container);
 	lib.WindowPositionerModule.bootstrap(container);
-
 	lib.YtdlpManagerModule.bootstrap(container);
 	lib.GlobalMenuModule.bootstrap(container);
 	lib.DeepLinksModule.bootstrap(container);

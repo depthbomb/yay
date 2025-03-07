@@ -1,8 +1,8 @@
 import { unlink } from 'node:fs/promises';
+import { PRELOAD_PATH } from '~/constants';
 import { IpcChannel, SettingsKey } from 'shared';
 import { app, Menu, shell, dialog } from 'electron';
 import { fileExists, getExtraFilePath } from '~/utils';
-import { MIN_WIDTH, MIN_HEIGHT, PRELOAD_PATH } from '~/constants';
 import type { Container } from '~/lib/Container';
 import type { MessageBoxOptions } from 'electron';
 
@@ -17,8 +17,8 @@ export class MainWindowModule {
 			url: windowManager.resolveRendererHTML('index.html'),
 			browserWindowOptions: {
 				show: false,
-				width: MIN_WIDTH,
-				height: MIN_HEIGHT,
+				width: 425,
+				height: 550,
 				alwaysOnTop: true,
 				resizable: false,
 				frame: showFrame,
