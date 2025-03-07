@@ -1,9 +1,9 @@
 import { product } from 'shared';
-import type { FC } from 'react';
+import type { FC, JSX } from 'react';
 
 type InfoSectionProps = {
 	title: string;
-	values: Array<[string, string]>;
+	values: Array<[string, string | JSX.Element]>;
 };
 
 const InfoSection: FC<InfoSectionProps> = ({ title, values }) => {
@@ -27,7 +27,7 @@ export const DeveloperTab = () => {
 		<div className="w-full flex flex-col space-y-3">
 			<InfoSection title="Application" values={[
 				['Product version', product.version],
-				['Commit', window.gitHash],
+				['Commit', <a href={`https://github.com/depthbomb/yay/commit/${window.gitHash}`} target="_blank">{window.gitHash.substring(0, 7)}</a>],
 				['Build date', window.buildDate.toLocaleString()]
 			]}/>
 			<InfoSection title="Framework" values={[
