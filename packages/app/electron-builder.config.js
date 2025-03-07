@@ -16,6 +16,11 @@ const EXCLUDE_ALL_NODE_MODULES = false;
  * If a package has dependencies then you must exclude those as well.
  */
 const EXCLUDED_PACKAGES = [
+	'@octokit',
+	'cockatiel',
+	'tree-kill',
+	'ufo',
+	'universal-user-agent',
 	'shared',
 	'mitt',
 	'type-flag'
