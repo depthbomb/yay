@@ -35,11 +35,11 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 	const buttonCss = clsx(
 		'flex flex-row items-center justify-center',
 		'space-x-1 w-full',
-		'text-sm font-semibold',
+		'text-sm text-gray-200 font-semibold',
 		'bg-black',
 		{
 			'cursor-not-allowed! text-gray-400': disabled,
-			'hover:bg-transparent active:bg-black/25': !disabled
+			'hover:text-white hover:bg-transparent active:text-white active:bg-black/25': !disabled
 		},
 		'transition-all'
 	);
