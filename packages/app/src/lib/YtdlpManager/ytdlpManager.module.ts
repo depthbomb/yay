@@ -1,16 +1,16 @@
 import { YtdlpManager } from './ytdlpManager';
 import { IpcChannel, SettingsKey } from 'shared';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class YtdlpManagerModule {
-	public static bootstrap(container: Container) {
-		const ipc             = container.get('Ipc');
-		const github          = container.get('Github');
-		const eventEmitter    = container.get('EventEmitter');
-		const settingsManager = container.get('SettingsManager');
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const ipc             = moduleRegistry.get('Ipc');
+		const github          = moduleRegistry.get('Github');
+		const eventEmitter    = moduleRegistry.get('EventEmitter');
+		const settingsManager = moduleRegistry.get('SettingsManager');
 		const ytdlpManager    = new YtdlpManager(ipc, github, eventEmitter, settingsManager);
 
-		container.register('YtdlpManager', ytdlpManager);
+		moduleRegistry.register('YtdlpManager', ytdlpManager);
 
 		ipc.registerHandler(IpcChannel.DownloadVideo, async (_, url: string) => await ytdlpManager.download(url));
 		ipc.registerHandler(IpcChannel.DownloadAudio, async (_, url: string) => await ytdlpManager.download(url, true));

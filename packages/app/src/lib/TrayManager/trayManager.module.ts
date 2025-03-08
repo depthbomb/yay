@@ -2,14 +2,14 @@ import { unlink } from 'node:fs/promises';
 import { app, Menu, Tray } from 'electron';
 import { getExtraFilePath, getExtraResourcePath } from '~/utils';
 import type { MenuItemConstructorOptions } from 'electron';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class TrayManagerModule {
-	public static bootstrap(container: Container) {
-		const windowManager    = container.get('WindowManager');
-		const eventSubscriber  = container.get('EventSubscriber');
-		const settingsManager  = container.get('SettingsManager');
-		const windowPositioner = container.get('WindowPositioner');
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const windowManager    = moduleRegistry.get('WindowManager');
+		const eventSubscriber  = moduleRegistry.get('EventSubscriber');
+		const settingsManager  = moduleRegistry.get('SettingsManager');
+		const windowPositioner = moduleRegistry.get('WindowPositioner');
 
 		const trayTooltip          = 'Yet Another YouTube Downloader' as const;
 		const trayImage            = getExtraResourcePath('tray.ico');

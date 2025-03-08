@@ -13,7 +13,7 @@ import type { Events, EventEmitter } from '~/lib/EventEmitter';
 import type { WindowPositioner } from '~/lib/WindowPositioner';
 import type { HttpClientManager } from '~/lib/HttpClientManager';
 
-export type Services = {
+export type Modules = {
 	Args: ReturnType<typeof typeFlag>;
 	Flags: Flags;
 	AutoStart: AutoStart;

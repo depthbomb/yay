@@ -1,23 +1,23 @@
 import { Setup } from './setup';
 import { IpcChannel } from 'shared';
 import { BinaryDownloader } from './binaryDownloader';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class SetupModule {
-	public static async bootstrap(container: Container) {
+	public static async bootstrap(moduleRegistry: ModuleRegistry) {
 		const binaryDownloader = new BinaryDownloader(
-			container.get('Github'),
-			container.get('HttpClientManager')
+			moduleRegistry.get('Github'),
+			moduleRegistry.get('HttpClientManager')
 		);
 
-		const ipc = container.get('Ipc');
+		const ipc = moduleRegistry.get('Ipc');
 
 		const setup = new Setup(
 			ipc,
-			container.get('Flags'),
-			container.get('EventEmitter'),
-			container.get('WindowManager'),
-			container.get('SettingsManager'),
+			moduleRegistry.get('Flags'),
+			moduleRegistry.get('EventEmitter'),
+			moduleRegistry.get('WindowManager'),
+			moduleRegistry.get('SettingsManager'),
 			binaryDownloader,
 		);
 

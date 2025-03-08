@@ -1,8 +1,8 @@
 import { HttpClientManager } from '.';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class HttpClientManagerModule {
-	public static bootstrap(container: Container) {
-		container.register('HttpClientManager', new HttpClientManager());
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		moduleRegistry.register('HttpClientManager', new HttpClientManager());
 	}
 }

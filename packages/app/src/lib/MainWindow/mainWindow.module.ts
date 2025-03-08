@@ -3,15 +3,15 @@ import { PRELOAD_PATH } from '~/constants';
 import { IpcChannel, SettingsKey } from 'shared';
 import { app, Menu, shell, dialog } from 'electron';
 import { fileExists, getExtraFilePath } from '~/utils';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 import type { MessageBoxOptions } from 'electron';
 
 export class MainWindowModule {
-	public static async bootstrap(container: Container) {
-		const ipc             = container.get('Ipc');
-		const windowManager   = container.get('WindowManager');
-		const settingsManager = container.get('SettingsManager');
-		const eventSubscriber = container.get('EventSubscriber');
+	public static async bootstrap(moduleRegistry: ModuleRegistry) {
+		const ipc             = moduleRegistry.get('Ipc');
+		const windowManager   = moduleRegistry.get('WindowManager');
+		const settingsManager = moduleRegistry.get('SettingsManager');
+		const eventSubscriber = moduleRegistry.get('EventSubscriber');
 		const showFrame       = settingsManager.get<boolean>(SettingsKey.ShowWindowFrame);
 		const mainWindow = windowManager.createMainWindow({
 			url: windowManager.resolveRendererHTML('index.html'),

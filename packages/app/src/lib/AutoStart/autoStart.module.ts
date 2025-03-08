@@ -1,12 +1,12 @@
 import { app } from 'electron';
 import { IpcChannel } from 'shared';
 import { AutoStart } from './autoStart';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class AutoStartModule {
-	public static bootstrap(container: Container) {
-		const ipc       = container.get('Ipc');
-		const flags     = container.get('Flags');
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const ipc       = moduleRegistry.get('Ipc');
+		const flags     = moduleRegistry.get('Flags');
 		const autoStart = new AutoStart();
 
 		if (flags.uninstall) {
@@ -14,7 +14,7 @@ export class AutoStartModule {
 			app.exit(0);
 		}
 
-		container.register('AutoStart', autoStart);
+		moduleRegistry.register('AutoStart', autoStart);
 
 		ipc.registerHandler(IpcChannel.GetAutoStart,     () => autoStart.isAutoStartEnabled());
 		ipc.registerHandler(IpcChannel.EnableAutoStart,  () => autoStart.setAutoStart(true));

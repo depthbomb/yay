@@ -1,15 +1,15 @@
 import { GlobalMenu } from './globalMenu';
 import { globalShortcut } from 'electron';
 import { IpcChannel, SettingsKey } from 'shared';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class GlobalMenuModule {
-	public static bootstrap(container: Container) {
-		const ipc             = container.get('Ipc');
-		const eventSubscriber = container.get('EventSubscriber');
-		const settingsManager = container.get('SettingsManager');
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const ipc             = moduleRegistry.get('Ipc');
+		const eventSubscriber = moduleRegistry.get('EventSubscriber');
+		const settingsManager = moduleRegistry.get('SettingsManager');
 		const accelerator     = 'Super+Y' as const;
-		const globalMenu      = new GlobalMenu(container.get('YtdlpManager'));
+		const globalMenu      = new GlobalMenu(settingsManager, moduleRegistry.get('YtdlpManager'));
 		const callback        = () => globalMenu.showMenu();
 
 		const enableGlobalMenu = async () => {

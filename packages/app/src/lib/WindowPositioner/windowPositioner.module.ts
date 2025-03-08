@@ -1,8 +1,8 @@
 import { WindowPositioner } from './windowPositioner';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class WindowPositionerModule {
-	public static bootstrap(container: Container) {
-		container.register('WindowPositioner', new WindowPositioner());
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		moduleRegistry.register('WindowPositioner', new WindowPositioner());
 	}
 }

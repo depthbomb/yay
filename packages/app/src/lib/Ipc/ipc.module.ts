@@ -1,8 +1,8 @@
 import { Ipc } from './ipc';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class IpcModule {
-	public static bootstrap(container: Container) {
-		container.register('Ipc', new Ipc(container.get('WindowManager')));
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		moduleRegistry.register('Ipc', new Ipc(moduleRegistry.get('WindowManager')));
 	}
 }

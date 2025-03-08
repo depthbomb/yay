@@ -1,8 +1,8 @@
 import { WindowManager } from './windowManager';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class WindowManagerModule {
-	public static bootstrap(container: Container) {
-		container.register('WindowManager', new WindowManager());
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		moduleRegistry.register('WindowManager', new WindowManager());
 	}
 }

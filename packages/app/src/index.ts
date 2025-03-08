@@ -15,25 +15,25 @@ app.whenReady().then(async () => {
 		app.setAppUserModelId(product.appUserModelId);
 	}
 
-	const lib       = await import('~/lib');
-	const container = lib.containerModule.bootstrap();
+	const lib            = await import('~/lib');
+	const moduleRegistry = lib.ModuleRegistryModule.bootstrap();
 
-	lib.CliModule.bootstrap(container);
-	lib.WindowManagerModule.bootstrap(container);
-	lib.IpcModule.bootstrap(container);
-	lib.AutoStartModule.bootstrap(container);
-	lib.EventEmitterModule.bootstrap(container);
-	lib.EventSubscriberModule.bootstrap(container);
-	lib.SettingsManagerModule.bootstrap(container);
-	lib.HttpClientManagerModule.bootstrap(container);
-	lib.GithubModule.bootstrap(container);
-	lib.WindowPositionerModule.bootstrap(container);
-	lib.YtdlpManagerModule.bootstrap(container);
-	lib.GlobalMenuModule.bootstrap(container);
-	lib.DeepLinksModule.bootstrap(container);
-	lib.TrayManagerModule.bootstrap(container);
+	lib.CliModule.bootstrap(moduleRegistry);
+	lib.WindowManagerModule.bootstrap(moduleRegistry);
+	lib.IpcModule.bootstrap(moduleRegistry);
+	lib.AutoStartModule.bootstrap(moduleRegistry);
+	lib.EventEmitterModule.bootstrap(moduleRegistry);
+	lib.EventSubscriberModule.bootstrap(moduleRegistry);
+	lib.SettingsManagerModule.bootstrap(moduleRegistry);
+	lib.HttpClientManagerModule.bootstrap(moduleRegistry);
+	lib.GithubModule.bootstrap(moduleRegistry);
+	lib.WindowPositionerModule.bootstrap(moduleRegistry);
+	lib.YtdlpManagerModule.bootstrap(moduleRegistry);
+	lib.GlobalMenuModule.bootstrap(moduleRegistry);
+	lib.DeepLinksModule.bootstrap(moduleRegistry);
+	lib.TrayManagerModule.bootstrap(moduleRegistry);
 
-	await lib.MainWindowModule.bootstrap(container);
-	await lib.ThemeManagerModule.bootstrap(container);
-	await lib.SetupModule.bootstrap(container);
+	await lib.MainWindowModule.bootstrap(moduleRegistry);
+	await lib.ThemeManagerModule.bootstrap(moduleRegistry);
+	await lib.SetupModule.bootstrap(moduleRegistry);
 });

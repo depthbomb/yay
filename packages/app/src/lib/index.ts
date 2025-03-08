@@ -8,7 +8,7 @@ export * from './GlobalMenu';
 export * from './HttpClientManager';
 export * from './Ipc';
 export * from './MainWindow';
-export * from './Container';
+export * from './ModuleRegistry';
 export * from './SettingsManager';
 export * from './Setup';
 export * from './ThemeManager';

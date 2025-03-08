@@ -1,8 +1,8 @@
 import { EventSubscriber } from './eventSubscriber';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class EventSubscriberModule {
-	public static bootstrap(container: Container) {
-		container.register('EventSubscriber', new EventSubscriber(container.get('Emitter')));
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		moduleRegistry.register('EventSubscriber', new EventSubscriber(moduleRegistry.get('Emitter')));
 	}
 }

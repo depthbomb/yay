@@ -1,8 +1,8 @@
 import { Github } from './github';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class GithubModule {
-	public static async bootstrap(container: Container) {
-		container.register('Github', new Github(container.get('HttpClientManager')));
+	public static async bootstrap(moduleRegistry: ModuleRegistry) {
+		moduleRegistry.register('Github', new Github(moduleRegistry.get('HttpClientManager')));
 	}
 }

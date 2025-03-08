@@ -1,11 +1,11 @@
 import { app } from 'electron';
 import { product } from 'shared';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class DeepLinksModule {
-	public static bootstrap(container: Container) {
-		const windowManager = container.get('WindowManager');
-		const ytdlpManager  = container.get('YtdlpManager');
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const windowManager = moduleRegistry.get('WindowManager');
+		const ytdlpManager  = moduleRegistry.get('YtdlpManager');
 
 		if (!app.isDefaultProtocolClient(product.urlProtocol)) {
 			app.setAsDefaultProtocolClient(product.urlProtocol);

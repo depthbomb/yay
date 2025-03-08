@@ -3,18 +3,18 @@ import { SettingsReader } from './settingsReader';
 import { SettingsWriter } from './settingsWriter';
 import { SettingsManager } from './settingsManager';
 import { SettingsFileProvider } from './settingsFileProvider';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class SettingsManagerModule {
-	public static bootstrap(container: Container) {
-		const ipc                  = container.get('Ipc');
-		const eventSubscriber      = container.get('EventSubscriber');
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const ipc                  = moduleRegistry.get('Ipc');
+		const eventSubscriber      = moduleRegistry.get('EventSubscriber');
 		const settingsFileProvider = new SettingsFileProvider();
 		const settingsReader       = new SettingsReader(settingsFileProvider);
 		const settingsWriter       = new SettingsWriter(settingsFileProvider);
-		const settingsManager      = new SettingsManager(settingsReader, settingsWriter, container.get('EventEmitter'));
+		const settingsManager      = new SettingsManager(settingsReader, settingsWriter, moduleRegistry.get('EventEmitter'));
 
-		container.register('SettingsManager', settingsManager);
+		moduleRegistry.register('SettingsManager', settingsManager);
 
 		ipc.registerSyncHandler(
 			IpcChannel.GetSettingsValue,

@@ -1,8 +1,8 @@
 import { typeFlag } from 'type-flag';
-import type { Container } from '~/lib/Container';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class CliModule {
-	public static bootstrap(container: Container) {
+	public static bootstrap(moduleRegistry: ModuleRegistry) {
 		const args = typeFlag({
 			dev: {
 				type: Boolean,
@@ -19,7 +19,7 @@ export class CliModule {
 			}
 		}, process.argv);
 
-		container.register('Args', args);
-		container.register('Flags', args.flags);
+		moduleRegistry.register('Args', args);
+		moduleRegistry.register('Flags', args.flags);
 	}
 }

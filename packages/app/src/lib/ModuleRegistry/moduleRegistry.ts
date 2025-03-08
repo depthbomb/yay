@@ -1,11 +1,11 @@
-import type { Services } from './types';
+import type { Modules } from './types';
 
-export class Container {
+export class ModuleRegistry {
 	public constructor(
-		private readonly modules: Services = {} as Services
+		private readonly modules: Modules = {} as Modules
 	) {}
 
-	public register<Name extends keyof Services>(name: Name, instance: Services[Name]): void {
+	public register<Name extends keyof Modules>(name: Name, instance: Modules[Name]): void {
 		const key = this.nameToKey(name);
 		if (Object.keys(this.modules).includes(key)) {
 			throw new Error(`Module "${key}" is already registered`);
@@ -14,7 +14,7 @@ export class Container {
 		this.modules[name] = instance;
 	}
 
-	public get<Name extends keyof Services>(name: Name): Services[Name] {
+	public get<Name extends keyof Modules>(name: Name): Modules[Name] {
 		const key = this.nameToKey(name);
 		if (!Object.keys(this.modules).includes(key)) {
 			throw new Error(`Module with name "${key}" could not be found`);
@@ -23,7 +23,7 @@ export class Container {
 		return this.modules[name];
 	}
 
-	private nameToKey<Name extends keyof Services>(name: Name): string {
+	private nameToKey<Name extends keyof Modules>(name: Name): string {
 		return String(name);
 	}
 }
