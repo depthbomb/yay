@@ -8,6 +8,7 @@ import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 export class SettingsManagerModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
 		const ipc                  = moduleRegistry.get('Ipc');
+		const windowManager        = moduleRegistry.get('WindowManager');
 		const eventSubscriber      = moduleRegistry.get('EventSubscriber');
 		const settingsFileProvider = new SettingsFileProvider();
 		const settingsReader       = new SettingsReader(settingsFileProvider);
@@ -29,6 +30,6 @@ export class SettingsManagerModule {
 			async (_, key, value, secure) => await settingsManager.set(key, value, { secure })
 		);
 
-		eventSubscriber.subscribe('settings-updated', ({ key, value }) => ipc.emitToAllWindows(IpcChannel.SettingsUpdated, key, value));
+		eventSubscriber.subscribe('settings-updated', ({ key, value }) => windowManager.emitAll(IpcChannel.SettingsUpdated, key, value));
 	}
 }

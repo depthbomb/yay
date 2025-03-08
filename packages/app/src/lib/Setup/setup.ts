@@ -123,6 +123,8 @@ export class Setup {
 							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
 						}
 					);
+
+					await this.settingsManager.set(SettingsKey.YtdlpPath, ytdlpPath);
 				}
 
 				if (!hasFfmpeg) {
@@ -175,35 +177,19 @@ export class Setup {
 	private async hasYtdlpBinary(localPath: string): Promise<boolean> {
 		const localBinaryExists = await fileExists(localPath);
 		if (localBinaryExists) {
-			try {
-				const isValid = await this.verifyYtdlpBinary(localPath);
-				if (isValid) {
-					await this.settingsManager.set(SettingsKey.YtdlpPath, localPath);
-					return true;
-				}
-			} catch (error) {
-				console.error(`Local yt-dlp binary exists but failed verification: ${error}`);
-			}
+			return true;
 		}
 
 		const currentPath = this.settingsManager.get(SettingsKey.YtdlpPath);
 		if (currentPath === 'yt-dlp') {
 			try {
 				const isValid = await this.verifyYtdlpBinary('yt-dlp');
-				if (isValid) return true;
+				if (isValid) {
+					return true;
+				}
 			} catch (error) {
 				console.error(`PATH yt-dlp binary no longer works: ${error}`);
 			}
-		}
-
-		try {
-			const isValid = await this.verifyYtdlpBinary('yt-dlp');
-			if (isValid) {
-				await this.settingsManager.set(SettingsKey.YtdlpPath, 'yt-dlp');
-				return true;
-			}
-		} catch (error) {
-			console.error(`yt-dlp not found in PATH or doesn't work: ${error}`);
 		}
 
 		return false;
@@ -220,16 +206,9 @@ export class Setup {
 				output += data.toString();
 			});
 
-			proc.on('error', err => {
-				rej(err);
-			});
+			proc.on('error', err => rej(err));
 
-			proc.on('close', (code) => {
-				if (code !== 0) {
-					rej(new Error(`Process exited with code ${code}`));
-					return;
-				}
-
+			proc.on('close', () => {
 				const matches = versionPattern.exec(output.trim());
 				if (matches !== null) {
 					res(true);
