@@ -1,4 +1,4 @@
-import { product } from 'shared';
+import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
 
 type InfoSectionProps = {
@@ -27,7 +27,7 @@ export const DeveloperTab = () => {
 		<div className="w-full flex flex-col space-y-3">
 			<InfoSection title="Application" values={[
 				['Product version', product.version],
-				['Commit', <a href={`https://github.com/depthbomb/yay/commit/${window.gitHash}`} target="_blank">{window.gitHash.substring(0, 7)}</a>],
+				['Commit', <a href={`https://github.com/depthbomb/yay/commit/${GIT_HASH}`} target="_blank">{GIT_HASH_SHORT}</a>],
 				['Build date', window.buildDate.toLocaleString()]
 			]}/>
 			<InfoSection title="Framework" values={[

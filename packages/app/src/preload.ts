@@ -60,7 +60,6 @@ function removeAllListeners (channel: IpcChannel) {
 
 contextBridge.exposeInMainWorld('versions', process.versions);
 contextBridge.exposeInMainWorld('buildDate', new Date(__BUILD_DATE__));
-contextBridge.exposeInMainWorld('gitHash', GIT_HASH);
 contextBridge.exposeInMainWorld('ipc', { on, once, off, removeAllListeners });
 contextBridge.exposeInMainWorld('api', {
 	playNotificationSound() {
