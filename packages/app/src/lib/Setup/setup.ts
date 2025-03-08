@@ -168,7 +168,7 @@ export class Setup {
 					clearInterval(interval);
 					res();
 				}
-			}, 1_000);
+			}, 500);
 		});
 	}
 

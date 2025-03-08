@@ -20,10 +20,10 @@ export const SetupPage = () => {
 	}, []);
 
 	return (
-		<div className="relative flex flex-col justify-center h-screen w-screen [background:linear-gradient(to_bottom,_black_0%,_black_33%,_transparent_100%),_linear-gradient(to_right,_#FF0033,_#FF2790)] border border-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] overflow-hidden">
-			<Titlebar/>
+		<div className="relative flex flex-col justify-center h-screen w-screen [background:linear-gradient(to_bottom,black,transparent),_linear-gradient(to_right,#FF0033,#FF2790)] border border-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] overflow-hidden">
+			<Titlebar title="yay setup"/>
 			<div className="space-y-4 flex flex-col items-center justify-center">
-				<Spinner lineWidth={1} className="size-18"/>
+				<Spinner lineWidth={2} className="size-18"/>
 				<p className="text-sm font-mono">{setupStep}</p>
 				<button
 					onClick={onCancelButtonClicked}
