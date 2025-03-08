@@ -3,7 +3,6 @@ import { spawn } from 'node:child_process';
 import { PRELOAD_PATH } from '~/constants';
 import { IpcChannel, SettingsKey } from 'shared';
 import { fileExists, getExtraFilePath } from '~/utils';
-import type { Ipc } from '~/lib/Ipc';
 import type { Flags } from '~/lib/Cli';
 import type { EventEmitter } from '~/lib/EventEmitter';
 import type { WindowManager } from '~/lib/WindowManager';
@@ -16,7 +15,6 @@ export class Setup {
 	private readonly abort = new AbortController();
 
 	public constructor(
-		private readonly ipc: Ipc,
 		private readonly flags: Flags,
 		private readonly eventEmitter: EventEmitter,
 		private readonly windowManager: WindowManager,
@@ -55,117 +53,123 @@ export class Setup {
 	}
 
 	private async checkForBinaries() {
+		let checkFinished = false;
+
 		const ytdlpPath   = getExtraFilePath('yt-dlp.exe');
 		const ffmpegPath  = getExtraFilePath('ffmpeg.exe');
 		const ffprobePath = getExtraFilePath('ffprobe.exe');
-		const hasYtdlp    = await this.hasYtdlpBinary(ytdlpPath);
-		const hasFfmpeg   = await Promise.all([fileExists(ffmpegPath), fileExists(ffprobePath)]).then(r => r.every(Boolean));
 
-		if (!hasYtdlp || !hasFfmpeg) {
-			const mainWindow          = this.windowManager.getMainWindow()!;
-			const missingDependencies = [];
+		const setupWindow = this.windowManager.createWindow('setup', {
+			url: this.windowManager.resolveRendererHTML('setup.html'),
+			browserWindowOptions: {
+				width: 650,
+				height: 400,
+				titleBarStyle: 'hidden',
+				resizable: false,
+				maximizable: false,
+				backgroundColor: '#000',
+				webPreferences: {
+					spellcheck: false,
+					enableWebSQL: false,
+					nodeIntegration: true,
+					devTools: import.meta.env.DEV,
+					preload: PRELOAD_PATH,
+				}
+			},
+			onReadyToShow: async () => {
+				if (import.meta.env.DEV) {
+					setupWindow.webContents.openDevTools({ mode: 'detach' });
+				}
 
-			if (!hasYtdlp) missingDependencies.push('yt-dlp');
-			if (!hasFfmpeg) missingDependencies.push('FFmpeg');
-			if (!this.flags.updateBinaries) {
-				const res = await dialog.showMessageBox(mainWindow, {
-					type: 'info',
-					message: `yay needs to download the following files to operate:\n\n${missingDependencies.join('\n')}\n\nWould you like to continue?`,
-					buttons: ['Yes', 'No'],
-					defaultId: 0
-				});
-				if (res.response !== 0) {
-					app.exit(0);
+				setupWindow.show();
+				setupWindow.setProgressBar(1, { mode: 'indeterminate' });
 
-					return;
+				this.windowManager.emit('setup', IpcChannel.SetupStep, 'Checking for yt-dlp...');
+
+				const hasYtdlp = await this.hasYtdlpBinary(ytdlpPath);
+
+				this.windowManager.emit('setup', IpcChannel.SetupStep, 'Checking for FFmpeg...');
+
+				const hasFfmpeg = await Promise.all([fileExists(ffmpegPath), fileExists(ffprobePath)]).then(r => r.every(Boolean));
+
+				if (!hasYtdlp || !hasFfmpeg) {
+					const mainWindow          = this.windowManager.getMainWindow()!;
+					const missingDependencies = [];
+
+					if (!hasYtdlp) missingDependencies.push('yt-dlp');
+					if (!hasFfmpeg) missingDependencies.push('FFmpeg');
+					if (!this.flags.updateBinaries) {
+						const res = await dialog.showMessageBox(mainWindow, {
+							type: 'info',
+							message: `yay needs to download the following files to operate:\n\n${missingDependencies.join('\n')}\n\nWould you like to continue?`,
+							buttons: ['Yes', 'No'],
+							defaultId: 0
+						});
+						if (res.response !== 0) {
+							app.exit(0);
+							return;
+						}
+					}
+				}
+
+				if (!hasYtdlp) {
+					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Starting yt-dlp download...');
+
+					await this.downloader.downloadYtdlpBinary(
+						ytdlpPath,
+						this.abort.signal,
+						progress => {
+							this.windowManager.emit('setup', IpcChannel.SetupStep, `Downloading yt-dlp... (${progress}%)`);
+							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
+						}
+					);
+				}
+
+				if (!hasFfmpeg) {
+					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Starting FFmpeg download...');
+
+					await this.downloader.downloadFfmpegBinary(
+						ffmpegPath,
+						this.abort.signal,
+						progress => {
+							this.windowManager.emit('setup', IpcChannel.SetupStep, `Downloading FFmpeg... (${progress}%)`);
+							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
+						},
+						() => {
+							this.windowManager.emit('setup', IpcChannel.SetupStep, 'Extracting FFmpeg...');
+							setupWindow.setProgressBar(1, { mode: 'indeterminate' });
+						},
+						() => this.windowManager.emit('setup', IpcChannel.SetupStep, 'Cleaning up...')
+					);
+				}
+
+				checkFinished = true;
+
+				if (this.cancelled) {
+					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Cancelling...');
+					setupWindow.setProgressBar(1, { mode: 'error' });
+				} else {
+					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Done!');
+					setupWindow.setProgressBar(1, { mode: 'normal' });
 				}
 			}
+		});
 
-			let checkFinished = false;
+		setupWindow.once('close', () => this.cancel());
 
-			const setupWindow = this.windowManager.createWindow('setup', {
-				url: this.windowManager.resolveRendererHTML('setup.html'),
-				browserWindowOptions: {
-					width: 500,
-					height: 300,
-					resizable: false,
-					maximizable: false,
-					backgroundColor: '#191919',
-					webPreferences: {
-						spellcheck: false,
-						enableWebSQL: false,
-						nodeIntegration: true,
-						devTools: import.meta.env.DEV,
-						preload: PRELOAD_PATH,
-					}
-				},
-				onReadyToShow: async () => {
-					if (import.meta.env.DEV) {
-						setupWindow.webContents.openDevTools({ mode: 'detach' });
-					}
-
-					setupWindow.show();
-					setupWindow.setProgressBar(1, { mode: 'indeterminate' });
-
-					if (!hasYtdlp) {
-						this.ipc.emitToWindow('setup', IpcChannel.SetupStep, 'Starting yt-dlp download...');
-
-						await this.downloader.downloadYtdlpBinary(
-							ytdlpPath,
-							this.abort.signal,
-							progress => {
-								this.ipc.emitToWindow('setup', IpcChannel.SetupStep, `Downloading yt-dlp... (${progress}%)`);
-								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
-							}
-						);
-					}
-
-					if (!hasFfmpeg) {
-						this.ipc.emitToWindow('setup', IpcChannel.SetupStep, 'Starting FFmpeg download...');
-
-						await this.downloader.downloadFfmpegBinary(
-							ffmpegPath,
-							this.abort.signal,
-							progress => {
-								this.ipc.emitToWindow('setup', IpcChannel.SetupStep, `Downloading FFmpeg... (${progress}%)`);
-								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
-							},
-							() => {
-								this.ipc.emitToWindow('setup', IpcChannel.SetupStep, 'Extracting FFmpeg...');
-								setupWindow.setProgressBar(1, { mode: 'indeterminate' });
-							},
-							() => this.ipc.emitToWindow('setup', IpcChannel.SetupStep, 'Cleaning up...')
-						);
-					}
-
-					checkFinished = true;
-
-					if (this.cancelled) {
-						this.ipc.emitToWindow('setup', IpcChannel.SetupStep, 'Cancelling...');
-						setupWindow.setProgressBar(1, { mode: 'error' });
-					} else {
-						this.ipc.emitToWindow('setup', IpcChannel.SetupStep, 'Done!');
-						setupWindow.setProgressBar(1, { mode: 'normal' });
-					}
+		return new Promise<void>((res) => {
+			const interval = setInterval(() => {
+				if (this.abort.signal.aborted) {
+					app.exit(0);
+					clearInterval(interval);
+				} else if (checkFinished) {
+					setupWindow.closable = true;
+					setupWindow.close();
+					clearInterval(interval);
+					res();
 				}
-			});
-
-			setupWindow.once('close', () => this.cancel());
-
-			return new Promise<void>((res) => {
-				const interval = setInterval(() => {
-					if (this.abort.signal.aborted) {
-						app.exit(0);
-						clearInterval(interval);
-					} else if (checkFinished) {
-						setupWindow.closable = true;
-						setupWindow.close();
-						clearInterval(interval);
-						res();
-					}
-				}, 500);
-			});
-		}
+			}, 1_000);
+		});
 	}
 
 	private async hasYtdlpBinary(localPath: string): Promise<boolean> {

@@ -19,8 +19,8 @@ app.whenReady().then(async () => {
 	const moduleRegistry = lib.ModuleRegistryModule.bootstrap();
 
 	lib.CliModule.bootstrap(moduleRegistry);
-	lib.WindowManagerModule.bootstrap(moduleRegistry);
 	lib.IpcModule.bootstrap(moduleRegistry);
+	lib.WindowManagerModule.bootstrap(moduleRegistry);
 	lib.AutoStartModule.bootstrap(moduleRegistry);
 	lib.EventEmitterModule.bootstrap(moduleRegistry);
 	lib.EventSubscriberModule.bootstrap(moduleRegistry);

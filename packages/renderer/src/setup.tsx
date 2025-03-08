@@ -1,10 +1,10 @@
 import './assets/css/index.css';
 import { StrictMode } from 'react';
-import { SetupApp } from './SetupApp';
 import { createRoot } from 'react-dom/client';
+import { SetupPage } from './features/setup/SetupPage';
 
 createRoot(document.getElementById('app')!).render(
 	<StrictMode>
-		<SetupApp/>
+		<SetupPage/>
 	</StrictMode>
 );

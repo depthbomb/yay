@@ -18,6 +18,7 @@ declare global {
 			removeAllListeners: (channel: string) => void;
 		};
 		api: {
+			minimizeWindow(windowName: string): Promise<void>;
 			playNotificationSound(): Promise<void>;
 			showInputRightClickMenu(): Promise<void>;
 			openDownloadDir(): Promise<void>;

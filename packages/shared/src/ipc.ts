@@ -1,4 +1,5 @@
 export enum IpcChannel {
+	MinimizeWindow  = 'MinimizeWindow',
 	WindowBlurred   = 'WindowBlurred',
 	WindowUnblurred = 'WindowUnblurred',
 	// Setup channels

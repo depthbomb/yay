@@ -13,7 +13,6 @@ export class SetupModule {
 		const ipc = moduleRegistry.get('Ipc');
 
 		const setup = new Setup(
-			ipc,
 			moduleRegistry.get('Flags'),
 			moduleRegistry.get('EventEmitter'),
 			moduleRegistry.get('WindowManager'),

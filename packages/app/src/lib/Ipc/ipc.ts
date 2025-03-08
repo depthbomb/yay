@@ -1,16 +1,11 @@
 import { ipcMain } from 'electron';
 import { IpcChannel, IpcChannels } from 'shared';
-import type { WindowManager } from '~/lib/WindowManager';
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 
 type HandlerFunction     = (event: IpcMainInvokeEvent, ...args: any[]) => unknown;
 type SyncHandlerFunction = (event: IpcMainEvent, ...args: any[]) => unknown;
 
 export class Ipc {
-	public constructor(
-		private readonly windowManager: WindowManager
-	) {}
-
 	public registerHandler(channel: IpcChannel, handler: HandlerFunction): void {
 		this.assertValidIpcChannel(channel);
 
@@ -39,24 +34,6 @@ export class Ipc {
 		this.assertValidIpcChannel(channel);
 
 		ipcMain.removeHandler(channel);
-	}
-
-	public emitToWindow(name: string, channel: IpcChannel, ...args: unknown[]) {
-		this.assertValidIpcChannel(channel);
-
-		this.windowManager.emit(name, channel, ...args);
-	}
-
-	public emitToMainWindow(channel: IpcChannel, ...args: unknown[]) {
-		this.assertValidIpcChannel(channel);
-
-		this.windowManager.emitMain(channel, ...args);
-	}
-
-	public emitToAllWindows(channel: IpcChannel, ...args: unknown[]) {
-		this.assertValidIpcChannel(channel);
-
-		this.windowManager.emitAll(channel, ...args);
 	}
 
 	public channelHasHandlers(channel: IpcChannel): boolean {

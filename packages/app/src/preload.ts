@@ -62,6 +62,9 @@ contextBridge.exposeInMainWorld('versions', process.versions);
 contextBridge.exposeInMainWorld('buildDate', new Date(__BUILD_DATE__));
 contextBridge.exposeInMainWorld('ipc', { on, once, off, removeAllListeners });
 contextBridge.exposeInMainWorld('api', {
+	minimizeWindow(windowName: string) {
+		return ipcRenderer.invoke(IpcChannel.MinimizeWindow, windowName);
+	},
 	playNotificationSound() {
 		return ipcRenderer.invoke(IpcChannel.PlayNotificationSound);
 	},

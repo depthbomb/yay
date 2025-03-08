@@ -13,6 +13,19 @@
 	scroll-behavior: smooth;
 }
 
+@theme {
+	--animate-setup-bg: setupBg 10s ease-in-out infinite alternate;
+
+	@keyframes setupBg {
+		from {
+			background-position: 0% 0%;
+		}
+		to {
+			background-position: 100% 0%;
+		}
+	}
+}
+
 :root {
 	color-scheme: dark;
 }

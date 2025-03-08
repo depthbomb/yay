@@ -84,6 +84,10 @@ export class WindowManager {
 		return BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0];
 	}
 
+	public minimizeWindow(windowName: string) {
+		this.windows.get(windowName)?.minimize();
+	}
+
 	public closeAllWindows(force = false): void {
 		for (const name in this.windows) {
 			const window = this.windows.get(name)!;
