@@ -66,6 +66,14 @@ export function getExtraResourcePath(path: string) {
 	return extraFilePath;
 }
 
+/**
+ * Resolves the absolute path to an extra file path, accounting for environment.
+ *
+ * This function does not validate the existence of the file.
+ *
+ * @param path The path to the extra resource file relative to the `<app>` (production) OR
+ * `<root>/static/extra` (development) directory.
+ */
 export function getExtraFilePath(path: string) {
 	let extraFilePath: string;
 	if (import.meta.env.DEV) {
