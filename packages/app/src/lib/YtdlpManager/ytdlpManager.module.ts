@@ -8,7 +8,8 @@ export class YtdlpManagerModule {
 		const github          = moduleRegistry.get('Github');
 		const eventEmitter    = moduleRegistry.get('EventEmitter');
 		const settingsManager = moduleRegistry.get('SettingsManager');
-		const ytdlpManager    = new YtdlpManager(ipc, github, eventEmitter, settingsManager);
+		const windowManager   = moduleRegistry.get('WindowManager');
+		const ytdlpManager    = new YtdlpManager(ipc, github, eventEmitter, settingsManager, windowManager);
 
 		moduleRegistry.register('YtdlpManager', ytdlpManager);
 

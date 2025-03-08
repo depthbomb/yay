@@ -1,4 +1,5 @@
 import kill from 'tree-kill';
+import { dialog } from 'electron';
 import { spawn } from 'node:child_process';
 import { join, posix, win32 } from 'node:path';
 import { IpcChannel, SettingsKey } from 'shared';
@@ -8,8 +9,8 @@ import type { Nullable } from 'shared';
 import type { Github } from '~/lib/Github';
 import type { ChildProcess } from 'node:child_process';
 import type { EventEmitter } from '~/lib/EventEmitter';
+import type { WindowManager } from '~/lib/WindowManager';
 import type { SettingsManager } from '~/lib/SettingsManager';
-import { dialog } from 'electron';
 
 export class YtdlpManager {
 	private proc: Nullable<ChildProcess> = null;
@@ -18,7 +19,8 @@ export class YtdlpManager {
 		private readonly ipc: Ipc,
 		private readonly github: Github,
 		private readonly eventEmitter: EventEmitter,
-		private readonly settingsManager: SettingsManager
+		private readonly settingsManager: SettingsManager,
+		private readonly windowManager: WindowManager
 	) {}
 
 	public async download(url: string, audioOnly = false) {
@@ -31,10 +33,10 @@ export class YtdlpManager {
 				return;
 			}
 
-			this.ipc.emitToMainWindow(IpcChannel.DownloadOutput, line);
+			this.windowManager.emitMain(IpcChannel.DownloadOutput, line);
 		};
 
-		this.ipc.emitToAllWindows(IpcChannel.DownloadStarted, url);
+		this.windowManager.emitMain(IpcChannel.DownloadStarted, url);
 		this.eventEmitter.emit('download-started', url);
 
 		if (audioOnly) {
@@ -46,11 +48,11 @@ export class YtdlpManager {
 		this.proc.stdout!.on('data', emitLog);
 		this.proc.stderr!.on('data', emitLog);
 		this.proc.once('close', code => {
-			this.ipc.emitToMainWindow(IpcChannel.DownloadFinished, code);
+			this.windowManager.emitMain(IpcChannel.DownloadFinished, code);
 			this.eventEmitter.emit('download-finished');
 
 			if (this.settingsManager.get(SettingsKey.NotificationSoundId, 1) > 0) {
-				this.ipc.emitToAllWindows(IpcChannel.PlayNotificationSound);
+				this.windowManager.emitMain(IpcChannel.PlayNotificationSound);
 			}
 
 			this.cleanupProcess();
@@ -70,8 +72,8 @@ export class YtdlpManager {
 		if (this.proc) {
 			kill(this.proc.pid!, 'SIGINT');
 			this.cleanupProcess();
-			this.ipc.emitToMainWindow(IpcChannel.DownloadCanceled);
-			this.ipc.emitToMainWindow(IpcChannel.DownloadFinished);
+			this.windowManager.emitMain(IpcChannel.DownloadCanceled);
+			this.windowManager.emitMain(IpcChannel.DownloadFinished);
 			this.eventEmitter.emit('download-finished');
 		}
 	}
@@ -99,14 +101,14 @@ export class YtdlpManager {
 	}
 
 	public async updateBinary() {
-		this.ipc.emitToAllWindows(IpcChannel.UpdatingYtdlpBinary);
+		this.windowManager.emitMain(IpcChannel.UpdatingYtdlpBinary);
 
 		const ytDlpPath = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
 
 		return new Promise<void>((res) => {
 			const proc = spawn(ytDlpPath, ['-U']);
 			proc.once('close', () => {
-				this.ipc.emitToAllWindows(IpcChannel.UpdatedYtdlpBinary);
+				this.windowManager.emitMain(IpcChannel.UpdatedYtdlpBinary);
 				res();
 			});
 		});

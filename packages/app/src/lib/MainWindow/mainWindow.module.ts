@@ -76,7 +76,7 @@ export class MainWindowModule {
 		//#endregion
 
 		//#region IPC
-		ipc.registerHandler(IpcChannel.PlayNotificationSound, () => ipc.emitToMainWindow(IpcChannel.PlayNotificationSound));
+		ipc.registerHandler(IpcChannel.PlayNotificationSound, () => windowManager.emitMain(IpcChannel.PlayNotificationSound));
 
 		ipc.registerHandler(IpcChannel.ToggleWindowPinned, () => {
 			return windowPinned = !windowPinned;
