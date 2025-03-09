@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useIpc, useSetting } from './hooks';
+import { Spinner } from './components/Spinner';
 import { IpcChannel, SettingsKey } from 'shared';
 import { HomePage } from './features/home/HomePage';
 import { AppMasthead } from './components/AppMasthead';
@@ -58,7 +59,10 @@ export const App = () => {
 			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-black">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">
-						<p>Updating yt-dlp, please wait...</p>
+						<div className="space-x-2 flex items-center">
+							<Spinner className="size-6"/>
+							<p>Updating yt-dlp, please wait&hellip;</p>
+						</div>
 					</div>
 				) : (
 					<MemoryRouter>
