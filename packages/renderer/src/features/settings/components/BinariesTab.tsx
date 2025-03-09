@@ -1,6 +1,6 @@
 import Icon from '@mdi/react';
+import { forwardRef } from 'react';
 import { mdiUpdate, mdiDownload } from '@mdi/js';
-import { useState, useEffect, forwardRef } from 'react';
 import type { ButtonHTMLAttributes } from 'react';
 
 type BinaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -31,24 +31,10 @@ const onRecheckBinariesButtonClicked = async () => {
 };
 
 export const BinariesTab = () => {
-	const [ytdlpUpdateRequired, setYtdlpUpdateRequired] = useState(false);
-
-	useEffect(() => {
-		const fetchYtdlpUpdateState = async () => {
-			setYtdlpUpdateRequired(
-				await window.api.checkForYtdlpUpdate()
-			);
-		};
-
-		fetchYtdlpUpdateState().catch(console.error);
-	}, []);
-
 	return (
 		<div className="flex flex-col items-start space-y-1.5">
 			<BinaryButton icon={mdiDownload} onClick={onRecheckBinariesButtonClicked}>Recheck required binaries</BinaryButton>
-			{ytdlpUpdateRequired && (
-				<BinaryButton icon={mdiUpdate} onClick={() => window.api.updateYtdlpBinary()}>Update yt-dlp</BinaryButton>
-			)}
+			<BinaryButton icon={mdiUpdate} onClick={() => window.api.updateYtdlpBinary()}>Update yt-dlp</BinaryButton>
 		</div>
 	);
 };

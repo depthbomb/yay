@@ -5,11 +5,10 @@ import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 export class YtdlpManagerModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
 		const ipc             = moduleRegistry.get('Ipc');
-		const github          = moduleRegistry.get('Github');
 		const eventEmitter    = moduleRegistry.get('EventEmitter');
 		const settingsManager = moduleRegistry.get('SettingsManager');
 		const windowManager   = moduleRegistry.get('WindowManager');
-		const ytdlpManager    = new YtdlpManager(ipc, github, eventEmitter, settingsManager, windowManager);
+		const ytdlpManager    = new YtdlpManager(eventEmitter, settingsManager, windowManager);
 
 		moduleRegistry.register('YtdlpManager', ytdlpManager);
 
@@ -20,7 +19,6 @@ export class YtdlpManagerModule {
 			await ytdlpManager.download(url, defaultAction === 'audio');
 		});
 		ipc.registerHandler(IpcChannel.CancelDownload, () => ytdlpManager.cancelDownload());
-		ipc.registerHandler(IpcChannel.CheckForYtdlpUpdate, async () => await ytdlpManager.hasUpdate());
 		ipc.registerHandler(IpcChannel.UpdateYtdlpBinary, async () => await ytdlpManager.updateBinary());
 	}
 }

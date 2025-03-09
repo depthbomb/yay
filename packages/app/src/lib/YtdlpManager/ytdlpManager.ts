@@ -4,9 +4,7 @@ import { spawn } from 'node:child_process';
 import { join, posix, win32 } from 'node:path';
 import { IpcChannel, SettingsKey } from 'shared';
 import { parseCalVer, getExtraFilePath } from '~/utils';
-import type { Ipc } from '~/lib/Ipc';
 import type { Nullable } from 'shared';
-import type { Github } from '~/lib/Github';
 import type { ChildProcess } from 'node:child_process';
 import type { EventEmitter } from '~/lib/EventEmitter';
 import type { WindowManager } from '~/lib/WindowManager';
@@ -16,8 +14,6 @@ export class YtdlpManager {
 	private proc: Nullable<ChildProcess> = null;
 
 	public constructor(
-		private readonly ipc: Ipc,
-		private readonly github: Github,
 		private readonly eventEmitter: EventEmitter,
 		private readonly settingsManager: SettingsManager,
 		private readonly windowManager: WindowManager
@@ -76,28 +72,6 @@ export class YtdlpManager {
 			this.windowManager.emitMain(IpcChannel.DownloadFinished);
 			this.eventEmitter.emit('download-finished');
 		}
-	}
-
-	public async hasUpdate() {
-		const release = await this.github.getLatestRepositoryRelease('yt-dlp', 'yt-dlp');
-		if (!release) {
-			return false;
-		}
-
-		const ytDlpPath        = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
-		const latestVersion    = release.tag_name;
-		const installedVersion = await new Promise<string>((res) => {
-			const proc = spawn(ytDlpPath, ['--version']);
-
-			let output = '';
-
-			// TODO make this more robust
-
-			proc.stdout.on('data', data => output += data.toString().trim());
-			proc.once('close', () => res(output));
-		});
-
-		return this.isNewerCalVer(latestVersion, installedVersion);
 	}
 
 	public async updateBinary() {
