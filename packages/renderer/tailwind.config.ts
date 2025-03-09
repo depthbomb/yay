@@ -23,11 +23,6 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				sky: colors.sky,
-				lime: colors.lime,
-				yellow: colors.yellow,
-				orange: colors.orange,
-				red: colors.red,
 				gray: colors.zinc,
 				brand: {
 					50: '#fef1f8',

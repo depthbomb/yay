@@ -1,5 +1,7 @@
 import { clsx } from 'clsx';
 import Icon from '@mdi/react';
+import { mdiCancel } from '@mdi/js';
+import { Button } from '~/components/Button';
 import { mdiVideo, mdiMusicNote } from '@mdi/js';
 import type { FC } from 'react';
 
@@ -57,8 +59,9 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 			</button>
 		</div>
 	) : (
-		<button onClick={onCancelDownloadClick} className="w-full h-8 text-black text-sm font-semibold bg-white rounded hover:bg-gray-300 active:bg-gray-400 transition-colors" type="button">
+		<Button onClick={onCancelDownloadClick} size="lg">
+			<Icon path={mdiCancel} className="size-4"/>
 			<span>Cancel</span>
-		</button>
+		</Button>
 	));
 };

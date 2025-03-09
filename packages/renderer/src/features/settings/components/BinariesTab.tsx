@@ -1,20 +1,6 @@
 import Icon from '@mdi/react';
-import { forwardRef } from 'react';
+import { Button } from '~/components/Button';
 import { mdiUpdate, mdiDownload } from '@mdi/js';
-import type { ButtonHTMLAttributes } from 'react';
-
-type BinaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-	icon: string;
-};
-
-const BinaryButton = forwardRef<HTMLButtonElement, BinaryButtonProps>(({ icon, onClick, ...props }, ref) => {
-	return (
-		<button ref={ref} onClick={onClick} className="px-2 space-x-1 flex items-center h-6 text-black text-xs bg-white rounded hover:bg-gray-300 active:bg-gray-400 transition-colors" type="button" {...props}>
-			<Icon path={icon} className="size-3"/>
-			<span>{props.children}</span>
-		</button>
-	);
-});
 
 const onRecheckBinariesButtonClicked = async () => {
 	const { response } = await window.api.showMessageBox({
@@ -33,8 +19,14 @@ const onRecheckBinariesButtonClicked = async () => {
 export const BinariesTab = () => {
 	return (
 		<div className="flex flex-col items-start space-y-1.5">
-			<BinaryButton icon={mdiDownload} onClick={onRecheckBinariesButtonClicked}>Recheck required binaries</BinaryButton>
-			<BinaryButton icon={mdiUpdate} onClick={() => window.api.updateYtdlpBinary()}>Update yt-dlp</BinaryButton>
+			<Button onClick={onRecheckBinariesButtonClicked}>
+				<Icon path={mdiDownload} className="size-3"/>
+				<span>Recheck required binaries</span>
+			</Button>
+			<Button onClick={() => window.api.updateYtdlpBinary()}>
+				<Icon path={mdiUpdate} className="size-3"/>
+				<span>Update yt-dlp</span>
+			</Button>
 		</div>
 	);
 };
