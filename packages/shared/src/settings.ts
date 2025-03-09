@@ -4,6 +4,7 @@ export enum SettingsKey {
 	NotificationSoundId    = 'notification-sound-id',
 	EnableGlobalMenu       = 'enable-global-menu',
 	YtdlpPath              = 'yt-dlp-path',
+	ShowHintFooter         = 'show-hint-footer',
 	ShowWindowFrame        = 'show-window-frame',
 }
 

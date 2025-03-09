@@ -8,6 +8,7 @@ import { ToggleButton } from '~/components/ToggleButton';
 
 export const AppTab = () => {
 	const [showWindowFrame, setShowWindowFrame]     = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
+	const [showHintFooter, setShowHintFooter]       = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
 	const [autoStartEnabled, setAutoStartEnabled]   = useState(false);
 	const [globalMenuEnabled, setGlobalMenuEnabled] = useState(false);
 
@@ -20,10 +21,6 @@ export const AppTab = () => {
 		setGlobalMenuEnabled(
 			await window.api.toggleGlobalMenu()
 		);
-	};
-
-	const onShowWindowFrameButtonClicked = async () => {
-		await setShowWindowFrame(!showWindowFrame);
 	};
 
 	useEffect(() => {
@@ -52,15 +49,17 @@ export const AppTab = () => {
 				<p>Start on login</p>
 				<ToggleButton enabled={autoStartEnabled} onClick={onToggleAutoStartButtonClicked}/>
 			</div>
-			{/* --- */}
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>) <Badge label="Experimental" type="warning"/></p>
 				<ToggleButton enabled={globalMenuEnabled} onClick={onEnableGlobalMenuButtonClicked}/>
 			</div>
-			{/* --- */}
+			<div className="flex flex-col items-start space-y-1.5">
+				<p>Show hints</p>
+				<ToggleButton enabled={showHintFooter} onClick={() => setShowHintFooter(!showHintFooter)}/>
+			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Show window frame</p>
-				<ToggleButton enabled={showWindowFrame} onClick={onShowWindowFrameButtonClicked}/>
+				<ToggleButton enabled={showWindowFrame} onClick={() => setShowWindowFrame(!showWindowFrame)}/>
 				<p className="text-xs">This change takes effect on app restart</p>
 			</div>
 		</div>
