@@ -39,6 +39,10 @@ export class Setup {
 			await this.settingsManager.set(SettingsKey.DownloadDir, app.getPath('downloads'));
 		}
 
+		if (this.settingsManager.get(SettingsKey.YtdlpPath, null) === null) {
+			await this.settingsManager.set(SettingsKey.YtdlpPath, 'yt-dlp');
+		}
+
 		if (this.settingsManager.get(SettingsKey.DefaultDownloadAction, null) === null) {
 			await this.settingsManager.set(SettingsKey.DefaultDownloadAction, 'video');
 		}
@@ -183,8 +187,8 @@ export class Setup {
 				if (isValid) {
 					return true;
 				}
-			} catch (error) {
-				console.error(`PATH yt-dlp binary no longer works: ${error}`);
+			} catch (err) {
+				console.error(`PATH yt-dlp binary no longer works: ${err}`);
 			}
 		}
 
@@ -193,20 +197,14 @@ export class Setup {
 
 	private verifyYtdlpBinary(binaryPath: string): Promise<boolean> {
 		const versionPattern = /\d{4}\.\d+\.\d+/;
-
 		return new Promise<boolean>((res, rej) => {
-			const proc = spawn(binaryPath, ['--version']);
 			let output = '';
-
-			proc.stdout.on('data', data => {
-				output += data.toString();
-			});
-
+			const proc = spawn(binaryPath, ['--version']);
+			proc.stdout.on('data', data => output += data.toString());
 			proc.on('error', err => rej(err));
-
 			proc.on('close', () => {
 				const matches = versionPattern.exec(output.trim());
-				if (matches !== null) {
+				if (matches) {
 					res(true);
 				} else {
 					rej(new Error('Version pattern not found in output'));
