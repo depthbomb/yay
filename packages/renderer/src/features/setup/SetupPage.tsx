@@ -1,7 +1,7 @@
 import { useIpc } from '~/hooks';
 import { IpcChannel } from 'shared';
 import { useState, useEffect } from 'react';
-import { Spinner } from './components/Spinner';
+import { Spinner } from '~/components/Spinner';
 import { Titlebar } from './components/Titlebar';
 
 export const SetupPage = () => {

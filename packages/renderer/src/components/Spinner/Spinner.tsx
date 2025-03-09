@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import css from '../css/spinner.module.css';
+import css from './spinner.module.css';
 import type { SVGAttributes } from 'react';
 
 type SpinnerProps = SVGAttributes<SVGElement> & {
