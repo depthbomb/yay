@@ -62,8 +62,8 @@ export class Setup {
 		const setupWindow = this.windowManager.createWindow('setup', {
 			url: this.windowManager.resolveRendererHTML('setup.html'),
 			browserWindowOptions: {
-				width: 650,
-				height: 400,
+				width: 450,
+				height: 350,
 				titleBarStyle: 'hidden',
 				resizable: false,
 				maximizable: false,
