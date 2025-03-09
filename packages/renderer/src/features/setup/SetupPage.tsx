@@ -5,14 +5,8 @@ import { Spinner } from './components/Spinner';
 import { Titlebar } from './components/Titlebar';
 
 export const SetupPage = () => {
-	const [setupStep, setSetupStep]           = useState('Checking requirements...');
-	const [cancelDisabled, setCancelDisabled] = useState(false);
-	const [onSetupStep]                       = useIpc(IpcChannel.SetupStep);
-
-	const onCancelButtonClicked = async () => {
-		setCancelDisabled(true);
-		await window.api.cancelSetup();
-	};
+	const [setupStep, setSetupStep] = useState('Checking requirements...');
+	const [onSetupStep]             = useIpc(IpcChannel.SetupStep);
 
 	useEffect(() => {
 		const removeListener = onSetupStep((step: string) => setSetupStep(step));
@@ -24,13 +18,7 @@ export const SetupPage = () => {
 			<Titlebar title="yay setup"/>
 			<div className="space-y-4 flex flex-col items-center justify-center">
 				<Spinner lineWidth={2} className="size-18"/>
-				<p className="text-sm font-mono">{setupStep}</p>
-				<button
-					onClick={onCancelButtonClicked}
-					className="w-14 h-5.5 text-xs text-black bg-white rounded shadow-lg hover:bg-gray-200 active:bg-gray-300 disabled:opacity-50"
-					type="button"
-					disabled={cancelDisabled}
-				>Cancel</button>
+				<p>{setupStep}</p>
 			</div>
 		</div>
 	);
