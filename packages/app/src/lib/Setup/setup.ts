@@ -43,10 +43,6 @@ export class Setup {
 			await this.settingsManager.set(SettingsKey.DefaultDownloadAction, 'video');
 		}
 
-		if (this.settingsManager.get(SettingsKey.BeepOnDownloadComplete, null) === null) {
-			await this.settingsManager.set(SettingsKey.BeepOnDownloadComplete, true);
-		}
-
 		if (this.settingsManager.get(SettingsKey.EnableGlobalMenu, null) === null) {
 			await this.settingsManager.set(SettingsKey.EnableGlobalMenu, false);
 		}
