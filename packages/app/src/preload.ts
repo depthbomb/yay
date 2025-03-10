@@ -1,6 +1,6 @@
-import { ipcRenderer, contextBridge, BrowserWindow } from 'electron';
+import { ipcRenderer, contextBridge } from 'electron';
+import { IpcChannel, IpcChannels, SettingsKey } from 'shared';
 import { arch, type, release, platform, hostname } from 'node:os';
-import { GIT_HASH, IpcChannel, IpcChannels, SettingsKey } from 'shared';
 import type { IpcRendererEvent, MessageBoxOptions } from 'electron';
 
 function on(channel: IpcChannel, listener: (...args: any[]) => void) {

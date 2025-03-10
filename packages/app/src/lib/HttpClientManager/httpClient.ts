@@ -51,7 +51,7 @@ export class HttpClient {
 			requestUrl = withQuery(requestUrl, options.query);
 		}
 
-		const requestId = `${this.name}-${this.requestNum}`;
+		const requestId = `${this.name}-${++this.requestNum}`;
 
 		debugLog('Making HTTP request', { requestId, method: options?.method, url: requestUrl, retry: this.retry });
 
@@ -66,8 +66,6 @@ export class HttpClient {
 			requestId,
 			status: `${res.status} - ${res.statusText}`
 		});
-
-		this.requestNum++;
 
 		return res;
 	}
