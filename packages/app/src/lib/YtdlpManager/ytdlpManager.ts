@@ -19,6 +19,10 @@ export class YtdlpManager {
 		private readonly windowManager: WindowManager
 	) {}
 
+	public get isBusy() {
+		return this.proc !== null;
+	}
+
 	public async download(url: string, audioOnly = false) {
 		const ytDlpPath    = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
 		const ffmpegPath   = getExtraFilePath('ffmpeg.exe');

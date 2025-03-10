@@ -45,6 +45,10 @@ export class GlobalMenu {
 	}
 
 	private async tryDownloadFromClipboard(downloadAudio: boolean = false) {
+		if (this.ytdlpManager.isBusy) {
+			return;
+		}
+
 		const text = clipboard.readText('clipboard');
 		if (!isValidHttpUrl(text)) {
 			return;
