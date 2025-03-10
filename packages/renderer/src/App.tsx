@@ -9,13 +9,14 @@ import { AppMasthead } from './components/AppMasthead';
 import { clearLogAtom, pushToLogAtom } from './atoms/log';
 import { Route, Routes, MemoryRouter } from 'react-router';
 import { SettingsPage } from './features/settings/SettingsPage';
-import { workingAtom, updatingAtom, resetAppAtom } from './atoms/app';
+import { urlAtom, workingAtom, updatingAtom, resetAppAtom } from './atoms/app';
 
 export const App = () => {
 	const [showWindowFrame]           = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
 	const [,clearLog]                 = useAtom(clearLogAtom);
 	const [,pushToLog]                = useAtom(pushToLogAtom);
 	const [,resetApp]                 = useAtom(resetAppAtom);
+	const [,setUrl]                   = useAtom(urlAtom);
 	const [isWorking, setIsWorking]   = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
 	const [onDownloadStarted]         = useIpc(IpcChannel.DownloadStarted);
@@ -25,7 +26,7 @@ export const App = () => {
 	const [onUpdatingYtdlpBinary]     = useIpc(IpcChannel.UpdatingYtdlpBinary);
 	const [onUpdatedYtdlpBinary]      = useIpc(IpcChannel.UpdatedYtdlpBinary);
 
-	const accentClassNames = clsx(
+	const accentCss = clsx(
 		'absolute -z-10',
 		{
 			'inset-0 [background-image:linear-gradient(90deg,_#FF0033_0%,_#FF2790_100%)]': !isWorking,
@@ -34,7 +35,8 @@ export const App = () => {
 	);
 
 	useEffect(() => {
-		onDownloadStarted(() => {
+		onDownloadStarted((url: string) => {
+			setUrl(url);
 			setIsWorking(true);
 			clearLog();
 			pushToLog('OPERATION STARTED');
@@ -75,7 +77,7 @@ export const App = () => {
 					</MemoryRouter>
 				)}
 			</div>
-			{!showWindowFrame && <div className={accentClassNames}/>}
+			{!showWindowFrame && <div className={accentCss}/>}
 		</div>
 	);
 };
