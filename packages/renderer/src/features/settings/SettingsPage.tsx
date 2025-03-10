@@ -1,7 +1,10 @@
 import clsx from 'clsx';
+import { useAtom } from 'jotai';
+import { workingAtom } from '~/atoms/app';
 import { AppTab } from './components/AppTab';
-import { useState, forwardRef } from 'react';
 import { BinariesTab } from './components/BinariesTab';
+import { useLocation, useNavigate } from 'react-router';
+import { useState, useEffect, forwardRef } from 'react';
 import { DownloadsTab } from './components/DownloadsTab';
 import { DeveloperTab } from './components/DeveloperTab';
 import type { ButtonHTMLAttributes } from 'react';
@@ -23,6 +26,16 @@ const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>(({ title, isActi
 		'transition-all',
 		className
 	);
+
+	const location    = useLocation();
+	const navigate    = useNavigate();
+	const [isWorking] = useAtom(workingAtom);
+
+	useEffect(() => {
+		if (isWorking && location.pathname !== '/') {
+			navigate('/');
+		}
+	}, [isWorking]);
 
 	return (
 		<button

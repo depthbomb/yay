@@ -5,9 +5,10 @@ import logo from '~/assets/img/logo.svg';
 import { IconButton } from './IconButton';
 import { workingAtom } from '~/atoms/app';
 import { useState, useEffect } from 'react';
+import { windowPinnedAtom } from '~/atoms/app';
 import { useThrottle, useModifierKey } from '~/hooks';
 import { useLocation, useNavigate } from 'react-router';
-import { mdiCog, mdiArrowLeft, mdiFolderOpen } from '@mdi/js';
+import { mdiPin, mdiCog, mdiPinOff, mdiArrowLeft, mdiFolderOpen } from '@mdi/js';
 
 export const AppMasthead = () => {
 	const [isHome, setIsHome]               = useState(true);
@@ -16,6 +17,7 @@ export const AppMasthead = () => {
 	const openDownloadDir                   = useThrottle(window.api.openDownloadDir, 2_500);
 	const navigate                          = useNavigate();
 	const holdingAlt                        = useModifierKey('Alt');
+	const [isWindowPinned, setWindowPinned] = useAtom(windowPinnedAtom);
 	const [isWorking]                       = useAtom(workingAtom);
 
 	const headerCss = clsx(
@@ -32,6 +34,12 @@ export const AppMasthead = () => {
 		'transition-transform'
 	);
 
+	const onPinWindowButtonClicked = async () => {
+		setWindowPinned(
+			await window.api.toggleWindowPinned()
+		);
+	};
+
 	useEffect(() => {
 		setIsHome(location.pathname === '/');
 		setBackIsHovered(!isHome);
@@ -46,6 +54,11 @@ export const AppMasthead = () => {
 					<span className="w-full"></span>
 					<div className="flex space-x-0.5">
 						<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipPosition="left" onClick={() => openDownloadDir()}/>
+						<IconButton
+							icon={isWindowPinned ? mdiPinOff : mdiPin}
+							title={isWindowPinned ? 'Unpin menu' : 'Pin menu'}
+							tooltipPosition="left"
+							onClick={onPinWindowButtonClicked}/>
 						<IconButton icon={mdiCog} title="Settings" tooltipPosition="left" to="settings" disabled={isWorking}/>
 					</div>
 				</>

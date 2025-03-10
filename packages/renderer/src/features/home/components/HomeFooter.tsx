@@ -1,10 +1,7 @@
 import Icon from '@mdi/react';
-import { useAtom } from 'jotai';
 import { useEffect, useState } from 'react';
-import { windowPinnedAtom } from '~/atoms/app';
 import { KeyCombo } from '~/components/KeyCombo';
-import { IconButton } from '~/components/IconButton';
-import { mdiPin, mdiPinOff, mdiCreation } from '@mdi/js';
+import { mdiCreation } from '@mdi/js';
 import type { JSX } from 'react';
 import type { Maybe } from 'shared';
 
@@ -15,18 +12,12 @@ const hints = [
 ] as const;
 
 export const HomeFooter = () => {
-	const [isWindowPinned, setWindowPinned] = useAtom(windowPinnedAtom);
+
 	const [hint, setHint]                   = useState<Maybe<JSX.Element>>();
 
 	const displayRandomHint = () => {
 		const availableHints = hints.filter(h => h !== hint);
 		setHint(availableHints[Math.floor(Math.random() * availableHints.length)]);
-	};
-
-	const onPinWindowButtonClicked = async () => {
-		setWindowPinned(
-			await window.api.toggleWindowPinned()
-		);
 	};
 
 	useEffect(() => {
@@ -37,14 +28,9 @@ export const HomeFooter = () => {
 	}, []);
 
 	return (
-		<footer className="flex flex-row items-center text-gray-300">
+		<footer className="space-x-2 h-4 flex items-center justify-center text-gray-300">
 			<Icon path={mdiCreation} className="size-4 shrink-0 text-yellow-500"/>
-			<p className="ml-1 w-full flex items-center">{hint}</p>
-			<IconButton
-				icon={isWindowPinned ? mdiPinOff : mdiPin}
-				title={isWindowPinned ? 'Unpin menu' : 'Pin menu'}
-				tooltipPosition="left"
-				onClick={onPinWindowButtonClicked}/>
+			<p className="flex items-center">{hint}</p>
 		</footer>
 	);
 };
