@@ -27,14 +27,6 @@ export class TrayManagerModule {
 						label: 'Developer',
 						submenu: [
 							{
-								label: 'Reset settings',
-								click: () => {
-									settingsManager.reset();
-									app.relaunch();
-									app.exit(0);
-								}
-							},
-							{
 								label: 'Delete downloadable binaries',
 								click: async () => {
 									await Promise.allSettled([

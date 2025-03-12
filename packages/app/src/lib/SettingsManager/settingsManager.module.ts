@@ -1,3 +1,4 @@
+import { app } from 'electron';
 import { IpcChannel } from 'shared';
 import { SettingsReader } from './settingsReader';
 import { SettingsWriter } from './settingsWriter';
@@ -28,6 +29,14 @@ export class SettingsManagerModule {
 		ipc.registerHandler(
 			IpcChannel.SetSettingsValue,
 			async (_, key, value, secure) => await settingsManager.set(key, value, { secure })
+		);
+		ipc.registerHandler(
+			IpcChannel.ResetSettings,
+			async () => {
+				await settingsManager.reset();
+				app.relaunch();
+				app.exit(0);
+			}
 		);
 
 		eventSubscriber.subscribe('settings-updated', ({ key, value }) => windowManager.emitAll(IpcChannel.SettingsUpdated, key, value));
