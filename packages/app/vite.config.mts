@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
 		base: '',
 		assetsInclude: '**/*.node',
 		build: {
-			target: 'node20',
+			target: 'node22',
 			outDir: resolve('./dist'),
 			assetsDir: '.',
 			emptyOutDir: true,
