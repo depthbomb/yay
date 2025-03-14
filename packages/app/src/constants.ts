@@ -12,4 +12,4 @@ export const EXE_PATH           = dirname(app.getPath('exe'));
 export const RESOURCES_PATH     = join(EXE_PATH, 'resources');
 export const PRELOAD_PATH       = join(ROOT_PATH, 'preload.js');
 
-export const USER_AGENT = `yay/${product.version} (github:depthbomb/yay@${GIT_HASH})` as const;
+export const USER_AGENT = `yay/${product.version}+${GIT_HASH} (github:depthbomb/yay)` as const;
