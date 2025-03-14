@@ -40,5 +40,8 @@ export class GlobalMenuModule {
 		ipc.registerHandler(IpcChannel.EnableGlobalMenu, enableGlobalMenu);
 		ipc.registerHandler(IpcChannel.DisableGlobalMenu, disableGlobalMenu);
 		ipc.registerHandler(IpcChannel.ToggleGlobalMenu, toggleGlobalMenu);
+
+		eventSubscriber.subscribe('download-started',  () => globalMenu.setMenu(true));
+		eventSubscriber.subscribe('download-finished', () => globalMenu.setMenu(false));
 	}
 }
