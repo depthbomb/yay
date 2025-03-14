@@ -9,7 +9,7 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
 	variant?: 'normal' | 'success' | 'info' | 'warning' | 'danger';
 };
 
-const baseCss = 'flex items-center justify-center transition-colors';
+const baseCss = 'flex items-center justify-center shrink-0 transition-colors';
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ to, size, variant, className, onClick, ...props }, ref) => {
 	if (to && onClick) throw new Error('`to` and `onClick` component properties are mutually exclusive');
