@@ -8,10 +8,10 @@ export class TrayManagerModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
 		const windowManager    = moduleRegistry.get('WindowManager');
 		const eventSubscriber  = moduleRegistry.get('EventSubscriber');
-		const settingsManager  = moduleRegistry.get('SettingsManager');
 		const windowPositioner = moduleRegistry.get('WindowPositioner');
 
 		const trayTooltip          = 'Yet Another YouTube Downloader' as const;
+		const trayLogo             = getExtraResourcePath('icon-16.png');
 		const trayImage            = getExtraResourcePath('tray.ico');
 		const trayDownloadingImage = getExtraResourcePath('tray-downloading.ico');
 
@@ -20,6 +20,15 @@ export class TrayManagerModule {
 			const menu = [] as MenuItemConstructorOptions[];
 
 			tray.setToolTip(trayTooltip);
+
+			menu.push(
+				{
+					label: 'yay',
+					icon: trayLogo,
+					enabled: false,
+				},
+				{ type: 'separator' }
+			);
 
 			if (import.meta.env.DEV) {
 				menu.push(
@@ -51,14 +60,14 @@ export class TrayManagerModule {
 
 			menu.push(
 				{
-					label: 'Show yay',
+					label: 'Show',
 					click: () => tray.emit('click')
 				},
 				{
 					type: 'separator'
 				},
 				{
-					label: '&Quit',
+					label: 'Quit',
 					click: () => app.exit(0)
 				}
 			);

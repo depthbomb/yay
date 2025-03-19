@@ -59,7 +59,8 @@ const config = {
 		{ from: '../../static/extra/licenses/ffmpeg.txt', to: 'licenses/ffmpeg.txt' },
 	],
 	extraResources: [
-		{ from: '../../static/extra/tray.ico', to: 'tray.ico' },
+		{ from: '../../static/extra/icon-16.png',          to: 'icon-16.png' },
+		{ from: '../../static/extra/tray.ico',             to: 'tray.ico' },
 		{ from: '../../static/extra/tray-downloading.ico', to: 'tray-downloading.ico' },
 	],
 	win: {
