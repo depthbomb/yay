@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { forwardRef } from 'react';
+import { memo, forwardRef } from 'react';
 import { useNavigate } from 'react-router';
 import type { ButtonHTMLAttributes } from 'react';
 
@@ -11,7 +11,7 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
 
 const baseCss = 'flex items-center justify-center shrink-0 transition-colors';
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ to, size, variant, className, onClick, ...props }, ref) => {
+export const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(({ to, size, variant, className, onClick, ...props }, ref) => {
 	if (to && onClick) throw new Error('`to` and `onClick` component properties are mutually exclusive');
 	if (!to && !onClick) throw new Error('Component must have either `to` or `onClick` property');
 
@@ -44,4 +44,4 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({ to, size, va
 			type="button"
 		>{props.children}</button>
 	);
-});
+}));
