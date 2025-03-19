@@ -1,12 +1,9 @@
 import clsx from 'clsx';
-import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { Link } from 'react-router';
-import { mdiRestore } from '@mdi/js';
 import { workingAtom } from '~/atoms/app';
 import { AppTab } from './components/AppTab';
-import { Button } from '~/components/Button';
-import { BinariesTab } from './components/BinariesTab';
+import { AdvancedTab } from './components/AdvancedTab';
 import { useLocation, useNavigate } from 'react-router';
 import { useState, useEffect, forwardRef } from 'react';
 import { DownloadsTab } from './components/DownloadsTab';
@@ -15,20 +12,6 @@ import type { ButtonHTMLAttributes } from 'react';
 type TabButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 	title: string;
 	isActive: boolean;
-};
-
-const onResetSettingsButtonClicked = async () => {
-	const { response } = await window.api.showMessageBox({
-		type: 'info',
-		title: 'Reset settings',
-		message: 'Your settings will be reset to their defaults and yay will restart.\nWould you like to continue?',
-		buttons: ['Yes', 'No'],
-		defaultId: 0
-	});
-
-	if (response === 0) {
-		await window.api.resetSettings();
-	}
 };
 
 const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>(({ title, isActive, onClick, className, ...props }, ref) => {
@@ -60,6 +43,7 @@ const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>(({ title, isActi
 			onClick={onClick}
 			className={css}
 			{...props}
+			type="button"
 		>
 			{title}
 		</button>
@@ -71,10 +55,11 @@ export const SettingsPage = () => {
 
 	return (
 		<div className="h-full flex flex-col">
-			<div className="p-3 flex space-x-2">
+			<div className="p-3 space-x-2 flex items-center">
 				<TabButton onClick={() => setActiveTab(0)} isActive={activeTab === 0} title="App"/>
 				<TabButton onClick={() => setActiveTab(1)} isActive={activeTab === 1} title="Downloads"/>
-				<TabButton onClick={() => setActiveTab(2)} isActive={activeTab === 2} title="Binaries"/>
+				<TabButton onClick={() => setActiveTab(2)} isActive={activeTab === 2} title="Advanced"/>
+
 			</div>
 			<div className="p-3">
 				<div className={activeTab === 0 ? 'block' : 'hidden'}>
@@ -84,14 +69,10 @@ export const SettingsPage = () => {
 					<DownloadsTab/>
 				</div>
 				<div className={activeTab === 2 ? 'block' : 'hidden'}>
-					<BinariesTab/>
+					<AdvancedTab/>
 				</div>
 			</div>
-			<div className="mt-auto mr-3 mb-3 ml-3 flex items-center justify-between">
-				<Button variant="danger" onClick={onResetSettingsButtonClicked}>
-					<Icon path={mdiRestore} className="size-4"/>
-					<span>Reset settings</span>
-				</Button>
+			<div className="mt-auto mr-3 mb-3 ml-3 flex items-center justify-end">
 				<Link to="/dev-info" className="text-xs">Developer info</Link>
 			</div>
 		</div>
