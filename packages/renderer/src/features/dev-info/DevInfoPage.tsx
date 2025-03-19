@@ -1,3 +1,5 @@
+import Icon from '@mdi/react';
+import { mdiGithub } from '@mdi/js';
 import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
 
@@ -41,6 +43,10 @@ export const DevInfoPage = () => {
 				['Release', window.system.release()],
 				['Architecture', window.system.arch()],
 			]}/>
+			<a href="https://github.com/depthbomb/yay" target="_blank" className="space-x-0.5 flex items-center">
+				<Icon path={mdiGithub} className="size-5"/>
+				<span>GitHub</span>
+			</a>
 		</div>
 	);
 };
