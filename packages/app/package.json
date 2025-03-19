@@ -30,7 +30,7 @@
 		"@typescript-eslint/eslint-plugin": "^8.26.1",
 		"@typescript-eslint/parser": "^8.26.1",
 		"cross-env": "^7.0.3",
-		"electron": "35.0.1",
+		"electron": "35.0.2",
 		"eslint": "^9.22.0",
 		"terser": "^5.39.0",
 		"typescript": "^5.8.2",
