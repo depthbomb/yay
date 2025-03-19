@@ -10,13 +10,15 @@ export class TrayManagerModule {
 		const eventSubscriber  = moduleRegistry.get('EventSubscriber');
 		const windowPositioner = moduleRegistry.get('WindowPositioner');
 
-		const trayTooltip          = 'Yet Another YouTube Downloader' as const;
-		const trayLogo             = getExtraResourcePath('icon-16.png');
-		const trayImage            = getExtraResourcePath('tray.ico');
-		const trayDownloadingImage = getExtraResourcePath('tray-downloading.ico');
+		const trayTooltip         = 'Yet Another YouTube Downloader' as const;
+		const logoIcon            = getExtraResourcePath('tray/action-icons/logo-16.png');
+		const showIcon            = getExtraResourcePath('tray/action-icons/open-in-new.png');
+		const quitIcon            = getExtraResourcePath('tray/action-icons/close.png');
+		const trayIcon            = getExtraResourcePath('tray/tray.ico');
+		const trayDownloadingIcon = getExtraResourcePath('tray/tray-downloading.ico');
 
 		eventSubscriber.subscribe('setup-finished', () => {
-			const tray = new Tray(trayImage);
+			const tray = new Tray(trayIcon);
 			const menu = [] as MenuItemConstructorOptions[];
 
 			tray.setToolTip(trayTooltip);
@@ -24,7 +26,7 @@ export class TrayManagerModule {
 			menu.push(
 				{
 					label: 'yay',
-					icon: trayLogo,
+					icon: logoIcon,
 					enabled: false,
 				},
 				{ type: 'separator' }
@@ -61,6 +63,7 @@ export class TrayManagerModule {
 			menu.push(
 				{
 					label: 'Show',
+					icon: showIcon,
 					click: () => tray.emit('click')
 				},
 				{
@@ -68,6 +71,7 @@ export class TrayManagerModule {
 				},
 				{
 					label: 'Quit',
+					icon: quitIcon,
 					click: () => app.exit(0)
 				}
 			);
@@ -81,12 +85,12 @@ export class TrayManagerModule {
 			});
 
 			eventSubscriber.subscribe('download-started', url => {
-				tray.setImage(trayDownloadingImage);
+				tray.setImage(trayDownloadingIcon);
 				tray.setToolTip(`Downloading ${url}`);
 			});
 
 			eventSubscriber.subscribe('download-finished', () => {
-				tray.setImage(trayImage);
+				tray.setImage(trayIcon);
 				tray.setToolTip(trayTooltip);
 			});
 		});
