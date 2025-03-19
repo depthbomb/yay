@@ -1,6 +1,6 @@
 import { app } from 'electron';
 import { join, dirname } from 'node:path';
-import { product, GIT_HASH } from 'shared';
+import { product, GIT_HASH_SHORT } from 'shared';
 
 export const ROOT_PATH = __dirname;
 /**
@@ -12,4 +12,4 @@ export const EXE_PATH           = dirname(app.getPath('exe'));
 export const RESOURCES_PATH     = join(EXE_PATH, 'resources');
 export const PRELOAD_PATH       = join(ROOT_PATH, 'preload.js');
 
-export const USER_AGENT = `yay/${product.version}+${GIT_HASH} (github:depthbomb/yay)` as const;
+export const USER_AGENT = `yay/${product.version}+${GIT_HASH_SHORT} (github:depthbomb/yay)` as const;
