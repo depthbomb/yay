@@ -1,7 +1,6 @@
 {
 	"recommendations": [
 		"stylelint.vscode-stylelint",
-		"Vue.volar",
 		"dbaeumer.vscode-eslint",
 		"chouzz.vscode-innosetup",
 		"bradlc.vscode-tailwindcss"
