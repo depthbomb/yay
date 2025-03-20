@@ -11,7 +11,6 @@ Upon first run, yay will automatically download and the latest version of yt-dlp
 ## Planned features
 
 - [ ] Allow customizing yt-dlp options when downloading
-- [ ] Move yt-dlp stdout to its own window, simplifying home screen
 - [ ] Improved download completion notifying
 - [ ] Application update checking
 
