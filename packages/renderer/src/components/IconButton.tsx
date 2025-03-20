@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { forwardRef } from 'react';
 import { Tooltip } from './Tooltip';
+import { memo, forwardRef } from 'react';
 import { useNavigate } from 'react-router';
 import type { ButtonHTMLAttributes } from 'react';
 
@@ -11,7 +11,7 @@ type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
 	to?: string;
 };
 
-export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(({ title, tooltipPosition, icon, to, className, onClick, ...props }, ref) => {
+export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({ title, tooltipPosition, icon, to, className, onClick, ...props }, ref) => {
 	if (to && onClick) throw new Error('`to` and `onClick` component properties are mutually exclusive');
 	if (!to && !onClick) throw new Error('Component must have either `to` or `onClick` property');
 
@@ -39,4 +39,4 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(({ titl
 			</button>
 		</Tooltip>
 	);
-});
+}));
