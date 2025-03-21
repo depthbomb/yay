@@ -6,13 +6,12 @@ type UseSettingsOptions<T> = {
 	secure?: boolean;
 };
 
-export const useSetting = <T>(key: SettingsKey, options: UseSettingsOptions<T>) => {
-	const { defaultValue, secure } = options;
-	const [value, setValue]        = useState<T>(window.settings.getValue<T>(key, defaultValue, secure));
+export const useSetting = <T>(key: SettingsKey, options?: UseSettingsOptions<T>) => {
+	const [value, setValue] = useState<T>(window.settings.getValue<T>(key, options?.defaultValue, options?.secure));
 
 	const setSettingValue = async (newValue: T) => {
 		setValue(newValue);
-		await window.api.setSettingsValue(key, newValue, secure);
+		await window.api.setSettingsValue(key, newValue, options?.secure);
 	};
 
 	const onSettingsUpdate = (settingsKey: string, newValue: T) => {
