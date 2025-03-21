@@ -24,9 +24,10 @@ export class YtdlpManager {
 	}
 
 	public async download(url: string, audioOnly = false) {
-		const ytDlpPath    = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
-		const ffmpegPath   = getExtraFilePath('ffmpeg.exe');
-		const downloadPath = join(this.settingsManager.get(SettingsKey.DownloadDir), '%(title)s [%(id)s].%(ext)s').replaceAll(win32.sep, posix.sep);
+		const ytDlpPath            = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
+		const downloadNameTemplate = this.settingsManager.get<string>(SettingsKey.DownloadNameTemplate);
+		const ffmpegPath           = getExtraFilePath('ffmpeg.exe');
+		const downloadPath         = join(this.settingsManager.get(SettingsKey.DownloadDir), downloadNameTemplate).replaceAll(win32.sep, posix.sep);
 		const emitLog = (data: any) => {
 			const line = data.toString().trim() as string;
 			if (line.length === 0) {

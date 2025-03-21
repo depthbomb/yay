@@ -35,12 +35,16 @@ export class Setup {
 	}
 
 	private async setDefaultSettings() {
+		if (this.settingsManager.get(SettingsKey.YtdlpPath, null) === null) {
+			await this.settingsManager.set(SettingsKey.YtdlpPath, 'yt-dlp');
+		}
+
 		if (this.settingsManager.get(SettingsKey.DownloadDir, null) === null) {
 			await this.settingsManager.set(SettingsKey.DownloadDir, app.getPath('downloads'));
 		}
 
-		if (this.settingsManager.get(SettingsKey.YtdlpPath, null) === null) {
-			await this.settingsManager.set(SettingsKey.YtdlpPath, 'yt-dlp');
+		if (this.settingsManager.get(SettingsKey.DownloadNameTemplate, null) === null) {
+			await this.settingsManager.set(SettingsKey.DownloadNameTemplate, '%(title)s [%(id)s].%(ext)s');
 		}
 
 		if (this.settingsManager.get(SettingsKey.DefaultDownloadAction, null) === null) {
@@ -49,6 +53,10 @@ export class Setup {
 
 		if (this.settingsManager.get(SettingsKey.EnableGlobalMenu, null) === null) {
 			await this.settingsManager.set(SettingsKey.EnableGlobalMenu, false);
+		}
+
+		if (this.settingsManager.get(SettingsKey.NotificationSoundId, null) === null) {
+			await this.settingsManager.set(SettingsKey.NotificationSoundId, 1);
 		}
 	}
 
