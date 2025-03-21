@@ -1,6 +1,6 @@
 # yay
 
-_yay_ (**Y**et **A**nother **Y**ouTube Downloader) is an [Electron](https://www.electronjs.org/)-based GUI wrapper around [yt-dlp](https://github.com/yt-dlp/yt-dlp) for Windows that runs in the system tray.
+_yay_ (**Y**et **A**nother **Y**ouTube Downloader) is an [Electron](https://www.electronjs.org/)-based GUI wrapper around [yt-dlp](https://github.com/yt-dlp/yt-dlp) for Windows that runs in the system tray. Despite the name, yay can of course download from any site that yt-dlp supports.
 
 ## Installation
 
