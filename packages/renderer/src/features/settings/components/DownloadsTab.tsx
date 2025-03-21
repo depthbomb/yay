@@ -18,7 +18,7 @@ export const DownloadsTab = () => {
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
 
-	const onDownloadNameTemplateFieldChanged = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value.trim());
+	const onDownloadNameTemplateFieldChanged = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value);
 
 	const onNotificationSoundSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setNotificationId(Number.parseInt(event.target.value));
 
