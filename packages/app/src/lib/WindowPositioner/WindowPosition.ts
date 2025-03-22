@@ -1,7 +1,11 @@
 export const enum WindowPosition {
-	TrayCenter = 'trayCenter',
-	TopRight = 'topRight',
-	TrayBottomCenter = 'trayBottomCenter',
-	BottomLeft = 'bottomLeft',
-	BottomRight = 'bottomRight'
+	TopRight     = 'TopRight',
+	MiddleRight  = 'MiddleRight',
+	BottomRight  = 'BottomRight',
+	BottomMiddle = 'BottomMiddle',
+	BottomLeft   = 'BottomLeft',
+	MiddleLeft   = 'MiddleLeft',
+	TopLeft      = 'TopLeft',
+	MiddleTop    = 'MiddleTop',
+	Center       = 'Center'
 }

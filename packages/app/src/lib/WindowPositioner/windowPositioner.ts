@@ -1,85 +1,165 @@
-import { Positioner } from './positioner';
+import { screen, Tray } from 'electron';
 import { WindowPosition } from './WindowPosition';
-import { Tray, screen, Rectangle } from 'electron';
-import { TaskbarLocation } from './TaskbarLocation';
-import type { BrowserWindow } from 'electron';
+import type { Rectangle, BrowserWindow } from 'electron';
 
+type PositionOptions = {
+	/**
+	 * Whether to use the primary display or the display containing the mouse cursor
+	 * @default true
+	 */
+	usePrimaryDisplay?: boolean;
+	/**
+	 * Optional padding (in pixels) from the edge of the screen
+	 * @default 0
+	 */
+	padding?: number;
+}
 
 export class WindowPositioner {
-	public positionWindowAtTray(window: BrowserWindow, tray: Tray): void {
-		let windowPosition;
-		if (__WIN32__ || __LINUX__) {
-			windowPosition = this.getWindowPosition(tray);
-		}
+	public setWindowPosition(window: BrowserWindow, position: WindowPosition, options: PositionOptions = {}) {
+		const { usePrimaryDisplay = true, padding = 0 } = options;
+		const display      = this.getTargetDisplay(usePrimaryDisplay);
+		const windowBounds = window.getBounds();
+		const windowWidth  = windowBounds.width;
+		const windowHeight = windowBounds.height;
+		const workArea     = display.workArea;
 
-		const trayBounds = tray.getBounds();
-
-		let noBoundsPosition = WindowPosition.BottomRight;
-		if (trayBounds.x === 0 && windowPosition?.startsWith('tray')) {
-			noBoundsPosition = WindowPosition.TopRight;
-		}
-
-		const positioner = new Positioner(window);
-		const { x, y }   = positioner.calculate(windowPosition ?? noBoundsPosition, trayBounds);
+		const { x, y } = this.calculatePosition(
+			position,
+			workArea,
+			windowWidth,
+			windowHeight,
+			padding
+		);
 
 		window.setPosition(x, y);
 	}
 
-	public getTaskbarLocation(tray: Tray): TaskbarLocation {
-		const [screenBounds, workArea] = this.trayToScreenRects(tray);
+	public setWindowPositionAtTray(window: BrowserWindow, tray: Tray, padding: number = 0) {
+		const windowBounds = window.getBounds();
+		const trayBounds = tray.getBounds();
 
-		if (workArea.x > 0) {
-			if (__LINUX__ && workArea.y > 0) {
-				return TaskbarLocation.Top;
+		let x = 0;
+		let y = 0;
+
+		const displays = screen.getAllDisplays();
+		const trayDisplay = displays.find((display) => {
+			const displayBounds = display.bounds;
+			return (
+				trayBounds.x >= displayBounds.x &&
+				trayBounds.y >= displayBounds.y &&
+				trayBounds.x <= displayBounds.x + displayBounds.width &&
+				trayBounds.y <= displayBounds.y + displayBounds.height
+			);
+		}) || screen.getPrimaryDisplay();
+
+		const workArea = trayDisplay.workArea;
+
+		if (__WIN32__) {
+			// Windows: Position based on taskbar position
+			const taskbarIsHorizontal = workArea.height < trayDisplay.bounds.height;
+			if (taskbarIsHorizontal) {
+				// Taskbar is at top or bottom
+				if (workArea.y > 0) {
+					// Taskbar is at top
+					x = trayBounds.x + Math.floor(trayBounds.width / 2) - Math.floor(windowBounds.width / 2);
+					y = trayBounds.y + trayBounds.height + padding;
+				} else {
+					// Taskbar is at bottom
+					x = trayBounds.x + Math.floor(trayBounds.width / 2) - Math.floor(windowBounds.width / 2);
+					y = trayBounds.y - windowBounds.height - padding;
+				}
+			} else {
+				// Taskbar is at left or right
+				if (workArea.x > 0) {
+					// Taskbar is at left
+					x = trayBounds.x + trayBounds.width + padding;
+					y = trayBounds.y + Math.floor(trayBounds.height / 2) - Math.floor(windowBounds.height / 2);
+				} else {
+					// Taskbar is at right
+					x = trayBounds.x - windowBounds.width - padding;
+					y = trayBounds.y + Math.floor(trayBounds.height / 2) - Math.floor(windowBounds.height / 2);
+				}
 			}
-
-			return TaskbarLocation.Left;
+		} else if (__MACOS__) {
+			// macOS: Tray is always at the top
+			x = Math.floor(trayBounds.x + trayBounds.width / 2 - windowBounds.width / 2);
+			y = trayBounds.y + trayBounds.height + padding;
+		} else {
+			// Linux: Can vary, check where the taskbar is
+			const taskbarIsHorizontal = workArea.height < trayDisplay.bounds.height;
+			if (taskbarIsHorizontal) {
+				if (workArea.y > 0) {
+					// Taskbar is at top
+					x = trayBounds.x + Math.floor(trayBounds.width / 2) - Math.floor(windowBounds.width / 2);
+					y = trayBounds.y + trayBounds.height + padding;
+				} else {
+					// Taskbar is at bottom
+					x = trayBounds.x + Math.floor(trayBounds.width / 2) - Math.floor(windowBounds.width / 2);
+					y = trayBounds.y - windowBounds.height - padding;
+				}
+			} else {
+				if (workArea.x > 0) {
+					// Taskbar is at left
+					x = trayBounds.x + trayBounds.width + padding;
+					y = trayBounds.y + Math.floor(trayBounds.height / 2) - Math.floor(windowBounds.height / 2);
+				} else {
+					// Taskbar is at right
+					x = trayBounds.x - windowBounds.width - padding;
+					y = trayBounds.y + Math.floor(trayBounds.height / 2) - Math.floor(windowBounds.height / 2);
+				}
+			}
 		}
 
-		if (workArea.y > 0) {
-			return TaskbarLocation.Top;
-		}
+		x = Math.max(workArea.x, Math.min(x, workArea.x + workArea.width - windowBounds.width));
+		y = Math.max(workArea.y, Math.min(y, workArea.y + workArea.height - windowBounds.height));
 
-		if (workArea.width < screenBounds.width) {
-			return TaskbarLocation.Right;
-		}
-
-		return TaskbarLocation.Bottom;
+		window.setPosition(x, y);
 	}
 
-	public getWindowPosition(tray: Tray): WindowPosition {
-		let windowPosition = WindowPosition.TopRight;
-
-		if (__MACOS__) {
-			return WindowPosition.TrayCenter;
+	private getTargetDisplay(usePrimaryDisplay: boolean) {
+		if (usePrimaryDisplay) {
+			return screen.getPrimaryDisplay();
+		} else {
+			return screen.getDisplayNearestPoint(screen.getCursorScreenPoint());
 		}
-
-		if (__LINUX__ || __WIN32__) {
-			const traySide = this.getTaskbarLocation(tray);
-			if (traySide === TaskbarLocation.Top) {
-				windowPosition = __LINUX__ ? WindowPosition.TopRight : WindowPosition.TrayCenter;
-			}
-			if (traySide === TaskbarLocation.Bottom) {
-				windowPosition = __LINUX__ ? WindowPosition.BottomRight : WindowPosition.TrayBottomCenter;
-			}
-			if (traySide === TaskbarLocation.Left) {
-				windowPosition = WindowPosition.BottomLeft;
-			}
-			if (traySide === TaskbarLocation.Right) {
-				windowPosition = WindowPosition.BottomRight;
-			}
-		}
-
-		// When we really don't know, we just assume top-right
-		return windowPosition;
 	}
 
-	private trayToScreenRects(tray: Tray): [Rectangle, Rectangle] {
-		const { workArea, bounds: screenBounds } = screen.getDisplayMatching(tray.getBounds());
+	private calculatePosition(
+		position: WindowPosition,
+		workArea: Rectangle,
+		windowWidth: number,
+		windowHeight: number,
+		padding: number
+	) {
+		const left    = workArea.x + padding;
+		const right   = workArea.x + workArea.width - windowWidth - padding;
+		const top     = workArea.y + padding;
+		const bottom  = workArea.y + workArea.height - windowHeight - padding;
+		const centerX = workArea.x + Math.floor(workArea.width / 2) - Math.floor(windowWidth / 2);
+		const centerY = workArea.y + Math.floor(workArea.height / 2) - Math.floor(windowHeight / 2);
 
-		workArea.x -= screenBounds.x;
-		workArea.y -= screenBounds.y;
-
-		return [screenBounds, workArea];
+		switch (position) {
+			case WindowPosition.TopRight:
+				return { x: right, y: top };
+			case WindowPosition.MiddleRight:
+				return { x: right, y: centerY };
+			case WindowPosition.BottomRight:
+				return { x: right, y: bottom };
+			case WindowPosition.BottomMiddle:
+				return { x: centerX, y: bottom };
+			case WindowPosition.BottomLeft:
+				return { x: left, y: bottom };
+			case WindowPosition.MiddleLeft:
+				return { x: left, y: centerY };
+			case WindowPosition.TopLeft:
+				return { x: left, y: top };
+			case WindowPosition.MiddleTop:
+				return { x: centerX, y: top };
+			case WindowPosition.Center:
+				return { x: centerX, y: centerY };
+			default:
+				return { x: centerX, y: centerY }; // Default to center
+		}
 	}
 }

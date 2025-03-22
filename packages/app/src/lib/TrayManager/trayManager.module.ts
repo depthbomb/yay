@@ -6,10 +6,9 @@ import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class TrayManagerModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
-		const windowManager    = moduleRegistry.get('WindowManager');
-		const eventSubscriber  = moduleRegistry.get('EventSubscriber');
-		const windowPositioner = moduleRegistry.get('WindowPositioner');
-
+		const windowManager       = moduleRegistry.get('WindowManager');
+		const eventSubscriber     = moduleRegistry.get('EventSubscriber');
+		const windowPositioner    = moduleRegistry.get('WindowPositioner');
 		const trayTooltip         = 'Yet Another YouTube Downloader' as const;
 		const logoIcon            = getExtraResourcePath('tray/action-icons/logo-16.png');
 		const showIcon            = getExtraResourcePath('tray/action-icons/open-in-new.png');
@@ -79,7 +78,7 @@ export class TrayManagerModule {
 			tray.setContextMenu(Menu.buildFromTemplate(menu));
 			tray.on('click', () => {
 				const mainWindow = windowManager.getMainWindow()!;
-				windowPositioner.positionWindowAtTray(mainWindow, tray);
+				windowPositioner.setWindowPositionAtTray(mainWindow, tray);
 				mainWindow.show();
 				mainWindow.focus();
 			});
