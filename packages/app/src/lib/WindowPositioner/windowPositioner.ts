@@ -26,7 +26,7 @@ export class WindowPositioner {
 	}
 
 	public getTaskbarLocation(tray: Tray): TaskbarLocation {
-		const [screenBounds, workArea] = this._trayToScreenRects(tray);
+		const [screenBounds, workArea] = this.trayToScreenRects(tray);
 
 		if (workArea.x > 0) {
 			if (__LINUX__ && workArea.y > 0) {
@@ -74,7 +74,7 @@ export class WindowPositioner {
 		return windowPosition;
 	}
 
-	private _trayToScreenRects(tray: Tray): [Rectangle, Rectangle] {
+	private trayToScreenRects(tray: Tray): [Rectangle, Rectangle] {
 		const { workArea, bounds: screenBounds } = screen.getDisplayMatching(tray.getBounds());
 
 		workArea.x -= screenBounds.x;
