@@ -38,6 +38,12 @@ export class SettingsManager {
 		await this.save();
 	}
 
+	public async setDefault<T>(key: SettingsKey, value: T, options?: SettingsManagetSetOptions) {
+		if (this.get(key, null, options) === null) {
+			await this.set(key, value, options);
+		}
+	}
+
 	public async reload() {
 		this.settings = await this.settingsReader.read();
 	}
