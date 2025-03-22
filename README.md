@@ -6,7 +6,7 @@ _yay_ (**Y**et **A**nother **Y**ouTube Downloader) is an [Electron](https://www.
 
 yay can be installed by downloading and running the latest setup in [releases](https://github.com/depthbomb/yay/releases/latest).
 
-Upon first run, yay will automatically download and the latest version of yt-dlp if it isn't found in your system's PATH. It will also download and use [yt-dlp's builds of FFmpeg and FFprobe](https://github.com/yt-dlp/FFmpeg-Builds).
+Upon first run, yay will automatically download the latest version of yt-dlp if it isn't found in your system's PATH. It will also download and use [yt-dlp's builds of FFmpeg and FFprobe](https://github.com/yt-dlp/FFmpeg-Builds).
 
 ## Planned features
 
