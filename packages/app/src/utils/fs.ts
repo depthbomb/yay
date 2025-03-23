@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { mkdir, access } from 'node:fs/promises';
+import { stat, mkdir, access } from 'node:fs/promises';
 import { EXE_DIR, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
 
 /**
@@ -11,6 +11,15 @@ export async function fileExists(path: string): Promise<boolean> {
 	try {
 		await access(path);
 		return true;
+	} catch {
+		return false;
+	}
+}
+
+export async function dirExists(path: string): Promise<boolean> {
+	try {
+		const stats = await stat(path);
+		return stats.isDirectory();
 	} catch {
 		return false;
 	}
