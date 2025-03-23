@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import { mkdir, access } from 'node:fs/promises';
-import { EXE_PATH, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
+import { EXE_DIR, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
 
 /**
  * Returns `true` if the path exists, `false` otherwise.
@@ -79,7 +79,7 @@ export function getExtraFilePath(path: string) {
 	if (import.meta.env.DEV) {
 		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', path);
 	} else {
-		extraFilePath = join(EXE_PATH, path);
+		extraFilePath = join(EXE_DIR, path);
 	}
 
 	return extraFilePath;
