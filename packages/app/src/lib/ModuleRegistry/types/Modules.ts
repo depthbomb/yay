@@ -7,10 +7,11 @@ import type { AutoStart } from '~/lib/AutoStart';
 import type { ThemeManager } from '~/lib/ThemeManager';
 import type { YtdlpManager } from '~/lib/YtdlpManager';
 import type { WindowManager } from '~/lib/WindowManager';
+import type { Notifications } from '~/lib/Notifications';
 import type { EventSubscriber } from '~/lib/EventSubscriber';
 import type { SettingsManager } from '~/lib/SettingsManager';
-import type { Events, EventEmitter } from '~/lib/EventEmitter';
 import type { WindowPositioner } from '~/lib/WindowPositioner';
+import type { Events, EventEmitter } from '~/lib/EventEmitter';
 import type { HttpClientManager } from '~/lib/HttpClientManager';
 
 export type Modules = {
@@ -23,6 +24,7 @@ export type Modules = {
 	Github: Github;
 	HttpClientManager: HttpClientManager;
 	Ipc: Ipc;
+	Notifications: Notifications;
 	SettingsManager: SettingsManager;
 	ThemeManager: ThemeManager;
 	WindowManager: WindowManager;

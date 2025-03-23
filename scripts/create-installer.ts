@@ -10,6 +10,8 @@ const definitions: { [key: string]: string } = {
 	ExeBasename: product.applicationName,
 	AppMutex: product.mutexName,
 	AppId: product.appId,
+	AppUserModelId: product.appUserModelId,
+	AppUserModelToastActivatorClsid: product.clsid,
 	RepoURL: product.repoURL,
 };
 const productKeys = Object.keys(definitions);

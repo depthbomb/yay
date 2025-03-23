@@ -1,28 +1,19 @@
-import clsx from 'clsx';
-import Icon from '@mdi/react';
+import { useSetting } from '~/hooks';
 import { SettingsKey } from 'shared';
-import { mdiVolumeHigh } from '@mdi/js';
-import { useState, useEffect } from 'react';
 import { KeyCombo } from '~/components/KeyCombo';
-import { useSetting, useThrottle } from '~/hooks';
 import { Select, TextInput } from '~/components/input';
+import { ToggleButton } from '~/components/ToggleButton';
 import type { ChangeEvent } from 'react';
 
 export const DownloadsTab = () => {
 	const [downloadDir]                                     = useSetting<string>(SettingsKey.DownloadDir);
 	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(SettingsKey.DownloadNameTemplate);
 	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(SettingsKey.DefaultDownloadAction);
-	const [notificationId, setNotificationId]               = useSetting<number>(SettingsKey.NotificationSoundId);
-	const [testSoundEnabled, setTestSoundEnabled]           = useState(true);
-	const playNotificationSound                             = useThrottle(window.api.playNotificationSound, 1_000);
+	const [enableNotifications, setEnableNotifications]     = useSetting(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true });
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
 
 	const onDownloadNameTemplateFieldChanged = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value);
-
-	const onNotificationSoundSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setNotificationId(Number.parseInt(event.target.value));
-
-	useEffect(() => setTestSoundEnabled(notificationId > 0), [notificationId]);
 
 	return (
 		<div className="flex flex-col space-y-6">
@@ -44,31 +35,8 @@ export const DownloadsTab = () => {
 				</Select>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Download completion sound</p>
-				<div className="space-x-3 flex items-center">
-					<Select value={notificationId} onChange={onNotificationSoundSelectionChanged} size="small">
-						<option value="0">Disabled</option>
-						<option value="1">1</option>
-						<option value="2">2</option>
-						<option value="3">3</option>
-					</Select>
-					<button
-						className={
-							clsx(
-								'space-x-1 flex items-center text-xs cursor-pointer',
-								{
-									'text-brand-600 hover:text-brand-500 active:text-brand-700': testSoundEnabled,
-									'text-gray-300 cursor-not-allowed!': !testSoundEnabled,
-								}
-							)
-						}
-						onClick={() => testSoundEnabled && playNotificationSound()}
-						disabled={!testSoundEnabled}
-						type="button">
-						<Icon path={mdiVolumeHigh} className="shrink-0 size-4"/>
-						<span className="shrink-0">Listen</span>
-					</button>
-				</div>
+				<p>Completion toast notification</p>
+				<ToggleButton enabled={enableNotifications} onClick={() => setEnableNotifications(!enableNotifications)}/>
 			</div>
 		</div>
 	);

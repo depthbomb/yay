@@ -2555,7 +2555,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:35.0.3, electron@npm:^35.0.3":
+"electron@npm:35.0.3":
   version: 35.0.3
   resolution: "electron@npm:35.0.3"
   dependencies:
@@ -5400,7 +5400,7 @@ __metadata:
   resolution: "shared@workspace:packages/shared"
   dependencies:
     "@swc/core": "npm:1.11.11"
-    electron: "npm:^35.0.3"
+    electron: "npm:35.0.3"
     tslib: "npm:^2.8.1"
     tsup: "npm:^8.4.0"
     typescript: "npm:^5.8.2"

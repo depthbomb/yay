@@ -1,23 +1,32 @@
 import kill from 'tree-kill';
-import { dialog } from 'electron';
+import { app, dialog } from 'electron';
 import { spawn } from 'node:child_process';
 import { join, posix, win32 } from 'node:path';
 import { IpcChannel, SettingsKey } from 'shared';
-import { parseCalVer, getExtraFilePath } from '~/utils';
+import { NotificationBuilder } from '~/lib/Notifications';
+import { getExtraFilePath, getExtraResourcePath } from '~/utils';
 import type { Nullable } from 'shared';
 import type { ChildProcess } from 'node:child_process';
 import type { EventEmitter } from '~/lib/EventEmitter';
 import type { WindowManager } from '~/lib/WindowManager';
+import type { Notifications } from '~/lib/Notifications';
 import type { SettingsManager } from '~/lib/SettingsManager';
+import type { ThumbnailDownloader } from './thumbnailDownloader';
 
 export class YtdlpManager {
 	private proc: Nullable<ChildProcess> = null;
 
+	private readonly youtubeUrlPattern: RegExp;
+
 	public constructor(
 		private readonly eventEmitter: EventEmitter,
 		private readonly settingsManager: SettingsManager,
-		private readonly windowManager: WindowManager
-	) {}
+		private readonly windowManager: WindowManager,
+		private readonly notifications: Notifications,
+		private readonly thumbnailDownloader: ThumbnailDownloader,
+	) {
+		this.youtubeUrlPattern   = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+	}
 
 	public get isBusy() {
 		return this.proc !== null;
@@ -26,8 +35,11 @@ export class YtdlpManager {
 	public async download(url: string, audioOnly = false) {
 		const ytDlpPath            = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
 		const downloadNameTemplate = this.settingsManager.get<string>(SettingsKey.DownloadNameTemplate);
+		const downloadDir          = this.settingsManager.get<string>(SettingsKey.DownloadDir);
+		const showNotification     = this.settingsManager.get<boolean>(SettingsKey.EnableDownloadCompletionToast);
 		const ffmpegPath           = getExtraFilePath('ffmpeg.exe');
-		const downloadPath         = join(this.settingsManager.get(SettingsKey.DownloadDir), downloadNameTemplate).replaceAll(win32.sep, posix.sep);
+		const downloadPath         = join(downloadDir, downloadNameTemplate).replaceAll(win32.sep, posix.sep);
+
 		const emitLog = (data: any) => {
 			const line = data.toString().trim() as string;
 			if (line.length === 0) {
@@ -40,6 +52,15 @@ export class YtdlpManager {
 		this.windowManager.emitMain(IpcChannel.DownloadStarted, url);
 		this.eventEmitter.emit('download-started', url);
 
+		let notificationImage          = getExtraResourcePath('notifications/logo.png');
+		let notificationImagePlacement = 'appLogoOverride';
+
+		const youtubeMatch = url.match(this.youtubeUrlPattern);
+		if (youtubeMatch) {
+			notificationImagePlacement = 'hero';
+			notificationImage          = await this.thumbnailDownloader.downloadThumbnail(youtubeMatch[1]);
+		}
+
 		if (audioOnly) {
 			this.proc = spawn(ytDlpPath, ['-x', '--audio-format', 'mp3', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath]);
 		} else {
@@ -48,12 +69,13 @@ export class YtdlpManager {
 
 		this.proc.stdout!.on('data', emitLog);
 		this.proc.stderr!.on('data', emitLog);
+
 		this.proc.once('close', code => {
 			this.windowManager.emitMain(IpcChannel.DownloadFinished, code);
 			this.eventEmitter.emit('download-finished');
 
-			if (this.settingsManager.get(SettingsKey.NotificationSoundId, 1) > 0) {
-				this.windowManager.emitMain(IpcChannel.PlayNotificationSound);
+			if (showNotification) {
+				this.showCompletionNotification(downloadDir, notificationImage, notificationImagePlacement);
 			}
 
 			this.cleanupProcess();
@@ -102,18 +124,14 @@ export class YtdlpManager {
 		}
 	}
 
-	private isNewerCalVer(version1: string, version2: string): boolean {
-		const [year1, month1, day1] = parseCalVer(version1);
-		const [year2, month2, day2] = parseCalVer(version2);
-
-		if (year1 !== year2) {
-			return year1 > year2;
-		}
-
-		if (month1 !== month2) {
-			return month1 > month2;
-		}
-
-		return day1 > day2;
+	private showCompletionNotification(downloadDir: string, image: string, imagePlacement = 'appLogoOverride') {
+		this.notifications.showNotification(
+			new NotificationBuilder()
+				.setTitle('Yet Another YouTube Downloader')
+				.addText('Operation Finished!')
+				.setImage(image, imagePlacement)
+				.setAudio('ms-winsoundevent:Notification.IM')
+				.addAction('Open Folder', `file:///${downloadDir}`, 'protocol')
+		);
 	}
 }

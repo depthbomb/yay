@@ -1,14 +1,23 @@
 import { YtdlpManager } from './ytdlpManager';
 import { IpcChannel, SettingsKey } from 'shared';
 import type { ModuleRegistry } from '~/lib/ModuleRegistry';
+import { ThumbnailDownloader } from './thumbnailDownloader';
 
 export class YtdlpManagerModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
-		const ipc             = moduleRegistry.get('Ipc');
-		const eventEmitter    = moduleRegistry.get('EventEmitter');
-		const settingsManager = moduleRegistry.get('SettingsManager');
-		const windowManager   = moduleRegistry.get('WindowManager');
-		const ytdlpManager    = new YtdlpManager(eventEmitter, settingsManager, windowManager);
+		const ipc                 = moduleRegistry.get('Ipc');
+		const eventEmitter        = moduleRegistry.get('EventEmitter');
+		const settingsManager     = moduleRegistry.get('SettingsManager');
+		const windowManager       = moduleRegistry.get('WindowManager');
+		const notifications       = moduleRegistry.get('Notifications');
+		const thumbnailDownloader = new ThumbnailDownloader(moduleRegistry.get('HttpClientManager'));
+		const ytdlpManager = new YtdlpManager(
+			eventEmitter,
+			settingsManager,
+			windowManager,
+			notifications,
+			thumbnailDownloader
+		);
 
 		moduleRegistry.register('YtdlpManager', ytdlpManager);
 

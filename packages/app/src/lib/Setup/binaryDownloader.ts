@@ -70,8 +70,6 @@ export class BinaryDownloader {
 				'ffprobe.exe',
 			]);
 
-			extraction.stdout.on('data', data => console.log(data.toString()));
-			extraction.stderr.on('data', data => console.log(data.toString()));
 			extraction.on('error', err => console.error(err));
 			extraction.on('close', async code => {
 				onCleaningUp?.();

@@ -18,8 +18,8 @@ OutputDir=..\build\release
 OutputBaseFilename={#ExeBasename}-setup
 SetupMutex={#AppMutex}setup
 SetupIconFile=..\static\icon.ico
-Compression=lzma/ultra64
-; Compression=none
+; Compression=lzma/ultra64
+Compression=none
 SolidCompression=yes
 ArchitecturesAllowed=x64compatible
 MinVersion=10.0
@@ -36,7 +36,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "..\build\win-unpacked\*"; Excludes: "LICENSE.electron.txt,LICENSES.chromium.html"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"
+Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; AppUserModelID: "{#AppUserModelId}"; AppUserModelToastActivatorCLSID: "{#AppUserModelToastActivatorClsid}"
 Name: "{autodesktop}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; Tasks: desktopicon
 
 [Run]

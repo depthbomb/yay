@@ -40,7 +40,7 @@ export class Setup {
 		await this.settingsManager.setDefault(SettingsKey.DownloadNameTemplate, '%(title)s [%(id)s].%(ext)s');
 		await this.settingsManager.setDefault(SettingsKey.DefaultDownloadAction, 'video');
 		await this.settingsManager.setDefault(SettingsKey.EnableGlobalMenu, false);
-		await this.settingsManager.setDefault(SettingsKey.NotificationSoundId, 1);
+		await this.settingsManager.setDefault(SettingsKey.EnableDownloadCompletionToast, true);
 	}
 
 	private async checkForBinaries() {

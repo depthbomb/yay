@@ -1,6 +1,9 @@
 import { join } from 'node:path';
 import { product } from 'shared';
-import { app, Menu } from 'electron';
+import { fileExists } from './utils';
+import { mkdir } from 'node:fs/promises';
+import { app, Menu, shell } from 'electron';
+import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
 app.setPath('userData', join(app.getPath('appData'), product.author, product.dirName));
 
@@ -13,6 +16,34 @@ Menu.setApplicationMenu(null);
 app.whenReady().then(async () => {
 	if (__WIN32__) {
 		app.setAppUserModelId(product.appUserModelId);
+
+		/**
+		 * This code ensures that a shortcut exists in the start menu so that we can properly test
+		 * toast notifications. The code is only called during development because the installation
+		 * step takes care of the shortcut for us in production.
+		 */
+		if (import.meta.env.DEV) {
+			const shortcutDir = join(
+				app.getPath('appData'),
+				'Microsoft',
+				'Windows',
+				'Start Menu',
+				'Programs',
+				product.author
+			);
+			const shortcutPath = join(shortcutDir, 'yay.lnk');
+			const shortcutExists = await fileExists(shortcutPath);
+			if (!shortcutExists) {
+				await mkdir(shortcutDir, { recursive: true });
+
+				shell.writeShortcutLink(shortcutPath, {
+					target: EXE_PATH,
+					args: `${join(MONOREPO_ROOT_PATH, 'packages', 'app')}`,
+					appUserModelId: product.appUserModelId,
+					toastActivatorClsid: product.clsid
+				});
+			}
+		}
 	}
 
 	const lib            = await import('~/lib');
@@ -20,6 +51,7 @@ app.whenReady().then(async () => {
 
 	lib.CliModule.bootstrap(moduleRegistry);
 	lib.IpcModule.bootstrap(moduleRegistry);
+	lib.NotificationsModule.bootstrap(moduleRegistry);
 	lib.WindowManagerModule.bootstrap(moduleRegistry);
 	lib.AutoStartModule.bootstrap(moduleRegistry);
 	lib.EventEmitterModule.bootstrap(moduleRegistry);

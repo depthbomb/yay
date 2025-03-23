@@ -9,6 +9,7 @@ export * from './HttpClientManager';
 export * from './Ipc';
 export * from './MainWindow';
 export * from './ModuleRegistry';
+export * from './Notifications';
 export * from './SettingsManager';
 export * from './Setup';
 export * from './ThemeManager';

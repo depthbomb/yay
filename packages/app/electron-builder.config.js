@@ -59,6 +59,8 @@ const config = {
 		{ from: '../../static/extra/licenses/ffmpeg.txt', to: 'licenses/ffmpeg.txt' },
 	],
 	extraResources: [
+		{ from: '../../static/extra/notifications/logo.png', to: 'notifications/logo.png' },
+		//
 		{ from: '../../static/extra/tray/action-icons/close.png',       to: 'tray/action-icons/close.png' },
 		{ from: '../../static/extra/tray/action-icons/folder-open.png', to: 'tray/action-icons/folder-open.png' },
 		{ from: '../../static/extra/tray/action-icons/logo-16.png',     to: 'tray/action-icons/logo-16.png' },
