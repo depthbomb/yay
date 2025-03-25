@@ -29,7 +29,7 @@ export class ThumbnailDownloader {
 			await mkdir(this.cacheDir, { recursive: true });
 		}
 
-		const res = await this.http.get(`https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`);
+		const res = await this.http.get(`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`);
 		const fs  = createWriteStream(thumbnailPath);
 		await finished(Readable.fromWeb(res.body!).pipe(fs));
 
