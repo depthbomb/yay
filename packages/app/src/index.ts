@@ -1,8 +1,8 @@
 import { join } from 'node:path';
 import { product } from 'shared';
 import { fileExists } from './utils';
-import { mkdir } from 'node:fs/promises';
 import { app, Menu, shell } from 'electron';
+import { mkdir, readFile, unlink } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
 app.setPath('userData', join(app.getPath('appData'), product.author, product.dirName));
@@ -43,6 +43,13 @@ app.whenReady().then(async () => {
 					toastActivatorClsid: product.clsid
 				});
 			}
+
+			app.once('quit', async () => {
+				const shortcutContents = await readFile(shortcutPath, 'utf8');
+				if (shortcutContents.includes('electron.exe')) {
+					await unlink(shortcutPath);
+				}
+			});
 		}
 	}
 
