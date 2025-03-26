@@ -18,7 +18,7 @@ export class ThumbnailDownloader {
 	}
 
 	public async downloadThumbnail(videoId: string): Promise<string> {
-		const thumbnailPath   = join(app.getPath('userData'), 'thumbnail_cache', `${videoId}.jpg`);
+		const thumbnailPath   = join(this.cacheDir, `${videoId}.jpg`);
 		const thumbnailExists = await fileExists(thumbnailPath);
 		if (thumbnailExists) {
 			return thumbnailPath;

@@ -102,7 +102,7 @@ export class ThemeManager {
 	private getThemeClasses() {
 		return this.systemColorKeys.map(k => {
 			try {
-				return `:root,html,body {--os-accent: #${systemPreferences.getAccentColor()};--os-${k}: ${systemPreferences.getColor(k)} };`;
+				return `:root,html,body {--os-accent: #${systemPreferences.getAccentColor()};--os-${k}: ${systemPreferences.getColor(k)}};`;
 			} catch {
 				return '';
 			}
