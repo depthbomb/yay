@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
 				input: {
 					index: resolve('./src/index.html'),
 					setup: resolve('./src/setup.html'),
+					updater: resolve('./src/updater.html'),
 				},
 				output: {
 					entryFileNames: '[hash].js',

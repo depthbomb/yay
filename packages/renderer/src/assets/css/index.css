@@ -39,11 +39,11 @@ body {
 	@apply bg-transparent;
 }
 
-button {
-	@apply cursor-pointer;
-}
-
 a {
 	@apply text-brand-500 hover:text-brand-600 active:text-brand-700;
 	@apply transition-colors;
+}
+
+button {
+	@apply cursor-pointer;
 }

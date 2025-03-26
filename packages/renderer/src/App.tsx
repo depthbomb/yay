@@ -10,7 +10,7 @@ import { clearLogAtom, pushToLogAtom } from './atoms/log';
 import { Route, Routes, MemoryRouter } from 'react-router';
 import { DevInfoPage } from './features/dev-info/DevInfoPage';
 import { SettingsPage } from './features/settings/SettingsPage';
-import { urlAtom, workingAtom, updatingAtom, resetAppAtom } from './atoms/app';
+import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom } from './atoms/app';
 
 export const App = () => {
 	const [showWindowFrame]           = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
@@ -20,12 +20,14 @@ export const App = () => {
 	const [,setUrl]                   = useAtom(urlAtom);
 	const [isWorking, setIsWorking]   = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
+	const [,setUpdateAvailable]       = useAtom(updateAvailableAtom);
 	const [onDownloadStarted]         = useIpc(IpcChannel.DownloadStarted);
 	const [onDownloadOutput]          = useIpc(IpcChannel.DownloadOutput);
 	const [onDownloadFinished]        = useIpc(IpcChannel.DownloadFinished);
 	const [onDownloadCanceled]        = useIpc(IpcChannel.DownloadCanceled);
 	const [onUpdatingYtdlpBinary]     = useIpc(IpcChannel.UpdatingYtdlpBinary);
 	const [onUpdatedYtdlpBinary]      = useIpc(IpcChannel.UpdatedYtdlpBinary);
+	const [onUpdateAvailable]         = useIpc(IpcChannel.UpdateAvailable);
 
 	const accentCss = clsx(
 		'absolute -z-10',
@@ -51,10 +53,9 @@ export const App = () => {
 		});
 
 		onDownloadCanceled(() => pushToLog('OPERATION CANCELED'));
-
 		onUpdatingYtdlpBinary(() => setIsUpdating(true));
-
 		onUpdatedYtdlpBinary(() => setIsUpdating(false));
+		onUpdateAvailable(() => setUpdateAvailable(true));
 	}, []);
 
 	return (

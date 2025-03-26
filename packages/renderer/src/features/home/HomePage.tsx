@@ -1,13 +1,16 @@
 import clsx from 'clsx';
+import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
+import { mdiUpdate } from '@mdi/js';
 import { useRef, useEffect } from 'react';
+import { Button } from '~/components/Button';
 import { TextInput } from '~/components/input';
 import { useSetting, useKeyCombo } from '~/hooks';
 import { logAtom, shiftLogAtom } from '~/atoms/log';
 import { HomeFooter } from './components/HomeFooter';
 import { SettingsKey, isValidHttpUrl } from 'shared';
 import { DownloadButtons } from './components/DownloadButtons';
-import { urlAtom, workingAtom, updatingAtom, isUrlValidAtom } from '~/atoms/app';
+import { urlAtom, workingAtom, updatingAtom, isUrlValidAtom, updateAvailableAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };
@@ -23,22 +26,23 @@ const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 		}
 	);
 	return (
-		<li className={css} {...props}>
+		<p className={css} {...props}>
 			<span>{line}</span>
-		</li>
+		</p>
 	);
 };
 
 export const HomePage = () => {
-	const [url, setUrl] = useAtom(urlAtom);
-	const [isValidUrl]  = useAtom(isUrlValidAtom);
-	const [isWorking]   = useAtom(workingAtom);
-	const [isUpdating]  = useAtom(updatingAtom);
-	const [logs]        = useAtom(logAtom);
-	const [,shiftLog]   = useAtom(shiftLogAtom);
+	const [url, setUrl]     = useAtom(urlAtom);
+	const [isValidUrl]      = useAtom(isUrlValidAtom);
+	const [isWorking]       = useAtom(workingAtom);
+	const [isUpdating]      = useAtom(updatingAtom);
+	const [logs]            = useAtom(logAtom);
+	const [,shiftLog]       = useAtom(shiftLogAtom);
+	const [updateAvailable] = useAtom(updateAvailableAtom);
 
 	const mediaUrlEl  = useRef<HTMLInputElement>(null);
-	const logOutputEl = useRef<HTMLUListElement>(null);
+	const logOutputEl = useRef<HTMLDivElement>(null);
 
 	const [showHintFooter] = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
 
@@ -93,13 +97,18 @@ export const HomePage = () => {
 				disabled={!isValidUrl || isUpdating}
 			/>
 			<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
-				<ul ref={logOutputEl} className="h-full overflow-y-auto [scrollbar-width:thin]">
+				<div ref={logOutputEl} className="h-full overflow-y-auto [scrollbar-width:thin]">
 					{logs.map((line, i) => (
 						<LogLine key={i} line={line}/>
 					))}
-				</ul>
+				</div>
 			</div>
-			{showHintFooter && <HomeFooter/>}
+			{updateAvailable ? (
+				<Button onClick={() => window.api.showUpdaterWindow()} variant="info">
+					<Icon path={mdiUpdate} className="size-3"/>
+					<span>A new version of yay is available</span>
+				</Button>
+			) : (showHintFooter && <HomeFooter/>)}
 		</div>
 	);
 };

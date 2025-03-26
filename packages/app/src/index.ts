@@ -73,6 +73,7 @@ app.whenReady().then(async () => {
 	lib.TrayManagerModule.bootstrap(moduleRegistry);
 
 	await lib.MainWindowModule.bootstrap(moduleRegistry);
-	await lib.ThemeManagerModule.bootstrap(moduleRegistry);
 	await lib.SetupModule.bootstrap(moduleRegistry);
+	await lib.UpdaterModule.bootstrap(moduleRegistry);
+	await lib.ThemeManagerModule.bootstrap(moduleRegistry);
 });

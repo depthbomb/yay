@@ -144,6 +144,19 @@ const coreApi = {
 	toggleGlobalMenu() {
 		return ipcRenderer.invoke(IpcChannel.ToggleGlobalMenu);
 	},
+	//
+	showUpdaterWindow() {
+		return ipcRenderer.invoke(IpcChannel.ShowUpdaterWindow);
+	},
+	getLatestRelease() {
+		return ipcRenderer.invoke(IpcChannel.GetLatestRelease);
+	},
+	startUpdate() {
+		return ipcRenderer.invoke(IpcChannel.StartUpdate);
+	},
+	cancelUpdate() {
+		return ipcRenderer.invoke(IpcChannel.CancelUpdate);
+	},
 } satisfies CoreApi;
 
 const systemApi = { arch, type, release, platform, hostname } satisfies SystemApi;

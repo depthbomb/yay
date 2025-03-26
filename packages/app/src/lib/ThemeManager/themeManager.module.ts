@@ -7,8 +7,6 @@ export class ThemeManagerModule {
 		const windowManager = moduleRegistry.get('WindowManager');
 		const themeManager  = new ThemeManager(windowManager);
 
-		moduleRegistry.register('ThemeManager', themeManager);
-
 		systemPreferences.on('accent-color-changed', async () => {
 			await themeManager.removeInjectedThemeCSS();
 			await themeManager.injectThemeCSS();

@@ -2,6 +2,9 @@ import { app } from 'electron';
 import { join, dirname } from 'node:path';
 import { product, GIT_HASH_SHORT } from 'shared';
 
+export const REPO_OWNER = 'depthbomb' as const;
+export const REPO_NAME  = 'yay' as const;
+
 export const ROOT_PATH = __dirname;
 /**
  * This constant is for development use only. **DO NOT** use it or any other constant that uses it

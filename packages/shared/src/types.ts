@@ -47,6 +47,11 @@ export type CoreApi = {
 	enableGlobalMenu(): Promise<void>;
 	disableGlobalMenu(): Promise<void>;
 	toggleGlobalMenu(): Promise<boolean>;
+	//
+	showUpdaterWindow(): Promise<void>;
+	getLatestRelease(): Promise<{html_url: string; tag_name: string; created_at: string; body: string}>;
+	startUpdate(): Promise<void>;
+	cancelUpdate(): Promise<void>;
 };
 
 export type SystemApi = {

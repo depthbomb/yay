@@ -1,7 +1,7 @@
 import Icon from '@mdi/react';
+import { mdiCreation } from '@mdi/js';
 import { useEffect, useState } from 'react';
 import { KeyCombo } from '~/components/KeyCombo';
-import { mdiCreation } from '@mdi/js';
 import type { JSX } from 'react';
 import type { Maybe } from 'shared';
 
@@ -12,8 +12,7 @@ const hints = [
 ] as const;
 
 export const HomeFooter = () => {
-
-	const [hint, setHint]                   = useState<Maybe<JSX.Element>>();
+	const [hint, setHint] = useState<Maybe<JSX.Element>>();
 
 	const displayRandomHint = () => {
 		const availableHints = hints.filter(h => h !== hint);

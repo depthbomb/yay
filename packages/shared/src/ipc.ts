@@ -42,6 +42,14 @@ export enum IpcChannel {
 	EnableGlobalMenu     = 'EnableGlobalMenu',
 	DisableGlobalMenu    = 'DisableGlobalMenu',
 	ToggleGlobalMenu     = 'ToggleGlobalMenu',
+	// Updater channels
+	UpdateAvailable   = 'updater:update-available',
+	ShowUpdaterWindow = 'updater:show-updater-window',
+	GetLatestRelease  = 'updater:get-latest-release',
+	StartUpdate       = 'updater:start-update',
+	UpdateStep        = 'updater:update-step',
+	CancelUpdate      = 'updater:cancel-update',
+	UpdateComplete    = 'updater:update-complete',
 }
 
 export const IpcChannels = Object.values(IpcChannel);

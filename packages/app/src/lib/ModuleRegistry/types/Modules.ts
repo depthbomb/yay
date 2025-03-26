@@ -3,8 +3,8 @@ import type { Ipc } from '~/lib/Ipc';
 import type { Flags } from '~/lib/Cli';
 import type { typeFlag } from 'type-flag';
 import type { Github } from '~/lib/Github';
+import type { Updater } from '~/lib/Updater';
 import type { AutoStart } from '~/lib/AutoStart';
-import type { ThemeManager } from '~/lib/ThemeManager';
 import type { YtdlpManager } from '~/lib/YtdlpManager';
 import type { WindowManager } from '~/lib/WindowManager';
 import type { Notifications } from '~/lib/Notifications';
@@ -26,7 +26,7 @@ export type Modules = {
 	Ipc: Ipc;
 	Notifications: Notifications;
 	SettingsManager: SettingsManager;
-	ThemeManager: ThemeManager;
+	Updater: Updater;
 	WindowManager: WindowManager;
 	WindowPositioner: WindowPositioner;
 	YtdlpManager: YtdlpManager;

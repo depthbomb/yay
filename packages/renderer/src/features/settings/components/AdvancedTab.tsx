@@ -1,5 +1,5 @@
 import Icon from '@mdi/react';
-import { Button } from '~/components/Button';
+import { PushButton } from '~/components/PushButton';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
 const onRecheckBinariesButtonClicked = async () => {
@@ -33,18 +33,18 @@ const onResetSettingsButtonClicked = async () => {
 export const AdvancedTab = () => {
 	return (
 		<div className="flex flex-col items-start space-y-1.5">
-			<Button onClick={onRecheckBinariesButtonClicked}>
+			<PushButton onClick={onRecheckBinariesButtonClicked}>
 				<Icon path={mdiDownload} className="size-3"/>
 				<span>Recheck required binaries</span>
-			</Button>
-			<Button onClick={() => window.api.updateYtdlpBinary()}>
+			</PushButton>
+			<PushButton onClick={() => window.api.updateYtdlpBinary()}>
 				<Icon path={mdiUpdate} className="size-3"/>
 				<span>Update yt-dlp</span>
-			</Button>
-			<Button variant="danger" onClick={onResetSettingsButtonClicked}>
+			</PushButton>
+			<PushButton variant="danger" onClick={onResetSettingsButtonClicked}>
 				<Icon path={mdiRestore} className="size-4"/>
 				<span>Reset settings</span>
-			</Button>
+			</PushButton>
 		</div>
 	);
 };

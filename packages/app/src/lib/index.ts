@@ -14,6 +14,7 @@ export * from './SettingsManager';
 export * from './Setup';
 export * from './ThemeManager';
 export * from './TrayManager';
+export * from './Updater';
 export * from './WindowManager';
 export * from './WindowPositioner';
 export * from './YtdlpManager';
