@@ -18,9 +18,9 @@ export class UpdaterModule {
 
 		app.once('quit', () => clearInterval(updateCheck));
 
-		ipc.registerHandler(IpcChannel.ShowUpdaterWindow, () => updater.showUpdaterWindow());
-		ipc.registerHandler(IpcChannel.GetLatestRelease,  () => updater.latestRelease);
-		ipc.registerHandler(IpcChannel.StartUpdate,       async () => await updater.startUpdate());
-		ipc.registerHandler(IpcChannel.CancelUpdate,      () => updater.cancelUpdate());
+		ipc.registerHandler(IpcChannel.Updater_ShowWindow,       () => updater.showUpdaterWindow());
+		ipc.registerHandler(IpcChannel.Updater_GetLatestRelease, () => updater.latestRelease);
+		ipc.registerHandler(IpcChannel.Updater_Update,           async () => await updater.startUpdate());
+		ipc.registerHandler(IpcChannel.Updater_Cancel,           () => updater.cancelUpdate());
 	}
 }

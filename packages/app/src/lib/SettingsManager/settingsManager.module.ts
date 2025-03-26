@@ -19,19 +19,19 @@ export class SettingsManagerModule {
 		moduleRegistry.register('SettingsManager', settingsManager);
 
 		ipc.registerSyncHandler(
-			IpcChannel.GetSettingsValue,
+			IpcChannel.Settings_Get,
 			(e, key, defaultValue, secure) => e.returnValue = settingsManager.get(key, defaultValue, { secure })
 		);
 		ipc.registerHandler(
-			IpcChannel.GetSettingsValue,
+			IpcChannel.Settings_Get,
 			(_, key, defaultValue, secure) => settingsManager.get(key, defaultValue, { secure })
 		);
 		ipc.registerHandler(
-			IpcChannel.SetSettingsValue,
+			IpcChannel.Settings_Set,
 			async (_, key, value, secure) => await settingsManager.set(key, value, { secure })
 		);
 		ipc.registerHandler(
-			IpcChannel.ResetSettings,
+			IpcChannel.Settings_Reset,
 			async () => {
 				await settingsManager.reset();
 				app.relaunch();
@@ -39,6 +39,6 @@ export class SettingsManagerModule {
 			}
 		);
 
-		eventSubscriber.subscribe('settings-updated', ({ key, value }) => windowManager.emitAll(IpcChannel.SettingsUpdated, key, value));
+		eventSubscriber.subscribe('settings-updated', ({ key, value }) => windowManager.emitAll(IpcChannel.Settings_Changed, key, value));
 	}
 }

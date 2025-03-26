@@ -20,7 +20,7 @@ export class SetupModule {
 			binaryDownloader,
 		);
 
-		ipc.registerOnceHandler(IpcChannel.CancelSetup, () => setup.cancel());
+		ipc.registerOnceHandler(IpcChannel.Setup_Cancel, () => setup.cancel());
 
 		await setup.performSetup();
 	}

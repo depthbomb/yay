@@ -16,13 +16,13 @@ export type IpcApi = {
 };
 
 export type CoreApi = {
+	showMessageBox(options: MessageBoxOptions): Promise<MessageBoxReturnValue>;
+	//
 	minimizeWindow(windowName: string): Promise<void>;
-	playNotificationSound(): Promise<void>;
 	showInputRightClickMenu(): Promise<void>;
 	openDownloadDir(): Promise<void>;
 	openDownloadDirPicker(): Promise<void>;
 	toggleWindowPinned(): Promise<boolean>;
-	showMessageBox(options: MessageBoxOptions): Promise<MessageBoxReturnValue>;
 	//
 	cancelSetup(): Promise<void>;
 	//
@@ -35,7 +35,6 @@ export type CoreApi = {
 	downloadDefault(url: string): Promise<void>;
 	cancelDownload(): Promise<void>;
 	recheckBinaries(): Promise<void>;
-	checkForYtdlpUpdate(): Promise<boolean>;
 	updateYtdlpBinary(): Promise<void>;
 	//
 	getAutoStart(): Promise<boolean>;

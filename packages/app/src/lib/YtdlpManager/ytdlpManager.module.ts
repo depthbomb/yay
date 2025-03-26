@@ -21,13 +21,13 @@ export class YtdlpManagerModule {
 
 		moduleRegistry.register('YtdlpManager', ytdlpManager);
 
-		ipc.registerHandler(IpcChannel.DownloadVideo, async (_, url: string) => await ytdlpManager.download(url));
-		ipc.registerHandler(IpcChannel.DownloadAudio, async (_, url: string) => await ytdlpManager.download(url, true));
-		ipc.registerHandler(IpcChannel.DownloadDefault, async (_, url: string) => {
+		ipc.registerHandler(IpcChannel.Ytdlp_DownloadVideo, async (_, url: string) => await ytdlpManager.download(url));
+		ipc.registerHandler(IpcChannel.Ytdlp_DownloadAudio, async (_, url: string) => await ytdlpManager.download(url, true));
+		ipc.registerHandler(IpcChannel.Ytdlp_DownloadDefault, async (_, url: string) => {
 			const defaultAction = settingsManager.get(SettingsKey.DefaultDownloadAction);
 			await ytdlpManager.download(url, defaultAction === 'audio');
 		});
-		ipc.registerHandler(IpcChannel.CancelDownload, () => ytdlpManager.cancelDownload());
-		ipc.registerHandler(IpcChannel.UpdateYtdlpBinary, async () => await ytdlpManager.updateBinary());
+		ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, () => ytdlpManager.cancelDownload());
+		ipc.registerHandler(IpcChannel.Ytdlp_UpdateBinary, async () => await ytdlpManager.updateBinary());
 	}
 }

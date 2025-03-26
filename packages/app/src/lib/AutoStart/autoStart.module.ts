@@ -16,9 +16,9 @@ export class AutoStartModule {
 
 		moduleRegistry.register('AutoStart', autoStart);
 
-		ipc.registerHandler(IpcChannel.GetAutoStart,     () => autoStart.isAutoStartEnabled());
-		ipc.registerHandler(IpcChannel.EnableAutoStart,  () => autoStart.setAutoStart(true));
-		ipc.registerHandler(IpcChannel.DisableAutoStart, () => autoStart.setAutoStart(false));
-		ipc.registerHandler(IpcChannel.ToggleAutostart,  () => autoStart.setAutoStart(!autoStart.isAutoStartEnabled()));
+		ipc.registerHandler(IpcChannel.Autostart_IsEnabled, () => autoStart.isAutoStartEnabled());
+		ipc.registerHandler(IpcChannel.Autostart_Enable,    () => autoStart.setAutoStart(true));
+		ipc.registerHandler(IpcChannel.Autostart_Disable,   () => autoStart.setAutoStart(false));
+		ipc.registerHandler(IpcChannel.Autostart_Toggle,    () => autoStart.setAutoStart(!autoStart.isAutoStartEnabled()));
 	}
 }

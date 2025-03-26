@@ -9,6 +9,6 @@ export class WindowManagerModule {
 
 		moduleRegistry.register('WindowManager', windowManager);
 
-		ipc.registerHandler(IpcChannel.MinimizeWindow, (_, windowName: string) => windowManager.minimizeWindow(windowName));
+		ipc.registerHandler(IpcChannel.Window_Minimize, (_, windowName: string) => windowManager.minimizeWindow(windowName));
 	}
 }

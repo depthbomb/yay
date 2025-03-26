@@ -61,108 +61,104 @@ const ipcApi = {
 } satisfies IpcApi;
 
 const coreApi = {
-	minimizeWindow(windowName: string) {
-		return ipcRenderer.invoke(IpcChannel.MinimizeWindow, windowName);
-	},
-	playNotificationSound() {
-		return ipcRenderer.invoke(IpcChannel.PlayNotificationSound);
-	},
-	showInputRightClickMenu() {
-		return ipcRenderer.invoke(IpcChannel.ShowInputRightClickMenu);
-	},
-	openDownloadDir() {
-		return ipcRenderer.invoke(IpcChannel.OpenDownloadDir);
-	},
-	openDownloadDirPicker() {
-		return ipcRenderer.invoke(IpcChannel.OpenDownloadDirPicker);
-	},
-	toggleWindowPinned() {
-		return ipcRenderer.invoke(IpcChannel.ToggleWindowPinned);
-	},
 	showMessageBox(options: MessageBoxOptions) {
 		return ipcRenderer.invoke(IpcChannel.ShowMessageBox, options);
 	},
 	//
+	minimizeWindow(windowName: string) {
+		return ipcRenderer.invoke(IpcChannel.Window_Minimize, windowName);
+	},
+	//
+	showInputRightClickMenu() {
+		return ipcRenderer.invoke(IpcChannel.Main_ShowUrlMenu);
+	},
+	openDownloadDir() {
+		return ipcRenderer.invoke(IpcChannel.Main_OpenDownloadDir);
+	},
+	openDownloadDirPicker() {
+		return ipcRenderer.invoke(IpcChannel.Main_PickDownloadDir);
+	},
+	toggleWindowPinned() {
+		return ipcRenderer.invoke(IpcChannel.Main_ToggleWindowPinned);
+	},
+	//
 	cancelSetup() {
-		return ipcRenderer.invoke(IpcChannel.CancelSetup);
+		return ipcRenderer.invoke(IpcChannel.Setup_Cancel);
 	},
 	//
 	getSettingsValue(key: SettingsKey, defaultValue?: any, secure: boolean = false) {
-		return ipcRenderer.invoke(IpcChannel.GetSettingsValue, key, defaultValue, secure);
+		return ipcRenderer.invoke(IpcChannel.Settings_Get, key, defaultValue, secure);
 	},
 	setSettingsValue(key: SettingsKey, value: any, secure: boolean = false) {
-		return ipcRenderer.invoke(IpcChannel.SetSettingsValue, key, value, secure);
+		return ipcRenderer.invoke(IpcChannel.Settings_Set, key, value, secure);
 	},
 	resetSettings() {
-		return ipcRenderer.invoke(IpcChannel.ResetSettings);
+		return ipcRenderer.invoke(IpcChannel.Settings_Reset);
 	},
 	//
 	downloadVideo(url: string) {
-		return ipcRenderer.invoke(IpcChannel.DownloadVideo, url);
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadVideo, url);
 	},
 	downloadAudio(url: string) {
-		return ipcRenderer.invoke(IpcChannel.DownloadAudio, url);
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadAudio, url);
 	},
 	downloadDefault(url: string) {
-		return ipcRenderer.invoke(IpcChannel.DownloadAudio, url);
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadDefault, url);
 	},
 	cancelDownload() {
-		return ipcRenderer.invoke(IpcChannel.CancelDownload);
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_CancelDownload);
 	},
 	recheckBinaries() {
-		return ipcRenderer.invoke(IpcChannel.RecheckBinaries);
-	},
-	checkForYtdlpUpdate() {
-		return ipcRenderer.invoke(IpcChannel.CheckForYtdlpUpdate);
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_RecheckBinaries);
 	},
 	updateYtdlpBinary() {
-		return ipcRenderer.invoke(IpcChannel.UpdateYtdlpBinary);
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_UpdateBinary);
 	},
 	//
 	getAutoStart() {
-		return ipcRenderer.invoke(IpcChannel.GetAutoStart);
+		return ipcRenderer.invoke(IpcChannel.Autostart_IsEnabled);
 	},
 	enableAutoStart() {
-		return ipcRenderer.invoke(IpcChannel.EnableAutoStart);
+		return ipcRenderer.invoke(IpcChannel.Autostart_Enable);
 	},
 	disableAutoStart() {
-		return ipcRenderer.invoke(IpcChannel.DisableAutoStart);
+		return ipcRenderer.invoke(IpcChannel.Autostart_Disable);
 	},
 	toggleAutoStart() {
-		return ipcRenderer.invoke(IpcChannel.ToggleAutostart);
+		return ipcRenderer.invoke(IpcChannel.Autostart_Toggle);
 	},
 	//
 	getGlobalMenuEnabled() {
-		return ipcRenderer.invoke(IpcChannel.GetGlobalMenuEnabled);
+		return ipcRenderer.invoke(IpcChannel.GlobalMenu_IsEnabled);
 	},
 	enableGlobalMenu() {
-		return ipcRenderer.invoke(IpcChannel.EnableGlobalMenu);
+		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Enable);
 	},
 	disableGlobalMenu() {
-		return ipcRenderer.invoke(IpcChannel.DisableGlobalMenu);
+		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Disable);
 	},
 	toggleGlobalMenu() {
-		return ipcRenderer.invoke(IpcChannel.ToggleGlobalMenu);
+		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Toggle);
 	},
 	//
 	showUpdaterWindow() {
-		return ipcRenderer.invoke(IpcChannel.ShowUpdaterWindow);
+		return ipcRenderer.invoke(IpcChannel.Updater_ShowWindow);
 	},
 	getLatestRelease() {
-		return ipcRenderer.invoke(IpcChannel.GetLatestRelease);
+		return ipcRenderer.invoke(IpcChannel.Updater_GetLatestRelease);
 	},
 	startUpdate() {
-		return ipcRenderer.invoke(IpcChannel.StartUpdate);
+		return ipcRenderer.invoke(IpcChannel.Updater_Update);
 	},
 	cancelUpdate() {
-		return ipcRenderer.invoke(IpcChannel.CancelUpdate);
+		return ipcRenderer.invoke(IpcChannel.Updater_Cancel);
 	},
 } satisfies CoreApi;
 
 const systemApi = { arch, type, release, platform, hostname } satisfies SystemApi;
 
 const settingsApi = {
-	getValue: (key: SettingsKey, defaultValue?: unknown, secure?: boolean) => ipcRenderer.sendSync(IpcChannel.GetSettingsValue, key, defaultValue, secure)
+	getValue: (key: SettingsKey, defaultValue?: unknown, secure?: boolean) => ipcRenderer.sendSync(IpcChannel.Settings_Get, key, defaultValue, secure)
 } satisfies SettingsApi;
 
 contextBridge.exposeInMainWorld('versions', versionsApi);

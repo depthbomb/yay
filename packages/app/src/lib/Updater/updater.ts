@@ -45,7 +45,7 @@ export class Updater {
 			this.showUpdaterWindow();
 		}
 
-		this.windowManager.emitMain(IpcChannel.UpdateAvailable, this.latestRelease);
+		this.windowManager.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
 		this.isStartupCheck = false;
 	}
 
@@ -65,7 +65,7 @@ export class Updater {
 		}
 
 		const onProgress = async (progress: number) => {
-			this.windowManager.emit('updater', IpcChannel.UpdateStep, `Downloading installer... (${progress}%)`);
+			this.windowManager.emit('updater', IpcChannel.Updater_Step, `Downloading installer... (${progress}%)`);
 		}
 
 		const tempPath = join(app.getPath('temp'), `${Date.now()}.exe`);
@@ -75,7 +75,7 @@ export class Updater {
 			return;
 		}
 
-		this.windowManager.emit('updater', IpcChannel.UpdateStep, 'Running setup...');
+		this.windowManager.emit('updater', IpcChannel.Updater_Step, 'Running setup...');
 
 		const proc = spawn(tempPath, ['/update=yes'], { detached: true, shell: false });
 

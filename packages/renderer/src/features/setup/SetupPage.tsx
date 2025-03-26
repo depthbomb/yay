@@ -6,7 +6,7 @@ import { Titlebar } from './components/Titlebar';
 
 export const SetupPage = () => {
 	const [setupStep, setSetupStep] = useState('Checking requirements...');
-	const [onSetupStep]             = useIpc(IpcChannel.SetupStep);
+	const [onSetupStep]             = useIpc(IpcChannel.Setup_Step);
 
 	useEffect(() => {
 		const removeListener = onSetupStep((step: string) => setSetupStep(step));

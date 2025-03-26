@@ -36,10 +36,10 @@ export class GlobalMenuModule {
 			eventSubscriber.subscribe('setup-finished', () => globalShortcut.register(accelerator, callback));
 		}
 
-		ipc.registerHandler(IpcChannel.GetGlobalMenuEnabled, () => globalShortcut.isRegistered(accelerator));
-		ipc.registerHandler(IpcChannel.EnableGlobalMenu, enableGlobalMenu);
-		ipc.registerHandler(IpcChannel.DisableGlobalMenu, disableGlobalMenu);
-		ipc.registerHandler(IpcChannel.ToggleGlobalMenu, toggleGlobalMenu);
+		ipc.registerHandler(IpcChannel.GlobalMenu_IsEnabled, () => globalShortcut.isRegistered(accelerator));
+		ipc.registerHandler(IpcChannel.GlobalMenu_Enable,    enableGlobalMenu);
+		ipc.registerHandler(IpcChannel.GlobalMenu_Disable,   disableGlobalMenu);
+		ipc.registerHandler(IpcChannel.GlobalMenu_Toggle,    toggleGlobalMenu);
 
 		eventSubscriber.subscribe('download-started',  () => globalMenu.setMenu(true));
 		eventSubscriber.subscribe('download-finished', () => globalMenu.setMenu(false));

@@ -46,10 +46,10 @@ export class YtdlpManager {
 				return;
 			}
 
-			this.windowManager.emitMain(IpcChannel.DownloadOutput, line);
+			this.windowManager.emitMain(IpcChannel.Ytdlp_Stdout, line);
 		};
 
-		this.windowManager.emitMain(IpcChannel.DownloadStarted, url);
+		this.windowManager.emitMain(IpcChannel.Ytdlp_DownloadStarted, url);
 		this.eventEmitter.emit('download-started', url);
 
 		let notificationImage          = getExtraResourcePath('notifications/logo.png');
@@ -71,7 +71,7 @@ export class YtdlpManager {
 		this.proc.stderr!.on('data', emitLog);
 
 		this.proc.once('close', code => {
-			this.windowManager.emitMain(IpcChannel.DownloadFinished, code);
+			this.windowManager.emitMain(IpcChannel.Ytdlp_DownloadFinished, code);
 			this.eventEmitter.emit('download-finished');
 
 			if (showNotification) {
@@ -95,21 +95,21 @@ export class YtdlpManager {
 		if (this.proc) {
 			kill(this.proc.pid!, 'SIGINT');
 			this.cleanupProcess();
-			this.windowManager.emitMain(IpcChannel.DownloadCanceled);
-			this.windowManager.emitMain(IpcChannel.DownloadFinished);
+			this.windowManager.emitMain(IpcChannel.Ytdlp_DownloadCanceled);
+			this.windowManager.emitMain(IpcChannel.Ytdlp_DownloadFinished);
 			this.eventEmitter.emit('download-finished');
 		}
 	}
 
 	public async updateBinary() {
-		this.windowManager.emitMain(IpcChannel.UpdatingYtdlpBinary);
+		this.windowManager.emitMain(IpcChannel.Ytdlp_UpdatingBinary);
 
 		const ytDlpPath = this.settingsManager.get<string>(SettingsKey.YtdlpPath);
 
 		return new Promise<void>((res) => {
 			const proc = spawn(ytDlpPath, ['-U']);
 			proc.once('close', () => {
-				this.windowManager.emitMain(IpcChannel.UpdatedYtdlpBinary);
+				this.windowManager.emitMain(IpcChannel.Ytdlp_UpdatedBinary);
 				res();
 			});
 		});

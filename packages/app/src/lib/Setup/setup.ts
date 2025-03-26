@@ -75,11 +75,11 @@ export class Setup {
 				setupWindow.show();
 				setupWindow.setProgressBar(1, { mode: 'indeterminate' });
 
-				this.windowManager.emit('setup', IpcChannel.SetupStep, 'Checking for yt-dlp...');
+				this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Checking for yt-dlp...');
 
 				const hasYtdlp = await this.hasYtdlpBinary(ytdlpPath);
 
-				this.windowManager.emit('setup', IpcChannel.SetupStep, 'Checking for FFmpeg...');
+				this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Checking for FFmpeg...');
 
 				const hasFfmpeg = await Promise.all([fileExists(ffmpegPath), fileExists(ffprobePath)]).then(r => r.every(Boolean));
 
@@ -104,13 +104,13 @@ export class Setup {
 				}
 
 				if (!hasYtdlp) {
-					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Starting yt-dlp download...');
+					this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Starting yt-dlp download...');
 
 					await this.downloader.downloadYtdlpBinary(
 						ytdlpPath,
 						this.abort.signal,
 						progress => {
-							this.windowManager.emit('setup', IpcChannel.SetupStep, `Downloading yt-dlp... (${progress}%)`);
+							this.windowManager.emit('setup', IpcChannel.Setup_Step, `Downloading yt-dlp... (${progress}%)`);
 							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
 						}
 					);
@@ -119,30 +119,30 @@ export class Setup {
 				}
 
 				if (!hasFfmpeg) {
-					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Starting FFmpeg download...');
+					this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Starting FFmpeg download...');
 
 					await this.downloader.downloadFfmpegBinary(
 						ffmpegPath,
 						this.abort.signal,
 						progress => {
-							this.windowManager.emit('setup', IpcChannel.SetupStep, `Downloading FFmpeg... (${progress}%)`);
+							this.windowManager.emit('setup', IpcChannel.Setup_Step, `Downloading FFmpeg... (${progress}%)`);
 							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
 						},
 						() => {
-							this.windowManager.emit('setup', IpcChannel.SetupStep, 'Extracting FFmpeg...');
+							this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Extracting FFmpeg...');
 							setupWindow.setProgressBar(1, { mode: 'indeterminate' });
 						},
-						() => this.windowManager.emit('setup', IpcChannel.SetupStep, 'Cleaning up...')
+						() => this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Cleaning up...')
 					);
 				}
 
 				checkFinished = true;
 
 				if (this.cancelled) {
-					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Cancelling...');
+					this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Cancelling...');
 					setupWindow.setProgressBar(1, { mode: 'error' });
 				} else {
-					this.windowManager.emit('setup', IpcChannel.SetupStep, 'Done!');
+					this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Done!');
 					setupWindow.setProgressBar(1, { mode: 'normal' });
 				}
 			}

@@ -69,28 +69,26 @@ export class MainWindowModule {
 				mainWindow.hide();
 			}
 
-			windowManager.emitMain(IpcChannel.WindowBlurred);
+			windowManager.emitMain(IpcChannel.Window_IsBlurred);
 		});
 
 		mainWindow.on('focus', () => mainWindow.flashFrame(false));
 		//#endregion
 
 		//#region IPC
-		ipc.registerHandler(IpcChannel.PlayNotificationSound, () => windowManager.emitMain(IpcChannel.PlayNotificationSound));
-
-		ipc.registerHandler(IpcChannel.ToggleWindowPinned, () => {
+		ipc.registerHandler(IpcChannel.Main_ToggleWindowPinned, () => {
 			return windowPinned = !windowPinned;
 		});
 
-		ipc.registerHandler(IpcChannel.ShowInputRightClickMenu, () => {
+		ipc.registerHandler(IpcChannel.Main_ShowUrlMenu, () => {
 			const menu = Menu.buildFromTemplate([ { role: 'paste' } ]);
 
 			menu.popup({ window: mainWindow });
 		});
 
-		ipc.registerHandler(IpcChannel.OpenDownloadDir, async () => await shell.openPath(settingsManager.get(SettingsKey.DownloadDir)));
+		ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => await shell.openPath(settingsManager.get(SettingsKey.DownloadDir)));
 
-		ipc.registerHandler(IpcChannel.OpenDownloadDirPicker, async () => {
+		ipc.registerHandler(IpcChannel.Main_PickDownloadDir, async () => {
 			shouldHideOnBlur = false;
 
 			const { filePaths, canceled } = await dialog.showOpenDialog(mainWindow, {
@@ -113,7 +111,7 @@ export class MainWindowModule {
 			return null;
 		});
 
-		ipc.registerHandler(IpcChannel.RecheckBinaries, async () => {
+		ipc.registerHandler(IpcChannel.Ytdlp_RecheckBinaries, async () => {
 			for (const bin of ['yt-dlp.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
 				const binPath = getExtraFilePath(bin);
 				if (!await fileExists(binPath)) {

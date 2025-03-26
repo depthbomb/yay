@@ -5,7 +5,7 @@ import { IpcChannel } from 'shared';
 import Markdown from 'react-markdown';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/Spinner';
-import { mdiNewBox, mdiDownload } from '@mdi/js';
+import { mdiStar, mdiDownload } from '@mdi/js';
 import { PushButton } from '~/components/PushButton';
 import type { Nullable } from 'shared';
 import type { Components } from 'react-markdown';
@@ -29,7 +29,7 @@ export const UpdaterPage = () => {
 	const [updating, setUpdating] = useState(false);
 	const [status, setStatus]     = useState(defaultStatus);
 	const [release, setRelease]   = useState<Nullable<Awaited<ReturnType<typeof window.api.getLatestRelease>>>>(null);
-	const [onUpdateStep]          = useIpc(IpcChannel.UpdateStep);
+	const [onUpdateStep]          = useIpc(IpcChannel.Updater_Step);
 
 	const onDownloadButtonClicked = async () => {
 		setUpdating(true);
@@ -55,8 +55,8 @@ export const UpdaterPage = () => {
 			{release ? (
 				<>
 					<div className="space-x-2 flex items-center">
-						<Icon path={mdiNewBox} className="mr-2 inline size-9 text-[color:var(--os-accent)]"/>
-						<h1 className="text-2xl">Version {release.tag_name} is available</h1>
+						<Icon path={mdiStar} className="mr-2 inline size-9 text-[color:var(--os-accent)]"/>
+						<h1 className="text-2xl">yay version {release.tag_name} is available</h1>
 					</div>
 					<div className="bg-gray-800 rounded overflow-hidden">
 						<Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{release.body}</Markdown>

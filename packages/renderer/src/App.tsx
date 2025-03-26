@@ -21,13 +21,13 @@ export const App = () => {
 	const [isWorking, setIsWorking]   = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
 	const [,setUpdateAvailable]       = useAtom(updateAvailableAtom);
-	const [onDownloadStarted]         = useIpc(IpcChannel.DownloadStarted);
-	const [onDownloadOutput]          = useIpc(IpcChannel.DownloadOutput);
-	const [onDownloadFinished]        = useIpc(IpcChannel.DownloadFinished);
-	const [onDownloadCanceled]        = useIpc(IpcChannel.DownloadCanceled);
-	const [onUpdatingYtdlpBinary]     = useIpc(IpcChannel.UpdatingYtdlpBinary);
-	const [onUpdatedYtdlpBinary]      = useIpc(IpcChannel.UpdatedYtdlpBinary);
-	const [onUpdateAvailable]         = useIpc(IpcChannel.UpdateAvailable);
+	const [onDownloadStarted]         = useIpc(IpcChannel.Ytdlp_DownloadStarted);
+	const [onDownloadOutput]          = useIpc(IpcChannel.Ytdlp_Stdout);
+	const [onDownloadCanceled]        = useIpc(IpcChannel.Ytdlp_DownloadCanceled);
+	const [onDownloadFinished]        = useIpc(IpcChannel.Ytdlp_DownloadFinished);
+	const [onUpdatingYtdlpBinary]     = useIpc(IpcChannel.Ytdlp_UpdatingBinary);
+	const [onUpdatedYtdlpBinary]      = useIpc(IpcChannel.Ytdlp_UpdatedBinary);
+	const [onUpdateAvailable]         = useIpc(IpcChannel.Updater_Outdated);
 
 	const accentCss = clsx(
 		'absolute -z-10',

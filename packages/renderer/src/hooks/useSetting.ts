@@ -23,7 +23,7 @@ export const useSetting = <T>(key: SettingsKey, options?: UseSettingsOptions<T>)
 	};
 
 	useEffect(() => {
-		const removeListener = window.ipc.on(IpcChannel.SettingsUpdated, onSettingsUpdate);
+		const removeListener = window.ipc.on(IpcChannel.Settings_Changed, onSettingsUpdate);
 
 		return () => removeListener();
 	});

@@ -1,3 +1,8 @@
+# 1.3.1
+
+- Fixed the default download action always downloading audio
+- Upgraded to [Electron 35.1.0](https://releases.electronjs.org/release/v35.1.0)
+
 # 1.3.0
 
 - Added app update checking
