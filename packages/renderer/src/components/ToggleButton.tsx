@@ -2,9 +2,10 @@ import Icon from '@mdi/react';
 import { Button } from './Button';
 import { useState, useEffect } from 'react';
 import { mdiCheck, mdiClose, mdiMinus } from '@mdi/js';
-import type { FC, ButtonHTMLAttributes } from 'react';
+import type { FC } from 'react';
+import type { ButtonProps } from './Button';
 
-type ToggleButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
+type ToggleButtonProps = Omit<ButtonProps, 'variant' | 'type'> & {
 	enabled: boolean;
 };
 

@@ -1,6 +1,5 @@
 import { useSetting } from '~/hooks';
 import { SettingsKey } from 'shared';
-import { Badge } from '~/components/Badge';
 import { useState, useEffect } from 'react';
 import { mdiMicrosoftWindows } from '@mdi/js';
 import { KeyCombo } from '~/components/KeyCombo';
@@ -17,7 +16,7 @@ export const AppTab = () => {
 		setAutoStartEnabled(!autoStartEnabled);
 	};
 
-	const onEnableGlobalMenuButtonClicked = async () => {
+	const onEnableGlobalMenuButtonClicked = () => {
 		window.api.toggleGlobalMenu().then(setGlobalMenuEnabled);
 	};
 
@@ -36,7 +35,7 @@ export const AppTab = () => {
 				<ToggleButton enabled={autoStartEnabled} onClick={onToggleAutoStartButtonClicked}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>) <Badge label="Experimental" type="warning"/></p>
+				<p>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</p>
 				<ToggleButton enabled={globalMenuEnabled} onClick={onEnableGlobalMenuButtonClicked}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
