@@ -1,5 +1,6 @@
-import { systemPreferences } from 'electron';
+import { BrowserWindow, systemPreferences } from 'electron';
 import type { WindowManager } from '~/lib/WindowManager';
+import type { EventSubscriber } from '~/lib/EventSubscriber';
 
 export class ThemeManager {
 	private readonly injectedCSS = new Set<string>();
@@ -69,20 +70,15 @@ export class ThemeManager {
 	] as const;
 
 	public constructor(
-		private readonly windowManager: WindowManager
-	) {}
+		private readonly eventSubscriber: EventSubscriber,
+		private readonly windowManager: WindowManager,
+	) {
+		this.eventSubscriber.subscribe('window-created', async window => await this.injectThemeCSSIntoWindow(window));
+	}
 
 	public async injectThemeCSS(): Promise<void> {
-		const osColors = this.systemColorKeys.map(k => {
-			try {
-				return `--os-${k}: ${systemPreferences.getColor(k)};`;
-			} catch {
-				return '';
-			}
-		}).join('\n');
-
 		for (const window of this.windowManager.windows.values()) {
-			const key = await window.webContents.insertCSS(`:root,html,body {--os-accent: #${systemPreferences.getAccentColor()};${osColors} }`);
+			const key = await window.webContents.insertCSS(this.getThemeClasses());
 
 			this.injectedCSS.add(key);
 		}
@@ -95,5 +91,21 @@ export class ThemeManager {
 				this.injectedCSS.delete(key);
 			}
 		}
+	}
+
+	public async injectThemeCSSIntoWindow(window: BrowserWindow) {
+		const key = await window.webContents.insertCSS(this.getThemeClasses());
+
+		this.injectedCSS.add(key);
+	}
+
+	private getThemeClasses() {
+		return this.systemColorKeys.map(k => {
+			try {
+				return `:root,html,body {--os-accent: #${systemPreferences.getAccentColor()};--os-${k}: ${systemPreferences.getColor(k)} };`;
+			} catch {
+				return '';
+			}
+		}).join('\n');
 	}
 }

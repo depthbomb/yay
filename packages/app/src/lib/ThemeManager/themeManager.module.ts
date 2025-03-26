@@ -4,8 +4,9 @@ import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class ThemeManagerModule {
 	public static async bootstrap(moduleRegistry: ModuleRegistry) {
-		const windowManager = moduleRegistry.get('WindowManager');
-		const themeManager  = new ThemeManager(windowManager);
+		const eventSubscriber = moduleRegistry.get('EventSubscriber');
+		const windowManager   = moduleRegistry.get('WindowManager');
+		const themeManager    = new ThemeManager(eventSubscriber, windowManager);
 
 		systemPreferences.on('accent-color-changed', async () => {
 			await themeManager.removeInjectedThemeCSS();

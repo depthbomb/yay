@@ -3,6 +3,7 @@ import { ROOT_PATH } from '~/constants';
 import { app, BrowserWindow } from 'electron';
 import { DEV_PORT, IpcChannel } from 'shared';
 import type { Awaitable } from 'shared';
+import type { EventEmitter } from '~/lib/EventEmitter';
 import type { AboutPanelOptionsOptions, BrowserWindowConstructorOptions } from 'electron';
 
 type CreateWindowOptions = {
@@ -26,7 +27,9 @@ export class WindowManager {
 
 	private readonly mainWindowName = 'main' as const;
 
-	public constructor() {
+	public constructor(
+		private readonly eventEmitter: EventEmitter,
+	) {
 		this.windows = new Map();
 	}
 
@@ -56,6 +59,8 @@ export class WindowManager {
 		this.windows.set(name, window);
 
 		window.loadURL(url).then(onReadyToShow);
+
+		this.eventEmitter.emit('window-created', window);
 
 		return window;
 	}

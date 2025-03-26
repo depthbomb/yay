@@ -58,11 +58,11 @@ app.whenReady().then(async () => {
 
 	lib.CliModule.bootstrap(moduleRegistry);
 	lib.IpcModule.bootstrap(moduleRegistry);
+	lib.EventEmitterModule.bootstrap(moduleRegistry);
+	lib.EventSubscriberModule.bootstrap(moduleRegistry);
 	lib.NotificationsModule.bootstrap(moduleRegistry);
 	lib.WindowManagerModule.bootstrap(moduleRegistry);
 	lib.AutoStartModule.bootstrap(moduleRegistry);
-	lib.EventEmitterModule.bootstrap(moduleRegistry);
-	lib.EventSubscriberModule.bootstrap(moduleRegistry);
 	lib.SettingsManagerModule.bootstrap(moduleRegistry);
 	lib.HttpClientManagerModule.bootstrap(moduleRegistry);
 	lib.GithubModule.bootstrap(moduleRegistry);

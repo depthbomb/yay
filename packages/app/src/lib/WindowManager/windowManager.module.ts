@@ -5,7 +5,8 @@ import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 export class WindowManagerModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
 		const ipc           = moduleRegistry.get('Ipc');
-		const windowManager = new WindowManager();
+		const eventEmitter  = moduleRegistry.get('EventEmitter');
+		const windowManager = new WindowManager(eventEmitter);
 
 		moduleRegistry.register('WindowManager', windowManager);
 
