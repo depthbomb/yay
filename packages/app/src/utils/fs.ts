@@ -16,6 +16,11 @@ export async function fileExists(path: string): Promise<boolean> {
 	}
 }
 
+/**
+ * Returns `true` if the path exists and is a directory, `false` otherwise
+ *
+ * @param path Path to the directory
+ */
 export async function dirExists(path: string): Promise<boolean> {
 	try {
 		const stats = await stat(path);
