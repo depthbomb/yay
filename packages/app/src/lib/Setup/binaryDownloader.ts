@@ -1,13 +1,9 @@
 import { app } from 'electron';
-import { Readable } from 'node:stream';
 import { USER_AGENT } from '~/constants';
 import { unlink } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
 import { getExtraFilePath } from '~/utils';
-import { createWriteStream } from 'node:fs';
-import { finished } from 'node:stream/promises';
-import type { DownloadOptions } from '.';
 import type { Github } from '~/lib/Github';
 import type { HttpClient, HttpClientManager } from '~/lib/HttpClientManager';
 
@@ -28,7 +24,7 @@ export class BinaryDownloader {
 		}
 
 		const res = await this.http.get(url, { signal });
-		await this.downloadWithProgress(res, path, { signal, onProgress });
+		await this.http.downloadWithProgress(res, path, { signal, onProgress });
 	}
 
 	public async downloadFfmpegBinary(
@@ -50,7 +46,7 @@ export class BinaryDownloader {
 
 		const tempPath = join(app.getPath('temp'), '_ffmpeg.zip');
 
-		await this.downloadWithProgress(res, tempPath, { signal, onProgress });
+		await this.http.downloadWithProgress(res, tempPath, { signal, onProgress });
 
 		const sevenZipPath = getExtraFilePath('7za.exe');
 
@@ -103,67 +99,5 @@ export class BinaryDownloader {
 		const asset = release.assets.find(a => a.name === 'ffmpeg-master-latest-win64-gpl.zip');
 
 		return asset?.browser_download_url;
-	}
-
-	private async downloadWithProgress(res: Response, outputPath: string, options: DownloadOptions) {
-		if (!res.ok) {
-			throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-		}
-
-		const contentLength = parseInt(res.headers.get('content-length') ?? '0');
-		const stream = createWriteStream(outputPath);
-
-		let downloadedBytes = 0;
-		const reader = res.body!.getReader();
-
-		if (options.signal.aborted) {
-			reader.cancel();
-			stream.destroy();
-			return;
-		}
-
-		const abortHandler = () => {
-			reader.cancel();
-			stream.destroy();
-		};
-		options.signal.addEventListener('abort', abortHandler);
-
-		try {
-			const readable = new Readable({
-				async read() {
-					try {
-						const { done, value } = await reader.read();
-						if (done) {
-							this.push(null);
-							return;
-						}
-
-						downloadedBytes += value.length;
-						if (contentLength && options.onProgress) {
-							const progress = (downloadedBytes / contentLength) * 100;
-							options.onProgress(Math.round(progress));
-						}
-
-						this.push(value);
-					} catch (err) {
-						// Don't propagate abort errors
-						if (options.signal.aborted) {
-							this.push(null);
-						} else {
-							this.destroy(err as Error);
-						}
-					}
-				}
-			});
-
-			await finished(readable.pipe(stream)).catch(err => {
-				// Ignore errors if aborted
-				if (!options.signal.aborted) {
-					throw err;
-				}
-			});
-		} finally {
-			options.signal.removeEventListener('abort', abortHandler);
-		}
 	}
 }

@@ -38,8 +38,6 @@ export class Github {
 			throw new Error(res.statusText);
 		}
 
-		const data = await res.json() as Release[];
-
-		return data;
+		return await res.json() as Release[];
 	}
 }

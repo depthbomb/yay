@@ -1,8 +1,11 @@
 import { debugLog } from '~/utils';
+import { Readable } from 'node:stream';
 import { joinURL, withQuery } from 'ufo';
+import { createWriteStream } from 'node:fs';
+import { finished } from 'node:stream/promises';
 import { retry, handleResultType, ConstantBackoff } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
-import type { GETOptions, RequestOptions, HttpClientOptions } from '.';
+import type { GETOptions, RequestOptions, HttpClientOptions, DownloadOptions } from '.';
 
 export class HttpClient {
 	private requestNum = 0;
@@ -68,5 +71,65 @@ export class HttpClient {
 		});
 
 		return res;
+	}
+
+	public async downloadWithProgress(res: Response, outputPath: string, options: DownloadOptions) {
+		if (!res.ok) {
+			throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+		}
+
+		const contentLength = parseInt(res.headers.get('content-length') ?? '0');
+		const stream = createWriteStream(outputPath);
+
+		let downloadedBytes = 0;
+		const reader = res.body!.getReader();
+
+		if (options.signal.aborted) {
+			reader.cancel();
+			stream.destroy();
+			return;
+		}
+
+		const abortHandler = () => {
+			reader.cancel();
+			stream.destroy();
+		};
+		options.signal.addEventListener('abort', abortHandler);
+
+		try {
+			const readable = new Readable({
+				async read() {
+					try {
+						const { done, value } = await reader.read();
+						if (done) {
+							this.push(null);
+							return;
+						}
+
+						downloadedBytes += value.length;
+						if (contentLength && options.onProgress) {
+							const progress = (downloadedBytes / contentLength) * 100;
+							options.onProgress(Math.round(progress));
+						}
+
+						this.push(value);
+					} catch (err) {
+						if (options.signal.aborted) {
+							this.push(null);
+						} else {
+							this.destroy(err as Error);
+						}
+					}
+				}
+			});
+
+			await finished(readable.pipe(stream)).catch(err => {
+				if (!options.signal.aborted) {
+					throw err;
+				}
+			});
+		} finally {
+			options.signal.removeEventListener('abort', abortHandler);
+		}
 	}
 }
