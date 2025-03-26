@@ -18,29 +18,15 @@ export const AppTab = () => {
 	};
 
 	const onEnableGlobalMenuButtonClicked = async () => {
-		setGlobalMenuEnabled(
-			await window.api.toggleGlobalMenu()
-		);
+		window.api.toggleGlobalMenu().then(setGlobalMenuEnabled);
 	};
 
 	useEffect(() => {
-		const fetchAutoStartState = async () => {
-			setAutoStartEnabled(
-				await window.api.getAutoStart()
-			);
-		};
-
-		fetchAutoStartState().catch(console.error);
+		window.api.getAutoStart().then(setAutoStartEnabled);
 	}, []);
 
 	useEffect(() => {
-		const fetchIsGlobalMenuEnabled = async () => {
-			setGlobalMenuEnabled(
-				await window.api.getGlobalMenuEnabled()
-			);
-		};
-
-		fetchIsGlobalMenuEnabled().catch(console.error);
+		window.api.getGlobalMenuEnabled().then(setGlobalMenuEnabled);
 	}, []);
 
 	return (

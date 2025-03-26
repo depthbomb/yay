@@ -35,9 +35,7 @@ export const AppMasthead = () => {
 	);
 
 	const onPinWindowButtonClicked = async () => {
-		setWindowPinned(
-			await window.api.toggleWindowPinned()
-		);
+		window.api.toggleWindowPinned().then(setWindowPinned);
 	};
 
 	useEffect(() => {
