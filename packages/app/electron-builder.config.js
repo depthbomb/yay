@@ -23,6 +23,7 @@ const EXCLUDED_PACKAGES = [
 	'universal-user-agent',
 	'shared',
 	'mitt',
+	'semver',
 	'type-flag'
 ];
 
