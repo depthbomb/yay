@@ -30,4 +30,4 @@ export type Modules = {
 	WindowManager: WindowManager;
 	WindowPositioner: WindowPositioner;
 	YtdlpManager: YtdlpManager;
-}
+};
