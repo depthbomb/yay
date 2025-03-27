@@ -1,6 +1,7 @@
 # 1.3.2
 
 - Fixed links in the updater window not opening in the default browser
+- Upgraded to [Electron 35.1.1](https://releases.electronjs.org/release/v35.1.1)
 
 # 1.3.1
 
