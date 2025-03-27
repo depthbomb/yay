@@ -1,3 +1,7 @@
+# 1.3.2
+
+- Fixed links in the updater window not opening in the default browser
+
 # 1.3.1
 
 - Fixed the default download action always downloading audio
