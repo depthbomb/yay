@@ -1,6 +1,6 @@
 import semver from 'semver';
-import { app } from 'electron';
 import { join } from 'node:path';
+import { app, shell } from 'electron';
 import { spawn } from 'node:child_process';
 import { product, IpcChannel } from 'shared';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
@@ -109,6 +109,15 @@ export class Updater {
 					preload: PRELOAD_PATH,
 				}
 			},
+		});
+
+		this.updaterWindow.webContents.setWindowOpenHandler(({ url }) => {
+			const { protocol } = new URL(url);
+			if (protocol === 'https:' || protocol === 'http:') {
+				shell.openExternal(url);
+			}
+
+			return { action: 'deny' };
 		});
 
 		if (import.meta.env.DEV) {

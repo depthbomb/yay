@@ -3,9 +3,9 @@ import { useIpc } from '~/hooks';
 import remarkGfm from 'remark-gfm';
 import { IpcChannel } from 'shared';
 import Markdown from 'react-markdown';
+import { mdiDownload } from '@mdi/js';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/Spinner';
-import { mdiStar, mdiDownload } from '@mdi/js';
 import { PushButton } from '~/components/PushButton';
 import type { Nullable } from 'shared';
 import type { Components } from 'react-markdown';
@@ -19,6 +19,11 @@ const markdownComponents = {
 	li(props) {
 		return (
 			<p className="py-1 px-2 space-x-3"><span className="font-black">&bull;</span><span>{props.children}</span></p>
+		);
+	},
+	a(props) {
+		return (
+			<a href={props.href} target="_blank">{props.children}</a>
 		);
 	}
 } satisfies Components;
@@ -54,10 +59,7 @@ export const UpdaterPage = () => {
 		<div className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">
 			{release ? (
 				<>
-					<div className="space-x-2 flex items-center">
-						<Icon path={mdiStar} className="mr-2 inline size-9 text-[color:var(--os-accent)]"/>
-						<h1 className="text-2xl">yay version {release.tag_name} is available</h1>
-					</div>
+					<h1 className="text-2xl">yay version {release.tag_name} is available</h1>
 					<div className="bg-gray-800 rounded overflow-hidden">
 						<Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{release.body}</Markdown>
 					</div>
