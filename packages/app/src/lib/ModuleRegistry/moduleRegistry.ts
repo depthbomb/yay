@@ -6,7 +6,7 @@ export class ModuleRegistry {
 	) {}
 
 	public register<Name extends keyof Modules>(name: Name, instance: Modules[Name]): void {
-		if (!this.modules.has(name)) {
+		if (this.modules.has(name)) {
 			throw new Error(`Module "${name}" is already registered`);
 		}
 
