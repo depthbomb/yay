@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@swc/core": "1.11.13",
-		"electron": "35.1.1",
+		"electron": "35.1.2",
 		"tslib": "^2.8.1",
 		"tsup": "^8.4.0",
 		"typescript": "^5.8.2"
