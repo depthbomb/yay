@@ -1,3 +1,8 @@
+# 1.4.0
+
+- Added seasonal visual additions
+- Upgraded to [Electron 35.1.4](https://releases.electronjs.org/release/v35.1.4)
+
 # 1.3.2
 
 - Fixed links in the updater window not opening in the default browser

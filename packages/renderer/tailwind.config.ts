@@ -59,6 +59,15 @@ export default {
 				mono: [
 					'"Noto Sans Mono Variable"'
 				],
+			},
+			keyframes: {
+				'hue-rotate': {
+					'from': { filter: 'hue-rotate(0deg)' },
+					'to': { filter: 'hue-rotate(360deg)' },
+				}
+			},
+			animation: {
+				'hue-rotate': 'hue-rotate 5s linear infinite',
 			}
 		},
 	}

@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
-import logo from '~/assets/img/logo.svg';
 import { IconButton } from './IconButton';
 import { workingAtom } from '~/atoms/app';
 import { useState, useEffect } from 'react';
+import { SeasonalLogo } from './SeasonalLogo';
 import { windowPinnedAtom } from '~/atoms/app';
 import { useThrottle, useModifierKey } from '~/hooks';
 import { useLocation, useNavigate } from 'react-router';
@@ -47,7 +47,7 @@ export const AppMasthead = () => {
 		<header className={headerCss}>
 			{isHome ? (
 				<>
-					<img src={logo} className="mr-2 size-7" draggable="false"/>
+					<SeasonalLogo/>
 					<h1 className="text-md font-semibold shrink-0">Yet Another YouTube Downloader</h1>
 					<span className="w-full"></span>
 					<div className="flex space-x-0.5">
