@@ -7,6 +7,7 @@ export enum SettingsKey {
 	YtdlpPath                     = 'yt-dlp-path',
 	ShowHintFooter                = 'show-hint-footer',
 	ShowWindowFrame               = 'show-window-frame',
+	HideSetupWindow               = 'hide-setup-window',
 }
 
 export const SettingsKeys = Object.values(SettingsKey);

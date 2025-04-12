@@ -8,6 +8,7 @@ import { ToggleButton } from '~/components/ToggleButton';
 export const AppTab = () => {
 	const [showWindowFrame, setShowWindowFrame]     = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
 	const [showHintFooter, setShowHintFooter]       = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
+	const [hideSetupWindow, setHideSetupWindow]     = useSetting(SettingsKey.HideSetupWindow, { defaultValue: false });
 	const [autoStartEnabled, setAutoStartEnabled]   = useState(false);
 	const [globalMenuEnabled, setGlobalMenuEnabled] = useState(false);
 
@@ -16,9 +17,7 @@ export const AppTab = () => {
 		setAutoStartEnabled(!autoStartEnabled);
 	};
 
-	const onEnableGlobalMenuButtonClicked = () => {
-		window.api.toggleGlobalMenu().then(setGlobalMenuEnabled);
-	};
+	const onEnableGlobalMenuButtonClicked = () => window.api.toggleGlobalMenu().then(setGlobalMenuEnabled);
 
 	useEffect(() => {
 		window.api.getAutoStart().then(setAutoStartEnabled);
@@ -33,6 +32,10 @@ export const AppTab = () => {
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Start on login</p>
 				<ToggleButton enabled={autoStartEnabled} onClick={onToggleAutoStartButtonClicked}/>
+			</div>
+			<div className="flex flex-col items-start space-y-1.5">
+				<p>Hide setup window on startup</p>
+				<ToggleButton enabled={hideSetupWindow} onClick={() => setHideSetupWindow(!hideSetupWindow)}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</p>

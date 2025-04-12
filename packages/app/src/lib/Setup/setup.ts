@@ -53,6 +53,7 @@ export class Setup {
 		const setupWindow = this.windowManager.createWindow('setup', {
 			url: this.windowManager.resolveRendererHTML('setup.html'),
 			browserWindowOptions: {
+				show: false,
 				width: 450,
 				height: 350,
 				titleBarStyle: 'hidden',
@@ -72,7 +73,11 @@ export class Setup {
 					setupWindow.webContents.openDevTools({ mode: 'detach' });
 				}
 
-				setupWindow.show();
+				const hideSetupWindow =  this.settingsManager.get<boolean>(SettingsKey.HideSetupWindow);
+				if (!hideSetupWindow) {
+					setupWindow.show();
+				}
+
 				setupWindow.setProgressBar(1, { mode: 'indeterminate' });
 
 				this.windowManager.emit('setup', IpcChannel.Setup_Step, 'Checking for yt-dlp...');
@@ -84,6 +89,10 @@ export class Setup {
 				const hasFfmpeg = await Promise.all([fileExists(ffmpegPath), fileExists(ffprobePath)]).then(r => r.every(Boolean));
 
 				if (!hasYtdlp || !hasFfmpeg) {
+					if (hideSetupWindow) {
+						setupWindow.show();
+					}
+
 					const mainWindow          = this.windowManager.getMainWindow()!;
 					const missingDependencies = [];
 
