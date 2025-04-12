@@ -27,9 +27,9 @@
 	"devDependencies": {
 		"@types/node": "^22.14.1",
 		"cross-env": "^7.0.3",
-		"electron-builder": "26.0.13",
+		"electron-builder": "26.0.12",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.8.3"
 	},
-	"packageManager": "yarn@4.9.0"
+	"packageManager": "yarn@4.9.1"
 }
