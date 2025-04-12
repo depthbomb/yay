@@ -1,3 +1,9 @@
+# 1.5.0
+
+- You can now choose to have the setup window hidden when the app starts
+  - The window will show itself when your action is needed
+- Upgraded to [Electron 35.1.5](https://releases.electronjs.org/release/v35.1.5)
+
 # 1.4.0
 
 - Added seasonal visual additions
