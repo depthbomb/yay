@@ -38,7 +38,7 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 		'flex flex-row items-center justify-center',
 		'space-x-1 w-full',
 		'text-sm text-gray-200 font-semibold',
-		'bg-black',
+		'bg-gray-950',
 		{
 			'cursor-not-allowed! text-gray-400': disabled,
 			'hover:text-white hover:bg-transparent active:text-white active:bg-black/25': !disabled
