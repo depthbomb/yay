@@ -1,3 +1,8 @@
+# 1.5.1
+
+- Slightly adjusted the style of disabled download buttons
+- Minor performance improvements
+
 # 1.5.0
 
 - You can now choose to have the setup window hidden when the app starts
