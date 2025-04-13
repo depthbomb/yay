@@ -34,9 +34,7 @@ export const AppMasthead = () => {
 		'transition-transform'
 	);
 
-	const onPinWindowButtonClicked = async () => {
-		window.api.toggleWindowPinned().then(setWindowPinned);
-	};
+	const onPinWindowButtonClicked = async () => window.api.toggleWindowPinned().then(setWindowPinned);
 
 	useEffect(() => {
 		setIsHome(location.pathname === '/');

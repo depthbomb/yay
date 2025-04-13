@@ -20,11 +20,8 @@ const seasonalLogos = [
 
 export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
 	const currentDate = useMemo(() => new Date(), []);
-	const { logoSrc, className } = useMemo(() => {
-		const matchingSeason = seasonalLogos.find(season =>
-			season.condition(currentDate)
-		);
-
+	const [logoSrc, className] = useMemo(() => {
+		const matchingSeason = seasonalLogos.find(season => season.condition(currentDate));
 		if (matchingSeason) {
 			let cumulativeProbability = 0;
 			const randomValue = Math.random() * 100;
@@ -32,12 +29,12 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 			for (const option of matchingSeason.options) {
 				cumulativeProbability += option.probability;
 				if (randomValue <= cumulativeProbability) {
-					return { logoSrc: option.src, className: option.className };
+					return [option.src, option.className] as const;
 				}
 			}
 		}
 
-		return { logoSrc: logo, className: baseCss };
+		return [logo, baseCss] as const;
 	}, [currentDate]);
 
 	return (

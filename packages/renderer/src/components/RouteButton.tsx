@@ -10,5 +10,5 @@ type RouteButtonProps = Omit<ButtonProps, 'onClick'> & {
 export const RouteButton: FC<RouteButtonProps> = ({ ...props }) => {
 	const navigate = useNavigate();
 
-	return (<Button onClick={() => navigate(props.to)} {...props}>{props.children}</Button>);
+	return <Button onClick={() => navigate(props.to)} {...props}>{props.children}</Button>;
 };

@@ -6,9 +6,11 @@ type BadgeProps = {
 	type: 'success' | 'warning' | 'danger' | 'info';
 };
 
+const baseCss = 'inline-flex items-center justify-center py-0.25 px-1.5 text-[10px] font-mono border rounded-full' as const;
+
 export const Badge: FC<BadgeProps> = ({ label, type }) => {
 	const css = clsx(
-		'inline-flex items-center justify-center py-0.25 px-1.5 text-[10px] font-mono border rounded-full',
+		baseCss,
 		{
 			'text-green-400 bg-green-950 border-green-400': type === 'success',
 			'text-yellow-400 bg-yellow-950 border-yellow-400': type === 'warning',

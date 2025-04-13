@@ -13,15 +13,13 @@ type TooltipProps = PropsWithChildren & {
 };
 
 export const Tooltip: FC<TooltipProps> = ({ children, content, delay = 100, position = 'top', className }) => {
-	const [isVisible, setIsVisible] = useState(false);
+	const [isVisible, setIsVisible]     = useState(false);
 	const [coordinates, setCoordinates] = useState({ x: 0, y: 0 });
-	const timeoutRef = useRef<NodeJS.Timeout>(null);
-	const childRef = useRef<HTMLDivElement>(null);
+	const timeoutRef                    = useRef<NodeJS.Timeout>(null);
+	const childRef                      = useRef<HTMLDivElement>(null);
 
 	const handleMouseEnter = () => {
-		timeoutRef.current = setTimeout(() => {
-			setIsVisible(true);
-		}, delay);
+		timeoutRef.current = setTimeout(() => setIsVisible(true), delay);
 	};
 
 	const handleMouseLeave = () => {
@@ -70,7 +68,6 @@ export const Tooltip: FC<TooltipProps> = ({ children, content, delay = 100, posi
 
 	useEffect(() => {
 		const child = childRef.current;
-
 		if (child) {
 			child.addEventListener('mouseenter', handleMouseEnter);
 			child.addEventListener('mouseleave', handleMouseLeave);
@@ -83,6 +80,7 @@ export const Tooltip: FC<TooltipProps> = ({ children, content, delay = 100, posi
 				child.removeEventListener('mouseleave', handleMouseLeave);
 				child.removeEventListener('mousemove', handleMouseMove as any);
 			}
+
 			if (timeoutRef.current) {
 				clearTimeout(timeoutRef.current);
 			}

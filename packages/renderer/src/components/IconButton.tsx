@@ -11,13 +11,15 @@ type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
 	to?: string;
 };
 
+const baseCss = 'p-1 flex items-center rounded-full transition-all' as const;
+
 export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({ title, tooltipPosition, icon, to, className, onClick, ...props }, ref) => {
 	if (to && onClick) throw new Error('`to` and `onClick` component properties are mutually exclusive');
 	if (!to && !onClick) throw new Error('Component must have either `to` or `onClick` property');
 
 	const navigate = useNavigate();
 	const css = clsx(
-		'p-1 flex items-center rounded-full transition-all',
+		baseCss,
 		{
 			'text-gray-500 cursor-not-allowed!': props.disabled,
 			'text-gray-300 hover:text-white hover:bg-gray-600 active:bg-gray-700 ': !props.disabled,
