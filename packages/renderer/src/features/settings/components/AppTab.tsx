@@ -6,9 +6,9 @@ import { KeyCombo } from '~/components/KeyCombo';
 import { ToggleButton } from '~/components/ToggleButton';
 
 export const AppTab = () => {
-	const [showWindowFrame, setShowWindowFrame]     = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
-	const [showHintFooter, setShowHintFooter]       = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
-	const [hideSetupWindow, setHideSetupWindow]     = useSetting(SettingsKey.HideSetupWindow, { defaultValue: false });
+	const [showWindowFrame, setShowWindowFrame]     = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false, reactive: false });
+	const [showHintFooter, setShowHintFooter]       = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true, reactive: false });
+	const [hideSetupWindow, setHideSetupWindow]     = useSetting(SettingsKey.HideSetupWindow, { defaultValue: false, reactive: false });
 	const [autoStartEnabled, setAutoStartEnabled]   = useState(false);
 	const [globalMenuEnabled, setGlobalMenuEnabled] = useState(false);
 

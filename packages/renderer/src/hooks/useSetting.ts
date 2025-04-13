@@ -3,30 +3,33 @@ import { IpcChannel, SettingsKey } from 'shared';
 
 type UseSettingsOptions<T> = {
 	defaultValue?: T;
-	secure?: boolean;
+	reactive?: boolean;
 };
 
 export const useSetting = <T>(key: SettingsKey, options?: UseSettingsOptions<T>) => {
-	const [value, setValue] = useState<T>(window.settings.getValue<T>(key, options?.defaultValue, options?.secure));
+	const isReactive        = options?.reactive ?? true;
+	const [value, setValue] = useState<T>(window.settings.getValue<T>(key, options?.defaultValue));
 
 	const setSettingValue = async (newValue: T) => {
 		setValue(newValue);
-		await window.api.setSettingsValue(key, newValue, options?.secure);
-	};
-
-	const onSettingsUpdate = (settingsKey: string, newValue: T) => {
-		if (settingsKey !== key) {
-			return;
-		}
-
-		setValue(newValue);
+		await window.api.setSettingsValue(key, newValue);
 	};
 
 	useEffect(() => {
-		const removeListener = window.ipc.on(IpcChannel.Settings_Changed, onSettingsUpdate);
+		if (isReactive) {
+			const onSettingsUpdate = (settingsKey: string, newValue: T) => {
+				if (settingsKey !== key) {
+					return;
+				}
+				setValue(newValue);
+			};
 
-		return () => removeListener();
-	});
+			const removeListener = window.ipc.on(IpcChannel.Settings_Changed, onSettingsUpdate);
+			return () => removeListener();
+		}
+
+		return () => {};
+	}, [key, isReactive]);
 
 	return [value, setSettingValue] as const;
 };
