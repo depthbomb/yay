@@ -22,26 +22,24 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 }) => {
 	const containerCss = clsx(
 		'relative',
-		'flex flex-row shrink-0 items-stretch justify-stretch',
 		'p-[1px] w-full h-8',
+		'flex flex-row items-stretch justify-stretch',
 		{
 			'bg-gradient-to-r from-[#FF0033] to-[#FF2790]': !disabled,
 			'bg-gray-600': disabled,
 		},
 		'rounded',
-		'gradient-shadow',
 		{
 			'after:absolute after:w-full after:h-8 after:bg-gradient-to-r after:from-[#FF0033] after:to-[#FF2790] after:blur after:-z-10': !disabled
 		}
 	);
 	const buttonCss = clsx(
 		'flex flex-row items-center justify-center',
-		'space-x-1 w-full',
+		'space-x-1 w-1/2',
 		'text-sm text-gray-200 font-semibold',
-		'bg-gray-950',
 		{
-			'cursor-not-allowed! text-gray-400': disabled,
-			'hover:text-white hover:bg-transparent active:text-white active:bg-black/25': !disabled
+			'cursor-not-allowed! text-gray-400 bg-gray-950': disabled,
+			'bg-black hover:text-white hover:bg-transparent active:text-white active:bg-black/25': !disabled
 		},
 		'transition-all'
 	);
@@ -52,7 +50,7 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 				<Icon path={mdiVideo} className="size-5"/>
 				<span>Download Video</span>
 			</button>
-			<span className="w-[1px] h-full shrink-0 bg-black/30"></span>
+			<span className="w-[1px] h-full shrink-0 bg-transparent"></span>
 			<button onClick={onDownloadAudioClick} className={`${buttonCss} rounded-r`} disabled={disabled} type="button">
 				<Icon path={mdiMusicNote} className="size-5"/>
 				<span>Download Audio</span>
