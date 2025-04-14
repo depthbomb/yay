@@ -2,12 +2,13 @@ import type { Nullable } from 'shared';
 
 export class NotificationBuilder {
 	private title: string = '';
+	private launch: string = '';
+	private activationType: string = '';
+	private scenario: Nullable<string> = null;
 	private text: string[] = [];
 	private image: Nullable<{ url: string; placement: string; }> = null;
 	private audio: Nullable<{ src: Nullable<string>; loop: Nullable<boolean>; silent: Nullable<boolean> }> = null;
 	private actions: Array<{ content: string; activationType: string; args: string }> = [];
-	private launch: string = '';
-	private scenario: Nullable<string> = null;
 
 	public setTitle(title: string) {
 		this.title = title;
@@ -41,8 +42,9 @@ export class NotificationBuilder {
 		return this;
 	}
 
-	public setLaunch(launch: string) {
-		this.launch = launch;
+	public setLaunch(launch: string, activationType: string = 'foreground') {
+		this.launch         = launch;
+		this.activationType = activationType;
 
 		return this;
 	}
@@ -58,6 +60,10 @@ export class NotificationBuilder {
 
 		if (this.launch) {
 			xml += ` launch="${this.escape(this.launch)}"`;
+		}
+
+		if (this.activationType) {
+			xml += ` activationType="${this.escape(this.activationType)}"`;
 		}
 
 		if (this.scenario) {
