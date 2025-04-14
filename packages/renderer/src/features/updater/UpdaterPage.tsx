@@ -13,12 +13,12 @@ import type { Components } from 'react-markdown';
 const markdownComponents = {
 	ul(props) {
 		return (
-			<div className="py-1 px-2">{props.children}</div>
+			<div className="flex flex-col">{props.children}</div>
 		);
 	},
 	li(props) {
 		return (
-			<p className="py-1 px-2 space-x-3"><span className="font-black">&bull;</span><span>{props.children}</span></p>
+			<div className="pl-4 py-2 space-x-3 odd:bg-gray-900">{props.children}</div>
 		);
 	},
 	a(props) {
@@ -51,16 +51,14 @@ export const UpdaterPage = () => {
 		window.api.getLatestRelease().then(setRelease);
 	}, []);
 
-	useEffect(() => {
-		onUpdateStep(setStatus);
-	}, []);
+	useEffect(() => onUpdateStep(setStatus), []);
 
 	return (
 		<div className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">
 			{release ? (
 				<>
-					<h1 className="text-2xl">yay version {release.tag_name} is available</h1>
-					<div className="bg-gray-800 rounded overflow-hidden">
+					<h1 className="text-2xl">yay version <span className="font-mono">{release.tag_name}</span> is available</h1>
+					<div className="bg-gray-800 rounded-lg overflow-hidden">
 						<Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{release.body}</Markdown>
 					</div>
 					<div className="mt-auto w-full flex items-center">
@@ -74,7 +72,7 @@ export const UpdaterPage = () => {
 							<PushButton onClick={onCancelButtonClicked} className="ml-auto" variant="danger" size="lg">Cancel</PushButton>
 						) : (
 							<PushButton onClick={onDownloadButtonClicked} className="ml-auto" variant='brand' size="lg" disabled={updating}>
-								<Icon path={mdiDownload} className="size-4"/>
+								<Icon path={mdiDownload} className="size-5"/>
 								<span>Download &amp; install</span>
 							</PushButton>
 						)}
