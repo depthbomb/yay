@@ -5,6 +5,7 @@ import { SettingsReader } from './settingsReader';
 import { SettingsWriter } from './settingsWriter';
 import { SettingsManager } from './settingsManager';
 import { SettingsFileProvider } from './settingsFileProvider';
+import type { BrowserWindow } from 'electron';
 import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class SettingsManagerModule {
@@ -18,6 +19,8 @@ export class SettingsManagerModule {
 		const settingsManager      = new SettingsManager(settingsReader, settingsWriter, moduleRegistry.get('EventEmitter'));
 
 		moduleRegistry.register('SettingsManager', settingsManager);
+
+		let settingsWindow: BrowserWindow;
 
 		ipc.registerSyncHandler(
 			IpcChannel.Settings_Get,
@@ -42,45 +45,55 @@ export class SettingsManagerModule {
 		ipc.registerHandler(
 			IpcChannel.Settings_ShowUi,
 			() => {
-				const settingsWindow = windowManager.createWindow('settings', {
-					url: windowManager.resolveRendererHTML('settings.html'),
-					browserWindowOptions: {
-						show: false,
-						minWidth: 600,
-						width: 600,
-						minHeight: 500,
-						height: 500,
-						roundedCorners: false,
-						webPreferences: {
-							spellcheck: false,
-							enableWebSQL: false,
-							nodeIntegration: true,
-							devTools: import.meta.env.DEV,
-							preload: PRELOAD_PATH,
+				if (settingsWindow) {
+					settingsWindow.show();
+				} else {
+					settingsWindow = windowManager.createWindow('settings', {
+						url: windowManager.resolveRendererHTML('settings.html'),
+						browserWindowOptions: {
+							show: false,
+							minWidth: 600,
+							width: 600,
+							minHeight: 500,
+							height: 500,
+							backgroundColor: '#09090b',
+							roundedCorners: false,
+							webPreferences: {
+								spellcheck: false,
+								enableWebSQL: false,
+								nodeIntegration: true,
+								devTools: import.meta.env.DEV,
+								preload: PRELOAD_PATH,
+							}
+						},
+						onReadyToShow() {
+							if (import.meta.env.DEV) {
+								settingsWindow!.webContents.openDevTools({ mode: 'detach' });
+							}
+
+							settingsWindow.center();
+							settingsWindow.show();
 						}
-					},
-					onReadyToShow() {
-						if (import.meta.env.DEV) {
-							settingsWindow.webContents.openDevTools({ mode: 'detach' });
+					});
+
+					settingsWindow.on('close', e => {
+						e.preventDefault();
+						settingsWindow.hide();
+					});
+
+					settingsWindow.webContents.setWindowOpenHandler(({ url }) => {
+						const requestedUrl = new URL(url);
+						if (requestedUrl.host === 'github.com') {
+							/**
+							 * Currently the only intended links to open in an external browser are
+							 * for GitHub.
+							 */
+							shell.openExternal(url);
 						}
 
-						settingsWindow.center();
-						settingsWindow.show();
-					}
-				});
-
-				settingsWindow.webContents.setWindowOpenHandler(({ url }) => {
-					const requestedUrl = new URL(url);
-					if (requestedUrl.host === 'github.com') {
-						/**
-						 * Currently the only intended links to open in an external browser are for
-						 * GitHub.
-						 */
-						shell.openExternal(url);
-					}
-
-					return { action: 'deny' };
-				});
+						return { action: 'deny' };
+					});
+				}
 			}
 		);
 
