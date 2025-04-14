@@ -4,6 +4,7 @@ import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class DeepLinksModule {
 	public static bootstrap(moduleRegistry: ModuleRegistry) {
+		const eventEmitter  = moduleRegistry.get('EventEmitter');
 		const windowManager = moduleRegistry.get('WindowManager');
 		const ytdlpManager  = moduleRegistry.get('YtdlpManager');
 
@@ -22,18 +23,18 @@ export class DeepLinksModule {
 				}
 
 				const { host, searchParams } = new URL(deepLink);
-				if (!searchParams.has('url')) {
-					return;
-				}
-
-				const mediaUrl = searchParams.get('url')!;
-				switch (host) {
-					case 'download-video':
-						await ytdlpManager.download(mediaUrl, false);
-						break;
-					case 'download-audio':
-						await ytdlpManager.download(mediaUrl, true);
-						break;
+				if (searchParams.has('url')) {
+					const mediaUrl = searchParams.get('url')!;
+					switch (host) {
+						case 'download-video':
+							await ytdlpManager.download(mediaUrl, false);
+							break;
+						case 'download-audio':
+							await ytdlpManager.download(mediaUrl, true);
+							break;
+					}
+				} else if (host === 'open-updater') {
+					eventEmitter.emit('show-updater');
 				}
 			});
 		}

@@ -6,4 +6,5 @@ export type Events = {
 	'download-started': string;
 	'download-finished': void;
 	'window-created': BrowserWindow;
+	'show-updater': void;
 };

@@ -2,18 +2,22 @@ import semver from 'semver';
 import { join } from 'node:path';
 import { app, shell } from 'electron';
 import { spawn } from 'node:child_process';
-import { product, IpcChannel } from 'shared';
+import { NotificationBuilder } from '~/lib/Notifications';
+import { product, IpcChannel, SettingsKey } from 'shared';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
 import type { Nullable } from 'shared';
 import type { BrowserWindow } from 'electron';
-import type { Github, Release,  } from '~/lib/Github';
+import type { Github, Release } from '~/lib/Github';
+import type { Notifications } from '~/lib/Notifications';
 import type { WindowManager } from '~/lib/WindowManager';
+import type { SettingsManager } from '~/lib/SettingsManager';
 import type { HttpClient, HttpClientManager } from '~/lib/HttpClientManager';
 
 export class Updater {
 	private abort          = new AbortController();
 	private aborted        = false;
 	private isStartupCheck = true;
+	private isNotified     = false;
 
 	private readonly http: HttpClient;
 
@@ -21,8 +25,10 @@ export class Updater {
 	public updaterWindow: Nullable<BrowserWindow> = null;
 
 	public constructor(
+		private readonly notifications: Notifications,
 		private readonly httpClientManager: HttpClientManager,
 		private readonly windowManager: WindowManager,
+		private readonly settingsManager: SettingsManager,
 		private readonly github: Github,
 	) {
 		this.http = this.httpClientManager.getClient('Updater', { userAgent: USER_AGENT });
@@ -43,6 +49,20 @@ export class Updater {
 			}
 
 			this.windowManager.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
+
+			if (
+				this.settingsManager.get<boolean>(SettingsKey.EnableNewReleaseToast, true) &&
+				!this.isStartupCheck &&
+				!this.isNotified
+			) {
+				this.notifications.showNotification(
+					new NotificationBuilder()
+						.setTitle(`Version ${newRelease.tag_name} is available!`)
+						.setLaunch('yay://open-updater', 'protocol')
+				);
+
+				this.isNotified = true;
+			}
 		}
 
 		this.isStartupCheck = false;

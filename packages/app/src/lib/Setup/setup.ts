@@ -42,6 +42,7 @@ export class Setup {
 		await this.settingsManager.setDefault(SettingsKey.DefaultDownloadAction, 'video');
 		await this.settingsManager.setDefault(SettingsKey.EnableGlobalMenu, false);
 		await this.settingsManager.setDefault(SettingsKey.EnableDownloadCompletionToast, true);
+		await this.settingsManager.setDefault(SettingsKey.EnableNewReleaseToast, true);
 	}
 
 	private async checkForBinaries() {
