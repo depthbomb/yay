@@ -23,7 +23,7 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 	const containerCss = clsx(
 		'relative',
 		'p-[1px] w-full h-8',
-		'flex flex-row items-stretch justify-stretch',
+		'flex flex-row items-stretch justify-stretch shrink-0',
 		{
 			'bg-gradient-to-r from-[#FF0033] to-[#FF2790]': !disabled,
 			'bg-gray-600': disabled,
