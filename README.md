@@ -15,6 +15,7 @@ Upon first run, yay will automatically download the latest version of yt-dlp if 
   - [ ] Allow supplying raw options
 - [x] Improved download completion notifying
 - [x] Application update checking
+- [ ] Improved settings UI
 
 ## Screenshots
 

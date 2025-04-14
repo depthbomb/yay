@@ -57,8 +57,13 @@ export class YtdlpManager {
 
 		const youtubeMatch = url.match(this.youtubeUrlPattern);
 		if (youtubeMatch) {
+			const videoId = youtubeMatch[1];
+			if (this.settingsManager.get(SettingsKey.SkipYoutubePlaylists)) {
+				url = `https://www.youtube.com/watch?v=${videoId}`;
+			}
+
 			notificationImagePlacement = 'hero';
-			notificationImage          = await this.thumbnailDownloader.downloadThumbnail(youtubeMatch[1]);
+			notificationImage          = await this.thumbnailDownloader.downloadThumbnail(videoId);
 		}
 
 		if (audioOnly) {

@@ -38,6 +38,7 @@ export class Setup {
 		await this.settingsManager.setDefault(SettingsKey.YtdlpPath, 'yt-dlp');
 		await this.settingsManager.setDefault(SettingsKey.DownloadDir, app.getPath('downloads'));
 		await this.settingsManager.setDefault(SettingsKey.DownloadNameTemplate, '%(title)s [%(id)s].%(ext)s');
+		await this.settingsManager.setDefault(SettingsKey.SkipYoutubePlaylists, true);
 		await this.settingsManager.setDefault(SettingsKey.DefaultDownloadAction, 'video');
 		await this.settingsManager.setDefault(SettingsKey.EnableGlobalMenu, false);
 		await this.settingsManager.setDefault(SettingsKey.EnableDownloadCompletionToast, true);

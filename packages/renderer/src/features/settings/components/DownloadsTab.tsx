@@ -10,6 +10,7 @@ export const DownloadsTab = () => {
 	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(SettingsKey.DownloadNameTemplate, { reactive: false });
 	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(SettingsKey.DefaultDownloadAction, { reactive: false });
 	const [enableNotifications, setEnableNotifications]     = useSetting(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
+	const [skipYoutubePlaylists, setSkipYoutubePlaylists]   = useSetting(SettingsKey.SkipYoutubePlaylists, { defaultValue: true, reactive: false });
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
 
@@ -33,6 +34,10 @@ export const DownloadsTab = () => {
 					<option value="video">Download video</option>
 					<option value="audio">Download audio</option>
 				</Select>
+			</div>
+			<div className="flex flex-col items-start space-y-1.5">
+				<p>Don't download YouTube playlists</p>
+				<ToggleButton enabled={skipYoutubePlaylists} onClick={() => setSkipYoutubePlaylists(!skipYoutubePlaylists)}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Completion toast notification</p>

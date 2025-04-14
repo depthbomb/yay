@@ -5,6 +5,7 @@ export enum SettingsKey {
 	EnableDownloadCompletionToast = 'enable-download-completion-toast',
 	EnableGlobalMenu              = 'enable-global-menu',
 	YtdlpPath                     = 'yt-dlp-path',
+	SkipYoutubePlaylists          = 'skip-youtube-playlists',
 	ShowHintFooter                = 'show-hint-footer',
 	ShowWindowFrame               = 'show-window-frame',
 	HideSetupWindow               = 'hide-setup-window',

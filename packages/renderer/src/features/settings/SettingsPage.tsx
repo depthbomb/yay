@@ -55,13 +55,12 @@ export const SettingsPage = () => {
 
 	return (
 		<div className="h-full flex flex-col">
-			<div className="p-3 space-x-2 flex items-center">
+			<div className="px-3 h-12 space-x-2 flex items-center">
 				<TabButton onClick={() => setActiveTab(0)} isActive={activeTab === 0} title="App"/>
 				<TabButton onClick={() => setActiveTab(1)} isActive={activeTab === 1} title="Downloads"/>
 				<TabButton onClick={() => setActiveTab(2)} isActive={activeTab === 2} title="Advanced"/>
-
 			</div>
-			<div className="p-3">
+			<div className="p-3 h-[calc(100vh-136px)] overflow-y-auto [scrollbar-width:thin]">
 				<div className={activeTab === 0 ? 'block' : 'hidden'}>
 					<AppTab/>
 				</div>
