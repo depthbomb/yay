@@ -75,7 +75,7 @@ export class Setup {
 				}
 
 				const hideSetupWindow =  this.settingsManager.get<boolean>(SettingsKey.HideSetupWindow);
-				if (!hideSetupWindow) {
+				if (!hideSetupWindow || this.flags.updateBinaries) {
 					setupWindow.show();
 				}
 

@@ -3,8 +3,8 @@ import { PRELOAD_PATH } from '~/constants';
 import { IpcChannel, SettingsKey } from 'shared';
 import { app, Menu, shell, dialog } from 'electron';
 import { fileExists, getExtraFilePath } from '~/utils';
-import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 import type { MessageBoxOptions } from 'electron';
+import type { ModuleRegistry } from '~/lib/ModuleRegistry';
 
 export class MainWindowModule {
 	public static async bootstrap(moduleRegistry: ModuleRegistry) {
