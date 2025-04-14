@@ -42,12 +42,10 @@ export class SettingsManagerModule {
 		ipc.registerHandler(
 			IpcChannel.Settings_ShowUi,
 			() => {
-				const mainWindow = windowManager.getMainWindow();
 				const settingsWindow = windowManager.createWindow('settings', {
 					url: windowManager.resolveRendererHTML('settings.html'),
 					browserWindowOptions: {
 						show: false,
-						parent: mainWindow,
 						minWidth: 600,
 						width: 600,
 						minHeight: 500,
