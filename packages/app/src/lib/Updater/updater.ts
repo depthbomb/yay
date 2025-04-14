@@ -31,21 +31,20 @@ export class Updater {
 	public async checkForUpdates() {
 		const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
 		const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
-		if (!newRelease) {
-			return;
+		if (newRelease) {
+			this.latestRelease = newRelease;
+
+			/**
+			 * If this is the first time checking for updates (immediately after setup) then show
+			 * the updater window.
+			 */
+			if (this.isStartupCheck) {
+				this.showUpdaterWindow();
+			}
+
+			this.windowManager.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
 		}
 
-		this.latestRelease = newRelease;
-
-		/**
-		 * If this is the first time checking for updates (immediately after setup) then show the
-		 * updater window.
-		 */
-		if (this.isStartupCheck) {
-			this.showUpdaterWindow();
-		}
-
-		this.windowManager.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
 		this.isStartupCheck = false;
 	}
 
