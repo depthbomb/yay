@@ -95,6 +95,9 @@ const coreApi = {
 	resetSettings() {
 		return ipcRenderer.invoke(IpcChannel.Settings_Reset);
 	},
+	showSettingsUI() {
+		return ipcRenderer.invoke(IpcChannel.Settings_ShowUi);
+	},
 	//
 	downloadVideo(url: string) {
 		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadVideo, url);

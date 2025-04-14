@@ -1,8 +1,8 @@
 import { useSetting } from '~/hooks';
 import { SettingsKey } from 'shared';
+import { Switch } from '~/components/Switch';
 import { KeyCombo } from '~/components/KeyCombo';
 import { Select, TextInput } from '~/components/input';
-import { ToggleButton } from '~/components/ToggleButton';
 import type { ChangeEvent } from 'react';
 
 export const DownloadsTab = () => {
@@ -36,12 +36,12 @@ export const DownloadsTab = () => {
 				</Select>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Don't download YouTube playlists</p>
-				<ToggleButton enabled={skipYoutubePlaylists} onClick={() => setSkipYoutubePlaylists(!skipYoutubePlaylists)}/>
+				<p>Completion toast notification</p>
+				<Switch checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Completion toast notification</p>
-				<ToggleButton enabled={enableNotifications} onClick={() => setEnableNotifications(!enableNotifications)}/>
+				<p>Don't download YouTube playlists</p>
+				<Switch checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
 			</div>
 		</div>
 	);

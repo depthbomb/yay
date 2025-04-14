@@ -29,6 +29,7 @@ export type CoreApi = {
 	getSettingsValue<T>(key: SettingsKey, defaultValue?: any, secure?: boolean): Promise<T>;
 	setSettingsValue(key: SettingsKey, value: any, secure?: boolean): Promise<void>;
 	resetSettings(): Promise<void>;
+	showSettingsUI(): Promise<void>;
 	//
 	downloadVideo(url: string): Promise<void>;
 	downloadAudio(url: string): Promise<void>;

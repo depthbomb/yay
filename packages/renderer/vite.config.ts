@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
 			rollupOptions: {
 				input: {
 					index: resolve('./src/index.html'),
+					settings: resolve('./src/settings.html'),
 					setup: resolve('./src/setup.html'),
 					updater: resolve('./src/updater.html'),
 				},

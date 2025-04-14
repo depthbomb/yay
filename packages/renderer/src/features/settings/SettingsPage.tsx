@@ -1,79 +1,64 @@
 import clsx from 'clsx';
-import { useAtom } from 'jotai';
-import { Link } from 'react-router';
-import { workingAtom } from '~/atoms/app';
+import { Tabs } from 'radix-ui';
 import { AppTab } from './components/AppTab';
+import { DevTab } from './components/DevTab';
 import { AdvancedTab } from './components/AdvancedTab';
-import { useLocation, useNavigate } from 'react-router';
-import { useState, useEffect, forwardRef } from 'react';
 import { DownloadsTab } from './components/DownloadsTab';
-import type { ButtonHTMLAttributes } from 'react';
+import type { FC, ButtonHTMLAttributes } from 'react';
 
 type TabButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-	title: string;
-	isActive: boolean;
+	value: string;
 };
 
-const TabButton = forwardRef<HTMLButtonElement, TabButtonProps>(({ title, isActive, onClick, className, ...props }, ref) => {
+const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 	const css = clsx(
-		'pt-0.5 px-2',
+		'py-0.25 px-3',
 		'text-sm text-gray-300 hover:text-white',
-		{
-			'text-white! bg-brand-700 rounded': isActive,
-			'bg-transparent hover:border-brand-600': !isActive
-		},
-		'border-b-2 border-transparent',
+		'data-[state=active]:text-white! data-[state=active]:bg-brand-700 data-[state=active]:rounded',
+		'data-[state=inactive]:bg-transparent data-[state=inactive]:hover:border-l-brand-700',
+		'border-2 border-transparent',
 		'transition-all',
 		className
 	);
 
-	const location    = useLocation();
-	const navigate    = useNavigate();
-	const [isWorking] = useAtom(workingAtom);
-
-	useEffect(() => {
-		if (isWorking && location.pathname !== '/') {
-			navigate('/');
-		}
-	}, [isWorking]);
-
 	return (
-		<button
-			ref={ref}
-			onClick={onClick}
-			className={css}
-			{...props}
-			type="button"
-		>
-			{title}
-		</button>
+		<Tabs.Trigger value={value} className={css}>
+			{props.children}
+		</Tabs.Trigger>
 	);
-});
+};
 
 export const SettingsPage = () => {
-	const [activeTab, setActiveTab] = useState(0);
-
 	return (
-		<div className="h-full flex flex-col">
-			<div className="px-3 h-12 space-x-2 flex items-center">
-				<TabButton onClick={() => setActiveTab(0)} isActive={activeTab === 0} title="App"/>
-				<TabButton onClick={() => setActiveTab(1)} isActive={activeTab === 1} title="Downloads"/>
-				<TabButton onClick={() => setActiveTab(2)} isActive={activeTab === 2} title="Advanced"/>
-			</div>
-			<div className="p-3 h-[calc(100vh-136px)] overflow-y-auto [scrollbar-width:thin]">
-				<div className={activeTab === 0 ? 'block' : 'hidden'}>
+		<Tabs.Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
+			<Tabs.List className="p-3 space-y-1.5 w-32 flex flex-col shrink-0 bg-gray-900">
+				<TabButton value="app">
+					Application
+				</TabButton>
+				<TabButton value="downloads">
+					Downloads
+				</TabButton>
+				<TabButton value="advanced">
+					Advanced
+				</TabButton>
+				<TabButton value="dev">
+					Developer
+				</TabButton>
+			</Tabs.List>
+			<div className="p-3 size-full overflow-y-auto [scrollbar-width:thin]">
+				<Tabs.Content value="app">
 					<AppTab/>
-				</div>
-				<div className={activeTab === 1 ? 'block' : 'hidden'}>
+				</Tabs.Content>
+				<Tabs.Content value="downloads">
 					<DownloadsTab/>
-				</div>
-				<div className={activeTab === 2 ? 'block' : 'hidden'}>
+				</Tabs.Content>
+				<Tabs.Content value="advanced">
 					<AdvancedTab/>
-				</div>
+				</Tabs.Content>
+				<Tabs.Content value="dev">
+					<DevTab/>
+				</Tabs.Content>
 			</div>
-			<div className="mt-auto mr-3 mb-3 ml-3 flex items-center justify-end">
-				<Link to="/dev-info" className="text-xs">Developer info</Link>
-			</div>
-		</div>
+		</Tabs.Root>
 	);
 };

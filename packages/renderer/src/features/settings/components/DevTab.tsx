@@ -24,9 +24,9 @@ const InfoSection: FC<InfoSectionProps> = ({ title, values }) => {
 	);
 };
 
-export const DevInfoPage = () => {
+export const DevTab = () => {
 	return (
-		<div className="p-3 w-full flex flex-col space-y-3">
+		<div className="space-y-3 flex flex-col">
 			<InfoSection title="Application" values={[
 				['Product version', product.version],
 				['Commit', <a href={`https://github.com/depthbomb/yay/commit/${GIT_HASH}`} target="_blank">{GIT_HASH_SHORT}</a>],
@@ -43,8 +43,8 @@ export const DevInfoPage = () => {
 				['Release', window.system.release()],
 				['Architecture', window.system.arch()],
 			]}/>
-			<a href="https://github.com/depthbomb/yay" target="_blank" className="space-x-0.5 flex items-center">
-				<Icon path={mdiGithub} className="size-5"/>
+			<a href="https://github.com/depthbomb/yay" target="_blank" className="space-x-0.5 flex items-center text-sm">
+				<Icon path={mdiGithub} className="size-4"/>
 				<span>GitHub</span>
 			</a>
 		</div>

@@ -7,9 +7,6 @@ import { IpcChannel, SettingsKey } from 'shared';
 import { HomePage } from './features/home/HomePage';
 import { AppMasthead } from './components/AppMasthead';
 import { clearLogAtom, pushToLogAtom } from './atoms/log';
-import { Route, Routes, MemoryRouter } from 'react-router';
-import { DevInfoPage } from './features/dev-info/DevInfoPage';
-import { SettingsPage } from './features/settings/SettingsPage';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom } from './atoms/app';
 
 export const App = () => {
@@ -69,15 +66,10 @@ export const App = () => {
 						</div>
 					</div>
 				) : (
-					<MemoryRouter>
+					<>
 						<AppMasthead/>
-						<Routes>
-							<Route index element={<HomePage/>}/>
-							<Route path="settings" element={<SettingsPage/>}/>
-							<Route path="dev-info" element={<DevInfoPage/>}/>
-							<Route path="*" element={<HomePage/>}/>
-						</Routes>
-					</MemoryRouter>
+						<HomePage/>
+					</>
 				)}
 			</div>
 			{!showWindowFrame && <div className={accentCss}/>}

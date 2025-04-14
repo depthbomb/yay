@@ -48,16 +48,6 @@ export class MainWindowModule {
 		// dialog open.
 		let shouldHideOnBlur = true;
 
-		mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-			const requestedUrl = new URL(url);
-			if (requestedUrl.host === 'github.com') {
-				// Currently the only intended links to open in an external browser are for GitHub.
-				shell.openExternal(url);
-			}
-
-			return { action: 'deny' };
-		});
-
 		//#region Main window events
 		mainWindow.on('close', e => {
 			e.preventDefault();

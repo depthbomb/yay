@@ -17,6 +17,7 @@ export enum IpcChannel {
 	Settings_Set     = 'settings:get',
 	Settings_Get     = 'settings:set',
 	Settings_Reset   = 'settings:reset',
+	Settings_ShowUi  = 'settings:show-ui',
 	// yt-dlp channels
 	Ytdlp_DownloadVideo    = 'yt-dlp:download-video',
 	Ytdlp_DownloadAudio    = 'yt-dlp:download-audio',

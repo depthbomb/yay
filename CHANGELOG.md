@@ -1,3 +1,11 @@
+# 1.7.0
+
+- Overhauled settings UI
+  - Now contained within its own window to allow for more room for options
+  - Updated style of toggle-able elements
+- Fixed the updater window displaying automatically when it shouldn't
+- Fixed the setup window not displaying when rechecking binaries with the _Hide setup window on startup_ option enabled
+
 # 1.6.0
 
 - Added an option to not download playlists when using a YouTube video URL that contains a playlist

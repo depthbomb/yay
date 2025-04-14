@@ -1,5 +1,6 @@
-import { app } from 'electron';
 import { IpcChannel } from 'shared';
+import { app, shell } from 'electron';
+import { PRELOAD_PATH } from '~/constants';
 import { SettingsReader } from './settingsReader';
 import { SettingsWriter } from './settingsWriter';
 import { SettingsManager } from './settingsManager';
@@ -36,6 +37,52 @@ export class SettingsManagerModule {
 				await settingsManager.reset();
 				app.relaunch();
 				app.exit(0);
+			}
+		);
+		ipc.registerHandler(
+			IpcChannel.Settings_ShowUi,
+			() => {
+				const mainWindow = windowManager.getMainWindow();
+				const settingsWindow = windowManager.createWindow('settings', {
+					url: windowManager.resolveRendererHTML('settings.html'),
+					browserWindowOptions: {
+						show: false,
+						parent: mainWindow,
+						minWidth: 600,
+						width: 600,
+						minHeight: 500,
+						height: 500,
+						roundedCorners: false,
+						webPreferences: {
+							spellcheck: false,
+							enableWebSQL: false,
+							nodeIntegration: true,
+							devTools: import.meta.env.DEV,
+							preload: PRELOAD_PATH,
+						}
+					},
+					onReadyToShow() {
+						if (import.meta.env.DEV) {
+							settingsWindow.webContents.openDevTools({ mode: 'detach' });
+						}
+
+						settingsWindow.center();
+						settingsWindow.show();
+					}
+				});
+
+				settingsWindow.webContents.setWindowOpenHandler(({ url }) => {
+					const requestedUrl = new URL(url);
+					if (requestedUrl.host === 'github.com') {
+						/**
+						 * Currently the only intended links to open in an external browser are for
+						 * GitHub.
+						 */
+						shell.openExternal(url);
+					}
+
+					return { action: 'deny' };
+				});
 			}
 		);
 
