@@ -1,3 +1,8 @@
+# 1.6.0
+
+- Added an option to not download playlists when using a YouTube video URL that contains a playlist
+- Fixed download buttons shrinking when downloading media
+
 # 1.5.1
 
 - Slightly adjusted the style of disabled download buttons
