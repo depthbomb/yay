@@ -13,7 +13,7 @@ export class UpdaterModule {
 
 		moduleRegistry.register('Updater', updater);
 
-		const updateCheck = setInterval(async () => await updater.checkForUpdates(), 300_000);
+		const updateCheck = setInterval(async () => await updater.checkForUpdates(), 180_000);
 		await updater.checkForUpdates();
 
 		app.once('quit', () => clearInterval(updateCheck));
