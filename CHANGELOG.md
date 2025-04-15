@@ -1,3 +1,7 @@
+# 1.9.2
+
+- Fixed some settings switches briefly animating to their proper value in some cases
+
 # 1.9.1
 
 - Fixed clickable links not being styled

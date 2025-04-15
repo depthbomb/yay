@@ -16,9 +16,16 @@ const EXCLUDE_ALL_NODE_MODULES = false;
  * If a package has dependencies then you must exclude those as well.
  */
 const EXCLUDED_PACKAGES = [
+	'@types',
 	'@octokit',
+	'before-after-hook',
+	'bottleneck',
+	'fast-content-type-parse',
+	'toad-cache',
+	'universal-github-app-jwt',
 	'cockatiel',
 	'tree-kill',
+	'octokit',
 	'ufo',
 	'universal-user-agent',
 	'shared',
