@@ -32,15 +32,13 @@ export enum IpcChannel {
 	Ytdlp_UpdatingBinary   = 'yt-dlp:updating-binary',
 	Ytdlp_UpdatedBinary    = 'yt-dlp:updated-binary',
 	// Autostart channels
-	Autostart_IsEnabled = 'autostart:is-enabled',
 	Autostart_Enable    = 'autostart:enable',
 	Autostart_Disable   = 'autostart:disable',
 	Autostart_Toggle    = 'autostart:toggle',
 	// Global menu channels
-	GlobalMenu_IsEnabled = 'global-menu:is-enabled',
-	GlobalMenu_Enable    = 'global-menu:enable',
-	GlobalMenu_Disable   = 'global-menu:disable',
-	GlobalMenu_Toggle    = 'global-menu:toggle',
+	GlobalMenu_Enable  = 'global-menu:enable',
+	GlobalMenu_Disable = 'global-menu:disable',
+	GlobalMenu_Toggle  = 'global-menu:toggle',
 	// Updater channels
 	Updater_Outdated             = 'updater:outdated',
 	Updater_ShowWindow           = 'updater:show-window',

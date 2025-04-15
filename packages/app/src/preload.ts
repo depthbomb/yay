@@ -118,9 +118,6 @@ const coreApi = {
 		return ipcRenderer.invoke(IpcChannel.Ytdlp_UpdateBinary);
 	},
 	//
-	getAutoStart() {
-		return ipcRenderer.invoke(IpcChannel.Autostart_IsEnabled);
-	},
 	enableAutoStart() {
 		return ipcRenderer.invoke(IpcChannel.Autostart_Enable);
 	},
@@ -131,9 +128,6 @@ const coreApi = {
 		return ipcRenderer.invoke(IpcChannel.Autostart_Toggle);
 	},
 	//
-	getGlobalMenuEnabled() {
-		return ipcRenderer.invoke(IpcChannel.GlobalMenu_IsEnabled);
-	},
 	enableGlobalMenu() {
 		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Enable);
 	},

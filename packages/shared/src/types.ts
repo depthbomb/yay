@@ -39,12 +39,10 @@ export type CoreApi = {
 	recheckBinaries(): Promise<void>;
 	updateYtdlpBinary(): Promise<void>;
 	//
-	getAutoStart(): Promise<boolean>;
 	enableAutoStart(): Promise<void>;
 	disableAutoStart(): Promise<void>;
 	toggleAutoStart(): Promise<boolean>;
 	//
-	getGlobalMenuEnabled(): Promise<boolean>;
 	enableGlobalMenu(): Promise<void>;
 	disableGlobalMenu(): Promise<void>;
 	toggleGlobalMenu(): Promise<boolean>;

@@ -36,12 +36,20 @@ export class GlobalMenuModule {
 			eventSubscriber.subscribe('setup-finished', () => globalShortcut.register(accelerator, callback));
 		}
 
-		ipc.registerHandler(IpcChannel.GlobalMenu_IsEnabled, () => globalShortcut.isRegistered(accelerator));
-		ipc.registerHandler(IpcChannel.GlobalMenu_Enable,    enableGlobalMenu);
-		ipc.registerHandler(IpcChannel.GlobalMenu_Disable,   disableGlobalMenu);
-		ipc.registerHandler(IpcChannel.GlobalMenu_Toggle,    toggleGlobalMenu);
+		ipc.registerHandler(IpcChannel.GlobalMenu_Enable,  enableGlobalMenu);
+		ipc.registerHandler(IpcChannel.GlobalMenu_Disable, disableGlobalMenu);
+		ipc.registerHandler(IpcChannel.GlobalMenu_Toggle,  toggleGlobalMenu);
 
 		eventSubscriber.subscribe('download-started',  () => globalMenu.setMenu(true));
 		eventSubscriber.subscribe('download-finished', () => globalMenu.setMenu(false));
+		eventSubscriber.subscribe('settings-updated', ({ key, value }) => {
+			if (key === SettingsKey.EnableGlobalMenu) {
+				if (value as boolean) {
+					globalShortcut.register(accelerator, callback);
+				} else {
+					globalShortcut.unregister(accelerator);
+				}
+			}
+		});
 	}
 }

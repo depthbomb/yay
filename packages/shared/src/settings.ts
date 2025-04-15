@@ -1,6 +1,7 @@
 export enum SettingsKey {
 	EnableNewReleaseToast         = 'enable-new-release-toast',
 	EnableGlobalMenu              = 'enable-global-menu',
+	AutoStart                     = 'auto-start',
 	ShowHintFooter                = 'show-hint-footer',
 	ShowWindowFrame               = 'show-window-frame',
 	HideSetupWindow               = 'hide-setup-window',
