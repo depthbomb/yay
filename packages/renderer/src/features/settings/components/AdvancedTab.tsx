@@ -1,4 +1,6 @@
 import Icon from '@mdi/react';
+import { useAtom } from 'jotai';
+import { workingAtom } from '~/atoms/app';
 import { PushButton } from '~/components/PushButton';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
@@ -31,17 +33,19 @@ const onResetSettingsButtonClicked = async () => {
 };
 
 export const AdvancedTab = () => {
+	const [isWorking] = useAtom(workingAtom);
+
 	return (
 		<div className="flex flex-col items-start space-y-1.5">
-			<PushButton onClick={onRecheckBinariesButtonClicked}>
+			<PushButton onClick={onRecheckBinariesButtonClicked} disabled={isWorking}>
 				<Icon path={mdiDownload} className="size-3"/>
 				<span>Recheck required binaries</span>
 			</PushButton>
-			<PushButton onClick={() => window.api.updateYtdlpBinary()}>
+			<PushButton onClick={() => window.api.updateYtdlpBinary()} disabled={isWorking}>
 				<Icon path={mdiUpdate} className="size-3"/>
 				<span>Update yt-dlp</span>
 			</PushButton>
-			<PushButton variant="danger" onClick={onResetSettingsButtonClicked}>
+			<PushButton variant="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking}>
 				<Icon path={mdiRestore} className="size-4"/>
 				<span>Reset settings</span>
 			</PushButton>

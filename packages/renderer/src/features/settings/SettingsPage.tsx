@@ -1,8 +1,12 @@
 import clsx from 'clsx';
 import { Tabs } from 'radix-ui';
+import { useAtom } from 'jotai';
+import { useIpc } from '~/hooks';
+import { IpcChannel } from 'shared';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
 import { AdvancedTab } from './components/AdvancedTab';
+import { workingAtom, updatingAtom } from '~/atoms/app';
 import { DownloadsTab } from './components/DownloadsTab';
 import type { FC, ButtonHTMLAttributes } from 'react';
 
@@ -29,6 +33,18 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 };
 
 export const SettingsPage = () => {
+	const [,setIsWorking]         = useAtom(workingAtom);
+	const [,setIsUpdating]        = useAtom(updatingAtom);
+	const [onDownloadStarted]     = useIpc(IpcChannel.Ytdlp_DownloadStarted);
+	const [onDownloadFinished]    = useIpc(IpcChannel.Ytdlp_DownloadFinished);
+	const [onUpdatingYtdlpBinary] = useIpc(IpcChannel.Ytdlp_UpdatingBinary);
+	const [onUpdatedYtdlpBinary]  = useIpc(IpcChannel.Ytdlp_UpdatedBinary);
+
+	onUpdatingYtdlpBinary(() => setIsUpdating(true));
+	onUpdatedYtdlpBinary(()  => setIsUpdating(false));
+	onDownloadStarted(()     => setIsWorking(true));
+	onDownloadFinished(()    => setIsWorking(false));
+
 	return (
 		<Tabs.Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
 			<Tabs.List className="p-3 space-y-1.5 w-32 flex flex-col shrink-0 bg-gray-900">
