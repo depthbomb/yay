@@ -110,21 +110,22 @@ export const UpdaterPage = () => {
 					</div>
 				</Tabs.Content>
 			</div>
-			{updating && (
-				<>
-					<div className="space-x-2 flex items-center">
-						<Spinner className="size-5"/>
-						<p>{status}</p>
-					</div>
-					<PushButton onClick={onCancelButtonClicked} className="ml-auto" variant="danger" size="lg">Cancel</PushButton>
-				</>
-			)}
-			{!updating && (
-				<PushButton onClick={onDownloadButtonClicked} className="ml-auto" variant='brand' size="lg" disabled={updating}>
-					<Icon path={mdiDownload} className="size-5"/>
-					<span>Download &amp; install</span>
-				</PushButton>
-			)}
+			<div className="flex items-center justify-between">
+				{updating ? (
+					<>
+						<div className="space-x-2 flex items-center">
+							<Spinner className="size-5"/>
+							<p>{status}</p>
+						</div>
+						<PushButton onClick={onCancelButtonClicked} variant="danger" size="lg">Cancel</PushButton>
+					</>
+				) : (
+					<PushButton onClick={onDownloadButtonClicked} variant='brand' size="lg" className="ml-auto">
+						<Icon path={mdiDownload} className="size-5"/>
+						<span>Download &amp; install</span>
+					</PushButton>
+				)}
+			</div>
 		</Tabs.Root>
 	) : (
 		<div className="h-full flex items-center justify-center">
