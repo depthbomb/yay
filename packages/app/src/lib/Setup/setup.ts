@@ -43,6 +43,9 @@ export class Setup {
 		await this.settingsManager.setDefault(SettingsKey.EnableGlobalMenu, false);
 		await this.settingsManager.setDefault(SettingsKey.EnableDownloadCompletionToast, true);
 		await this.settingsManager.setDefault(SettingsKey.EnableNewReleaseToast, true);
+		await this.settingsManager.setDefault(SettingsKey.ShowHintFooter, true);
+		await this.settingsManager.setDefault(SettingsKey.HideSetupWindow, false);
+		await this.settingsManager.setDefault(SettingsKey.ShowWindowFrame, false);
 	}
 
 	private async checkForBinaries() {
