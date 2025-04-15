@@ -7,6 +7,7 @@ import { IpcChannel } from 'shared';
 import Markdown from 'react-markdown';
 import { mdiDownload } from '@mdi/js';
 import { useState, useEffect } from 'react';
+import { Anchor } from '~/components/Anchor';
 import { Spinner } from '~/components/Spinner';
 import { PushButton } from '~/components/PushButton';
 import type { FC } from 'react';
@@ -47,7 +48,7 @@ const markdownComponents = {
 	},
 	a(props) {
 		return (
-			<a href={props.href} target="_blank">{props.children}</a>
+			<Anchor href={props.href} target="_blank">{props.children}</Anchor>
 		);
 	}
 } satisfies Components;

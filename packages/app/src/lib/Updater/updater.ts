@@ -18,16 +18,16 @@ type Release = Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data
 type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
 
 export class Updater {
+	public latestRelease: Nullable<Release>       = null;
+	public commits: Nullable<Commits>             = null;
+	public updaterWindow: Nullable<BrowserWindow> = null;
+
 	private abort          = new AbortController();
 	private aborted        = false;
 	private isStartupCheck = true;
 	private isNotified     = false;
 
 	private readonly http: HttpClient;
-
-	public latestRelease: Nullable<Release>       = null;
-	public commits: Nullable<Commits>             = null;
-	public updaterWindow: Nullable<BrowserWindow> = null;
 
 	public constructor(
 		private readonly notifications: Notifications,

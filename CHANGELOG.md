@@ -1,3 +1,8 @@
+# 1.9.1
+
+- Fixed clickable links not being styled
+- Advanced settings buttons are now properly disabled when updating yt-dlp binary
+
 # 1.9.0
 
 - Added a list of commits since the current app's build to the updater window

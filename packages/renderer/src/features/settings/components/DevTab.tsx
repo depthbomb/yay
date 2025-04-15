@@ -1,5 +1,6 @@
 import Icon from '@mdi/react';
 import { mdiGithub } from '@mdi/js';
+import { Anchor } from '~/components/Anchor';
 import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
 
@@ -29,7 +30,7 @@ export const DevTab = () => {
 		<div className="space-y-3 flex flex-col">
 			<InfoSection title="Application" values={[
 				['Product version', product.version],
-				['Commit', <a href={`https://github.com/depthbomb/yay/commit/${GIT_HASH}`} target="_blank">{GIT_HASH_SHORT}</a>],
+				['Commit', <Anchor href={`https://github.com/depthbomb/yay/commit/${GIT_HASH}`} target="_blank">{GIT_HASH_SHORT}</Anchor>],
 				['Build date', window.buildDate.toLocaleString()]
 			]}/>
 			<InfoSection title="Framework" values={[
@@ -43,10 +44,10 @@ export const DevTab = () => {
 				['Release', window.system.release()],
 				['Architecture', window.system.arch()],
 			]}/>
-			<a href="https://github.com/depthbomb/yay" target="_blank" className="space-x-0.5 flex items-center text-sm">
+			<Anchor href="https://github.com/depthbomb/yay" target="_blank" className="text-sm">
 				<Icon path={mdiGithub} className="size-4"/>
 				<span>GitHub</span>
-			</a>
+			</Anchor>
 		</div>
 	);
 };
