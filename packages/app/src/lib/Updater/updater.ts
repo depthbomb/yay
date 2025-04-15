@@ -45,6 +45,8 @@ export class Updater {
 			 * the updater window.
 			 */
 			if (this.isStartupCheck) {
+				// So we don't show a notification the next time we check
+				this.isNotified = true;
 				this.showUpdaterWindow();
 			}
 
@@ -60,7 +62,6 @@ export class Updater {
 						.setTitle(`Version ${newRelease.tag_name} is available!`)
 						.setLaunch('yay://open-updater', 'protocol')
 				);
-
 				this.isNotified = true;
 			}
 		}
