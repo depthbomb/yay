@@ -6,11 +6,12 @@ import { mdiMicrosoftWindows } from '@mdi/js';
 import { KeyCombo } from '~/components/KeyCombo';
 
 export const AppTab = () => {
-	const [showWindowFrame, setShowWindowFrame]     = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false, reactive: false });
-	const [showHintFooter, setShowHintFooter]       = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true, reactive: false });
-	const [hideSetupWindow, setHideSetupWindow]     = useSetting(SettingsKey.HideSetupWindow, { defaultValue: false, reactive: false });
-	const [autoStartEnabled, setAutoStartEnabled]   = useState(false);
-	const [globalMenuEnabled, setGlobalMenuEnabled] = useState(false);
+	const [showWindowFrame, setShowWindowFrame]                     = useSetting<boolean>(SettingsKey.ShowWindowFrame, { reactive: false });
+	const [showHintFooter, setShowHintFooter]                       = useSetting<boolean>(SettingsKey.ShowHintFooter, { reactive: false });
+	const [hideSetupWindow, setHideSetupWindow]                     = useSetting<boolean>(SettingsKey.HideSetupWindow, { reactive: false });
+	const [enableUpdateNotifications, setEnableUpdateNotifications] = useSetting<boolean>(SettingsKey.EnableNewReleaseToast, { reactive: false });
+	const [autoStartEnabled, setAutoStartEnabled]                   = useState(false);
+	const [globalMenuEnabled, setGlobalMenuEnabled]                 = useState(false);
 
 	const toggleAutoStart = async () => {
 		await window.api.toggleAutoStart();
@@ -40,6 +41,10 @@ export const AppTab = () => {
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</p>
 				<Switch checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={toggleGlobalMenu}/>
+			</div>
+			<div className="flex flex-col items-start space-y-1.5">
+				<p>Notify when an update is available</p>
+				<Switch checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Show hints</p>

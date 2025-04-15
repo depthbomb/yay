@@ -1,3 +1,15 @@
+# 1.8.0
+
+- Added an option to send a toast notification when a new release is available
+- Fixed the settings window staying on top of other windows due to being a child of the main window
+- Settings window is now hidden on close instead of actually closing
+- Some settings window controls are now disabled when performing maintenance operations (updating yt-dlp binary, rechecking binaries, etc.)
+- Updated main window header
+  - Redesigned title
+  - Added an update indicator that is now displayed instead of replacing the hint footer
+- Updated the styling of the updater window
+- Increased the frequency of update checks
+
 # 1.7.0
 
 - Overhauled settings UI
