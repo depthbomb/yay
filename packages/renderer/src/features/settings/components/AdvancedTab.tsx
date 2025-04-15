@@ -1,7 +1,7 @@
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
-import { workingAtom } from '~/atoms/app';
 import { PushButton } from '~/components/PushButton';
+import { workingAtom, updatingAtom } from '~/atoms/app';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
 const onRecheckBinariesButtonClicked = async () => {
@@ -33,19 +33,20 @@ const onResetSettingsButtonClicked = async () => {
 };
 
 export const AdvancedTab = () => {
-	const [isWorking] = useAtom(workingAtom);
+	const [isWorking]  = useAtom(workingAtom);
+	const [isUpdating] = useAtom(updatingAtom);
 
 	return (
 		<div className="flex flex-col items-start space-y-1.5">
-			<PushButton onClick={onRecheckBinariesButtonClicked} disabled={isWorking}>
+			<PushButton onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
 				<Icon path={mdiDownload} className="size-3"/>
 				<span>Recheck required binaries</span>
 			</PushButton>
-			<PushButton onClick={() => window.api.updateYtdlpBinary()} disabled={isWorking}>
+			<PushButton onClick={() => window.api.updateYtdlpBinary()} disabled={isWorking || isUpdating}>
 				<Icon path={mdiUpdate} className="size-3"/>
 				<span>Update yt-dlp</span>
 			</PushButton>
-			<PushButton variant="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking}>
+			<PushButton variant="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking || isUpdating}>
 				<Icon path={mdiRestore} className="size-4"/>
 				<span>Reset settings</span>
 			</PushButton>
