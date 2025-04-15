@@ -1,16 +1,13 @@
 import clsx from 'clsx';
-import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
-import { mdiUpdate } from '@mdi/js';
 import { useRef, useEffect } from 'react';
-import { Button } from '~/components/Button';
 import { TextInput } from '~/components/input';
 import { useSetting, useKeyCombo } from '~/hooks';
 import { logAtom, shiftLogAtom } from '~/atoms/log';
 import { HomeFooter } from './components/HomeFooter';
 import { SettingsKey, isValidHttpUrl } from 'shared';
 import { DownloadButtons } from './components/DownloadButtons';
-import { urlAtom, workingAtom, updatingAtom, isUrlValidAtom, updateAvailableAtom } from '~/atoms/app';
+import { urlAtom, workingAtom, updatingAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };
@@ -33,13 +30,12 @@ const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 };
 
 export const HomePage = () => {
-	const [url, setUrl]     = useAtom(urlAtom);
-	const [isValidUrl]      = useAtom(isUrlValidAtom);
-	const [isWorking]       = useAtom(workingAtom);
-	const [isUpdating]      = useAtom(updatingAtom);
-	const [logs]            = useAtom(logAtom);
-	const [,shiftLog]       = useAtom(shiftLogAtom);
-	const [updateAvailable] = useAtom(updateAvailableAtom);
+	const [url, setUrl] = useAtom(urlAtom);
+	const [isValidUrl]  = useAtom(isUrlValidAtom);
+	const [isWorking]   = useAtom(workingAtom);
+	const [isUpdating]  = useAtom(updatingAtom);
+	const [logs]        = useAtom(logAtom);
+	const [,shiftLog]   = useAtom(shiftLogAtom);
 
 	const mediaUrlEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
@@ -103,12 +99,7 @@ export const HomePage = () => {
 					))}
 				</div>
 			</div>
-			{updateAvailable ? (
-				<Button onClick={() => window.api.showUpdaterWindow()} variant="info">
-					<Icon path={mdiUpdate} className="size-3"/>
-					<span>A new version of yay is available</span>
-				</Button>
-			) : (showHintFooter && <HomeFooter/>)}
+			{showHintFooter && <HomeFooter/>}
 		</div>
 	);
 };

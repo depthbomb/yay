@@ -1,6 +1,7 @@
-@import 'tailwindcss';
 @import '@fontsource-variable/noto-sans';
 @import '@fontsource-variable/noto-sans-mono';
+@import '@fontsource-variable/fredoka';
+@import 'tailwindcss';
 
 @theme {
 	/**
@@ -47,6 +48,7 @@
 	*/
 	--default-font-family: 'Noto Sans Variable';
 	--default-mono-font-family: 'Noto Sans Mono Variable';
+	--font-display: 'Fredoka Variable';
 
 	/**
 	* Animations

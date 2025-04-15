@@ -6,7 +6,7 @@ import bkLogo from '~/assets/img/seasonal-logos/bk.png';
 
 type SeasonalLogoProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>;
 
-const baseCss = 'mr-2 size-7' as const;
+const baseCss = 'mr-2 size-8 z-10' as const;
 
 const seasonalLogos = [
 	{
@@ -38,6 +38,6 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 	}, [currentDate]);
 
 	return (
-		<img ref={ref} src={logoSrc} className={className} draggable="false" width="28" height="28" {...props}/>
+		<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
 	);
 });

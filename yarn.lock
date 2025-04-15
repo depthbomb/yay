@@ -498,6 +498,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/fredoka@npm:^5.2.6":
+  version: 5.2.6
+  resolution: "@fontsource-variable/fredoka@npm:5.2.6"
+  checksum: 10/b11b4df49d7e7ba3446d75f82a24be9753d242dd54f2461a60fe157a5498e805985ac85affd14aff78793156fe6668cd46f1d7005168508d896f6cad148306d6
+  languageName: node
+  linkType: hard
+
 "@fontsource-variable/noto-sans-mono@npm:^5.2.6":
   version: 5.2.6
   resolution: "@fontsource-variable/noto-sans-mono@npm:5.2.6"
@@ -7217,6 +7224,7 @@ __metadata:
   resolution: "renderer@workspace:packages/renderer"
   dependencies:
     "@eslint/js": "npm:^9.24.0"
+    "@fontsource-variable/fredoka": "npm:^5.2.6"
     "@fontsource-variable/noto-sans": "npm:^5.2.6"
     "@fontsource-variable/noto-sans-mono": "npm:^5.2.6"
     "@mdi/js": "npm:^7.4.47"
