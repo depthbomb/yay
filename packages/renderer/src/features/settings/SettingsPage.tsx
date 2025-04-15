@@ -8,18 +8,16 @@ import { DevTab } from './components/DevTab';
 import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { DownloadsTab } from './components/DownloadsTab';
-import type { FC, ButtonHTMLAttributes } from 'react';
+import type { FC } from 'react';
 
-type TabButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-	value: string;
-};
+type TabButtonProps = Tabs.TabsTriggerProps;
 
 const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 	const css = clsx(
 		'py-0.25 px-3',
 		'text-sm text-gray-300 hover:text-white',
-		'data-[state=active]:text-white! data-[state=active]:bg-brand-700 data-[state=active]:rounded',
-		'data-[state=inactive]:bg-transparent data-[state=inactive]:hover:border-l-brand-700',
+		'data-[state=active]:text-white! data-[state=active]:bg-brand-500 data-[state=active]:rounded',
+		'data-[state=inactive]:bg-transparent data-[state=inactive]:hover:border-l-brand-500',
 		'border-2 border-transparent',
 		'transition-all',
 		className

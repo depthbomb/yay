@@ -42,13 +42,14 @@ export enum IpcChannel {
 	GlobalMenu_Disable   = 'global-menu:disable',
 	GlobalMenu_Toggle    = 'global-menu:toggle',
 	// Updater channels
-	Updater_Outdated         = 'updater:outdated',
-	Updater_ShowWindow       = 'updater:show-window',
-	Updater_GetLatestRelease = 'updater:get-latest-release',
-	Updater_Update           = 'updater:update',
-	Updater_Step             = 'updater:update-step',
-	Updater_Cancel           = 'updater:cancel-update',
-	Updater_Complete         = 'updater:update-complete',
+	Updater_Outdated             = 'updater:outdated',
+	Updater_ShowWindow           = 'updater:show-window',
+	Updater_GetLatestRelease     = 'updater:get-latest-release',
+	Updater_GetCommitsSinceBuild = 'updater:get-commits-since-build',
+	Updater_Update               = 'updater:update',
+	Updater_Step                 = 'updater:update-step',
+	Updater_Cancel               = 'updater:cancel-update',
+	Updater_Complete             = 'updater:update-complete',
 }
 
 export const IpcChannels = Object.values(IpcChannel);

@@ -1,15 +1,14 @@
-import { USER_AGENT } from '~/constants';
-import { endpoint } from '@octokit/endpoint';
-import type { Release } from './types';
-import type { HttpClient, HttpClientManager } from '~/lib/HttpClientManager';
+import { Octokit } from 'octokit';
 
 export class Github {
-	private readonly http: HttpClient;
+	private readonly octokit: Octokit;
 
-	public constructor(
-		private readonly httpClientManager: HttpClientManager
-	) {
-		this.http = this.httpClientManager.getClient('GitHub', { userAgent: USER_AGENT });
+	public constructor() {
+		if (import.meta.env.DEV) {
+			this.octokit = new Octokit({ auth: __GITHUB_ACCESS_TOKEN__ });
+		} else {
+			this.octokit = new Octokit();
+		}
 	}
 
 	public async getLatestRepositoryRelease(username: string, repository: string, prerelease: boolean = false) {
@@ -19,25 +18,23 @@ export class Github {
 	}
 
 	public async getRepositoryReleases(owner: string, repo: string) {
-		let url: string;
-		let options: object;
-		if (import.meta.env.DEV) {
-			({ url, ...options } = endpoint('GET /repos/{owner}/{repo}/releases', {
-				headers: {
-					authorization: `token ${__GITHUB_ACCESS_TOKEN__}`
-				},
-				owner,
-				repo
-			}));
-		} else {
-			({ url, ...options } = endpoint('GET /repos/{owner}/{repo}/releases', { owner, repo }));
+		const { data } = await this.octokit.rest.repos.listReleases({ owner, repo });
+
+		return data;
+	}
+
+	public async getRepositoryCommits(owner: string, repo: string, sha?: string) {
+		const { data } = await this.octokit.rest.repos.listCommits({ owner, repo });
+
+		if (sha) {
+			const idx = data.findIndex(c => c.sha.startsWith(sha));
+			if (idx === -1) {
+				return [];
+			}
+
+			return data.slice(0, idx);
 		}
 
-		const res = await this.http.send(url, options);
-		if (!res.ok) {
-			throw new Error(res.statusText);
-		}
-
-		return await res.json() as Release[];
+		return data;
 	}
 }

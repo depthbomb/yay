@@ -1,5 +1,6 @@
 import type { IpcChannel } from './ipc';
 import type { SettingsKey } from './settings';
+import type { Endpoints } from '@octokit/types';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
 export type Awaitable<T> = PromiseLike<T> | T;
@@ -49,7 +50,8 @@ export type CoreApi = {
 	toggleGlobalMenu(): Promise<boolean>;
 	//
 	showUpdaterWindow(): Promise<void>;
-	getLatestRelease(): Promise<{html_url: string; tag_name: string; created_at: string; body: string}>;
+	getLatestRelease(): Promise<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>;
+	getCommitsSinceBuild(): Promise<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>;
 	startUpdate(): Promise<void>;
 	cancelUpdate(): Promise<void>;
 };

@@ -1,3 +1,8 @@
+# 1.9.0
+
+- Added a list of commits since the current app's build to the updater window
+- The updater window changelog can now be scrolled if it overflows
+
 # 1.8.0
 
 - Added an option to send a toast notification when a new release is available

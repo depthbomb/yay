@@ -3,15 +3,19 @@ import { join } from 'node:path';
 import { app, shell } from 'electron';
 import { spawn } from 'node:child_process';
 import { NotificationBuilder } from '~/lib/Notifications';
-import { product, IpcChannel, SettingsKey } from 'shared';
+import { product, IpcChannel, GIT_HASH, SettingsKey } from 'shared';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
 import type { Nullable } from 'shared';
+import type { Github } from '~/lib/Github';
 import type { BrowserWindow } from 'electron';
-import type { Github, Release } from '~/lib/Github';
+import type { Endpoints } from '@octokit/types';
 import type { Notifications } from '~/lib/Notifications';
 import type { WindowManager } from '~/lib/WindowManager';
 import type { SettingsManager } from '~/lib/SettingsManager';
 import type { HttpClient, HttpClientManager } from '~/lib/HttpClientManager';
+
+type Release = Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number];
+type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
 
 export class Updater {
 	private abort          = new AbortController();
@@ -22,6 +26,7 @@ export class Updater {
 	private readonly http: HttpClient;
 
 	public latestRelease: Nullable<Release>       = null;
+	public commits: Nullable<Commits>             = null;
 	public updaterWindow: Nullable<BrowserWindow> = null;
 
 	public constructor(
@@ -39,6 +44,7 @@ export class Updater {
 		const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
 		if (newRelease) {
 			this.latestRelease = newRelease;
+			this.commits       = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
 			/**
 			 * If this is the first time checking for updates (immediately after setup) then show
