@@ -1,4 +1,4 @@
-import { screen, Tray } from 'electron';
+import { Tray, screen } from 'electron';
 import { WindowPosition } from './WindowPosition';
 import type { Rectangle, BrowserWindow } from 'electron';
 

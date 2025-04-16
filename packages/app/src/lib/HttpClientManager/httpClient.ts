@@ -3,18 +3,18 @@ import { Readable } from 'node:stream';
 import { joinURL, withQuery } from 'ufo';
 import { createWriteStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
+import { IdGenerator } from '~/common/idGenerator';
 import { retry, handleResultType, ConstantBackoff } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
 import type { GETOptions, RequestOptions, HttpClientOptions, DownloadOptions } from '.';
 
 export class HttpClient {
-	private requestNum = 0;
-
 	private readonly name: string;
 	private readonly baseUrl?: string;
 	private readonly userAgent: string;
 	private readonly retry: boolean;
 	private readonly retryPolicy: RetryPolicy;
+	private readonly idGenerator: IdGenerator;
 
 	public constructor(options: HttpClientOptions) {
 		this.name        = options?.name;
@@ -25,6 +25,7 @@ export class HttpClient {
 			maxAttempts: 10,
 			backoff: new ConstantBackoff(1_000)
 		});
+		this.idGenerator = new IdGenerator(`${this.name}#`);
 	}
 
 	public async get(url: string | URL, options?: GETOptions) {
@@ -54,7 +55,7 @@ export class HttpClient {
 			requestUrl = withQuery(requestUrl, options.query);
 		}
 
-		const requestId = `${this.name}-${++this.requestNum}`;
+		const requestId = this.idGenerator.nextId();
 
 		debugLog('Making HTTP request', { requestId, method: options?.method, url: requestUrl, retry: this.retry });
 
