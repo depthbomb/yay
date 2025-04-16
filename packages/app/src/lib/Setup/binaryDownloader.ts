@@ -69,7 +69,9 @@ export class BinaryDownloader {
 			extraction.once('error', err => console.error(err));
 			extraction.once('close', async code => {
 				onCleaningUp?.();
+
 				await unlink(tempPath);
+
 				if (code === 0) {
 					res();
 				} else {

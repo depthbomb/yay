@@ -1,5 +1,5 @@
 import { Notification } from 'electron';
-import { NotificationBuilder } from './notificationBuilder';
+import type { NotificationBuilder } from './notificationBuilder';
 
 export class Notifications {
 	public showNotification(builder: NotificationBuilder) {
