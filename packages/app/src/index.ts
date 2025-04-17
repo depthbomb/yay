@@ -1,7 +1,9 @@
 import { join } from 'node:path';
 import { product } from 'shared';
 import { fileExists } from './utils';
+import { Container } from '@needle-di/core';
 import { app, Menu, shell } from 'electron';
+import { MainService } from './services/main';
 import { mkdir, readFile, unlink } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
@@ -53,26 +55,6 @@ app.whenReady().then(async () => {
 		}
 	}
 
-	const lib            = await import('~/lib');
-	const moduleRegistry = lib.ModuleRegistryModule.bootstrap();
-
-	lib.CliModule.bootstrap(moduleRegistry);
-	lib.IpcModule.bootstrap(moduleRegistry);
-	lib.EventEmitterModule.bootstrap(moduleRegistry);
-	lib.EventSubscriberModule.bootstrap(moduleRegistry);
-	lib.NotificationsModule.bootstrap(moduleRegistry);
-	lib.WindowManagerModule.bootstrap(moduleRegistry);
-	lib.AutoStartModule.bootstrap(moduleRegistry);
-	lib.SettingsManagerModule.bootstrap(moduleRegistry);
-	lib.HttpClientManagerModule.bootstrap(moduleRegistry);
-	lib.GithubModule.bootstrap(moduleRegistry);
-	lib.WindowPositionerModule.bootstrap(moduleRegistry);
-	lib.YtdlpManagerModule.bootstrap(moduleRegistry);
-	lib.GlobalMenuModule.bootstrap(moduleRegistry);
-	lib.DeepLinksModule.bootstrap(moduleRegistry);
-	lib.TrayManagerModule.bootstrap(moduleRegistry);
-
-	await lib.MainWindowModule.bootstrap(moduleRegistry);
-	await lib.SetupModule.bootstrap(moduleRegistry);
-	await lib.UpdaterModule.bootstrap(moduleRegistry);
+	const container = new Container();
+	await container.get(MainService).boot();
 });

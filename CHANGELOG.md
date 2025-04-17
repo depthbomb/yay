@@ -1,3 +1,10 @@
+# 1.10.0
+
+This release comes with a major rewrite of the application's backend code to make development easier. The changes in this release, however, are minor.
+
+- Download completion notifications will not be sent if the main window is focused
+- New release notifications will not be sent if the main window is focused
+
 # 1.9.2
 
 - Fixed some settings switches briefly animating to their proper value in some cases
