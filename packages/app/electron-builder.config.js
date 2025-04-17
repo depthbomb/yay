@@ -18,6 +18,8 @@ const EXCLUDE_ALL_NODE_MODULES = false;
 const EXCLUDED_PACKAGES = [
 	'@types',
 	'@octokit',
+	'@needle-di',
+	'smol-toml',
 	'before-after-hook',
 	'bottleneck',
 	'fast-content-type-parse',
