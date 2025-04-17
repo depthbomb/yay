@@ -44,13 +44,10 @@ export class SettingsService implements IBootstrappable {
 	public async bootstrap() {
 		const hasLegacySettings = await fileExists(this.legacySettingsFilePath);
 		if (hasLegacySettings) {
-			console.log('migrating legacy settings file');
 			const json = await readFile(this.legacySettingsFilePath, 'utf8');
 			const data = JSON.parse(json);
-
 			await this.internalStore.apply(data);
 			await unlink(this.legacySettingsFilePath);
-			console.log('migrated legacy settings file');
 		}
 
 		this.ipc.registerSyncHandler(
