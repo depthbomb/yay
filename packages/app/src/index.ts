@@ -4,7 +4,7 @@ import { fileExists } from './utils';
 import { Container } from '@needle-di/core';
 import { app, Menu, shell } from 'electron';
 import { MainService } from './services/main';
-import { mkdir, readFile, unlink } from 'node:fs/promises';
+import { mkdir, unlink, readFile } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
 app.setPath('userData', join(app.getPath('appData'), product.author, product.dirName));

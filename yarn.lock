@@ -7437,7 +7437,7 @@ __metadata:
     terser: "npm:^5.39.0"
     typescript: "npm:^5.8.3"
     typescript-eslint: "npm:^8.30.1"
-    vite: "npm:^6.3.0"
+    vite: "npm:^6.3.1"
   languageName: unknown
   linkType: soft
 
@@ -8945,9 +8945,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.3.0":
-  version: 6.3.0
-  resolution: "vite@npm:6.3.0"
+"vite@npm:^6.3.1":
+  version: 6.3.1
+  resolution: "vite@npm:6.3.1"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.4.3"
@@ -8996,7 +8996,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/5ba5ed3f8718e0b46ebd91f18ab6bbc3cf06575cb8bc8316a4ee71780fcdb3e94b14ef40338d77235fd70e0b3d2df9db3436464645cbd6b098b9c8d8734676be
+  checksum: 10/ca698e50a23a1e3ee970e903f0dcd80f5a7aeb17fa1e589c60e876961d351e5ed1961d787722826b7f38f24d76f5c50f6955228d2dd675ec5c9a17be90bc0890
   languageName: node
   linkType: hard
 
@@ -9183,7 +9183,7 @@ __metadata:
     type-flag: "npm:^3.0.0"
     typescript: "npm:^5.8.3"
     ufo: "npm:^1.6.1"
-    vite: "npm:^6.3.0"
+    vite: "npm:^6.3.1"
   languageName: unknown
   linkType: soft
 
