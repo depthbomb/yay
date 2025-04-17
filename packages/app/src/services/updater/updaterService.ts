@@ -47,6 +47,22 @@ export class UpdaterService implements IBootstrappable {
 		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
 	}
 
+	public async bootstrap() {
+		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 180_000);
+
+		app.once('quit', () => clearInterval(this.checkInterval));
+
+		this.ipc.registerHandler(IpcChannel.Updater_ShowWindow,           () => this.showUpdaterWindow());
+		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
+		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
+		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
+		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
+
+		this.events.subscribe('show-updater', () => this.showUpdaterWindow());
+
+		await this.checkForUpdates();
+	}
+
 	public async checkForUpdates() {
 		const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
 		const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
@@ -67,7 +83,7 @@ export class UpdaterService implements IBootstrappable {
 			this.window.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
 
 			if (
-				this.settings.get<boolean>(SettingsKey.EnableNewReleaseToast, true) &&
+				this.settings.get(SettingsKey.EnableNewReleaseToast, true) &&
 				!this.isStartupCheck &&
 				!this.isNotified &&
 				!this.window.getMainWindow()?.isFocused()
@@ -75,7 +91,7 @@ export class UpdaterService implements IBootstrappable {
 				this.notifications.showNotification(
 					new NotificationBuilder()
 						.setTitle(`Version ${newRelease.tag_name} is available!`)
-						.setLaunch('yay://open-updater', 'protocol')
+						.setLaunch(`${product.urlProtocol}://open-updater`, 'protocol')
 				);
 				this.isNotified = true;
 			}
@@ -158,21 +174,5 @@ export class UpdaterService implements IBootstrappable {
 		if (import.meta.env.DEV) {
 			this.updaterWindow.webContents.openDevTools({ mode: 'detach' });
 		}
-	}
-
-	public async bootstrap() {
-		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 180_000);
-
-		app.once('quit', () => clearInterval(this.checkInterval));
-
-		this.ipc.registerHandler(IpcChannel.Updater_ShowWindow,           () => this.showUpdaterWindow());
-		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
-		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
-		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
-		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
-
-		this.events.subscribe('show-updater', () => this.showUpdaterWindow());
-
-		await this.checkForUpdates();
 	}
 }
