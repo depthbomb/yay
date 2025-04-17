@@ -36,7 +36,12 @@ export default defineConfig(({ mode }) => {
 					'electron',
 					...builtinModules.flatMap(p => [p, `node:${p}`]),
 				]
-			}
+			},
+			terserOptions: {
+				format: {
+					comments: false
+				}
+			},
 		},
 		define: {
 			__WIN32__: platform === 'win32',

@@ -30,7 +30,12 @@ export default defineConfig(({ mode }) => {
 					assetFileNames: '[hash].[ext]',
 					chunkFileNames: '[hash].js',
 				},
-			}
+			},
+			terserOptions: {
+				format: {
+					comments: false
+				}
+			},
 		},
 		plugins: [
 			react(),
