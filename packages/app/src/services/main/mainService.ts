@@ -142,7 +142,7 @@ export class MainService {
 		await this.globalMenu.bootstrap();
 		await this.deepLinks.bootstrap();
 		await this.tray.bootstrap();
-		await this.updater.bootstrap();
 		await this.setup.performSetupActions();
+		await this.updater.bootstrap();
 	}
 }
