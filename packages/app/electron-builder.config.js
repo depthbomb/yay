@@ -20,6 +20,7 @@ const EXCLUDED_PACKAGES = [
 	'@octokit',
 	'@needle-di',
 	'smol-toml',
+	'marked',
 	'before-after-hook',
 	'bottleneck',
 	'fast-content-type-parse',
