@@ -94,7 +94,7 @@ export const UpdaterPage = () => {
 					Commits since your version
 				</TabButton>
 			</Tabs.List>
-			<div className="size-full overflow-y-auto rounded-lg">
+			<div className="w-full overflow-y-auto rounded-lg">
 				<Tabs.Content value="changelog" className="bg-gray-800">
 					<Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{release.body}</Markdown>
 				</Tabs.Content>
@@ -110,7 +110,7 @@ export const UpdaterPage = () => {
 					</div>
 				</Tabs.Content>
 			</div>
-			<div className="flex items-center justify-between">
+			<div className="mt-auto flex items-center justify-between">
 				{updating ? (
 					<>
 						<div className="space-x-2 flex items-center">
