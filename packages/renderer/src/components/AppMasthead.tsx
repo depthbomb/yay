@@ -50,9 +50,9 @@ export const AppMasthead = () => {
 			<div className="w-full"/>
 			<div className="flex space-x-0.5 z-10">
 				{updateAvailable && <UpdateIndicator/>}
-				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="left" onClick={() => openDownloadDir()}/>
-				<IconButton icon={isWindowPinned ? mdiPinOff : mdiPin} title={isWindowPinned ? 'Unpin menu' : 'Pin menu'} tooltipSide="left" onClick={onPinWindowButtonClicked}/>
-				<IconButton icon={mdiCog} title="Settings" tooltipSide="left" onClick={() => window.api.showSettingsUI()} disabled={isWorking}/>
+				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="bottom" onClick={() => openDownloadDir()}/>
+				<IconButton icon={isWindowPinned ? mdiPinOff : mdiPin} title={isWindowPinned ? 'Unpin menu' : 'Pin menu'} tooltipSide="bottom" onClick={onPinWindowButtonClicked}/>
+				<IconButton icon={mdiCog} title="Settings" tooltipSide="bottom" onClick={() => window.api.showSettingsUI()} disabled={isWorking}/>
 			</div>
 		</header>
 	);
