@@ -13,7 +13,7 @@ const InfoSection: FC<InfoSectionProps> = ({ title, values }) => {
 	return (
 		<div className="w-full flex flex-col space-y-2">
 			<h2>{title}</h2>
-			<div className="p-2 w-full flex flex-col space-y-1 border border-white rounded">
+			<div className="py-2 px-3 space-y-1 w-full flex flex-col bg-gray-900 rounded-lg">
 				{values.map(([valueName, value], i) => (
 					<div key={i} className="flex flex-row items-center justify-between">
 						<p className="text-sm font-bold">{valueName}</p>
