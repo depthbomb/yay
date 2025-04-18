@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
-import { useIpc } from './hooks';
 import { useEffect } from 'react';
-import { IpcChannel } from 'shared';
+import { useIpc, useSetting } from './hooks';
 import { Spinner } from './components/Spinner';
+import { IpcChannel, SettingsKey } from 'shared';
+import { AppFooter } from './components/AppFooter';
 import { HomePage } from './features/home/HomePage';
 import { AppMasthead } from './components/AppMasthead';
 import { clearLogAtom, pushToLogAtom } from './atoms/log';
@@ -17,6 +18,7 @@ export const App = () => {
 	const [isWorking, setIsWorking]   = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
 	const [,setUpdateAvailable]       = useAtom(updateAvailableAtom);
+	const [showHintFooter]            = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
 	const [onDownloadStarted]         = useIpc(IpcChannel.Ytdlp_DownloadStarted);
 	const [onDownloadOutput]          = useIpc(IpcChannel.Ytdlp_Stdout);
 	const [onDownloadCanceled]        = useIpc(IpcChannel.Ytdlp_DownloadCanceled);
@@ -68,6 +70,7 @@ export const App = () => {
 					<>
 						<AppMasthead/>
 						<HomePage/>
+						{showHintFooter && <AppFooter/>}
 					</>
 				)}
 			</div>

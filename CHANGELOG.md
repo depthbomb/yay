@@ -5,6 +5,7 @@ This release comes with a major rewrite of the application's backend code to mak
 - Download completion notifications will not be sent if the main window is focused
 - New release notifications will not be sent if the main window is focused
 - Removed the _Show window frame_ option
+- Updated the app header
 - Fixed some minor style issues in the updater
 - Settings are now written to disk in [TOML](https://toml.io/en) format instead of JSON
   - Legacy settings files will be migrated to the new format

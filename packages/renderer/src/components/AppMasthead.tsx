@@ -36,7 +36,7 @@ export const AppMasthead = () => {
 	const [updateAvailable]                 = useAtom(updateAvailableAtom);
 
 	const headerCss = clsx(
-		'relative px-3 w-full h-14 flex flex-row items-center shrink-0',
+		'p-3 w-full flex items-center shrink-0',
 		{
 			'draggable': holdingAlt
 		}
@@ -47,9 +47,6 @@ export const AppMasthead = () => {
 	return (
 		<header className={headerCss}>
 			<SeasonalLogo/>
-			<div className="absolute inset-0 w-full h-12 flex items-center justify-center z-0">
-				<h1 className="text-2xl font-display font-light">yay</h1>
-			</div>
 			<div className="w-full"/>
 			<div className="flex space-x-0.5 z-10">
 				{updateAvailable && <UpdateIndicator/>}

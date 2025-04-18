@@ -1,3 +1,4 @@
+import { Tooltip } from './Tooltip';
 import { forwardRef, useMemo } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
@@ -38,6 +39,8 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 	}, [currentDate]);
 
 	return (
-		<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
+		<Tooltip content="Yet Another YouTube Downloader" position="right" delay={0}>
+			<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
+		</Tooltip>
 	);
 });

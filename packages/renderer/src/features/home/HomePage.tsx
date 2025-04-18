@@ -1,11 +1,10 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
+import { useKeyCombo } from '~/hooks';
+import { isValidHttpUrl } from 'shared';
 import { useRef, useEffect } from 'react';
 import { TextInput } from '~/components/input';
-import { useSetting, useKeyCombo } from '~/hooks';
 import { logAtom, shiftLogAtom } from '~/atoms/log';
-import { HomeFooter } from './components/HomeFooter';
-import { SettingsKey, isValidHttpUrl } from 'shared';
 import { DownloadButtons } from './components/DownloadButtons';
 import { urlAtom, workingAtom, updatingAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
@@ -39,8 +38,6 @@ export const HomePage = () => {
 
 	const mediaUrlEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
-
-	const [showHintFooter] = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
 
 	const tryPasting = async () => {
 		const text = await navigator.clipboard.readText();
@@ -99,7 +96,6 @@ export const HomePage = () => {
 					))}
 				</div>
 			</div>
-			{showHintFooter && <HomeFooter/>}
 		</div>
 	);
 };

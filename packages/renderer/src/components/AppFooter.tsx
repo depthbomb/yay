@@ -11,7 +11,7 @@ const hints = [
 	<span className="text-xs"><strong>yay</strong> can download from <a href="https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md#supported-sites" target="_blank">many sites</a>, not just YouTube!</span>,
 ] as const;
 
-export const HomeFooter = () => {
+export const AppFooter = () => {
 	const [hint, setHint] = useState<Maybe<JSX.Element>>();
 
 	const displayRandomHint = () => {
@@ -27,7 +27,7 @@ export const HomeFooter = () => {
 	}, []);
 
 	return (
-		<footer className="space-x-2 h-4 flex items-center justify-center text-gray-300">
+		<footer className="space-x-2 p-3 flex items-center justify-center shrink-0 text-gray-300">
 			<Icon path={mdiCreation} className="size-4 shrink-0 text-yellow-500"/>
 			<p className="flex items-center">{hint}</p>
 		</footer>
