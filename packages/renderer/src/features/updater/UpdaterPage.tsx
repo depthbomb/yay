@@ -2,18 +2,14 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { Tabs } from 'radix-ui';
 import { useIpc } from '~/hooks';
-import remarkGfm from 'remark-gfm';
 import { IpcChannel } from 'shared';
-import Markdown from 'react-markdown';
 import { mdiDownload } from '@mdi/js';
 import { useState, useEffect } from 'react';
-import { Anchor } from '~/components/Anchor';
 import { Spinner } from '~/components/Spinner';
 import { PushButton } from '~/components/PushButton';
 import type { FC } from 'react';
 import type { Nullable } from 'shared';
 import type { Endpoints } from '@octokit/types';
-import type { Components } from 'react-markdown';
 
 type TabButtonProps = Tabs.TabsTriggerProps;
 
@@ -34,24 +30,6 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 		</Tabs.Trigger>
 	);
 };
-
-const markdownComponents = {
-	ul(props) {
-		return (
-			<div className="flex flex-col">{props.children}</div>
-		);
-	},
-	li(props) {
-		return (
-			<div className="pl-4 py-2 space-x-3 odd:bg-gray-900">{props.children}</div>
-		);
-	},
-	a(props) {
-		return (
-			<Anchor href={props.href} target="_blank">{props.children}</Anchor>
-		);
-	}
-} satisfies Components;
 
 const defaultStatus = 'Updating...' as const;
 
@@ -87,16 +65,12 @@ export const UpdaterPage = () => {
 		<Tabs.Root defaultValue="changelog" className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">
 			<h1 className="text-2xl">yay version <span className="font-mono">{release.tag_name}</span> is available</h1>
 			<Tabs.List className="space-x-1.5 flex shrink-0">
-				<TabButton value="changelog">
-					Changelog
-				</TabButton>
-				<TabButton value="commits">
-					Commits since your version
-				</TabButton>
+				<TabButton value="changelog">Changelog</TabButton>
+				<TabButton value="commits">Commits since your version</TabButton>
 			</Tabs.List>
 			<div className="w-full overflow-y-auto rounded-lg">
-				<Tabs.Content value="changelog" className="bg-gray-800">
-					<Markdown remarkPlugins={[remarkGfm]} components={markdownComponents}>{release.body}</Markdown>
+				<Tabs.Content value="changelog">
+					<div className="p-3 bg-gray-800 whitespace-pre-wrap">{release.body}</div>
 				</Tabs.Content>
 				<Tabs.Content value="commits">
 					<div className="flex flex-col">

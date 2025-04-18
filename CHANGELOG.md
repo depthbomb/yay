@@ -1,3 +1,13 @@
+# 1.10.1
+
+- Improved the spacing of elements in the main window
+- Updated the styling of info sections in developer tab in settings
+- Fixed some small design issues caused by the old tooltip system
+- Fixed the link in one of the hints not being styled
+- Fixed links clicked in the main window not opening in the default browser
+- Fixed the setup window not being minimizable
+- Updater changelog markdown is no longer rendered while an overhauled system is in the works
+
 # 1.10.0
 
 This release comes with a major rewrite of the application's backend code to make development easier.
