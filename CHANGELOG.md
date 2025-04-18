@@ -1,3 +1,8 @@
+# 1.10.2
+
+- Fixed the updater window appearing during the setup phase instead of after
+- Updated design of updater changelog
+
 # 1.10.1
 
 - Improved the spacing of elements in the main window

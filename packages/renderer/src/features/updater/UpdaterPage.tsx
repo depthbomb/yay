@@ -34,11 +34,12 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 const defaultStatus = 'Updating...' as const;
 
 export const UpdaterPage = () => {
-	const [updating, setUpdating] = useState(false);
-	const [status, setStatus]     = useState(defaultStatus);
-	const [release, setRelease]   = useState<Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>>(null);
-	const [commits, setCommits]   = useState<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>([]);
-	const [onUpdateStep]          = useIpc(IpcChannel.Updater_Step);
+	const [updating, setUpdating]   = useState(false);
+	const [status, setStatus]       = useState(defaultStatus);
+	const [release, setRelease]     = useState<Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>>(null);
+	const [changelog, setChangelog] = useState('');
+	const [commits, setCommits]     = useState<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>([]);
+	const [onUpdateStep]            = useIpc(IpcChannel.Updater_Step);
 
 	const onDownloadButtonClicked = async () => {
 		setUpdating(true);
@@ -56,6 +57,10 @@ export const UpdaterPage = () => {
 	}, []);
 
 	useEffect(() => {
+		window.api.getLatestChangelog().then(setChangelog);
+	}, []);
+
+	useEffect(() => {
 		window.api.getCommitsSinceBuild().then(setCommits);
 	}, []);
 
@@ -69,9 +74,7 @@ export const UpdaterPage = () => {
 				<TabButton value="commits">Commits since your version</TabButton>
 			</Tabs.List>
 			<div className="w-full overflow-y-auto rounded-lg">
-				<Tabs.Content value="changelog">
-					<div className="p-3 bg-gray-800 whitespace-pre-wrap">{release.body}</div>
-				</Tabs.Content>
+				<Tabs.Content value="changelog" dangerouslySetInnerHTML={{ __html: changelog }}/>
 				<Tabs.Content value="commits">
 					<div className="flex flex-col">
 						{commits.map(c => (

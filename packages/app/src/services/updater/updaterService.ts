@@ -10,6 +10,7 @@ import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
+import { MarkdownService } from '~/services/markdown';
 import { product, GIT_HASH, IpcChannel, SettingsKey } from 'shared';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -24,8 +25,9 @@ type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'
 
 @injectable()
 export class UpdaterService implements IBootstrappable {
-	public latestRelease: Nullable<Release> = null;
-	public commits: Nullable<Commits>       = null;
+	public latestRelease: Nullable<Release>  = null;
+	public commits: Nullable<Commits>        = null;
+	public latestChangelog: Nullable<string> = null;
 
 	private abort          = new AbortController();
 	private aborted        = false;
@@ -44,6 +46,7 @@ export class UpdaterService implements IBootstrappable {
 		private readonly http          = inject(HttpService),
 		private readonly github        = inject(GithubService),
 		private readonly notifications = inject(NotificationsService),
+		private readonly markdown      = inject(MarkdownService),
 	) {
 		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
 	}
@@ -55,6 +58,7 @@ export class UpdaterService implements IBootstrappable {
 
 		this.ipc.registerHandler(IpcChannel.Updater_ShowWindow,           () => this.showUpdaterWindow());
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
+		this.ipc.registerHandler(IpcChannel.Updater_GetLatestChangelog,   () => this.latestChangelog);
 		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
 		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
 		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
@@ -68,8 +72,9 @@ export class UpdaterService implements IBootstrappable {
 		const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
 		const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
 		if (newRelease) {
-			this.latestRelease = newRelease;
-			this.commits       = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
+			this.latestRelease   = newRelease;
+			this.latestChangelog = await this.markdown.parse(newRelease.body!);
+			this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
 			/**
 			 * If this is the first time checking for updates (immediately after setup) then show

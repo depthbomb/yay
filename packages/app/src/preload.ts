@@ -144,6 +144,9 @@ const coreApi = {
 	getLatestRelease() {
 		return ipcRenderer.invoke(IpcChannel.Updater_GetLatestRelease);
 	},
+	getLatestChangelog() {
+		return ipcRenderer.invoke(IpcChannel.Updater_GetLatestChangelog);
+	},
 	getCommitsSinceBuild() {
 		return ipcRenderer.invoke(IpcChannel.Updater_GetCommitsSinceBuild);
 	},
