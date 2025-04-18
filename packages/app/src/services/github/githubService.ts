@@ -26,7 +26,7 @@ export class GithubService {
 	}
 
 	public async getRepositoryCommits(owner: string, repo: string, sha?: string) {
-		const { data } = await this.octokit.rest.repos.listCommits({ owner, repo });
+		const { data } = await this.octokit.rest.repos.listCommits({ owner, repo, per_page: 100 });
 
 		if (sha) {
 			const idx = data.findIndex(c => c.sha.startsWith(sha));
