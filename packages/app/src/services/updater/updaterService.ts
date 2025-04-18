@@ -1,8 +1,9 @@
 import semver from 'semver';
+import { app } from 'electron';
 import { join } from 'node:path';
-import { app, shell } from 'electron';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
+import { windowOpenHandler } from '~/utils';
 import { HttpService } from '~/services/http';
 import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
@@ -162,14 +163,7 @@ export class UpdaterService implements IBootstrappable {
 			},
 		});
 
-		this.updaterWindow.webContents.setWindowOpenHandler(({ url }) => {
-			const { protocol } = new URL(url);
-			if (protocol === 'https:' || protocol === 'http:') {
-				shell.openExternal(url);
-			}
-
-			return { action: 'deny' };
-		});
+		this.updaterWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 
 		if (import.meta.env.DEV) {
 			this.updaterWindow.webContents.openDevTools({ mode: 'detach' });

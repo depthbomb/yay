@@ -11,10 +11,10 @@ import { UpdaterService } from '~/services/updater';
 import { app, Menu, shell, dialog } from 'electron';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import { fileExists, getExtraFilePath } from '~/utils';
 import { DeepLinksService } from '~/services/deepLinks';
 import { AutoStartService } from '~/services/autoStart';
 import { GlobalMenuService } from '~/services/globalMenu';
+import { fileExists, getExtraFilePath, windowOpenHandler } from '~/utils';
 import type { Maybe } from 'shared';
 import type { BrowserWindow, MessageBoxOptions } from 'electron';
 
@@ -76,6 +76,7 @@ export class MainService {
 			this.window.emitMain(IpcChannel.Window_IsBlurred);
 		});
 		this.mainWindow.on('focus', () => this.mainWindow!.flashFrame(false));
+		this.mainWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 		//#endregion
 
 		//#region IPC

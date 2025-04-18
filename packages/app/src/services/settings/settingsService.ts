@@ -1,6 +1,5 @@
 import { join } from 'node:path';
-import { fileExists } from '~/utils';
-import { app, shell } from 'electron';
+import { app } from 'electron';
 import { safeStorage } from 'electron';
 import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
@@ -10,6 +9,7 @@ import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
+import { fileExists, windowOpenHandler } from '~/utils';
 import type { Maybe } from 'shared';
 import type { Settings } from './types';
 import type { Store } from '~/services/store';
@@ -101,18 +101,7 @@ export class SettingsService implements IBootstrappable {
 						this.settingsWindow!.hide();
 					});
 
-					this.settingsWindow.webContents.setWindowOpenHandler(({ url }) => {
-						const requestedUrl = new URL(url);
-						if (requestedUrl.host === 'github.com') {
-							/**
-							 * Currently the only intended links to open in an external browser are
-							 * for GitHub.
-							 */
-							shell.openExternal(url);
-						}
-
-						return { action: 'deny' };
-					});
+					this.settingsWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 
 					this.settingsWindow.center();
 					this.settingsWindow.show();
