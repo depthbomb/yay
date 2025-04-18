@@ -1,16 +1,15 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
+import { useIpc } from './hooks';
 import { useEffect } from 'react';
-import { useIpc, useSetting } from './hooks';
+import { IpcChannel } from 'shared';
 import { Spinner } from './components/Spinner';
-import { IpcChannel, SettingsKey } from 'shared';
 import { HomePage } from './features/home/HomePage';
 import { AppMasthead } from './components/AppMasthead';
 import { clearLogAtom, pushToLogAtom } from './atoms/log';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom } from './atoms/app';
 
 export const App = () => {
-	const [showWindowFrame]           = useSetting(SettingsKey.ShowWindowFrame, { defaultValue: false });
 	const [,clearLog]                 = useAtom(clearLogAtom);
 	const [,pushToLog]                = useAtom(pushToLogAtom);
 	const [,resetApp]                 = useAtom(resetAppAtom);
@@ -72,7 +71,7 @@ export const App = () => {
 					</>
 				)}
 			</div>
-			{!showWindowFrame && <div className={accentCss}/>}
+			<div className={accentCss}/>
 		</div>
 	);
 };

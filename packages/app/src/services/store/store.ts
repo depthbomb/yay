@@ -54,7 +54,7 @@ export class Store<S extends Record<string, any>> {
 		return this.storeReader.readSync<S>(this.storePath);
 	}
 
-	private async save() {
+	public async save() {
 		await this.storeWriter.write(this.store, this.storePath);
 	}
 }

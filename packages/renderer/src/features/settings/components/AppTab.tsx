@@ -5,7 +5,6 @@ import { mdiMicrosoftWindows } from '@mdi/js';
 import { KeyCombo } from '~/components/KeyCombo';
 
 export const AppTab = () => {
-	const [showWindowFrame, setShowWindowFrame]                     = useSetting<boolean>(SettingsKey.ShowWindowFrame, { reactive: false });
 	const [showHintFooter, setShowHintFooter]                       = useSetting<boolean>(SettingsKey.ShowHintFooter, { reactive: false });
 	const [hideSetupWindow, setHideSetupWindow]                     = useSetting<boolean>(SettingsKey.HideSetupWindow, { reactive: false });
 	const [enableUpdateNotifications, setEnableUpdateNotifications] = useSetting<boolean>(SettingsKey.EnableNewReleaseToast, { reactive: false });
@@ -33,11 +32,6 @@ export const AppTab = () => {
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Show hints</p>
 				<Switch checked={showHintFooter} defaultChecked={showHintFooter} onCheckedChange={setShowHintFooter}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Show window frame</p>
-				<Switch checked={showWindowFrame} defaultChecked={showWindowFrame} onCheckedChange={setShowWindowFrame}/>
-				<p className="text-xs">This change takes effect on app restart</p>
 			</div>
 		</div>
 	);

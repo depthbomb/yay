@@ -28,6 +28,7 @@ export class SettingsService implements IBootstrappable {
 	private readonly internalStore: Store<Settings>;
 	private readonly settingsFilePath: string;
 	private readonly legacySettingsFilePath: string;
+	private readonly deprecatedSettings: string[];
 
 	public constructor(
 		private readonly ipc    = inject(IpcService),
@@ -35,21 +36,16 @@ export class SettingsService implements IBootstrappable {
 		private readonly window = inject(WindowService),
 		private readonly store  = inject(StoreService),
 	) {
-
-		this.settingsFilePath = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
+		this.settingsFilePath       = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
 		this.legacySettingsFilePath = join(app.getPath('userData'), `settings.${import.meta.env.MODE}.json`);
-		this.internalStore = this.store.createStore<Settings>(this.settingsFilePath);
+		this.internalStore          = this.store.createStore<Settings>(this.settingsFilePath);
+		this.deprecatedSettings     = [
+			'show-window-frame'
+		];
 	}
 
 	public async bootstrap() {
-		const hasLegacySettings = await fileExists(this.legacySettingsFilePath);
-		if (hasLegacySettings) {
-			const json = await readFile(this.legacySettingsFilePath, 'utf8');
-			const data = JSON.parse(json);
-			await this.internalStore.apply(data);
-			await unlink(this.legacySettingsFilePath);
-		}
-
+		//#region IPC
 		this.ipc.registerSyncHandler(
 			IpcChannel.Settings_Get,
 			(e, key, defaultValue, secure) => e.returnValue = this.get(key, defaultValue, { secure })
@@ -123,6 +119,7 @@ export class SettingsService implements IBootstrappable {
 				}
 			}
 		);
+		//#endregion
 
 		this.events.subscribe('settings-updated', ({ key, value }) => this.window.emitAll(IpcChannel.Settings_Changed, key, value));
 	}
@@ -161,8 +158,22 @@ export class SettingsService implements IBootstrappable {
 		return this.internalStore.reset();
 	}
 
-	private async applySettings(data: object) {
+	public async migrateLegacySettings() {
+		const hasLegacySettings = await fileExists(this.legacySettingsFilePath);
+		if (hasLegacySettings) {
+			const json = await readFile(this.legacySettingsFilePath, 'utf8');
+			const data = JSON.parse(json);
+			await this.internalStore.apply(data);
+			await unlink(this.legacySettingsFilePath);
+		}
+	}
 
+	public async removeDeprecatedSettings() {
+		for (const key of this.deprecatedSettings) {
+			delete this.internalStore.store[key as SettingsKey];
+		}
+
+		await this.internalStore.save();
 	}
 
 	private encryptValue(data: unknown) {

@@ -40,7 +40,6 @@ export class MainService {
 
 	public async boot() {
 		//#region Main Window
-		const showFrame = this.settings.get<boolean>(SettingsKey.ShowWindowFrame);
 		this.mainWindow = this.window.createMainWindow({
 			url: this.window.resolveRendererHTML('index.html'),
 			browserWindowOptions: {
@@ -49,8 +48,8 @@ export class MainService {
 				height: 550,
 				alwaysOnTop: true,
 				resizable: false,
-				frame: showFrame,
-				minimizable: showFrame,
+				frame: false,
+				minimizable: false,
 				maximizable: false,
 				skipTaskbar: import.meta.env.PROD,
 				backgroundColor: '#000',
@@ -135,15 +134,13 @@ export class MainService {
 		});
 		//#endregion
 
-		await Promise.allSettled([
-			this.autoStart.bootstrap(),
-			this.settings.bootstrap(),
-			this.ytdlp.bootstrap(),
-			this.globalMenu.bootstrap(),
-			this.deepLinks.bootstrap(),
-			this.tray.bootstrap(),
-			this.setup.bootstrap(),
-			this.updater.bootstrap(),
-		]);
+		await this.settings.bootstrap();
+		await this.autoStart.bootstrap();
+		await this.ytdlp.bootstrap();
+		await this.globalMenu.bootstrap();
+		await this.deepLinks.bootstrap();
+		await this.tray.bootstrap();
+		await this.updater.bootstrap();
+		await this.setup.performSetupActions();
 	}
 }

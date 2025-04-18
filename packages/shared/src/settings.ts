@@ -3,7 +3,6 @@ export enum SettingsKey {
 	EnableGlobalMenu              = 'enable-global-menu',
 	AutoStart                     = 'auto-start',
 	ShowHintFooter                = 'show-hint-footer',
-	ShowWindowFrame               = 'show-window-frame',
 	HideSetupWindow               = 'hide-setup-window',
 	DownloadDir                   = 'download-dir',
 	DownloadNameTemplate          = 'download-name-template',
