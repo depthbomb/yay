@@ -137,6 +137,7 @@ export class MainService {
 
 		await this.settings.bootstrap();
 		await this.autoStart.bootstrap();
+		await this.window.bootstrap();
 		await this.ytdlp.bootstrap();
 		await this.globalMenu.bootstrap();
 		await this.deepLinks.bootstrap();

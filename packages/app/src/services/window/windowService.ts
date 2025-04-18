@@ -1,9 +1,11 @@
 import { join } from 'node:path';
 import { ROOT_PATH } from '~/constants';
-import { injectable } from '@needle-di/core';
+import { IpcService } from '~/services/ipc';
 import { app, BrowserWindow } from 'electron';
 import { DEV_PORT, IpcChannel } from 'shared';
+import { inject, injectable } from '@needle-di/core';
 import type { Awaitable } from 'shared';
+import type { IBootstrappable } from '~/common/IBootstrappable';
 import type { AboutPanelOptionsOptions, BrowserWindowConstructorOptions } from 'electron';
 
 type CreateWindowOptions = {
@@ -23,13 +25,19 @@ type CreateWindowOptions = {
 type CreateMainWindowOptions = Omit<CreateWindowOptions, 'name'>;
 
 @injectable()
-export class WindowService {
+export class WindowService implements IBootstrappable {
 	public readonly windows: Map<string, BrowserWindow>;
 
 	private readonly mainWindowName = 'main' as const;
 
-	public constructor() {
+	public constructor(
+		private readonly ipc = inject(IpcService),
+	) {
 		this.windows = new Map();
+	}
+
+	public async bootstrap() {
+		this.ipc.registerHandler(IpcChannel.Window_Minimize, (_, windowName: string) => this.minimizeWindow(windowName));
 	}
 
 	public createMainWindow(options: CreateMainWindowOptions) {
