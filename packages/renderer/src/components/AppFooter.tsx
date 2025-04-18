@@ -27,7 +27,7 @@ export const AppFooter = () => {
 	}, []);
 
 	return (
-		<footer className="space-x-2 p-3 flex items-center justify-center shrink-0 text-gray-300">
+		<footer className="space-x-2 px-3 pb-3 flex items-center justify-center shrink-0 text-gray-300">
 			<Icon path={mdiCreation} className="size-4 shrink-0 text-yellow-500"/>
 			<p className="flex items-center">{hint}</p>
 		</footer>

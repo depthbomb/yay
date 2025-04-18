@@ -3,16 +3,16 @@ import Icon from '@mdi/react';
 import { Tooltip } from './Tooltip';
 import { memo, forwardRef } from 'react';
 import type { ButtonHTMLAttributes } from 'react';
+import type { Tooltip as RTooltip } from 'radix-ui';
 
 type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
-	tooltipPosition: 'top' | 'left' | 'bottom' | 'right';
 	icon: string;
-	to?: string;
+	tooltipSide?: RTooltip.TooltipContentProps['side'];
 };
 
 const baseCss = 'p-1 flex items-center rounded-full transition-all' as const;
 
-export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({ title, tooltipPosition, icon, className, ...props }, ref) => {
+export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({ title, icon, tooltipSide, className, ...props }, ref) => {
 	const css = clsx(
 		baseCss,
 		{
@@ -23,7 +23,7 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
 	);
 
 	return (
-		<Tooltip content={title} position={tooltipPosition}>
+		<Tooltip content={title!} side={tooltipSide}>
 			<button
 				ref={ref}
 				className={css}

@@ -20,7 +20,7 @@ const UpdateIndicator = () => {
 	}, []);
 
 	return (
-		<Tooltip content="Update available!" position="left" delay={0}>
+		<Tooltip content="Update available!">
 			<button className="p-1" type="button" onClick={() => window.api.showUpdaterWindow()}>
 				<Icon path={mdiUpdate} className={`size-4 ${isColored ? 'text-yellow-500' : 'text-white'}`}/>
 			</button>
@@ -36,7 +36,7 @@ export const AppMasthead = () => {
 	const [updateAvailable]                 = useAtom(updateAvailableAtom);
 
 	const headerCss = clsx(
-		'p-3 w-full flex items-center shrink-0',
+		'pt-3 px-3 w-full flex items-center shrink-0',
 		{
 			'draggable': holdingAlt
 		}
@@ -50,13 +50,9 @@ export const AppMasthead = () => {
 			<div className="w-full"/>
 			<div className="flex space-x-0.5 z-10">
 				{updateAvailable && <UpdateIndicator/>}
-				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipPosition="left" onClick={() => openDownloadDir()}/>
-				<IconButton
-					icon={isWindowPinned ? mdiPinOff : mdiPin}
-					title={isWindowPinned ? 'Unpin menu' : 'Pin menu'}
-					tooltipPosition="left"
-					onClick={onPinWindowButtonClicked}/>
-				<IconButton icon={mdiCog} title="Settings" tooltipPosition="left" onClick={() => window.api.showSettingsUI()} disabled={isWorking}/>
+				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="left" onClick={() => openDownloadDir()}/>
+				<IconButton icon={isWindowPinned ? mdiPinOff : mdiPin} title={isWindowPinned ? 'Unpin menu' : 'Pin menu'} tooltipSide="left" onClick={onPinWindowButtonClicked}/>
+				<IconButton icon={mdiCog} title="Settings" tooltipSide="left" onClick={() => window.api.showSettingsUI()} disabled={isWorking}/>
 			</div>
 		</header>
 	);

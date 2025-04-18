@@ -7,7 +7,7 @@ import bkLogo from '~/assets/img/seasonal-logos/bk.png';
 
 type SeasonalLogoProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>;
 
-const baseCss = 'mr-2 size-8 z-10' as const;
+const baseCss = 'mr-2 size-8 shrink-0 z-10' as const;
 
 const seasonalLogos = [
 	{
@@ -39,7 +39,7 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 	}, [currentDate]);
 
 	return (
-		<Tooltip content="Yet Another YouTube Downloader" position="right" delay={0}>
+		<Tooltip content="Yet Another YouTube Downloader" side="right">
 			<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
 		</Tooltip>
 	);
