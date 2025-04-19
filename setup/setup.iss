@@ -1,7 +1,6 @@
 [Setup]
 AppId={#AppId}
 AppName={#NameLong}
-AppMutex={#AppMutex}
 AppVersion={#Version}
 AppVerName={#NameLong}
 VersionInfoVersion={#Version}
