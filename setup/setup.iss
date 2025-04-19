@@ -16,7 +16,6 @@ DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 OutputDir=..\build\release
 OutputBaseFilename={#ExeBasename}-setup
-SetupMutex={#AppMutex}setup
 SetupIconFile=..\static\icon.ico
 Compression=lzma/ultra64
 ; Compression=none
