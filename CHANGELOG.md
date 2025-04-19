@@ -1,3 +1,8 @@
+# 1.10.3
+
+- Buttons in the header now show their tooltip below them
+- Upgraded to [Electron 35.2.0](https://releases.electronjs.org/release/v35.2.0)
+
 # 1.10.2
 
 - Fixed the updater window appearing during the setup phase instead of after
