@@ -1,10 +1,9 @@
 {
-	"version": "1.10.2",
+	"version": "1.10.3",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
 	"description": "Yet Another YouTube Downloader",
-	"mutexName": "yay",
 	"dirName": "yay",
 	"appId": "{{B1626C8A-95AF-4CB6-A6A2-6902B3E8FD3E}",
 	"clsid": "A1C754B6-B342-44D5-AD12-B67208AC34A9",

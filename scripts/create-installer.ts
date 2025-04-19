@@ -8,7 +8,6 @@ const definitions: { [key: string]: string } = {
 	Version: product.version,
 	RawVersion: product.version.replace(/-\w+$/, ''),
 	ExeBasename: product.applicationName,
-	AppMutex: product.mutexName,
 	AppId: product.appId,
 	AppUserModelId: product.appUserModelId,
 	AppUserModelToastActivatorClsid: product.clsid,
