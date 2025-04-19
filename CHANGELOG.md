@@ -1,3 +1,7 @@
+# 1.10.4
+
+- Fixed links in the updater window not opening in the default browser (again)
+
 # 1.10.3
 
 - Buttons in the header now show their tooltip below them
