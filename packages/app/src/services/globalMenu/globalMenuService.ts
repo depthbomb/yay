@@ -6,6 +6,7 @@ import { EventsService } from '~/services/events';
 import { Menu, shell, clipboard } from 'electron';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
+import { LifecycleService } from '~/services/lifecycle';
 import { IpcChannel, SettingsKey, isValidHttpUrl } from 'shared';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 import type { MenuItem, MenuItemConstructorOptions } from 'electron';
@@ -26,10 +27,11 @@ export class GlobalMenuService implements IBootstrappable {
 	private readonly closeIcon              = getExtraResourcePath('tray/action-icons/close.png');
 
 	public constructor(
-		private readonly ipc      = inject(IpcService),
-		private readonly events   = inject(EventsService),
-		private readonly settings = inject(SettingsService),
-		private readonly ytdlp    = inject(YtdlpService),
+		private readonly lifecycle = inject(LifecycleService),
+		private readonly ipc       = inject(IpcService),
+		private readonly events    = inject(EventsService),
+		private readonly settings  = inject(SettingsService),
+		private readonly ytdlp     = inject(YtdlpService),
 	) {
 		this.menu = Menu.buildFromTemplate(this.createMenu(false));
 		this.menu.on('menu-will-show',  () => this.menuShown = true);
@@ -59,7 +61,7 @@ export class GlobalMenuService implements IBootstrappable {
 		};
 
 		if (this.settings.get(SettingsKey.EnableGlobalMenu) === true) {
-			this.events.subscribe('setup-finished', () => globalShortcut.register(accelerator, callback));
+			this.lifecycle.events.on('readyPhase', () => globalShortcut.register(accelerator, callback));
 		}
 
 		this.ipc.registerHandler(IpcChannel.GlobalMenu_Enable,  enableGlobalMenu);

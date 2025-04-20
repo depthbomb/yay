@@ -1,15 +1,20 @@
+import { product } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { app, Menu, Tray } from 'electron';
 import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
+import { LifecycleService } from '~/services/lifecycle';
 import { getExtraFilePath, getExtraResourcePath } from '~/utils';
 import { WindowPositionService } from '~/services/windowPosition';
+import type { Maybe } from 'shared';
 import type { MenuItemConstructorOptions } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class TrayService implements IBootstrappable {
+	private tray: Maybe<Tray>;
+
 	private readonly trayTooltip: string;
 	private readonly logoIcon: string;
 	private readonly showIcon: string;
@@ -18,11 +23,12 @@ export class TrayService implements IBootstrappable {
 	private readonly trayDownloadingIcon: string;
 
 	public constructor(
+		private readonly lifecycle      = inject(LifecycleService),
 		private readonly events         = inject(EventsService),
 		private readonly window         = inject(WindowService),
 		private readonly windowPosition = inject(WindowPositionService),
 	) {
-		this.trayTooltip         = 'Yet Another YouTube Downloader';
+		this.trayTooltip         = product.description;
 		this.logoIcon            = getExtraResourcePath('tray/action-icons/logo-16.png');
 		this.showIcon            = getExtraResourcePath('tray/action-icons/open-in-new.png');
 		this.quitIcon            = getExtraResourcePath('tray/action-icons/close.png');
@@ -31,11 +37,11 @@ export class TrayService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.events.subscribe('setup-finished', () => {
-			const tray = new Tray(this.trayIcon);
-			const menu = [] as MenuItemConstructorOptions[];
+		this.lifecycle.events.on('readyPhase', () => {
+			this.tray = new Tray(this.trayIcon);
+			this.tray.setToolTip(this.trayTooltip);
 
-			tray.setToolTip(this.trayTooltip);
+			const menu = [] as MenuItemConstructorOptions[];
 
 			menu.push(
 				{
@@ -65,7 +71,7 @@ export class TrayService implements IBootstrappable {
 								label: 'Relaunch',
 								click: () => {
 									app.relaunch();
-									app.exit(0);
+									app.quit();
 								}
 							}
 						]
@@ -78,7 +84,7 @@ export class TrayService implements IBootstrappable {
 				{
 					label: 'Show',
 					icon: this.showIcon,
-					click: () => tray.emit('click')
+					click: () => this.tray!.emit('click')
 				},
 				{
 					type: 'separator'
@@ -86,27 +92,33 @@ export class TrayService implements IBootstrappable {
 				{
 					label: 'Quit',
 					icon: this.quitIcon,
-					click: () => app.exit(0)
+					click: () => app.quit()
 				}
 			);
 
-			tray.setContextMenu(Menu.buildFromTemplate(menu));
-			tray.on('click', () => {
+			this.tray.setContextMenu(Menu.buildFromTemplate(menu));
+			this.tray.on('click', () => {
 				const mainWindow = this.window.getMainWindow()!;
-				this.windowPosition.setWindowPositionAtTray(mainWindow, tray);
+				this.windowPosition.setWindowPositionAtTray(mainWindow, this.tray!);
 				mainWindow.show();
 				mainWindow.focus();
 			});
 
 			this.events.subscribe('download-started', url => {
-				tray.setImage(this.trayDownloadingIcon);
-				tray.setToolTip(`Downloading ${url}`);
+				this.tray!.setImage(this.trayDownloadingIcon);
+				this.tray!.setToolTip(`Downloading ${url}`);
 			});
 
 			this.events.subscribe('download-finished', () => {
-				tray.setImage(this.trayIcon);
-				tray.setToolTip(this.trayTooltip);
+				this.tray!.setImage(this.trayIcon);
+				this.tray!.setToolTip(this.trayTooltip);
 			});
+		});
+		this.lifecycle.events.on('shutdown', () => {
+			if (this.tray) {
+				this.tray?.destroy();
+				this.tray = undefined;
+			}
 		});
 	}
 }

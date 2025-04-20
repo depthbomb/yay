@@ -11,6 +11,7 @@ import { GithubService } from '~/services/github';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { MarkdownService } from '~/services/markdown';
+import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, IpcChannel, SettingsKey } from 'shared';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -39,6 +40,7 @@ export class UpdaterService implements IBootstrappable {
 	private readonly httpClient: HttpClient;
 
 	public constructor(
+		private readonly lifecycle     = inject(LifecycleService),
 		private readonly ipc           = inject(IpcService),
 		private readonly events        = inject(EventsService),
 		private readonly window        = inject(WindowService),
@@ -65,7 +67,7 @@ export class UpdaterService implements IBootstrappable {
 
 		this.events.subscribe('show-updater', () => this.showUpdaterWindow());
 
-		await this.checkForUpdates();
+		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
 	}
 
 	public async checkForUpdates() {
@@ -169,9 +171,5 @@ export class UpdaterService implements IBootstrappable {
 		});
 
 		this.updaterWindow.webContents.setWindowOpenHandler(windowOpenHandler);
-
-		if (import.meta.env.DEV) {
-			this.updaterWindow.webContents.openDevTools({ mode: 'detach' });
-		}
 	}
 }

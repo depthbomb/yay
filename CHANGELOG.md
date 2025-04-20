@@ -1,3 +1,7 @@
+# 1.10.5
+
+- The main window can no longer be closed
+
 # 1.10.4
 
 - Fixed links in the updater window not opening in the default browser (again)

@@ -4,7 +4,6 @@ import { PRELOAD_PATH } from '~/constants';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { IpcChannel, SettingsKey } from 'shared';
-import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -20,7 +19,6 @@ export class SetupService {
 	public constructor(
 		private readonly cli        = inject(CliService),
 		private readonly ipc        = inject(IpcService),
-		private readonly events     = inject(EventsService),
 		private readonly window     = inject(WindowService),
 		private readonly settings   = inject(SettingsService),
 		private readonly downloader = inject(BinaryDownloader),
@@ -33,8 +31,6 @@ export class SetupService {
 		await this.settings.migrateLegacySettings();
 		await this.settings.removeDeprecatedSettings();
 		await this.checkForBinaries();
-
-		this.events.emit('setup-finished');
 	}
 
 	public cancel() {
@@ -81,10 +77,6 @@ export class SetupService {
 				}
 			},
 			onReadyToShow: async () => {
-				if (import.meta.env.DEV) {
-					setupWindow.webContents.openDevTools({ mode: 'detach' });
-				}
-
 				const hideSetupWindow =  this.settings.get<boolean>(SettingsKey.HideSetupWindow);
 				if (!hideSetupWindow || this.cli.flags.updateBinaries) {
 					setupWindow.show();

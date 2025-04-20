@@ -3,6 +3,9 @@ import { injectable } from '@needle-di/core';
 import type { Emitter } from 'mitt';
 import type { Events } from './types';
 
+/**
+ * TODO replace with service-level event emitter
+ */
 @injectable()
 export class EventsService {
 	private readonly emitter: Emitter<Events>;

@@ -8,6 +8,7 @@ import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
+import { LifecycleService } from '~/services/lifecycle';
 import { ThumbnailDownloader } from './thumbnailDownloader';
 import { getExtraFilePath, getExtraResourcePath } from '~/utils';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -22,6 +23,7 @@ export class YtdlpService implements IBootstrappable {
 	private readonly youtubeUrlPattern: RegExp;
 
 	public constructor(
+		private readonly lifecycle           = inject(LifecycleService),
 		private readonly ipc                 = inject(IpcService),
 		private readonly events              = inject(EventsService),
 		private readonly settings            = inject(SettingsService),
@@ -43,8 +45,10 @@ export class YtdlpService implements IBootstrappable {
 			const defaultAction = this.settings.get(SettingsKey.DefaultDownloadAction);
 			await this.download(url, defaultAction === 'audio');
 		});
-		this.ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, () => this.cancelDownload());
+		this.ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, () => this.cancelDownload(false));
 		this.ipc.registerHandler(IpcChannel.Ytdlp_UpdateBinary,   async () => await this.updateBinary());
+
+		this.lifecycle.events.on('shutdown', () => this.cancelDownload(true));
 	}
 
 	public async download(url: string, audioOnly = false) {
@@ -111,13 +115,16 @@ export class YtdlpService implements IBootstrappable {
 		});
 	}
 
-	public cancelDownload() {
+	public cancelDownload(shutdown: boolean) {
 		if (this.proc) {
 			kill(this.proc.pid!, 'SIGINT');
 			this.cleanupProcess();
-			this.window.emitAll(IpcChannel.Ytdlp_DownloadCanceled);
-			this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished);
-			this.events.emit('download-finished');
+
+			if (!shutdown) {
+				this.window.emitAll(IpcChannel.Ytdlp_DownloadCanceled);
+				this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished);
+				this.events.emit('download-finished');
+			}
 		}
 	}
 
