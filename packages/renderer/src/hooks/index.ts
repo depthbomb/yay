@@ -1,3 +1,4 @@
+export * from './useFeatureFlags';
 export * from './useIpc';
 export * from './useKeyCombo';
 export * from './useModifierKey';

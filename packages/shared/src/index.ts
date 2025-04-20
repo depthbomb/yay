@@ -1,4 +1,5 @@
 export * from './constants';
+export * from './featureFlags';
 export * from './ipc';
 export * from './product';
 export * from './settings';

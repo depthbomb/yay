@@ -1,4 +1,6 @@
+import { product } from 'shared';
 import { Tooltip } from './Tooltip';
+import { useFeatureFlags } from '~/hooks';
 import { forwardRef, useMemo } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
@@ -20,7 +22,8 @@ const seasonalLogos = [
 ];
 
 export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
-	const currentDate = useMemo(() => new Date(), []);
+	const currentDate          = useMemo(() => new Date(), []);
+	const [isFeatureEnabled]   = useFeatureFlags();
 	const [logoSrc, className] = useMemo(() => {
 		const matchingSeason = seasonalLogos.find(season => season.condition(currentDate));
 		if (matchingSeason) {
@@ -38,8 +41,16 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 		return [logo, baseCss] as const;
 	}, [currentDate]);
 
+	if (!isFeatureEnabled('0196518a-ab04-74b7-b69f-98f85176382a')) {
+		return (
+			<Tooltip content={product.description} side="right">
+				<img ref={ref} src={logo} className={baseCss} draggable="false" width="32" height="32" {...props}/>
+			</Tooltip>
+		)
+	}
+
 	return (
-		<Tooltip content="Yet Another YouTube Downloader" side="right">
+		<Tooltip content={product.description} side="right">
 			<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
 		</Tooltip>
 	);

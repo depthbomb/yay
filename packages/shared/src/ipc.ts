@@ -50,6 +50,8 @@ export enum IpcChannel {
 	Updater_Step                 = 'updater:update-step',
 	Updater_Cancel               = 'updater:cancel-update',
 	Updater_Complete             = 'updater:update-complete',
+	// Feature Flag channels
+	FeatureFlag_GetFeatureFlags = 'feature-flag:get-feature-flags',
 }
 
 export const IpcChannels = Object.values(IpcChannel);

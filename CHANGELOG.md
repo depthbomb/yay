@@ -1,3 +1,8 @@
+# 1.11.0
+
+- You can now manually check for updates in the app settings
+- Added the ability to toggle some features
+
 # 1.10.5
 
 - The main window can no longer be closed

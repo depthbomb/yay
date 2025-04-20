@@ -2,7 +2,7 @@ import { ipcRenderer, contextBridge } from 'electron';
 import { IpcChannel, IpcChannels, SettingsKey } from 'shared';
 import { arch, type, release, platform, hostname } from 'node:os';
 import type { IpcRendererEvent, MessageBoxOptions } from 'electron';
-import type { IpcApi, CoreApi, SystemApi, VersionsApi, SettingsApi } from 'shared';
+import type { IpcApi, CoreApi, SystemApi, VersionsApi, SettingsApi, FeatureFlagsApi } from 'shared';
 
 const versionsApi = process.versions satisfies VersionsApi;
 
@@ -167,9 +167,14 @@ const settingsApi = {
 	getValue: (key: SettingsKey, defaultValue?: unknown, secure?: boolean) => ipcRenderer.sendSync(IpcChannel.Settings_Get, key, defaultValue, secure)
 } satisfies SettingsApi;
 
+const featureFlagsApi = {
+	getFeatureFlags: () => ipcRenderer.sendSync(IpcChannel.FeatureFlag_GetFeatureFlags)
+} satisfies FeatureFlagsApi;
+
 contextBridge.exposeInMainWorld('versions', versionsApi);
 contextBridge.exposeInMainWorld('buildDate', new Date(__BUILD_DATE__));
 contextBridge.exposeInMainWorld('ipc', ipcApi);
 contextBridge.exposeInMainWorld('api', coreApi);
 contextBridge.exposeInMainWorld('system', systemApi);
 contextBridge.exposeInMainWorld('settings', settingsApi);
+contextBridge.exposeInMainWorld('featureFlags', featureFlagsApi);

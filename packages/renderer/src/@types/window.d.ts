@@ -1,4 +1,4 @@
-import type { IpcApi, CoreApi, SystemApi, VersionsApi, SettingsApi } from 'shared';
+import type { IpcApi, CoreApi, SystemApi, VersionsApi, SettingsApi, FeatureFlagsApi } from 'shared';
 
 declare global {
 	interface Window {
@@ -8,5 +8,6 @@ declare global {
 		api: CoreApi;
 		system: SystemApi;
 		settings: SettingsApi;
+		featureFlags: FeatureFlagsApi;
 	}
 }

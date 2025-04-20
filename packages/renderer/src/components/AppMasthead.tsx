@@ -41,7 +41,7 @@ export const AppMasthead = () => {
 		}
 	);
 
-	const onPinWindowButtonClicked = async () => window.api.toggleWindowPinned().then(setWindowPinned);
+	const onPinWindowButtonClicked = () => window.api.toggleWindowPinned().then(setWindowPinned);
 
 	return (
 		<header className={headerCss}>

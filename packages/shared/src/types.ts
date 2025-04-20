@@ -1,6 +1,7 @@
 import type { IpcChannel } from './ipc';
 import type { SettingsKey } from './settings';
 import type { Endpoints } from '@octokit/types';
+import type { FeatureFlagUuids } from './featureFlags';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
 export type Awaitable<T> = PromiseLike<T> | T;
@@ -66,4 +67,8 @@ export type SystemApi = {
 
 export type SettingsApi = {
 	getValue: <T>(key: SettingsKey, defaultValue?: unknown, secure?: boolean) => T
+};
+
+export type FeatureFlagsApi = {
+	getFeatureFlags: () => Array<{ uuid: typeof FeatureFlagUuids[number]; description: string; enabled: boolean; }>;
 };

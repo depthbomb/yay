@@ -11,6 +11,7 @@ import { SettingsService } from '~/services/settings';
 import { DeepLinksService } from '~/services/deepLinks';
 import { AutoStartService } from '~/services/autoStart';
 import { GlobalMenuService } from '~/services/globalMenu';
+import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
 import { MainWindowService } from '~/services/mainWindow/mainWindowService';
@@ -24,6 +25,7 @@ export class MainService {
 		private readonly window         = inject(WindowService),
 		private readonly autoStart      = inject(AutoStartService),
 		private readonly settings       = inject(SettingsService),
+		private readonly featureFlags   = inject(FeatureFlagsService),
 		private readonly setup          = inject(SetupService),
 		private readonly ytdlp          = inject(YtdlpService),
 		private readonly updater        = inject(UpdaterService),
@@ -35,9 +37,12 @@ export class MainService {
 	) {}
 
 	public async boot() {
+		this.featureFlags.set('0196518a-ab04-74b7-b69f-98f85176382a', 'Enable seasonal logos', true);
+
 		Promise.allSettled([
 			this.lifecycle.bootstrap(),
 			this.settings.bootstrap(),
+			this.featureFlags.bootstrap(),
 			this.autoStart.bootstrap(),
 			this.window.bootstrap(),
 			this.ytdlp.bootstrap(),
