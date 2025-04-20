@@ -44,10 +44,15 @@ export const DevTab = () => {
 				['Release', window.system.release()],
 				['Architecture', window.system.arch()],
 			]}/>
-			<Anchor href="https://github.com/depthbomb/yay" target="_blank" className="text-sm">
-				<Icon path={mdiGithub} className="size-4"/>
-				<span>GitHub</span>
-			</Anchor>
+			<div className="space-x-3 flex items-center">
+				<Anchor href="https://github.com/depthbomb/yay" target="_blank" className="text-sm">
+					<Icon path={mdiGithub} className="size-4"/>
+					<span>GitHub</span>
+				</Anchor>
+				{import.meta.env.DEV && (
+					<Anchor className="text-sm" onClick={() => window.api.showUpdaterWindow()}>(DEV) Show updater window</Anchor>
+				)}
+			</div>
 		</div>
 	);
 };
