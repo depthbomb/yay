@@ -64,6 +64,10 @@ export class UpdaterService implements IBootstrappable {
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestChangelog,   () => this.latestChangelog);
 		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
+		this.ipc.registerHandler(IpcChannel.Updater_HasNewRelease,        async () => {
+			await this.checkForUpdates();
+			return this.hasNewRelease;
+		});
 		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
 		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
 

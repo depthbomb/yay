@@ -59,7 +59,7 @@ export const SettingsPage = () => {
 					Developer
 				</TabButton>
 			</Tabs.List>
-			<div className="p-3 size-full overflow-y-auto [scrollbar-width:thin]">
+			<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
 				<Tabs.Content value="app">
 					<AppTab/>
 				</Tabs.Content>

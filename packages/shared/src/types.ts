@@ -51,6 +51,7 @@ export type CoreApi = {
 	getLatestRelease(): Promise<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>;
 	getLatestChangelog(): Promise<string>;
 	getCommitsSinceBuild(): Promise<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>;
+	hasNewRelease(): Promise<boolean>;
 	startUpdate(): Promise<void>;
 	cancelUpdate(): Promise<void>;
 };

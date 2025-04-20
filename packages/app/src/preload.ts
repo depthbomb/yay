@@ -150,6 +150,9 @@ const coreApi = {
 	getCommitsSinceBuild() {
 		return ipcRenderer.invoke(IpcChannel.Updater_GetCommitsSinceBuild);
 	},
+	hasNewRelease() {
+		return ipcRenderer.invoke(IpcChannel.Updater_HasNewRelease);
+	},
 	startUpdate() {
 		return ipcRenderer.invoke(IpcChannel.Updater_Update);
 	},
