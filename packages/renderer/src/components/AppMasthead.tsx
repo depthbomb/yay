@@ -6,8 +6,8 @@ import { IconButton } from './IconButton';
 import { useState, useEffect } from 'react';
 import { SeasonalLogo } from './SeasonalLogo';
 import { windowPinnedAtom } from '~/atoms/app';
+import { updateAvailableAtom } from '~/atoms/app';
 import { useThrottle, useModifierKey } from '~/hooks';
-import { workingAtom, updateAvailableAtom } from '~/atoms/app';
 import { mdiPin, mdiCog, mdiUpdate, mdiPinOff, mdiFolderOpen } from '@mdi/js';
 
 const UpdateIndicator = () => {
@@ -32,7 +32,6 @@ export const AppMasthead = () => {
 	const openDownloadDir                   = useThrottle(window.api.openDownloadDir, 2_500);
 	const holdingAlt                        = useModifierKey('Alt');
 	const [isWindowPinned, setWindowPinned] = useAtom(windowPinnedAtom);
-	const [isWorking]                       = useAtom(workingAtom);
 	const [updateAvailable]                 = useAtom(updateAvailableAtom);
 
 	const headerCss = clsx(
@@ -52,7 +51,7 @@ export const AppMasthead = () => {
 				{updateAvailable && <UpdateIndicator/>}
 				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="bottom" onClick={() => openDownloadDir()}/>
 				<IconButton icon={isWindowPinned ? mdiPinOff : mdiPin} title={isWindowPinned ? 'Unpin menu' : 'Pin menu'} tooltipSide="bottom" onClick={onPinWindowButtonClicked}/>
-				<IconButton icon={mdiCog} title="Settings" tooltipSide="bottom" onClick={() => window.api.showSettingsUI()} disabled={isWorking}/>
+				<IconButton icon={mdiCog} title="Settings" tooltipSide="bottom" onClick={() => window.api.showSettingsUI()}/>
 			</div>
 		</header>
 	);

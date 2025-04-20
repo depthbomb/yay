@@ -1,6 +1,7 @@
 # 1.10.5
 
 - The main window can no longer be closed
+- Settings button is no longer disabled when downloading media
 
 # 1.10.4
 
