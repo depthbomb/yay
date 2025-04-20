@@ -51,6 +51,10 @@ export class UpdaterService implements IBootstrappable {
 		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
 	}
 
+	public get hasNewRelease() {
+		return this.latestRelease !== null;
+	}
+
 	public async bootstrap() {
 		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 180_000);
 

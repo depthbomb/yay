@@ -41,7 +41,9 @@ export class DeepLinksService implements IBootstrappable {
 							break;
 					}
 				} else if (host === 'open-updater') {
-					this.updater.showUpdaterWindow();
+					if (this.updater.hasNewRelease) {
+						this.updater.showUpdaterWindow();
+					}
 				}
 			});
 		}
