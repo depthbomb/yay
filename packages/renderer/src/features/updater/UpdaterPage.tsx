@@ -105,8 +105,9 @@ export const UpdaterPage = () => {
 			</div>
 		</Tabs.Root>
 	) : (
-		<div className="h-full flex items-center justify-center">
+		<div className="space-y-3 h-screen flex flex-col items-center justify-center">
 			<Spinner className="size-16"/>
+			<p>Checking for new releases&hellip;</p>
 		</div>
 	));
 };
