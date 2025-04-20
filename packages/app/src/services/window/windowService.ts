@@ -63,6 +63,14 @@ export class WindowService implements IBootstrappable {
 
 		window.once('closed', () => this.windows.delete(name));
 
+		if (import.meta.env.DEV) {
+			window.webContents.on('before-input-event', (_, input) => {
+				if (input.type === 'keyUp' && input.key === 'F12') {
+					window.webContents.openDevTools({ mode: 'detach' });
+				}
+			});
+		}
+
 		this.windows.set(name, window);
 
 		window.loadURL(url).then(onReadyToShow);
