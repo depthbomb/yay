@@ -163,7 +163,6 @@ export class UpdaterService implements IBootstrappable {
 				minWidth: 800,
 				height: 500,
 				minHeight: 500,
-				backgroundColor: '#000',
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,

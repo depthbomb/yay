@@ -42,7 +42,6 @@ export class MainWindowService implements IBootstrappable {
 				maximizable: false,
 				closable: false,
 				skipTaskbar: import.meta.env.PROD,
-				backgroundColor: '#000',
 				roundedCorners: false,
 				webPreferences: {
 					spellcheck: false,
@@ -115,7 +114,6 @@ export class MainWindowService implements IBootstrappable {
 			app.relaunch({ args: ['--updateBinaries'] });
 			app.exit(0);
 		});
-		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => await dialog.showMessageBox(this.mainWindow!, options));
 		//#endregion
 
 		//#region Events

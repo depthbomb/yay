@@ -1,3 +1,6 @@
+import { dialog } from 'electron';
+import { IpcChannel } from 'shared';
+import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
@@ -11,11 +14,13 @@ import { GlobalMenuService } from '~/services/globalMenu';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
 import { MainWindowService } from '~/services/mainWindow/mainWindowService';
+import type { MessageBoxOptions } from 'electron';
 
 @injectable()
 export class MainService {
 	public constructor(
 		private readonly lifecycle      = inject(LifecycleService),
+		private readonly ipc            = inject(IpcService),
 		private readonly window         = inject(WindowService),
 		private readonly autoStart      = inject(AutoStartService),
 		private readonly settings       = inject(SettingsService),
@@ -45,5 +50,7 @@ export class MainService {
 			this.updater.bootstrap(),
 		])
 		.then(() => this.lifecycle.phase = LifecyclePhase.Ready);
+
+		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => await dialog.showMessageBox(this.window.getMainWindow()!, options));
 	}
 }

@@ -81,7 +81,6 @@
 
 body {
 	@apply select-none;
-	@apply bg-transparent;
 }
 
 button {
