@@ -2,7 +2,6 @@ import { globalShortcut } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { getExtraResourcePath } from '~/utils';
 import { YtdlpService } from '~/services/ytdlp';
-import { EventsService } from '~/services/events';
 import { Menu, shell, clipboard } from 'electron';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -29,7 +28,6 @@ export class GlobalMenuService implements IBootstrappable {
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
 		private readonly ipc       = inject(IpcService),
-		private readonly events    = inject(EventsService),
 		private readonly settings  = inject(SettingsService),
 		private readonly ytdlp     = inject(YtdlpService),
 	) {
@@ -68,9 +66,9 @@ export class GlobalMenuService implements IBootstrappable {
 		this.ipc.registerHandler(IpcChannel.GlobalMenu_Disable, disableGlobalMenu);
 		this.ipc.registerHandler(IpcChannel.GlobalMenu_Toggle,  toggleGlobalMenu);
 
-		this.events.subscribe('download-started',  () => this.setMenu(true));
-		this.events.subscribe('download-finished', () => this.setMenu(false));
-		this.events.subscribe('settings-updated', ({ key, value }) => {
+		this.ytdlp.events.on('downloadStarted',  () => this.setMenu(true));
+		this.ytdlp.events.on('downloadFinished', () => this.setMenu(false));
+		this.settings.events.on('settingsUpdated', ({ key, value }) => {
 			if (key === SettingsKey.EnableGlobalMenu) {
 				if (value as boolean) {
 					globalShortcut.register(accelerator, callback);

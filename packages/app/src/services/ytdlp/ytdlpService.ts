@@ -1,10 +1,10 @@
+import mitt from 'mitt';
 import kill from 'tree-kill';
 import { dialog } from 'electron';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
 import { IpcChannel, SettingsKey } from 'shared';
-import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -18,6 +18,8 @@ import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class YtdlpService implements IBootstrappable {
+	public readonly events = mitt<{ downloadStarted: string; downloadFinished: void; }>();
+
 	private proc: Nullable<ChildProcess> = null;
 
 	private readonly youtubeUrlPattern: RegExp;
@@ -25,7 +27,6 @@ export class YtdlpService implements IBootstrappable {
 	public constructor(
 		private readonly lifecycle           = inject(LifecycleService),
 		private readonly ipc                 = inject(IpcService),
-		private readonly events              = inject(EventsService),
 		private readonly settings            = inject(SettingsService),
 		private readonly window              = inject(WindowService),
 		private readonly notifications       = inject(NotificationsService),
@@ -69,7 +70,7 @@ export class YtdlpService implements IBootstrappable {
 		};
 
 		this.window.emitAll(IpcChannel.Ytdlp_DownloadStarted, url);
-		this.events.emit('download-started', url);
+		this.events.emit('downloadStarted', url);
 
 		let notificationImage          = getExtraResourcePath('notifications/logo.png');
 		let notificationImagePlacement = 'appLogoOverride';
@@ -96,7 +97,7 @@ export class YtdlpService implements IBootstrappable {
 
 		this.proc.once('close', code => {
 			this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished, code);
-			this.events.emit('download-finished');
+			this.events.emit('downloadFinished');
 
 			if (showNotification && !this.window.getMainWindow()?.isFocused()) {
 				this.showCompletionNotification(downloadDir, notificationImage, notificationImagePlacement);
@@ -123,7 +124,7 @@ export class YtdlpService implements IBootstrappable {
 			if (!shutdown) {
 				this.window.emitAll(IpcChannel.Ytdlp_DownloadCanceled);
 				this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished);
-				this.events.emit('download-finished');
+				this.events.emit('downloadFinished');
 			}
 		}
 	}

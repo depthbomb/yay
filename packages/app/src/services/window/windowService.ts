@@ -1,3 +1,4 @@
+import mitt from 'mitt';
 import { join } from 'node:path';
 import { ROOT_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
@@ -26,6 +27,7 @@ type CreateMainWindowOptions = Omit<CreateWindowOptions, 'name'>;
 
 @injectable()
 export class WindowService implements IBootstrappable {
+	public readonly events = mitt<{ windowCreated: BrowserWindow; }>();
 	public readonly windows: Map<string, BrowserWindow>;
 
 	private readonly mainWindowName = 'main' as const;
@@ -74,6 +76,8 @@ export class WindowService implements IBootstrappable {
 		this.windows.set(name, window);
 
 		window.loadURL(url).then(onReadyToShow);
+
+		this.events.emit('windowCreated', window);
 
 		return window;
 	}

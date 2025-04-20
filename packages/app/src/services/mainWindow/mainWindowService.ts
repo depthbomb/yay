@@ -1,8 +1,8 @@
 import { unlink } from 'fs/promises';
 import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
+import { YtdlpService } from '~/services/ytdlp';
 import { IpcChannel, SettingsKey } from 'shared';
-import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { app, Menu, shell, dialog } from 'electron';
 import { inject, injectable } from '@needle-di/core';
@@ -22,9 +22,9 @@ export class MainWindowService implements IBootstrappable {
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
 		private readonly ipc       = inject(IpcService),
-		private readonly events    = inject(EventsService),
 		private readonly settings  = inject(SettingsService),
 		private readonly window    = inject(WindowService),
+		private readonly ytdlp     = inject(YtdlpService),
 	) {}
 
 	public async bootstrap(): Promise<void> {
@@ -119,8 +119,8 @@ export class MainWindowService implements IBootstrappable {
 		//#endregion
 
 		//#region Events
-		this.events.subscribe('download-started', () => this.mainWindow!.setProgressBar(1, { mode: 'indeterminate' }));
-		this.events.subscribe('download-finished', () => {
+		this.ytdlp.events.on('downloadStarted', () => this.mainWindow!.setProgressBar(1, { mode: 'indeterminate' }));
+		this.ytdlp.events.on('downloadFinished', () => {
 			this.mainWindow!.setProgressBar(0, { mode: 'none' });
 			this.mainWindow!.flashFrame(true);
 		});

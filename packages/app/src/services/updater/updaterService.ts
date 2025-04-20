@@ -5,7 +5,6 @@ import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
 import { windowOpenHandler } from '~/utils';
 import { HttpService } from '~/services/http';
-import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
 import { inject, injectable } from '@needle-di/core';
@@ -42,7 +41,6 @@ export class UpdaterService implements IBootstrappable {
 	public constructor(
 		private readonly lifecycle     = inject(LifecycleService),
 		private readonly ipc           = inject(IpcService),
-		private readonly events        = inject(EventsService),
 		private readonly window        = inject(WindowService),
 		private readonly settings      = inject(SettingsService),
 		private readonly http          = inject(HttpService),
@@ -64,8 +62,6 @@ export class UpdaterService implements IBootstrappable {
 		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
 		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
 		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
-
-		this.events.subscribe('show-updater', () => this.showUpdaterWindow());
 
 		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
 	}

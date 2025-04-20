@@ -1,3 +1,4 @@
+import mitt from 'mitt';
 import { app } from 'electron';
 import { join } from 'node:path';
 import { fileExists } from '~/utils';
@@ -5,7 +6,6 @@ import { safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
 import { IpcChannel, SettingsKey } from 'shared';
-import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
 import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
@@ -20,6 +20,8 @@ type SettingsManagetSetOptions = SettingsManagetGetOptions;
 
 @injectable()
 export class SettingsService implements IBootstrappable {
+	public readonly events = mitt<{ settingsUpdated: { key: SettingsKey, value: unknown } }>();
+
 	private readonly internalStore: Store<Settings>;
 	private readonly settingsFilePath: string;
 	private readonly legacySettingsFilePath: string;
@@ -27,7 +29,6 @@ export class SettingsService implements IBootstrappable {
 
 	public constructor(
 		private readonly ipc    = inject(IpcService),
-		private readonly events = inject(EventsService),
 		private readonly window = inject(WindowService),
 		private readonly store  = inject(StoreService),
 	) {
@@ -61,7 +62,7 @@ export class SettingsService implements IBootstrappable {
 			}
 		);
 
-		this.events.subscribe('settings-updated', ({ key, value }) => this.window.emitAll(IpcChannel.Settings_Changed, key, value));
+		this.events.on('settingsUpdated', ({ key, value }) => this.window.emitAll(IpcChannel.Settings_Changed, key, value));
 	}
 
 	public get<T>(key: SettingsKey, defaultValue?: T, options?: SettingsManagetGetOptions) {
@@ -81,7 +82,7 @@ export class SettingsService implements IBootstrappable {
 		const $value = options?.secure ? this.encryptValue(value) : value;
 		await this.internalStore.set(key, $value);
 
-		this.events.emit('settings-updated', { key, value });
+		this.events.emit('settingsUpdated', { key, value });
 	}
 
 	public async setDefault<T>(key: SettingsKey, value: T, options?: SettingsManagetSetOptions) {

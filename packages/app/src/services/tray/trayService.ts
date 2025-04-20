@@ -1,7 +1,7 @@
 import { product } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { app, Menu, Tray } from 'electron';
-import { EventsService } from '~/services/events';
+import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
@@ -24,9 +24,9 @@ export class TrayService implements IBootstrappable {
 
 	public constructor(
 		private readonly lifecycle      = inject(LifecycleService),
-		private readonly events         = inject(EventsService),
 		private readonly window         = inject(WindowService),
 		private readonly windowPosition = inject(WindowPositionService),
+		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.trayTooltip         = product.description;
 		this.logoIcon            = getExtraResourcePath('tray/action-icons/logo-16.png');
@@ -104,12 +104,12 @@ export class TrayService implements IBootstrappable {
 				mainWindow.focus();
 			});
 
-			this.events.subscribe('download-started', url => {
+			this.ytdlp.events.on('downloadStarted', url => {
 				this.tray!.setImage(this.trayDownloadingIcon);
 				this.tray!.setToolTip(`Downloading ${url}`);
 			});
 
-			this.events.subscribe('download-finished', () => {
+			this.ytdlp.events.on('downloadFinished', () => {
 				this.tray!.setImage(this.trayIcon);
 				this.tray!.setToolTip(this.trayTooltip);
 			});

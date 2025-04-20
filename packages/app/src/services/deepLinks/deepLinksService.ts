@@ -1,17 +1,17 @@
 import { app } from 'electron';
 import { product } from 'shared';
 import { YtdlpService } from '~/services/ytdlp';
-import { EventsService } from '~/services/events';
 import { WindowService } from '~/services/window';
+import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class DeepLinksService implements IBootstrappable {
 	public constructor(
-		private readonly events = inject(EventsService),
-		private readonly window = inject(WindowService),
-		private readonly ytdlp  = inject(YtdlpService),
+		private readonly window  = inject(WindowService),
+		private readonly updater = inject(UpdaterService),
+		private readonly ytdlp   = inject(YtdlpService),
 	) {}
 
 	public async bootstrap(): Promise<any> {
@@ -41,7 +41,7 @@ export class DeepLinksService implements IBootstrappable {
 							break;
 					}
 				} else if (host === 'open-updater') {
-					this.events.emit('show-updater');
+					this.updater.showUpdaterWindow();
 				}
 			});
 		}
