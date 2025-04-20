@@ -65,7 +65,7 @@ export class WindowService implements IBootstrappable {
 
 		this.windows.set(name, window);
 
-		window.loadURL(url, { userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36' }).then(onReadyToShow);
+		window.loadURL(url).then(onReadyToShow);
 
 		return window;
 	}
