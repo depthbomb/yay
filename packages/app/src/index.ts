@@ -55,6 +55,5 @@ app.whenReady().then(async () => {
 		}
 	}
 
-	const container = new Container();
-	await container.get(MainService).boot();
+	await new Container().get(MainService).boot();
 });
