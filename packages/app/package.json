@@ -10,7 +10,6 @@
 		"electron:test": "electron .",
 		"electron:dist": "cross-env NODE_ENV=production yarn electron:win64",
 		"electron:win64": "electron-builder --config electron-builder.config.js build -w --x64 --dir --publish=never",
-		"electron:portable": "electron-builder --config electron-builder.config.js build -w=portable --x64 --publish=never",
 		"lint": "eslint ./src --ext .ts"
 	},
 	"dependencies": {
