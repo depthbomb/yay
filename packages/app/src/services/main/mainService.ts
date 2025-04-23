@@ -10,11 +10,11 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { DeepLinksService } from '~/services/deepLinks';
 import { AutoStartService } from '~/services/autoStart';
+import { MainWindowService } from '~/services/mainWindow';
 import { GlobalMenuService } from '~/services/globalMenu';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
-import { MainWindowService } from '~/services/mainWindow/mainWindowService';
 import type { MessageBoxOptions } from 'electron';
 
 @injectable()
