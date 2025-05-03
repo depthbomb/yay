@@ -90,7 +90,7 @@ export const HomePage = () => {
 				disabled={!isValidUrl || isUpdating}
 			/>
 			<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
-				<div ref={logOutputEl} className="h-full overflow-y-auto [scrollbar-width:thin]">
+				<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
 					{logs.map((line, i) => (
 						<LogLine key={i} line={line}/>
 					))}
