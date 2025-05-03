@@ -10,14 +10,13 @@ import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { fileExists, getExtraFilePath, windowOpenHandler } from '~/utils';
 import type { Maybe } from 'shared';
+import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
-import type { BrowserWindow, MessageBoxOptions } from 'electron';
 
 @injectable()
 export class MainWindowService implements IBootstrappable {
 	private mainWindow: Maybe<BrowserWindow>;
-	private windowPinned     = import.meta.env.DEV;
-	private shouldHideOnBlur = true;
+	private windowPinned = import.meta.env.DEV;
 
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
@@ -53,7 +52,7 @@ export class MainWindowService implements IBootstrappable {
 			}
 		});
 		this.mainWindow.on('blur', () => {
-			if (this.shouldHideOnBlur && !this.windowPinned) {
+			if (!this.windowPinned) {
 				this.mainWindow!.hide();
 			}
 
@@ -78,8 +77,6 @@ export class MainWindowService implements IBootstrappable {
 		});
 		this.ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => await shell.openPath(this.settings.get(SettingsKey.DownloadDir)));
 		this.ipc.registerHandler(IpcChannel.Main_PickDownloadDir, async () => {
-			this.shouldHideOnBlur = false;
-
 			const { filePaths, canceled } = await dialog.showOpenDialog(this.mainWindow!, {
 				title: 'Choose a download folder',
 				defaultPath: this.settings.get(SettingsKey.DownloadDir, ''),
@@ -90,15 +87,12 @@ export class MainWindowService implements IBootstrappable {
 				const chosenPath = filePaths[0];
 				await this.settings.set(SettingsKey.DownloadDir, chosenPath);
 
-				this.shouldHideOnBlur = true;
-
 				return chosenPath;
 			}
 
-			this.shouldHideOnBlur = true;
-
 			return null;
 		});
+
 		this.ipc.registerHandler(IpcChannel.Ytdlp_RecheckBinaries, async () => {
 			for (const bin of ['yt-dlp.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
 				const binPath = getExtraFilePath(bin);
