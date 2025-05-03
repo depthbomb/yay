@@ -1,6 +1,6 @@
-import { unlink } from 'fs/promises';
 import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
+import { unlink, copyFile } from 'fs/promises';
 import { YtdlpService } from '~/services/ytdlp';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
@@ -77,7 +77,7 @@ export class MainWindowService implements IBootstrappable {
 		});
 		this.ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => await shell.openPath(this.settings.get(SettingsKey.DownloadDir)));
 		this.ipc.registerHandler(IpcChannel.Main_PickDownloadDir, async () => {
-			const { filePaths, canceled } = await dialog.showOpenDialog(this.mainWindow!, {
+			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
 				title: 'Choose a download folder',
 				defaultPath: this.settings.get(SettingsKey.DownloadDir, ''),
 				properties: ['openDirectory']
@@ -92,7 +92,25 @@ export class MainWindowService implements IBootstrappable {
 
 			return null;
 		});
+		this.ipc.registerHandler(IpcChannel.Main_PickCookiesFile, async () => {
+			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
+				title: 'Locate cookies.txt file',
+				filters: [{ name: '.txt files', extensions: ['txt'] }],
+				properties: ['openFile']
+			});
 
+			if (!canceled && filePaths.length === 1) {
+				const chosenPath      = filePaths[0];
+				const destinationPath = getExtraFilePath('cookies.txt');
+
+				await copyFile(chosenPath, destinationPath);
+				await this.settings.set(SettingsKey.CookiesFilePath, destinationPath);
+
+				return destinationPath;
+			}
+
+			return null;
+		});
 		this.ipc.registerHandler(IpcChannel.Ytdlp_RecheckBinaries, async () => {
 			for (const bin of ['yt-dlp.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
 				const binPath = getExtraFilePath(bin);

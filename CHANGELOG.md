@@ -1,3 +1,11 @@
+# 1.12.0
+
+- Added the ability to choose a `cookies.txt` file for yt-dlp's `--cookie` option
+  - Read more [here](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)
+- You can now select text in the output log
+- Download folder dialog is now treated as a child of the settings window instead of the main window
+- Upgraded to [Electron 36.1.0](https://releases.electronjs.org/release/v36.1.0)
+
 # 1.11.0
 
 - You can now manually check for updates in the app settings

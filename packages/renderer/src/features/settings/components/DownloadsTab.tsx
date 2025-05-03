@@ -4,12 +4,14 @@ import { Switch } from '~/components/Switch';
 import { Anchor } from '~/components/Anchor';
 import { KeyCombo } from '~/components/KeyCombo';
 import { Select, TextInput } from '~/components/input';
+import type { Nullable } from 'shared';
 import type { ChangeEvent } from 'react';
 
 export const DownloadsTab = () => {
 	const [downloadDir]                                     = useSetting<string>(SettingsKey.DownloadDir);
 	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(SettingsKey.DownloadNameTemplate, { reactive: false });
 	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(SettingsKey.DefaultDownloadAction, { reactive: false });
+	const [cookiesFilePath]                                 = useSetting<Nullable<string>>(SettingsKey.CookiesFilePath);
 	const [enableNotifications, setEnableNotifications]     = useSetting(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
 	const [skipYoutubePlaylists, setSkipYoutubePlaylists]   = useSetting(SettingsKey.SkipYoutubePlaylists, { defaultValue: true, reactive: false });
 
@@ -35,6 +37,14 @@ export const DownloadsTab = () => {
 					<option value="video">Download video</option>
 					<option value="audio">Download audio</option>
 				</Select>
+			</div>
+			<div className="flex flex-col items-start space-y-1.5">
+				<p>Cookies file</p>
+				<TextInput value={cookiesFilePath ?? 'None'} onClick={() => window.api.openCookiesFilePicker()} type="text" readOnly className="w-full" size="small"/>
+				<div className="w-full flex items-center justify-between">
+					<Anchor onClick={() => window.api.openCookiesFilePicker()} className="text-xs cursor-pointer">Change...</Anchor>
+					{cookiesFilePath && <Anchor onClick={() => window.api.removeCookiesFile()} className="text-xs cursor-pointer">Remove</Anchor>}
+				</div>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Completion toast notification</p>

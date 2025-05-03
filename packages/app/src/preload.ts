@@ -78,6 +78,9 @@ const coreApi = {
 	openDownloadDirPicker() {
 		return ipcRenderer.invoke(IpcChannel.Main_PickDownloadDir);
 	},
+	openCookiesFilePicker() {
+		return ipcRenderer.invoke(IpcChannel.Main_PickCookiesFile);
+	},
 	toggleWindowPinned() {
 		return ipcRenderer.invoke(IpcChannel.Main_ToggleWindowPinned);
 	},
@@ -107,6 +110,9 @@ const coreApi = {
 	},
 	downloadDefault(url: string) {
 		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadDefault, url);
+	},
+	removeCookiesFile() {
+		return ipcRenderer.invoke(IpcChannel.Ytdlp_RemoveCookiesFile);
 	},
 	cancelDownload() {
 		return ipcRenderer.invoke(IpcChannel.Ytdlp_CancelDownload);

@@ -7,6 +7,7 @@ export enum SettingsKey {
 	DownloadDir                   = 'download-dir',
 	DownloadNameTemplate          = 'download-name-template',
 	DefaultDownloadAction         = 'default-download-action',
+	CookiesFilePath               = 'cookies-file-path',
 	EnableDownloadCompletionToast = 'enable-download-completion-toast',
 	YtdlpPath                     = 'yt-dlp-path',
 	SkipYoutubePlaylists          = 'skip-youtube-playlists',

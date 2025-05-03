@@ -24,6 +24,7 @@ export type CoreApi = {
 	showInputRightClickMenu(): Promise<void>;
 	openDownloadDir(): Promise<void>;
 	openDownloadDirPicker(): Promise<void>;
+	openCookiesFilePicker(): Promise<void>;
 	toggleWindowPinned(): Promise<boolean>;
 	//
 	cancelSetup(): Promise<void>;
@@ -36,6 +37,7 @@ export type CoreApi = {
 	downloadVideo(url: string): Promise<void>;
 	downloadAudio(url: string): Promise<void>;
 	downloadDefault(url: string): Promise<void>;
+	removeCookiesFile(): Promise<void>;
 	cancelDownload(): Promise<void>;
 	recheckBinaries(): Promise<void>;
 	updateYtdlpBinary(): Promise<void>;

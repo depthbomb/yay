@@ -1,6 +1,7 @@
 import mitt from 'mitt';
 import kill from 'tree-kill';
 import { dialog } from 'electron';
+import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
@@ -46,6 +47,15 @@ export class YtdlpService implements IBootstrappable {
 			const defaultAction = this.settings.get(SettingsKey.DefaultDownloadAction);
 			await this.download(url, defaultAction === 'audio');
 		});
+		this.ipc.registerHandler(IpcChannel.Ytdlp_RemoveCookiesFile, async () => {
+			const cookiesFilePath = this.settings.get<Nullable<string>>(SettingsKey.CookiesFilePath, null);
+
+			await this.settings.set(SettingsKey.CookiesFilePath, null);
+
+			if (cookiesFilePath) {
+				await unlink(cookiesFilePath);
+			}
+		});
 		this.ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, () => this.cancelDownload(false));
 		this.ipc.registerHandler(IpcChannel.Ytdlp_UpdateBinary,   async () => await this.updateBinary());
 
@@ -86,15 +96,21 @@ export class YtdlpService implements IBootstrappable {
 			notificationImage          = await this.thumbnailDownloader.downloadThumbnail(videoId);
 		}
 
+		const ytdlpArgs = [] as string[];
 		if (audioOnly) {
-			this.proc = spawn(ytDlpPath, ['-x', '--audio-format', 'mp3', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath]);
+			ytdlpArgs.push('-x', '--audio-format', 'mp3', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		} else {
-			this.proc = spawn(ytDlpPath, [url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath]);
+			ytdlpArgs.push(url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		}
 
+		const cookiesFilePath = this.settings.get<Nullable<string>>(SettingsKey.CookiesFilePath, null);
+		if (cookiesFilePath) {
+			ytdlpArgs.push('--cookies', cookiesFilePath!);
+		}
+
+		this.proc = spawn(ytDlpPath, ytdlpArgs);
 		this.proc.stdout!.on('data', emitLog);
 		this.proc.stderr!.on('data', emitLog);
-
 		this.proc.once('close', code => {
 			this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished, code);
 			this.events.emit('downloadFinished');
