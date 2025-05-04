@@ -4,18 +4,14 @@ import { useSetting } from '~/hooks';
 import { SettingsKey } from 'shared';
 import { Switch } from '~/components/Switch';
 import { Button } from '~/components/Button';
-import { mdiMicrosoftWindows } from '@mdi/js';
-import { KeyCombo } from '~/components/KeyCombo';
 import { updateAvailableAtom } from '~/atoms/app';
 
 export const AppTab = () => {
 	const [updateButtonDisabled, setUpdateButtonDisabled]           = useState(false);
 	const [updateAvailable]                                         = useAtom(updateAvailableAtom);
-	const [showHintFooter, setShowHintFooter]                       = useSetting<boolean>(SettingsKey.ShowHintFooter, { reactive: false });
 	const [hideSetupWindow, setHideSetupWindow]                     = useSetting<boolean>(SettingsKey.HideSetupWindow, { reactive: false });
 	const [enableUpdateNotifications, setEnableUpdateNotifications] = useSetting<boolean>(SettingsKey.EnableNewReleaseToast, { reactive: false });
 	const [autoStartEnabled, setAutoStartEnabled]                   = useSetting<boolean>(SettingsKey.AutoStart, { reactive: false });
-	const [globalMenuEnabled, setGlobalMenuEnabled]                 = useSetting<boolean>(SettingsKey.EnableGlobalMenu, { reactive: false });
 
 	const checkForUpdates = async () => {
 		setUpdateButtonDisabled(true);
@@ -43,16 +39,8 @@ export const AppTab = () => {
 				<Switch checked={hideSetupWindow} defaultChecked={hideSetupWindow} onCheckedChange={setHideSetupWindow}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</p>
-				<Switch checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
 				<p>Notify when an update is available</p>
 				<Switch checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Show hints</p>
-				<Switch checked={showHintFooter} defaultChecked={showHintFooter} onCheckedChange={setShowHintFooter}/>
 			</div>
 			<div className="mt-auto">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateButtonDisabled || updateAvailable}>Check for updates</Button>

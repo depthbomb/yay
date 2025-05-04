@@ -5,8 +5,10 @@ import { useIpc } from '~/hooks';
 import { IpcChannel } from 'shared';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
+import { YoutubeTab } from './components/YoutubeTab';
 import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
+import { InterfaceTab } from './components/InterfaceTab';
 import { DownloadsTab } from './components/DownloadsTab';
 import type { FC } from 'react';
 
@@ -49,8 +51,14 @@ export const SettingsPage = () => {
 				<TabButton value="app">
 					Application
 				</TabButton>
+				<TabButton value="interface">
+					Interface
+				</TabButton>
 				<TabButton value="downloads">
 					Downloads
+				</TabButton>
+				<TabButton value="youtube">
+					YouTube
 				</TabButton>
 				<TabButton value="advanced">
 					Advanced
@@ -63,8 +71,14 @@ export const SettingsPage = () => {
 				<Tabs.Content value="app">
 					<AppTab/>
 				</Tabs.Content>
+				<Tabs.Content value="interface">
+					<InterfaceTab/>
+				</Tabs.Content>
 				<Tabs.Content value="downloads">
 					<DownloadsTab/>
+				</Tabs.Content>
+				<Tabs.Content value="youtube">
+					<YoutubeTab/>
 				</Tabs.Content>
 				<Tabs.Content value="advanced">
 					<AdvancedTab/>
