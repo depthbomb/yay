@@ -9,33 +9,13 @@ const isProduction = process.env.NODE_ENV === 'production';
  * Setting this to `true` is useful in cases where third-party package code is completely bundled
  * into your compiled app code.
  */
-const EXCLUDE_ALL_NODE_MODULES = false;
+const EXCLUDE_ALL_NODE_MODULES = true;
 /**
  * Specific package names to exclude from the app's asar when `EXCLUDE_ALL_NODE_MODULES` is false.
  *
  * If a package has dependencies then you must exclude those as well.
  */
-const EXCLUDED_PACKAGES = [
-	'@types',
-	'@octokit',
-	'@needle-di',
-	'smol-toml',
-	'marked',
-	'before-after-hook',
-	'bottleneck',
-	'fast-content-type-parse',
-	'toad-cache',
-	'universal-github-app-jwt',
-	'cockatiel',
-	'tree-kill',
-	'octokit',
-	'ufo',
-	'universal-user-agent',
-	'shared',
-	'mitt',
-	'semver',
-	'type-flag'
-];
+const EXCLUDED_PACKAGES = [];
 
 /**
  * @type Configuration
