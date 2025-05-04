@@ -3,10 +3,11 @@ import { IpcService } from '~/services/ipc';
 import { getExtraResourcePath } from '~/utils';
 import { YtdlpService } from '~/services/ytdlp';
 import { Menu, shell, clipboard } from 'electron';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { SettingsKey, isValidHttpUrl } from 'shared';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
-import { IpcChannel, SettingsKey, isValidHttpUrl } from 'shared';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 import type { MenuItem, MenuItemConstructorOptions } from 'electron';
 
@@ -26,6 +27,7 @@ export class GlobalMenuService implements IBootstrappable {
 	private readonly closeIcon              = getExtraResourcePath('tray/action-icons/close.png');
 
 	public constructor(
+		private readonly logger    = inject(LoggingService),
 		private readonly lifecycle = inject(LifecycleService),
 		private readonly ipc       = inject(IpcService),
 		private readonly settings  = inject(SettingsService),
@@ -38,33 +40,9 @@ export class GlobalMenuService implements IBootstrappable {
 
 	public async bootstrap() {
 		const callback = () => this.showMenu();
-		const enableGlobalMenu = async () => {
-			globalShortcut.register(accelerator, callback);
-			await this.settings.set(SettingsKey.EnableGlobalMenu, true);
-
-			return true;
-		};
-		const disableGlobalMenu = async () => {
-			globalShortcut.unregister(accelerator);
-			await this.settings.set(SettingsKey.EnableGlobalMenu, false);
-
-			return false;
-		};
-		const toggleGlobalMenu = async () => {
-			if (globalShortcut.isRegistered(accelerator)) {
-				return disableGlobalMenu();
-			} else {
-				return enableGlobalMenu();
-			}
-		};
-
 		if (this.settings.get(SettingsKey.EnableGlobalMenu) === true) {
 			this.lifecycle.events.on('readyPhase', () => globalShortcut.register(accelerator, callback));
 		}
-
-		this.ipc.registerHandler(IpcChannel.GlobalMenu_Enable,  enableGlobalMenu);
-		this.ipc.registerHandler(IpcChannel.GlobalMenu_Disable, disableGlobalMenu);
-		this.ipc.registerHandler(IpcChannel.GlobalMenu_Toggle,  toggleGlobalMenu);
 
 		this.ytdlp.events.on('downloadStarted',  () => this.setMenu(true));
 		this.ytdlp.events.on('downloadFinished', () => this.setMenu(false));
@@ -81,8 +59,11 @@ export class GlobalMenuService implements IBootstrappable {
 
 	public showMenu() {
 		if (this.menuShown) {
+			this.logger.warn('Tried to show menu when it is already visible');
 			return;
 		}
+
+		this.logger.silly('Showing global menu');
 
 		this.menu.popup();
 	}
@@ -93,11 +74,13 @@ export class GlobalMenuService implements IBootstrappable {
 
 	private async tryDownloadFromClipboard(downloadAudio: boolean = false) {
 		if (this.ytdlp.isBusy) {
+			this.logger.warn('Tried to download from clipboard when we are busy?');
 			return;
 		}
 
 		const text = clipboard.readText('clipboard');
 		if (!isValidHttpUrl(text)) {
+			this.logger.debug('Invalid URL in clipboard, ignoring');
 			return;
 		}
 

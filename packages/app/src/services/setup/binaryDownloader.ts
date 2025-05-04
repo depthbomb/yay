@@ -6,6 +6,7 @@ import { spawn } from 'node:child_process';
 import { getExtraFilePath } from '~/utils';
 import { HttpService } from '~/services/http';
 import { GithubService } from '~/services/github';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { HttpClient } from '~/services/http';
 
@@ -14,6 +15,7 @@ export class BinaryDownloader {
 	private readonly httpClient: HttpClient;
 
 	public constructor(
+		private readonly logger = inject(LoggingService),
 		private readonly http   = inject(HttpService),
 		private readonly github = inject(GithubService),
 	) {
@@ -69,7 +71,7 @@ export class BinaryDownloader {
 				'ffprobe.exe',
 			]);
 
-			extraction.once('error', err => console.error(err));
+			extraction.once('error', err => this.logger.error('Error while extracting archive', { err }));
 			extraction.once('close', async code => {
 				onCleaningUp?.();
 

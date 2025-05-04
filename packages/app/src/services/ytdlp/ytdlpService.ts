@@ -7,6 +7,7 @@ import { IpcService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
@@ -26,6 +27,7 @@ export class YtdlpService implements IBootstrappable {
 	private readonly youtubeUrlPattern: RegExp;
 
 	public constructor(
+		private readonly logger              = inject(LoggingService),
 		private readonly lifecycle           = inject(LifecycleService),
 		private readonly ipc                 = inject(IpcService),
 		private readonly settings            = inject(SettingsService),
@@ -81,15 +83,19 @@ export class YtdlpService implements IBootstrappable {
 
 		this.window.emitAll(IpcChannel.Ytdlp_DownloadStarted, url);
 		this.events.emit('downloadStarted', url);
+		this.logger.info('Starting media download', { url, audioOnly });
 
 		let notificationImage          = getExtraResourcePath('notifications/logo.png');
 		let notificationImagePlacement = 'appLogoOverride';
 
 		const youtubeMatch = url.match(this.youtubeUrlPattern);
 		if (youtubeMatch) {
+			this.logger.info('Media URL matched as YouTube');
+
 			const videoId = youtubeMatch[1];
 			if (this.settings.get(SettingsKey.SkipYoutubePlaylists)) {
 				url = `https://www.youtube.com/watch?v=${videoId}`;
+				this.logger.info('Rewrote URL to remove playlist query string', { url });
 			}
 
 			notificationImagePlacement = 'hero';
@@ -112,6 +118,7 @@ export class YtdlpService implements IBootstrappable {
 		this.proc.stdout!.on('data', emitLog);
 		this.proc.stderr!.on('data', emitLog);
 		this.proc.once('close', code => {
+			this.logger.info('yt-dlp process closed', { code });
 			this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished, code);
 			this.events.emit('downloadFinished');
 
@@ -121,19 +128,21 @@ export class YtdlpService implements IBootstrappable {
 
 			this.cleanupProcess();
 		});
-		this.proc.once('error', async error => {
+		this.proc.once('error', async err => {
+			this.logger.error('yt-dlp process error', { err });
 			this.cleanupProcess();
 			await dialog.showMessageBox({
 				type: 'error',
 				title: 'Error',
-				message: error.message,
-				detail: error.stack
+				message: err.message,
+				detail: err.stack
 			});
 		});
 	}
 
 	public cancelDownload(shutdown: boolean) {
 		if (this.proc) {
+			this.logger.info('Killing yt-dlp process', { shutdown });
 			kill(this.proc.pid!, 'SIGINT');
 			this.cleanupProcess();
 
@@ -146,13 +155,17 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	public async updateBinary() {
+		this.logger.info('Attempting to update yt-dlp binary');
 		this.window.emitAll(IpcChannel.Ytdlp_UpdatingBinary);
 
 		const ytDlpPath = this.settings.get<string>(SettingsKey.YtdlpPath);
 
 		return new Promise<void>((res) => {
 			const proc = spawn(ytDlpPath, ['-U']);
-			proc.once('close', () => {
+
+			proc.stdout!.on('data', data => this.logger.silly(`yt-dlp -U: ${data}`));
+			proc.once('close', code => {
+				this.logger.info('yt-dlp update process exited', { code });
 				this.window.emitAll(IpcChannel.Ytdlp_UpdatedBinary);
 				res();
 			});

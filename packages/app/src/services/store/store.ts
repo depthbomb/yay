@@ -1,10 +1,12 @@
 import type { StoreReader } from './storeReader';
 import type { StoreWriter } from './storeWriter';
+import type { LoggingService } from '~/services/logging';
 
 export class Store<S extends Record<string, any>> {
 	public store: S;
 
 	public constructor(
+		private readonly logger: LoggingService,
 		private readonly storeReader: StoreReader,
 		private readonly storeWriter: StoreWriter,
 		private readonly storePath: string,
@@ -23,6 +25,8 @@ export class Store<S extends Record<string, any>> {
 	public async set<T>(key: string, value: T) {
 		(this.store as Record<string, any>)[key] = value;
 
+		this.logger.silly('Set settings value', { key, value });
+
 		await this.save();
 	}
 
@@ -31,7 +35,10 @@ export class Store<S extends Record<string, any>> {
 	}
 
 	public async reset() {
+		this.logger.debug('Resetting settings');
+
 		for (const key of Object.keys(this.store)) {
+			this.logger.debug('Deleting settings object key', { key });
 			delete this.store[key as keyof S];
 		}
 
@@ -55,6 +62,7 @@ export class Store<S extends Record<string, any>> {
 	}
 
 	public async save() {
+		this.logger.debug('Saving settings object to disk', { store: this.store, storePath: this.storePath });
 		await this.storeWriter.write(this.store, this.storePath);
 	}
 }

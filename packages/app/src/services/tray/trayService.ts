@@ -3,6 +3,7 @@ import { unlink } from 'node:fs/promises';
 import { app, Menu, Tray } from 'electron';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import { getExtraFilePath, getExtraResourcePath } from '~/utils';
@@ -25,6 +26,7 @@ export class TrayService implements IBootstrappable {
 	private readonly trayDownloadingIcon: string;
 
 	public constructor(
+		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
 		private readonly window         = inject(WindowService),
 		private readonly settingsWindow = inject(SettingsWindowService),
@@ -42,6 +44,8 @@ export class TrayService implements IBootstrappable {
 
 	public async bootstrap() {
 		this.lifecycle.events.on('readyPhase', () => {
+			this.logger.debug('Creating tray icon');
+
 			this.tray = new Tray(this.trayIcon);
 			this.tray.setToolTip(this.trayTooltip);
 
@@ -125,6 +129,7 @@ export class TrayService implements IBootstrappable {
 		});
 		this.lifecycle.events.on('shutdown', () => {
 			if (this.tray) {
+				this.logger.debug('Destroying tray icon');
 				this.tray?.destroy();
 				this.tray = undefined;
 			}

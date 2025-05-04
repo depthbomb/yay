@@ -5,6 +5,7 @@ import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
@@ -17,6 +18,7 @@ export class SetupService {
 	private readonly abort = new AbortController();
 
 	public constructor(
+		private readonly logger     = inject(LoggingService),
 		private readonly cli        = inject(CliService),
 		private readonly ipc        = inject(IpcService),
 		private readonly window     = inject(WindowService),
@@ -39,6 +41,8 @@ export class SetupService {
 	}
 
 	private async setDefaultSettings() {
+		this.logger.debug('Setting default settings');
+
 		await this.settings.setDefault(SettingsKey.YtdlpPath, 'yt-dlp');
 		await this.settings.setDefault(SettingsKey.DownloadDir, app.getPath('downloads'));
 		await this.settings.setDefault(SettingsKey.DownloadNameTemplate, '%(title)s [%(id)s].%(ext)s');
@@ -179,20 +183,26 @@ export class SetupService {
 	}
 
 	private async hasYtdlpBinary(localPath: string): Promise<boolean> {
+		this.logger.info('Checking for yt-dlp binary');
+
 		const localBinaryExists = await fileExists(localPath);
 		if (localBinaryExists) {
+			this.logger.info('Found yt-dlp binary', { path: localPath });
 			return true;
 		}
 
 		const currentPath = this.settings.get(SettingsKey.YtdlpPath);
 		if (currentPath === 'yt-dlp') {
+			this.logger.info('Verifying yt-dlp binary in PATH');
+
 			try {
 				const isValid = await this.verifyYtdlpBinary('yt-dlp');
 				if (isValid) {
+					this.logger.debug('PATH yt-dlp binary is valid');
 					return true;
 				}
 			} catch (err) {
-				console.error(`PATH yt-dlp binary no longer works: ${err}`);
+				this.logger.error('PATH yt-dlp binary no longer works', { err });
 			}
 		}
 
@@ -209,6 +219,7 @@ export class SetupService {
 			proc.on('close', () => {
 				const matches = versionPattern.exec(output.trim());
 				if (matches) {
+					this.logger.debug('PATH yt-dlp binary is verified', { version: matches[0] });
 					res(true);
 				} else {
 					rej(new Error('Version pattern not found in output'));

@@ -1,13 +1,15 @@
-import { debugLog } from '~/utils';
 import { HttpClient } from './httpClient';
-import { injectable } from '@needle-di/core';
+import { LoggingService } from '~/services/logging';
+import { inject, injectable } from '@needle-di/core';
 import type { CreateHttpClientOptions } from './types';
 
 @injectable()
 export class HttpService {
 	private readonly clients: Map<string, HttpClient>;
 
-	public constructor() {
+	public constructor(
+		private readonly logger = inject(LoggingService),
+	) {
 		this.clients = new Map();
 	}
 
@@ -17,11 +19,11 @@ export class HttpService {
 		}
 
 		const { baseUrl, userAgent, retry } = options;
-		const client                        = new HttpClient({ name, baseUrl, userAgent, retry });
+		const client                        = new HttpClient({ name, baseUrl, userAgent, retry }, this.logger);
 
 		this.clients.set(name, client);
 
-		debugLog('Created HTTP client', { name, ...options });
+		this.logger.debug('Created HTTP client', { name, ...options });
 
 		return client;
 	}

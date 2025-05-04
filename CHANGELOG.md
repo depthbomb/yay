@@ -1,8 +1,9 @@
 # 1.13.0
 
- - Moved the **Global menu** and **Show hints** options to a new _Interface_ settings tab
- - Moved the **Cookies file** and **Don't download YouTube playlists** options to a new _YouTube_ settings tab
- - The settings UI can now be accessed from the tray icon context menu
+- Moved the **Global menu** and **Show hints** options to a new _Interface_ settings tab
+- Moved the **Cookies file** and **Don't download YouTube playlists** options to a new _YouTube_ settings tab
+- The settings UI can now be accessed from the tray icon context menu
+- Operational info is now written to a log file located at `<userData>/logs`
 
 # 1.12.0
 

@@ -7,6 +7,7 @@ import { windowOpenHandler } from '~/utils';
 import { HttpService } from '~/services/http';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { MarkdownService } from '~/services/markdown';
@@ -39,6 +40,7 @@ export class UpdaterService implements IBootstrappable {
 	private readonly httpClient: HttpClient;
 
 	public constructor(
+		private readonly logger        = inject(LoggingService),
 		private readonly lifecycle     = inject(LifecycleService),
 		private readonly ipc           = inject(IpcService),
 		private readonly window        = inject(WindowService),
@@ -58,8 +60,6 @@ export class UpdaterService implements IBootstrappable {
 	public async bootstrap() {
 		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 180_000);
 
-		app.once('quit', () => clearInterval(this.checkInterval));
-
 		this.ipc.registerHandler(IpcChannel.Updater_ShowWindow,           () => this.showUpdaterWindow());
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestChangelog,   () => this.latestChangelog);
@@ -72,13 +72,19 @@ export class UpdaterService implements IBootstrappable {
 		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
 
 		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
+		this.lifecycle.events.on('shutdown',   () => clearInterval(this.checkInterval));
 	}
 
 	public async checkForUpdates() {
+		this.logger.info('Checking for updates');
+
 		const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
 		const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
 		if (newRelease) {
-			this.latestRelease   = newRelease;
+			this.latestRelease = newRelease;
+
+			this.logger.info('Found new release', { tag: newRelease.tag_name });
+
 			this.latestChangelog = await this.markdown.parse(newRelease.body!);
 			this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
@@ -88,6 +94,7 @@ export class UpdaterService implements IBootstrappable {
 			 */
 			if (this.isStartupCheck) {
 				// So we don't show a notification the next time we check
+				this.logger.debug('Showing updater window due to startup update check');
 				this.isNotified = true;
 				this.showUpdaterWindow();
 			}
@@ -100,6 +107,8 @@ export class UpdaterService implements IBootstrappable {
 				!this.isNotified &&
 				!this.window.getMainWindow()?.isFocused()
 			) {
+				this.logger.debug('Showing update toast notification');
+
 				this.notifications.showNotification(
 					new NotificationBuilder()
 						.setTitle(`Version ${newRelease.tag_name} is available!`)
@@ -114,6 +123,7 @@ export class UpdaterService implements IBootstrappable {
 
 	public async startUpdate() {
 		if (!this.latestRelease) {
+			this.logger.warn('Tried to start update with no new release?');
 			return;
 		}
 
@@ -122,7 +132,10 @@ export class UpdaterService implements IBootstrappable {
 
 		const { signal }  = this.abort;
 		const downloadUrl = this.latestRelease.assets[0].browser_download_url;
-		const res         = await this.httpClient.get(downloadUrl, { signal });
+
+		this.logger.info('Downloading latest release', { downloadUrl });
+
+		const res = await this.httpClient.get(downloadUrl, { signal });
 		if (!res.ok) {
 			return;
 		}
@@ -140,6 +153,8 @@ export class UpdaterService implements IBootstrappable {
 
 		this.window.emit('updater', IpcChannel.Updater_Step, 'Running setup...');
 
+		this.logger.info('Spawning setup process', { setupPath: tempPath });
+
 		const proc = spawn(tempPath, ['/update=yes'], { detached: true, shell: false });
 
 		proc.once('spawn', () => app.exit(0));
@@ -153,8 +168,11 @@ export class UpdaterService implements IBootstrappable {
 
 	public showUpdaterWindow() {
 		if (this.updaterWindow && !this.updaterWindow.isDestroyed()) {
+			this.logger.debug('Destroying previous updater window');
 			this.updaterWindow.close();
 		}
+
+		this.logger.debug('Creating updater window');
 
 		this.updaterWindow = this.window.createWindow('updater', {
 			url: this.window.resolveRendererHTML('updater.html'),

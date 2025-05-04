@@ -1,4 +1,3 @@
-import { debugLog } from '~/utils';
 import { Readable } from 'node:stream';
 import { joinURL, withQuery } from 'ufo';
 import { createWriteStream } from 'node:fs';
@@ -6,6 +5,7 @@ import { finished } from 'node:stream/promises';
 import { IdGenerator } from '~/common/idGenerator';
 import { retry, handleResultType, ConstantBackoff } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
+import type { LoggingService } from '~/services/logging';
 import type { GETOptions, RequestOptions, HttpClientOptions, DownloadOptions } from './types';
 
 export class HttpClient {
@@ -15,8 +15,9 @@ export class HttpClient {
 	private readonly retry: boolean;
 	private readonly retryPolicy: RetryPolicy;
 	private readonly idGenerator: IdGenerator;
+	private readonly logger: LoggingService;
 
-	public constructor(options: HttpClientOptions) {
+	public constructor(options: HttpClientOptions, logger: LoggingService) {
 		this.name        = options?.name;
 		this.baseUrl     = options?.baseUrl;
 		this.userAgent   = options.userAgent;
@@ -26,6 +27,7 @@ export class HttpClient {
 			backoff: new ConstantBackoff(1_000)
 		});
 		this.idGenerator = new IdGenerator(`${this.name}#`);
+		this.logger      = logger;
 	}
 
 	public async get(url: string | URL, options?: GETOptions) {
@@ -57,7 +59,7 @@ export class HttpClient {
 
 		const requestId = this.idGenerator.nextId();
 
-		debugLog('Making HTTP request', { requestId, method: options?.method, url: requestUrl, retry: this.retry });
+		this.logger.debug('Making HTTP request', { requestId, method: options?.method, url: requestUrl, retry: this.retry });
 
 		let res: Response;
 		if (this.retry) {
@@ -66,7 +68,7 @@ export class HttpClient {
 			res = await fetch(requestUrl, requestInit);
 		}
 
-		debugLog('Finished HTTP request', {
+		this.logger.debug('Finished HTTP request', {
 			requestId,
 			status: `${res.status} - ${res.statusText}`
 		});

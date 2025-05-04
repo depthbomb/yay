@@ -5,6 +5,7 @@ import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
+import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -20,6 +21,7 @@ import type { MessageBoxOptions } from 'electron';
 @injectable()
 export class MainService {
 	public constructor(
+		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
 		private readonly ipc            = inject(IpcService),
 		private readonly window         = inject(WindowService),
@@ -37,7 +39,11 @@ export class MainService {
 	) {}
 
 	public async boot() {
+		this.logger.info('Session started');
+
 		this.featureFlags.set('0196518a-ab04-74b7-b69f-98f85176382a', 'Enable seasonal logos', true);
+
+		this.logger.info('Bootstrapping services');
 
 		Promise.allSettled([
 			this.lifecycle.bootstrap(),
@@ -56,6 +62,9 @@ export class MainService {
 		])
 		.then(() => this.lifecycle.phase = LifecyclePhase.Ready);
 
-		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => await dialog.showMessageBox(this.window.getMainWindow()!, options));
+		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => {
+			this.logger.debug('Showing messagebox', { options });
+			await dialog.showMessageBox(this.window.getMainWindow()!, options);
+		});
 	}
 }

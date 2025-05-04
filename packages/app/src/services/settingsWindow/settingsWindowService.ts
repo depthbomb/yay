@@ -3,6 +3,7 @@ import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
 import { windowOpenHandler } from '~/utils';
 import { WindowService } from '~/services/window';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import type { Maybe } from 'shared';
@@ -15,6 +16,7 @@ export class SettingsWindowService implements IBootstrappable {
 
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
+		private readonly logger    = inject(LoggingService),
 		private readonly ipc       = inject(IpcService),
 		private readonly window    = inject(WindowService),
 	) {}
@@ -29,6 +31,7 @@ export class SettingsWindowService implements IBootstrappable {
 		if (this.settingsWindow) {
 			this.settingsWindow.show();
 		} else {
+			this.logger.debug('Creating settings window');
 			this.settingsWindow = this.window.createWindow('settings', {
 				url: this.window.resolveRendererHTML('settings.html'),
 				browserWindowOptions: {

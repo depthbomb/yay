@@ -7,6 +7,7 @@ import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
+import { LoggingService } from '~/services/logging';
 import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
 import type { Settings } from './types';
@@ -28,6 +29,7 @@ export class SettingsService implements IBootstrappable {
 	private readonly deprecatedSettings: string[];
 
 	public constructor(
+		private readonly logger = inject(LoggingService),
 		private readonly ipc    = inject(IpcService),
 		private readonly window = inject(WindowService),
 		private readonly store  = inject(StoreService),
@@ -102,6 +104,8 @@ export class SettingsService implements IBootstrappable {
 	public async migrateLegacySettings() {
 		const hasLegacySettings = await fileExists(this.legacySettingsFilePath);
 		if (hasLegacySettings) {
+			this.logger.info('Found legacy settings file, migrating', { legacySettingsFilePath: this.legacySettingsFilePath });
+
 			const json = await readFile(this.legacySettingsFilePath, 'utf8');
 			const data = JSON.parse(json);
 			await this.internalStore.apply(data);
@@ -110,11 +114,20 @@ export class SettingsService implements IBootstrappable {
 	}
 
 	public async removeDeprecatedSettings() {
+		let shouldSave = false;
 		for (const key of this.deprecatedSettings) {
-			delete this.internalStore.store[key as SettingsKey];
+			if (key in this.internalStore.store) {
+				this.logger.info('Deleting deprecated settings value', { key });
+
+				delete this.internalStore.store[key as SettingsKey];
+
+				shouldSave = true;
+			}
 		}
 
-		await this.internalStore.save();
+		if (shouldSave) {
+			await this.internalStore.save();
+		}
 	}
 
 	private encryptValue(data: unknown) {

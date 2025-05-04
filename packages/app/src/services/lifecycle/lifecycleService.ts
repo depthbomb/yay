@@ -1,7 +1,8 @@
 import mitt from 'mitt';
 import { app } from 'electron';
 import { timeout } from '~/common/async';
-import { injectable } from '@needle-di/core';
+import { LoggingService } from '~/services/logging';
+import { inject, injectable } from '@needle-di/core';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 
 type LifecycleEvents = {
@@ -22,6 +23,10 @@ export class LifecycleService implements IBootstrappable {
 	private _phase             = LifecyclePhase.Starting;
 	private _shutdownRequested = false;
 
+	public constructor(
+		private readonly logger = inject(LoggingService),
+	) {}
+
 	public get phase() {
 		return this._phase;
 	}
@@ -36,12 +41,13 @@ export class LifecycleService implements IBootstrappable {
 		}
 
 		this._phase = value;
-
 		this.events.emit('phaseChanged', this._phase);
 
 		if (this._phase === LifecyclePhase.Ready) {
 			this.events.emit('readyPhase');
 		}
+
+		this.logger.debug('Lifecycle phase changed', { phase: this._phase });
 	}
 
 	public get shutdownRequested() {
@@ -54,6 +60,8 @@ export class LifecycleService implements IBootstrappable {
 				return;
 			}
 
+			this.logger.info('Shutdown requested, emitting event');
+
 			this._shutdownRequested = true;
 
 			this.events.emit('shutdown');
@@ -62,8 +70,13 @@ export class LifecycleService implements IBootstrappable {
 		app.once('will-quit', e => {
 			e.preventDefault();
 
+			this.logger.info('Shutdown initiated, allowing time for service shutdown routines');
+
 			// Allow some time for services to perform their shutdown routine
-			timeout(1_500).finally(app.quit);
+			timeout(1_500).finally(() => {
+				this.logger.info('Quitting');
+				app.quit();
+			});
 		});
 	}
 }

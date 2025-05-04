@@ -11,8 +11,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@fontsource-variable/noto-sans": "^5.2.6",
-		"@fontsource-variable/noto-sans-mono": "^5.2.6",
+		"@fontsource-variable/noto-sans": "^5.2.7",
+		"@fontsource-variable/noto-sans-mono": "^5.2.7",
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
 		"clsx": "^2.1.1",

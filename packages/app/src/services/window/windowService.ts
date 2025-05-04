@@ -4,6 +4,7 @@ import { ROOT_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
 import { app, BrowserWindow } from 'electron';
 import { DEV_PORT, IpcChannel } from 'shared';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { Awaitable } from 'shared';
 import type { IBootstrappable } from '~/common/IBootstrappable';
@@ -33,7 +34,8 @@ export class WindowService implements IBootstrappable {
 	private readonly mainWindowName = 'main' as const;
 
 	public constructor(
-		private readonly ipc = inject(IpcService),
+		private readonly logger = inject(LoggingService),
+		private readonly ipc    = inject(IpcService),
 	) {
 		this.windows = new Map();
 	}
@@ -79,6 +81,8 @@ export class WindowService implements IBootstrappable {
 
 		this.events.emit('windowCreated', window);
 
+		this.logger.debug('Created window', { name, window });
+
 		return window;
 	}
 
@@ -111,11 +115,14 @@ export class WindowService implements IBootstrappable {
 	}
 
 	public closeAllWindows(force = false) {
+		this.logger.debug('Attempting to close all windows', { force });
 		for (const name in this.windows) {
 			const window = this.windows.get(name)!;
 			if (force) {
 				window.closable = true;
 			}
+
+			this.logger.debug('Attempting to close window', { name });
 
 			window.close();
 		}
