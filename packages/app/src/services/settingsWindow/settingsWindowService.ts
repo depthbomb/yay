@@ -20,43 +20,46 @@ export class SettingsWindowService implements IBootstrappable {
 	) {}
 
 	public async bootstrap(): Promise<void> {
-		this.ipc.registerHandler(IpcChannel.Settings_ShowUi, () => {
-			if (this.settingsWindow) {
-				this.settingsWindow.show();
-			} else {
-				this.settingsWindow = this.window.createWindow('settings', {
-					url: this.window.resolveRendererHTML('settings.html'),
-					browserWindowOptions: {
-						show: false,
-						minWidth: 600,
-						width: 600,
-						minHeight: 500,
-						height: 500,
-						roundedCorners: false,
-						webPreferences: {
-							spellcheck: false,
-							enableWebSQL: false,
-							nodeIntegration: true,
-							devTools: import.meta.env.DEV,
-							preload: PRELOAD_PATH,
-						}
-					}
-				});
-
-				this.settingsWindow.on('close', e => {
-					if (!this.lifecycle.shutdownRequested) {
-						e.preventDefault();
-						this.settingsWindow!.hide();
-					}
-				});
-
-				this.settingsWindow.webContents.setWindowOpenHandler(windowOpenHandler);
-
-				this.settingsWindow.center();
-				this.settingsWindow.show();
-			}
-		});
+		this.ipc.registerHandler(IpcChannel.Settings_ShowUi, () => this.show());
 
 		this.lifecycle.events.on('shutdown', () => this.settingsWindow?.close());
+	}
+
+	public show() {
+		if (this.settingsWindow) {
+			this.settingsWindow.show();
+		} else {
+			this.settingsWindow = this.window.createWindow('settings', {
+				url: this.window.resolveRendererHTML('settings.html'),
+				browserWindowOptions: {
+					show: false,
+					minWidth: 600,
+					width: 600,
+					minHeight: 500,
+					height: 500,
+					backgroundColor: '#09090b',
+					roundedCorners: true,
+					webPreferences: {
+						spellcheck: false,
+						enableWebSQL: false,
+						nodeIntegration: true,
+						devTools: import.meta.env.DEV,
+						preload: PRELOAD_PATH,
+					}
+				}
+			});
+
+			this.settingsWindow.on('close', e => {
+				if (!this.lifecycle.shutdownRequested) {
+					e.preventDefault();
+					this.settingsWindow!.hide();
+				}
+			});
+
+			this.settingsWindow.webContents.setWindowOpenHandler(windowOpenHandler);
+
+			this.settingsWindow.center();
+			this.settingsWindow.show();
+		}
 	}
 }

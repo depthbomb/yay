@@ -7,6 +7,7 @@ import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import { getExtraFilePath, getExtraResourcePath } from '~/utils';
 import { WindowPositionService } from '~/services/windowPosition';
+import { SettingsWindowService } from '~/services/settingsWindow';
 import type { Maybe } from 'shared';
 import type { MenuItemConstructorOptions } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
@@ -18,6 +19,7 @@ export class TrayService implements IBootstrappable {
 	private readonly trayTooltip: string;
 	private readonly logoIcon: string;
 	private readonly showIcon: string;
+	private readonly settingsIcon: string;
 	private readonly quitIcon: string;
 	private readonly trayIcon: string;
 	private readonly trayDownloadingIcon: string;
@@ -25,12 +27,14 @@ export class TrayService implements IBootstrappable {
 	public constructor(
 		private readonly lifecycle      = inject(LifecycleService),
 		private readonly window         = inject(WindowService),
+		private readonly settingsWindow = inject(SettingsWindowService),
 		private readonly windowPosition = inject(WindowPositionService),
 		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.trayTooltip         = product.description;
 		this.logoIcon            = getExtraResourcePath('tray/action-icons/logo-16.png');
 		this.showIcon            = getExtraResourcePath('tray/action-icons/open-in-new.png');
+		this.settingsIcon        = getExtraResourcePath('tray/action-icons/cog.png');
 		this.quitIcon            = getExtraResourcePath('tray/action-icons/close.png');
 		this.trayIcon            = getExtraResourcePath('tray/tray.ico');
 		this.trayDownloadingIcon = getExtraResourcePath('tray/tray-downloading.ico');
@@ -85,6 +89,11 @@ export class TrayService implements IBootstrappable {
 					label: 'Show',
 					icon: this.showIcon,
 					click: () => this.tray!.emit('click')
+				},
+				{
+					label: 'Settings',
+					icon: this.settingsIcon,
+					click: () => this.settingsWindow.show()
 				},
 				{
 					type: 'separator'
