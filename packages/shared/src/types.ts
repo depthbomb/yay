@@ -26,6 +26,7 @@ export type CoreApi = {
 	openDownloadDirPicker(): Promise<void>;
 	openCookiesFilePicker(): Promise<void>;
 	toggleWindowPinned(): Promise<boolean>;
+	openLogFile(): Promise<void>;
 	//
 	cancelSetup(): Promise<void>;
 	//

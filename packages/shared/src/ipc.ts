@@ -13,6 +13,7 @@ export enum IpcChannel {
 	Main_OpenDownloadDir    = 'main:open-download-dir',
 	Main_PickCookiesFile    = 'main:pick-cookies-file',
 	Main_ToggleWindowPinned = 'main:toggle-window-pinned',
+	Main_OpenLogFile        = 'main:open-log-file',
 	// Settings channels
 	Settings_Changed = 'settings:changed',
 	Settings_Set     = 'settings:get',

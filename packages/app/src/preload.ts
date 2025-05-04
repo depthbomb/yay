@@ -84,6 +84,9 @@ const coreApi = {
 	toggleWindowPinned() {
 		return ipcRenderer.invoke(IpcChannel.Main_ToggleWindowPinned);
 	},
+	openLogFile() {
+		return ipcRenderer.invoke(IpcChannel.Main_OpenLogFile);
+	},
 	//
 	cancelSetup() {
 		return ipcRenderer.invoke(IpcChannel.Setup_Cancel);

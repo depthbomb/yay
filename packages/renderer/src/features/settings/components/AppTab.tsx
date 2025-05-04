@@ -42,8 +42,9 @@ export const AppTab = () => {
 				<p>Notify when an update is available</p>
 				<Switch checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
 			</div>
-			<div className="mt-auto">
+			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateButtonDisabled || updateAvailable}>Check for updates</Button>
+				<Button variant="brand" onClick={() => window.api.openLogFile()}>Open log file</Button>
 			</div>
 		</div>
 	);

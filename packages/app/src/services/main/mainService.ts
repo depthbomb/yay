@@ -1,6 +1,7 @@
-import { dialog } from 'electron';
+import { join } from 'node:path';
 import { IpcChannel } from 'shared';
 import { IpcService } from '~/services/ipc';
+import { app, dialog, shell } from 'electron';
 import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
@@ -65,6 +66,12 @@ export class MainService {
 		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => {
 			this.logger.debug('Showing messagebox', { options });
 			await dialog.showMessageBox(this.window.getMainWindow()!, options);
+		});
+
+		this.ipc.registerHandler(IpcChannel.Main_OpenLogFile, async () => {
+			this.logger.debug('Opening log file in default application');
+
+			await shell.openPath(join(app.getPath('userData'), 'logs', 'yay.log'));
 		});
 	}
 }
