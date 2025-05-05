@@ -5,6 +5,7 @@ import { YtdlpService } from '~/services/ytdlp';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { app, Menu, shell, dialog } from 'electron';
+import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
@@ -19,6 +20,7 @@ export class MainWindowService implements IBootstrappable {
 	private windowPinned = import.meta.env.DEV;
 
 	public constructor(
+		private readonly logger    = inject(LoggingService),
 		private readonly lifecycle = inject(LifecycleService),
 		private readonly ipc       = inject(IpcService),
 		private readonly settings  = inject(SettingsService),
@@ -77,6 +79,8 @@ export class MainWindowService implements IBootstrappable {
 		});
 		this.ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => await shell.openPath(this.settings.get(SettingsKey.DownloadDir)));
 		this.ipc.registerHandler(IpcChannel.Main_PickDownloadDir, async () => {
+			this.logger.info('Opening download directory picker');
+
 			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
 				title: 'Choose a download folder',
 				defaultPath: this.settings.get(SettingsKey.DownloadDir, ''),
@@ -87,12 +91,16 @@ export class MainWindowService implements IBootstrappable {
 				const chosenPath = filePaths[0];
 				await this.settings.set(SettingsKey.DownloadDir, chosenPath);
 
+				this.logger.debug('Set download directory', { chosenPath });
+
 				return chosenPath;
 			}
 
 			return null;
 		});
 		this.ipc.registerHandler(IpcChannel.Main_PickCookiesFile, async () => {
+			this.logger.info('Opening cookies file picker');
+
 			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
 				title: 'Locate cookies.txt file',
 				filters: [{ name: '.txt files', extensions: ['txt'] }],
@@ -106,22 +114,30 @@ export class MainWindowService implements IBootstrappable {
 				await copyFile(chosenPath, destinationPath);
 				await this.settings.set(SettingsKey.CookiesFilePath, destinationPath);
 
+				this.logger.debug('Copied cookies file', { from: chosenPath, to: destinationPath });
+
 				return destinationPath;
 			}
 
 			return null;
 		});
 		this.ipc.registerHandler(IpcChannel.Ytdlp_RecheckBinaries, async () => {
+			this.logger.info('Rechecking binaries');
+
 			for (const bin of ['yt-dlp.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
 				const binPath = getExtraFilePath(bin);
 				if (!await fileExists(binPath)) {
 					continue;
 				}
 
+				this.logger.debug('Deleting binary due to recheck', { bin });
+
 				await unlink(binPath);
 			}
 
 			await this.settings.set(SettingsKey.YtdlpPath, null);
+
+			this.logger.debug('Relaunching app');
 
 			app.relaunch({ args: ['--updateBinaries'] });
 			app.exit(0);
