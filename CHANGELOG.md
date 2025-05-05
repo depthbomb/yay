@@ -1,3 +1,8 @@
+# 1.14.0
+
+- Fixed **Recheck required binaries** and **Reset settings** actions not working
+- Added a button in Settings to open the application's log file
+
 # 1.13.0
 
 - Moved the **Global menu** and **Show hints** options to a new _Interface_ settings tab

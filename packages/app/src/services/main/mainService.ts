@@ -65,7 +65,7 @@ export class MainService {
 
 		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => {
 			this.logger.debug('Showing messagebox', { options });
-			await dialog.showMessageBox(this.window.getMainWindow()!, options);
+			return dialog.showMessageBox(this.window.getMainWindow()!, options);
 		});
 
 		this.ipc.registerHandler(IpcChannel.Main_OpenLogFile, async () => {
