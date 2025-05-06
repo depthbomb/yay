@@ -1,3 +1,8 @@
+# 1.14.1
+
+- Improved the context menu in the URL input
+- There is now a context menu when opening the context menu with text selected in the output log
+
 # 1.14.0
 
 - Fixed **Recheck required binaries** and **Reset settings** actions not working
