@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useIpc, useSetting } from './hooks';
-import { Spinner } from './components/Spinner';
+import { Spinner } from './components/SpinnerV2';
 import { IpcChannel, SettingsKey } from 'shared';
 import { AppFooter } from './components/AppFooter';
 import { HomePage } from './features/home/HomePage';

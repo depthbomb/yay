@@ -5,7 +5,7 @@ import { useIpc } from '~/hooks';
 import { IpcChannel } from 'shared';
 import { mdiDownload } from '@mdi/js';
 import { useState, useEffect } from 'react';
-import { Spinner } from '~/components/Spinner';
+import { Spinner } from '~/components/SpinnerV2';
 import { PushButton } from '~/components/PushButton';
 import type { FC } from 'react';
 import type { Nullable } from 'shared';
@@ -106,7 +106,7 @@ export const UpdaterPage = () => {
 		</Tabs.Root>
 	) : (
 		<div className="space-y-3 h-screen flex flex-col items-center justify-center">
-			<Spinner className="size-16"/>
+			<Spinner className="size-18"/>
 			<p>Checking for new releases&hellip;</p>
 		</div>
 	));
