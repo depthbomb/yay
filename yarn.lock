@@ -3271,12 +3271,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.15.11":
-  version: 22.15.11
-  resolution: "@types/node@npm:22.15.11"
+"@types/node@npm:^22.15.14":
+  version: 22.15.14
+  resolution: "@types/node@npm:22.15.14"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/cf10de717ba24d5509e43c1568fc1c096f4f9a669e42a0a0bdc3fde4066cc3219360ab498e0df9ca3ec0a399e81e2abca56fbbabdfd46c7852c64f8343aefec9
+  checksum: 10/94d24bb024a770d5ca7c4462f5c6186dee3d3429513d28f0ee7af1cf0f9adc938b0410183bb638c2ee99609384618e53e4c0fa2089915c8b31f514553a02d242
   languageName: node
   linkType: hard
 
@@ -5924,9 +5924,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai@npm:^2.12.3":
-  version: 2.12.3
-  resolution: "jotai@npm:2.12.3"
+"jotai@npm:^2.12.4":
+  version: 2.12.4
+  resolution: "jotai@npm:2.12.4"
   peerDependencies:
     "@types/react": ">=17.0.0"
     react: ">=17.0.0"
@@ -5935,7 +5935,7 @@ __metadata:
       optional: true
     react:
       optional: true
-  checksum: 10/a8974b4aba22df5ad41e9acc1f8a5024bc01fd9ba2874668b553ac920c55e45daf53100f8bc4f9e281443bafa6868ff0c365ca3fb5adf86c3f117e5c087d878c
+  checksum: 10/385aaae8f89baee177240db36dd879ee56031a06b03b14644104ec09d729b03b99319855b874da3ff2e837fa8b7ac6ccdb823d60e36b63e081c365bf4c93d633
   languageName: node
   linkType: hard
 
@@ -7394,7 +7394,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.20"
     globals: "npm:^16.0.0"
-    jotai: "npm:^2.12.3"
+    jotai: "npm:^2.12.4"
     postcss: "npm:^8.5.3"
     radix-ui: "npm:^1.4.1"
     react: "npm:^19.1.0"
@@ -9210,7 +9210,7 @@ __metadata:
   resolution: "yay-root@workspace:."
   dependencies:
     "@octokit/types": "npm:^14.0.0"
-    "@types/node": "npm:^22.15.11"
+    "@types/node": "npm:^22.15.14"
     cross-env: "npm:^7.0.3"
     electron-builder: "npm:26.0.15"
     ts-node: "npm:^10.9.2"
@@ -9225,7 +9225,7 @@ __metadata:
     "@needle-di/core": "npm:1.0.0"
     "@swc-node/sourcemap-support": "npm:^0.5.1"
     "@types/eslint": "npm:^9.6.1"
-    "@types/node": "npm:^22.15.11"
+    "@types/node": "npm:^22.15.14"
     "@types/semver": "npm:^7.7.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.32.0"
     "@typescript-eslint/parser": "npm:^8.32.0"
