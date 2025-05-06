@@ -8,6 +8,7 @@ import { AppFooter } from './components/AppFooter';
 import { HomePage } from './features/home/HomePage';
 import { AppMasthead } from './components/AppMasthead';
 import { clearLogAtom, pushToLogAtom } from './atoms/log';
+import { useNativeTextMenu } from './hooks/useNativeTextMenu';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom } from './atoms/app';
 
 export const App = () => {
@@ -34,6 +35,8 @@ export const App = () => {
 			'inset-[-550px] [background-image:linear-gradient(90deg,_#000_0%,_#FF2790_100%)] animate-[spin_1s_linear_infinite]': isWorking
 		}
 	);
+
+	useNativeTextMenu();
 
 	useEffect(() => {
 		onDownloadStarted((url: string) => {

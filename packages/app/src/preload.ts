@@ -64,14 +64,14 @@ const coreApi = {
 	showMessageBox(options: MessageBoxOptions) {
 		return ipcRenderer.invoke(IpcChannel.ShowMessageBox, options);
 	},
+	showTextSelectionMenu(isInput: boolean) {
+		return ipcRenderer.invoke(IpcChannel.ShowTextSelectionMenu, isInput);
+	},
 	//
 	minimizeWindow(windowName: string) {
 		return ipcRenderer.invoke(IpcChannel.Window_Minimize, windowName);
 	},
 	//
-	showInputRightClickMenu() {
-		return ipcRenderer.invoke(IpcChannel.Main_ShowUrlMenu);
-	},
 	openDownloadDir() {
 		return ipcRenderer.invoke(IpcChannel.Main_OpenDownloadDir);
 	},

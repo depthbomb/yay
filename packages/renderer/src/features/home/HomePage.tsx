@@ -76,7 +76,6 @@ export const HomePage = () => {
 			<TextInput
 				ref={mediaUrlEl}
 				onChange={onInputChange}
-				onContextMenu={() => window.api.showInputRightClickMenu()}
 				value={url}
 				placeholder="Media URL"
 				disabled={isWorking || isUpdating}

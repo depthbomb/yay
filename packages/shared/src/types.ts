@@ -19,9 +19,9 @@ export type IpcApi = {
 
 export type CoreApi = {
 	showMessageBox(options: MessageBoxOptions): Promise<MessageBoxReturnValue>;
+	showTextSelectionMenu(isInput: boolean): Promise<void>;
 	//
 	minimizeWindow(windowName: string): Promise<void>;
-	showInputRightClickMenu(): Promise<void>;
 	openDownloadDir(): Promise<void>;
 	openDownloadDirPicker(): Promise<void>;
 	openCookiesFilePicker(): Promise<void>;

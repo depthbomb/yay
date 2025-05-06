@@ -1,11 +1,11 @@
 import { join } from 'node:path';
 import { IpcChannel } from 'shared';
 import { IpcService } from '~/services/ipc';
-import { app, dialog, shell } from 'electron';
 import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
+import { app, Menu, shell, dialog } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
@@ -17,7 +17,7 @@ import { GlobalMenuService } from '~/services/globalMenu';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
-import type { MessageBoxOptions } from 'electron';
+import type { MessageBoxOptions, MenuItemConstructorOptions } from 'electron';
 
 @injectable()
 export class MainService {
@@ -66,6 +66,25 @@ export class MainService {
 		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => {
 			this.logger.debug('Showing messagebox', { options });
 			return dialog.showMessageBox(this.window.getMainWindow()!, options);
+		});
+
+		this.ipc.registerHandler(IpcChannel.ShowTextSelectionMenu, async (_, isInput: boolean) => {
+			this.logger.debug('Showing text selection menu', { isInput });
+
+			const menuItems = [] as MenuItemConstructorOptions[];
+
+			if (isInput) {
+				menuItems.push(
+					{ role: 'cut' },
+					{ role: 'copy' },
+					{ role: 'paste' },
+					{ role: 'selectAll' },
+				);
+			} else {
+				menuItems.push({ role: 'copy' });
+			}
+
+			Menu.buildFromTemplate(menuItems).popup();
 		});
 
 		this.ipc.registerHandler(IpcChannel.Main_OpenLogFile, async () => {

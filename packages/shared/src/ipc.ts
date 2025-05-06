@@ -1,5 +1,6 @@
 export enum IpcChannel {
-	ShowMessageBox = 'show-message-box',
+	ShowMessageBox        = 'show-message-box',
+	ShowTextSelectionMenu = 'show-text-selection-menu',
 	//
 	Window_Minimize  = 'window:minimize',
 	Window_IsBlurred = 'window:is-blurred',
@@ -8,7 +9,6 @@ export enum IpcChannel {
 	Setup_Step   = 'setup:step',
 	Setup_Cancel = 'setup:cancel',
 	// Main Window channels
-	Main_ShowUrlMenu        = 'main:show-url-menu',
 	Main_PickDownloadDir    = 'main:pick-download-dir',
 	Main_OpenDownloadDir    = 'main:open-download-dir',
 	Main_PickCookiesFile    = 'main:pick-cookies-file',
