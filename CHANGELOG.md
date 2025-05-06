@@ -1,7 +1,7 @@
 # 1.14.1
 
 - Improved the context menu in the URL input
-- There is now a context menu when opening the context menu with text selected in the output log
+- You can now access a context menu when selecting text in the output log
 
 # 1.14.0
 
