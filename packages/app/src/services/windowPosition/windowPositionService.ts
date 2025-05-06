@@ -1,6 +1,7 @@
 import { Tray, screen } from 'electron';
-import { injectable } from '@needle-di/core';
 import { WindowPosition } from './WindowPosition';
+import { LoggingService } from '~/services/logging';
+import { inject, injectable } from '@needle-di/core';
 import type { Rectangle, BrowserWindow } from 'electron';
 
 type PositionOptions = {
@@ -18,6 +19,10 @@ type PositionOptions = {
 
 @injectable()
 export class WindowPositionService {
+	public constructor(
+		private readonly logger = inject(LoggingService),
+	) {}
+
 	public setWindowPosition(window: BrowserWindow, position: WindowPosition, options: PositionOptions = {}) {
 		const { usePrimaryDisplay = true, padding = 0 } = options;
 		const display                                   = this.getTargetDisplay(usePrimaryDisplay);
@@ -115,6 +120,8 @@ export class WindowPositionService {
 
 		x = Math.max(workArea.x, Math.min(x, workArea.x + workArea.width - windowBounds.width));
 		y = Math.max(workArea.y, Math.min(y, workArea.y + workArea.height - windowBounds.height));
+
+		this.logger.debug('Setting window position', { window: window.getTitle(), before: [...window.getPosition()], after: [x, y] });
 
 		window.setPosition(x, y);
 	}

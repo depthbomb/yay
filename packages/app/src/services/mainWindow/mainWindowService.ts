@@ -72,7 +72,11 @@ export class MainWindowService implements IBootstrappable {
 
 		//#region IPC
 		this.ipc.registerHandler(IpcChannel.Main_ToggleWindowPinned, () => this.windowPinned = !this.windowPinned);
-		this.ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => await shell.openPath(this.settings.get(SettingsKey.DownloadDir)));
+		this.ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => {
+			this.logger.info('Opening download directory');
+
+			await shell.openPath(this.settings.get(SettingsKey.DownloadDir));
+		});
 		this.ipc.registerHandler(IpcChannel.Main_PickDownloadDir, async () => {
 			this.logger.info('Opening download directory picker');
 
