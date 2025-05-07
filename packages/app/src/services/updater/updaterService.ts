@@ -116,6 +116,8 @@ export class UpdaterService implements IBootstrappable {
 				);
 				this.isNotified = true;
 			}
+		} else {
+			this.logger.info('No new releases found');
 		}
 
 		this.isStartupCheck = false;

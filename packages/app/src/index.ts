@@ -1,9 +1,11 @@
 import { join } from 'node:path';
-import { product } from 'shared';
+import { parse } from 'smol-toml';
 import { fileExists } from './utils';
 import { Container } from '@needle-di/core';
 import { app, Menu, shell } from 'electron';
 import { MainService } from './services/main';
+import { product, SettingsKey } from 'shared';
+import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, unlink, readFile } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
@@ -14,6 +16,19 @@ if (import.meta.env.DEV) {
 }
 
 Menu.setApplicationMenu(null);
+
+/**
+ * Because the settings service is instantiated after the app's `ready` event, we need to load a
+ * subset of the config file to do things such as appending command line switches
+ */
+const configFilePath = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
+if (existsSync(configFilePath)) {
+	const toml   = readFileSync(configFilePath, 'utf8');
+	const config = parse(toml);
+	if (SettingsKey.DisableHardwareAcceleration in config && config[SettingsKey.DisableHardwareAcceleration] === false) {
+		app.disableHardwareAcceleration();
+	}
+}
 
 app.whenReady().then(async () => {
 	if (__WIN32__) {

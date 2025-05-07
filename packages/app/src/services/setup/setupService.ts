@@ -53,6 +53,7 @@ export class SetupService {
 		await this.settings.setDefault(SettingsKey.EnableNewReleaseToast, true);
 		await this.settings.setDefault(SettingsKey.ShowHintFooter, true);
 		await this.settings.setDefault(SettingsKey.HideSetupWindow, false);
+		await this.settings.setDefault(SettingsKey.DisableHardwareAcceleration, false);
 	}
 
 	private async checkForBinaries() {

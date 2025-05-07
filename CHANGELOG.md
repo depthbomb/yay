@@ -1,3 +1,8 @@
+# 1.15.0
+
+- Added an option to disable hardware acceleration
+- Updated the style of loading spinners
+
 # 1.14.1
 
 - Improved the context menu in the URL input

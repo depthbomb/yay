@@ -11,6 +11,7 @@ export enum SettingsKey {
 	EnableDownloadCompletionToast = 'enable-download-completion-toast',
 	YtdlpPath                     = 'yt-dlp-path',
 	SkipYoutubePlaylists          = 'skip-youtube-playlists',
+	DisableHardwareAcceleration   = 'disable-hardware-acceleration',
 }
 
 export const SettingsKeys = Object.values(SettingsKey);
