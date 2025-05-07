@@ -1,3 +1,7 @@
+# 1.15.1
+
+- Fixed the updater window breaking when switching to the commits tab while downloading the installer
+
 # 1.15.0
 
 - Added an option to disable hardware acceleration

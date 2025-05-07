@@ -74,7 +74,9 @@ export const UpdaterPage = () => {
 				<TabButton value="commits">Commits since your version</TabButton>
 			</Tabs.List>
 			<div className="w-full overflow-y-auto rounded-lg">
-				<Tabs.Content value="changelog" dangerouslySetInnerHTML={{ __html: changelog }}/>
+				<Tabs.Content value="changelog">
+					<div dangerouslySetInnerHTML={{ __html: changelog }}/>
+				</Tabs.Content>
 				<Tabs.Content value="commits">
 					<div className="flex flex-col">
 						{commits.map(c => (
