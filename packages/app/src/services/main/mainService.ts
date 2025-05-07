@@ -68,20 +68,31 @@ export class MainService {
 			return dialog.showMessageBox(this.window.getMainWindow()!, options);
 		});
 
-		this.ipc.registerHandler(IpcChannel.ShowTextSelectionMenu, async (_, isInput: boolean) => {
-			this.logger.debug('Showing text selection menu', { isInput });
+		this.ipc.registerHandler(IpcChannel.ShowTextSelectionMenu, async (_, type: 'input' | 'input-selection' | 'text-selection') => {
+			this.logger.debug('Showing text selection menu', { type });
 
 			const menuItems = [] as MenuItemConstructorOptions[];
 
-			if (isInput) {
-				menuItems.push(
-					{ role: 'cut' },
-					{ role: 'copy' },
-					{ role: 'paste' },
-					{ role: 'selectAll' },
-				);
-			} else {
-				menuItems.push({ role: 'copy' });
+			switch (type) {
+				case 'input':
+					menuItems.push(
+						{ role: 'paste' },
+					);
+					break;
+				case 'input-selection':
+					menuItems.push(
+						{ role: 'cut' },
+						{ role: 'copy' },
+						{ role: 'paste' },
+						{ role: 'selectAll' },
+					);
+					break;
+				case 'text-selection':
+					menuItems.push(
+						{ role: 'copy' },
+						{ role: 'selectAll' },
+					);
+					break;
 			}
 
 			Menu.buildFromTemplate(menuItems).popup();

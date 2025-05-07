@@ -3,9 +3,15 @@ import { useEffect } from 'react';
 const onContextMenu = async () => {
 	const active    = document.activeElement;
 	const selection = window.getSelection()?.toString().trim();
-	if (selection) {
-		const isInput = active?.tagName === 'TEXTAREA' || (active?.tagName === 'INPUT' && (active as HTMLInputElement).type === 'text');
-		await window.api.showTextSelectionMenu(isInput);
+	const isInput  = active?.tagName === 'TEXTAREA' || (active?.tagName === 'INPUT' && (active as HTMLInputElement).type === 'text');
+	if (isInput) {
+		if (selection) {
+			await window.api.showTextSelectionMenu('input-selection');
+		} else {
+			await window.api.showTextSelectionMenu('input');
+		}
+	} else {
+		await window.api.showTextSelectionMenu('text-selection');
 	}
 };
 

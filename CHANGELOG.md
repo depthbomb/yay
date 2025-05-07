@@ -1,6 +1,7 @@
 # 1.15.1
 
 - Fixed the updater window breaking when switching to the commits tab while downloading the installer
+- Fixed the context menu not appearing when right-clicking in the URL input
 
 # 1.15.0
 

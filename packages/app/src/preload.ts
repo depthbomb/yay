@@ -64,8 +64,8 @@ const coreApi = {
 	showMessageBox(options: MessageBoxOptions) {
 		return ipcRenderer.invoke(IpcChannel.ShowMessageBox, options);
 	},
-	showTextSelectionMenu(isInput: boolean) {
-		return ipcRenderer.invoke(IpcChannel.ShowTextSelectionMenu, isInput);
+	showTextSelectionMenu(type: 'input' | 'input-selection' | 'text-selection') {
+		return ipcRenderer.invoke(IpcChannel.ShowTextSelectionMenu, type);
 	},
 	//
 	minimizeWindow(windowName: string) {
