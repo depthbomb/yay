@@ -91,7 +91,7 @@ export const UpdaterPage = () => {
 				{updating ? (
 					<>
 						<div className="space-x-2 flex items-center">
-							<Spinner className="size-5"/>
+							<Spinner className="size-6"/>
 							<p>{status}</p>
 						</div>
 						<PushButton onClick={onCancelButtonClicked} variant="danger" size="lg">Cancel</PushButton>
