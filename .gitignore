@@ -12,6 +12,7 @@ node_modules/
 
 .env.*
 
+static/extra/*.asar
 static/extra/ffmpeg.exe
 static/extra/ffprobe.exe
 static/extra/yt-dlp.exe

@@ -13,6 +13,7 @@
 		"lint": "eslint ./src --ext .ts"
 	},
 	"dependencies": {
+		"@formatjs/fast-memoize": "^2.2.7",
 		"@needle-di/core": "1.0.0",
 		"cockatiel": "^3.2.1",
 		"marked": "^15.0.11",
@@ -29,12 +30,12 @@
 	"devDependencies": {
 		"@swc-node/sourcemap-support": "^0.5.1",
 		"@types/eslint": "^9.6.1",
-		"@types/node": "^22.15.14",
+		"@types/node": "^22.15.15",
 		"@types/semver": "^7.7.0",
 		"@typescript-eslint/eslint-plugin": "^8.32.0",
 		"@typescript-eslint/parser": "^8.32.0",
 		"cross-env": "^7.0.3",
-		"electron": "36.1.0",
+		"electron": "36.2.0",
 		"eslint": "^9.26.0",
 		"terser": "^5.39.0",
 		"typescript": "^5.8.3",

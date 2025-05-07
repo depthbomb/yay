@@ -4,11 +4,12 @@
 	"scripts": {
 		"dev": "yarn workspace yay run dev",
 		"watch": "yarn workspace renderer run watch",
-		"build": "yarn workspaces foreach -Apti run build:d",
-		"package": "cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:dist",
+		"build": "yarn create-asars && yarn workspaces foreach -Apti run build:d",
+		"package": "yarn create-asars && cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:dist",
 		"package:portable": "cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:portable",
 		"build:p": "yarn clean-dist && cross-env ENV=PRODUCTION yarn workspaces foreach -Apti run build:p",
 		"clean-dist": "ts-node scripts/clean-dist.ts",
+		"create-asars": "ts-node scripts/create-asars.ts",
 		"create-installer": "ts-node scripts/create-installer.ts"
 	},
 	"repository": {
@@ -26,7 +27,7 @@
 	],
 	"devDependencies": {
 		"@octokit/types": "^14.0.0",
-		"@types/node": "^22.15.14",
+		"@types/node": "^22.15.15",
 		"cross-env": "^7.0.3",
 		"electron-builder": "26.0.15",
 		"ts-node": "^10.9.2",
