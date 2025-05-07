@@ -146,7 +146,7 @@ export class UpdaterService implements IBootstrappable {
 			this.window.emit('updater', IpcChannel.Updater_Step, `Downloading installer... (${progress}%)`);
 		}
 
-		const tempPath = join(app.getPath('temp'), `${Date.now()}.exe`);
+		const tempPath = join(app.getPath('temp'), 'yay-setup.exe');
 		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
 
 		if (this.aborted) {
