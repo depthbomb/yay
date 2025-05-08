@@ -34,6 +34,8 @@ export default defineConfig(({ mode }) => {
 				},
 				external: [
 					'electron',
+					'original-fs',
+					'node:original-fs',
 					...builtinModules.flatMap(p => [p, `node:${p}`]),
 				]
 			},

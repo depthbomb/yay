@@ -1,3 +1,7 @@
+# 1.16.1
+
+- The updater window is now shown when there is a new update when manually checking for updates
+
 # 1.16.0
 
 - Long lines in the output log will now wrap instead of creating a horizontal scrollbar
