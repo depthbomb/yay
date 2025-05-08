@@ -13,7 +13,7 @@ type LogLineProps = { line: string; };
 
 const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 	const css = clsx(
-		'py-1 px-2 flex flex-row items-center text-[10px] font-mono even:bg-gray-900',
+		'py-1 px-2 flex flex-row items-center text-[10px] font-mono wrap-anywhere even:bg-gray-900',
 		{
 			'text-sky-500': line.includes('[info]'),
 			'text-yellow-500': line.includes('[download]'),
