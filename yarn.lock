@@ -3280,12 +3280,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.15.16":
-  version: 22.15.16
-  resolution: "@types/node@npm:22.15.16"
+"@types/node@npm:^22.15.17":
+  version: 22.15.17
+  resolution: "@types/node@npm:22.15.17"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/d8055a0ab033ed16368109183f7e11d5364e5d8d5bd9a12df7fa1673a624823aaaaa54c0afef1648d0bfa7e12ef20b600f9d006accebecdb9931d2b72d05c7be
+  checksum: 10/3f5870ec1ac16b1dd8e5817de81164df9b69e4cf19cce692cb7c9b1af1deaecfd98b591b56155fcc4aa582f7189a4fc0c8d7d3226fa0387403db615a12dd8cb6
   languageName: node
   linkType: hard
 
@@ -9219,7 +9219,7 @@ __metadata:
   resolution: "yay-root@workspace:."
   dependencies:
     "@octokit/types": "npm:^14.0.0"
-    "@types/node": "npm:^22.15.16"
+    "@types/node": "npm:^22.15.17"
     cross-env: "npm:^7.0.3"
     electron-builder: "npm:26.0.15"
     ts-node: "npm:^10.9.2"
@@ -9235,7 +9235,7 @@ __metadata:
     "@needle-di/core": "npm:1.0.0"
     "@swc-node/sourcemap-support": "npm:^0.5.1"
     "@types/eslint": "npm:^9.6.1"
-    "@types/node": "npm:^22.15.16"
+    "@types/node": "npm:^22.15.17"
     "@types/semver": "npm:^7.7.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.32.0"
     "@typescript-eslint/parser": "npm:^8.32.0"

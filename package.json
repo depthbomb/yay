@@ -27,7 +27,7 @@
 	],
 	"devDependencies": {
 		"@octokit/types": "^14.0.0",
-		"@types/node": "^22.15.16",
+		"@types/node": "^22.15.17",
 		"cross-env": "^7.0.3",
 		"electron-builder": "26.0.15",
 		"ts-node": "^10.9.2",
