@@ -6,7 +6,7 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
-import { getExtraFilePath, getExtraResourcePath } from '~/utils';
+import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import { WindowPositionService } from '~/services/windowPosition';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import type { Maybe } from 'shared';
@@ -34,12 +34,12 @@ export class TrayService implements IBootstrappable {
 		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.trayTooltip         = product.description;
-		this.logoIcon            = getExtraResourcePath('tray/action-icons/logo-16.png');
-		this.showIcon            = getExtraResourcePath('tray/action-icons/open-in-new.png');
-		this.settingsIcon        = getExtraResourcePath('tray/action-icons/cog.png');
-		this.quitIcon            = getExtraResourcePath('tray/action-icons/close.png');
-		this.trayIcon            = getExtraResourcePath('tray/tray.ico');
-		this.trayDownloadingIcon = getExtraResourcePath('tray/tray-downloading.ico');
+		this.logoIcon            = getFilePathFromAsar('tray/action-icons/logo-16.png');
+		this.showIcon            = getFilePathFromAsar('tray/action-icons/open-in-new.png');
+		this.settingsIcon        = getFilePathFromAsar('tray/action-icons/cog.png');
+		this.quitIcon            = getFilePathFromAsar('tray/action-icons/close.png');
+		this.trayIcon            = getFilePathFromAsar('tray/tray.ico');
+		this.trayDownloadingIcon = getFilePathFromAsar('tray/tray-downloading.ico');
 	}
 
 	public async bootstrap() {

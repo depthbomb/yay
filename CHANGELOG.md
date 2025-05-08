@@ -1,3 +1,8 @@
+# 1.16.0
+
+- Long lines in the output log will now wrap instead of creating a horizontal scrollbar
+- Upgraded to [Electron 36.2.0](https://releases.electronjs.org/release/v36.2.0)
+
 # 1.15.1
 
 - Fixed the updater window breaking when switching to the commits tab while downloading the installer

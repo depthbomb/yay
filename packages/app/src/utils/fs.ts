@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import { memoize } from '@formatjs/fast-memoize';
 import { stat, mkdir, access } from 'node:fs/promises';
 import { EXE_DIR, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
 
@@ -98,3 +99,29 @@ export function getExtraFilePath(path: string) {
 
 	return extraFilePath;
 }
+
+/**
+ * Resolves the path to a file located inside of an asar archive.
+ *
+ * The first part of the path will be treated as the asar archive name. For example the path
+ * `assets/myfile.png`, this function will return `<resources>/assets.asar/myfile.png`. In
+ * development, it will instead return `<root>/static/extra/<path>`.
+ *
+ * @param path The path to the file located inside of an asar archive.
+ */
+function _getFilePathFromAsar(path: string) {
+	let extraFilePath: string;
+	if (import.meta.env.DEV) {
+		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', path);
+	} else {
+		const parts    = path.split('/');
+		const asarName = parts[0];
+		const restPath = parts.slice(1).join('/');
+
+		extraFilePath = join(RESOURCES_PATH, `${asarName}.asar`, restPath);
+	}
+
+	return extraFilePath;
+}
+
+export const getFilePathFromAsar = <(path: string) => string>memoize(_getFilePathFromAsar);

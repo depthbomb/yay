@@ -1,6 +1,6 @@
 import { globalShortcut } from 'electron';
 import { IpcService } from '~/services/ipc';
-import { getExtraResourcePath } from '~/utils';
+import { getFilePathFromAsar } from '~/utils';
 import { YtdlpService } from '~/services/ytdlp';
 import { Menu, shell, clipboard } from 'electron';
 import { LoggingService } from '~/services/logging';
@@ -20,11 +20,11 @@ export class GlobalMenuService implements IBootstrappable {
 	private menuShown = false;
 	private menu: Menu;
 
-	private readonly logoIcon               = getExtraResourcePath('tray/action-icons/logo-16.png');
-	private readonly videoIcon              = getExtraResourcePath('tray/action-icons/video.png');
-	private readonly audioIcon              = getExtraResourcePath('tray/action-icons/music-note.png');
-	private readonly openDownloadFolderIcon = getExtraResourcePath('tray/action-icons/folder-open.png');
-	private readonly closeIcon              = getExtraResourcePath('tray/action-icons/close.png');
+	private readonly logoIcon               = getFilePathFromAsar('tray/action-icons/logo-16.png');
+	private readonly videoIcon              = getFilePathFromAsar('tray/action-icons/video.png');
+	private readonly audioIcon              = getFilePathFromAsar('tray/action-icons/music-note.png');
+	private readonly openDownloadFolderIcon = getFilePathFromAsar('tray/action-icons/folder-open.png');
+	private readonly closeIcon              = getFilePathFromAsar('tray/action-icons/close.png');
 
 	public constructor(
 		private readonly logger    = inject(LoggingService),

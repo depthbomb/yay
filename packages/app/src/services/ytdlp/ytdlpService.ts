@@ -12,7 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { ThumbnailDownloader } from './thumbnailDownloader';
-import { getExtraFilePath, getExtraResourcePath } from '~/utils';
+import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import type { Nullable } from 'shared';
 import type { ChildProcess } from 'node:child_process';
@@ -85,7 +85,7 @@ export class YtdlpService implements IBootstrappable {
 		this.events.emit('downloadStarted', url);
 		this.logger.info('Starting media download', { url, audioOnly });
 
-		let notificationImage          = getExtraResourcePath('notifications/logo.png');
+		let notificationImage          = getFilePathFromAsar('notifications/logo.png');
 		let notificationImagePlacement = 'appLogoOverride';
 
 		const youtubeMatch = url.match(this.youtubeUrlPattern);
