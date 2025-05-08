@@ -16,7 +16,7 @@ export const AppTab = () => {
 	const checkForUpdates = async () => {
 		setUpdateButtonDisabled(true);
 
-		const hasUpdate = await window.api.hasNewRelease();
+		const hasUpdate = await window.api.checkForUpdates();
 		if (!hasUpdate) {
 			await window.api.showMessageBox({
 				type: 'info',

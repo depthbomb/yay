@@ -48,7 +48,7 @@ export enum IpcChannel {
 	Updater_GetLatestRelease     = 'updater:get-latest-release',
 	Updater_GetLatestChangelog   = 'updater:get-latest-changelog',
 	Updater_GetCommitsSinceBuild = 'updater:get-commits-since-build',
-	Updater_HasNewRelease        = 'updater:has-new-release',
+	Updater_CheckForUpdates      = 'updater:check-for-updates',
 	Updater_Update               = 'updater:update',
 	Updater_Step                 = 'updater:update-step',
 	Updater_Cancel               = 'updater:cancel-update',

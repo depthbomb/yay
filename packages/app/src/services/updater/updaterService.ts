@@ -64,8 +64,8 @@ export class UpdaterService implements IBootstrappable {
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
 		this.ipc.registerHandler(IpcChannel.Updater_GetLatestChangelog,   () => this.latestChangelog);
 		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
-		this.ipc.registerHandler(IpcChannel.Updater_HasNewRelease,        async () => {
-			await this.checkForUpdates();
+		this.ipc.registerHandler(IpcChannel.Updater_CheckForUpdates,      async () => {
+			await this.checkForUpdates(true);
 			return this.hasNewRelease;
 		});
 		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
@@ -75,8 +75,8 @@ export class UpdaterService implements IBootstrappable {
 		this.lifecycle.events.on('shutdown',   () => clearInterval(this.checkInterval));
 	}
 
-	public async checkForUpdates() {
-		this.logger.info('Checking for updates');
+	public async checkForUpdates(manual: boolean = false) {
+		this.logger.info('Checking for updates', { manual });
 
 		try {
 			const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
@@ -102,7 +102,9 @@ export class UpdaterService implements IBootstrappable {
 
 				this.window.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
 
-				if (
+				if (manual) {
+					this.showUpdaterWindow();
+				} else if (
 					this.settings.get(SettingsKey.EnableNewReleaseToast, true) &&
 					!this.isStartupCheck &&
 					!this.isNotified &&
@@ -115,8 +117,9 @@ export class UpdaterService implements IBootstrappable {
 							.setTitle(`Version ${newRelease.tag_name} is available!`)
 							.setLaunch(`${product.urlProtocol}://open-updater`, 'protocol')
 					);
-					this.isNotified = true;
 				}
+
+				this.isNotified = true;
 			} else {
 				this.logger.info('No new releases found');
 			}
