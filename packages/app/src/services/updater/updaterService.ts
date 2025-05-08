@@ -78,46 +78,50 @@ export class UpdaterService implements IBootstrappable {
 	public async checkForUpdates() {
 		this.logger.info('Checking for updates');
 
-		const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
-		const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
-		if (newRelease) {
-			this.latestRelease = newRelease;
+		try {
+			const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
+			const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
+			if (newRelease) {
+				this.latestRelease = newRelease;
 
-			this.logger.info('Found new release', { tag: newRelease.tag_name });
+				this.logger.info('Found new release', { tag: newRelease.tag_name });
 
-			this.latestChangelog = await this.markdown.parse(newRelease.body!);
-			this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
+				this.latestChangelog = await this.markdown.parse(newRelease.body!);
+				this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
-			/**
-			 * If this is the first time checking for updates (immediately after setup) then show
-			 * the updater window.
-			 */
-			if (this.isStartupCheck) {
-				// So we don't show a notification the next time we check
-				this.logger.debug('Showing updater window due to startup update check');
-				this.isNotified = true;
-				this.showUpdaterWindow();
+				/**
+				 * If this is the first time checking for updates (immediately after setup) then show
+				 * the updater window.
+				 */
+				if (this.isStartupCheck) {
+					// So we don't show a notification the next time we check
+					this.logger.debug('Showing updater window due to startup update check');
+					this.isNotified = true;
+					this.showUpdaterWindow();
+				}
+
+				this.window.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
+
+				if (
+					this.settings.get(SettingsKey.EnableNewReleaseToast, true) &&
+					!this.isStartupCheck &&
+					!this.isNotified &&
+					!this.window.getMainWindow()?.isFocused()
+				) {
+					this.logger.debug('Showing update toast notification');
+
+					this.notifications.showNotification(
+						new NotificationBuilder()
+							.setTitle(`Version ${newRelease.tag_name} is available!`)
+							.setLaunch(`${product.urlProtocol}://open-updater`, 'protocol')
+					);
+					this.isNotified = true;
+				}
+			} else {
+				this.logger.info('No new releases found');
 			}
-
-			this.window.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
-
-			if (
-				this.settings.get(SettingsKey.EnableNewReleaseToast, true) &&
-				!this.isStartupCheck &&
-				!this.isNotified &&
-				!this.window.getMainWindow()?.isFocused()
-			) {
-				this.logger.debug('Showing update toast notification');
-
-				this.notifications.showNotification(
-					new NotificationBuilder()
-						.setTitle(`Version ${newRelease.tag_name} is available!`)
-						.setLaunch(`${product.urlProtocol}://open-updater`, 'protocol')
-				);
-				this.isNotified = true;
-			}
-		} else {
-			this.logger.info('No new releases found');
+		} catch (err) {
+			this.logger.error('Error while checking for new releases', { err });
 		}
 
 		this.isStartupCheck = false;
