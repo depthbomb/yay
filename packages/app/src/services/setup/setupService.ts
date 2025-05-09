@@ -50,6 +50,7 @@ export class SetupService {
 		await this.settings.setDefault(SettingsKey.DefaultDownloadAction, 'video');
 		await this.settings.setDefault(SettingsKey.EnableGlobalMenu, false);
 		await this.settings.setDefault(SettingsKey.EnableDownloadCompletionToast, true);
+		await this.settings.setDefault(SettingsKey.UseThumbnailForCoverArt, false);
 		await this.settings.setDefault(SettingsKey.EnableNewReleaseToast, true);
 		await this.settings.setDefault(SettingsKey.ShowHintFooter, true);
 		await this.settings.setDefault(SettingsKey.HideSetupWindow, false);

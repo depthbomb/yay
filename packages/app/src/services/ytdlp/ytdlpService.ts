@@ -92,6 +92,10 @@ export class YtdlpService implements IBootstrappable {
 
 		if (audioOnly) {
 			ytdlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '0', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
+
+			if (this.settings.get<boolean>(SettingsKey.UseThumbnailForCoverArt)) {
+				ytdlpArgs.push('--embed-thumbnail');
+			}
 		} else {
 			ytdlpArgs.push(url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		}

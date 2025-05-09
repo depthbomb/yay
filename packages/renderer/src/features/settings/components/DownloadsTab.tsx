@@ -10,7 +10,8 @@ export const DownloadsTab = () => {
 	const [downloadDir]                                     = useSetting<string>(SettingsKey.DownloadDir);
 	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(SettingsKey.DownloadNameTemplate, { reactive: false });
 	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(SettingsKey.DefaultDownloadAction, { reactive: false });
-	const [enableNotifications, setEnableNotifications]     = useSetting(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
+	const [embedThumbnail, setEmbedThumbnail]               = useSetting<boolean>(SettingsKey.UseThumbnailForCoverArt, { reactive: false });
+	const [enableNotifications, setEnableNotifications]     = useSetting<boolean>(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
 
@@ -34,6 +35,10 @@ export const DownloadsTab = () => {
 					<option value="video">Download video</option>
 					<option value="audio">Download audio</option>
 				</Select>
+			</div>
+			<div className="flex flex-col items-start space-y-1.5">
+				<p>Use video thumbnail as audio cover art</p>
+				<Switch checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Completion toast notification</p>

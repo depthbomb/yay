@@ -1,3 +1,9 @@
+# 1.17.0
+
+- The main window's taskbar icon, when shown, now shows an accurate download progress percentage when downloading media
+- Added an option to enable embedding the video's thumbnail in downloaded audio files as cover art when possible
+- Audio will now be downloaded at the highest quality when possible
+
 # 1.16.1
 
 - The updater window is now shown when there is a new update when manually checking for updates
