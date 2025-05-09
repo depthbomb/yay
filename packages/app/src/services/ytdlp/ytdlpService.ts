@@ -93,16 +93,12 @@ export class YtdlpService implements IBootstrappable {
 			this.logger.info('Media URL matched as YouTube');
 
 			const videoId = youtubeMatch[1];
-			if (this.settings.get(SettingsKey.SkipYoutubePlaylists)) {
-				url = `https://www.youtube.com/watch?v=${videoId}`;
-				this.logger.info('Rewrote URL to remove playlist query string', { url });
-			}
-
 			notificationImagePlacement = 'hero';
 			notificationImage          = await this.thumbnailDownloader.downloadThumbnail(videoId);
 		}
 
 		const ytdlpArgs = [] as string[];
+
 		if (audioOnly) {
 			ytdlpArgs.push('-x', '--audio-format', 'mp3', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		} else {
@@ -113,6 +109,12 @@ export class YtdlpService implements IBootstrappable {
 		if (cookiesFilePath) {
 			ytdlpArgs.push('--cookies', cookiesFilePath!);
 		}
+
+		if (this.settings.get(SettingsKey.SkipYoutubePlaylists)) {
+			ytdlpArgs.push('--no-playlist')
+		}
+
+		this.logger.debug('Spawning yt-dlp process', { args: ytdlpArgs });
 
 		this.proc = spawn(ytDlpPath, ytdlpArgs);
 		this.proc.stdout!.on('data', emitLog);
