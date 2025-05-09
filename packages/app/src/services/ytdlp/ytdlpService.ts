@@ -11,7 +11,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
-import { ThumbnailDownloader } from './thumbnailDownloader';
+import { ThumbnailService } from '~/services/thumbnail';
 import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import type { Nullable } from 'shared';
@@ -20,20 +20,20 @@ import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class YtdlpService implements IBootstrappable {
-	public readonly events = mitt<{ downloadStarted: string; downloadFinished: void; }>();
+	public readonly events = mitt<{ downloadStarted: string; downloadProgress: number; downloadFinished: void; }>();
 
 	private proc: Nullable<ChildProcess> = null;
 
 	private readonly youtubeUrlPattern: RegExp;
 
 	public constructor(
-		private readonly logger              = inject(LoggingService),
-		private readonly lifecycle           = inject(LifecycleService),
-		private readonly ipc                 = inject(IpcService),
-		private readonly settings            = inject(SettingsService),
-		private readonly window              = inject(WindowService),
-		private readonly notifications       = inject(NotificationsService),
-		private readonly thumbnailDownloader = inject(ThumbnailDownloader),
+		private readonly logger        = inject(LoggingService),
+		private readonly lifecycle     = inject(LifecycleService),
+		private readonly ipc           = inject(IpcService),
+		private readonly settings      = inject(SettingsService),
+		private readonly window        = inject(WindowService),
+		private readonly notifications = inject(NotificationsService),
+		private readonly thumbnail     = inject(ThumbnailService),
 	) {
 		this.youtubeUrlPattern   = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
 	}
@@ -72,8 +72,7 @@ export class YtdlpService implements IBootstrappable {
 		const ffmpegPath           = getExtraFilePath('ffmpeg.exe');
 		const downloadPath         = join(downloadDir, downloadNameTemplate).replaceAll(win32.sep, posix.sep);
 
-		const emitLog = (data: any) => {
-			const line = data.toString().trim() as string;
+		const emitLog = (line: string) => {
 			if (line.length === 0) {
 				return;
 			}
@@ -89,15 +88,7 @@ export class YtdlpService implements IBootstrappable {
 		let notificationImagePlacement = 'appLogoOverride';
 
 		const youtubeMatch = url.match(this.youtubeUrlPattern);
-		if (youtubeMatch) {
-			this.logger.info('Media URL matched as YouTube');
-
-			const videoId = youtubeMatch[1];
-			notificationImagePlacement = 'hero';
-			notificationImage          = await this.thumbnailDownloader.downloadThumbnail(videoId);
-		}
-
-		const ytdlpArgs = [] as string[];
+		const ytdlpArgs    = [] as string[];
 
 		if (audioOnly) {
 			ytdlpArgs.push('-x', '--audio-format', 'mp3', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
@@ -114,15 +105,38 @@ export class YtdlpService implements IBootstrappable {
 			ytdlpArgs.push('--no-playlist')
 		}
 
+		if (youtubeMatch) {
+			this.thumbnail.downloadThumbnail(youtubeMatch[1]);
+		}
+
+		const mainWindow     = this.window.getMainWindow()!;
+		const percentPattern = /\b(\d+(?:\.\d+)?)%/;
+
 		this.logger.debug('Spawning yt-dlp process', { args: ytdlpArgs });
 
 		this.proc = spawn(ytDlpPath, ytdlpArgs);
-		this.proc.stdout!.on('data', emitLog);
-		this.proc.stderr!.on('data', emitLog);
-		this.proc.once('close', code => {
-			this.logger.info('yt-dlp process closed', { code });
+		this.proc.stdout!.on('data', data => {
+			const line = data.toString().trim() as string;
+			emitLog(line);
+
+			const percentMatch = line.match(percentPattern);
+			if (percentMatch) {
+				this.events.emit('downloadProgress', parseInt(percentMatch[1]) / 100);
+			}
+		});
+		this.proc.stderr!.on('data', data => {
+			const line = data.toString().trim() as string;
+			emitLog(line);
+		});
+		this.proc.once('close', async code => {
+			this.logger.info('yt-dlp process exited', { code });
 			this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished, code);
 			this.events.emit('downloadFinished');
+
+			if (youtubeMatch) {
+				notificationImagePlacement = 'hero';
+				notificationImage          = await this.thumbnail.getThumbnail(youtubeMatch[1]) ?? '';
+			}
 
 			if (showNotification && !this.window.getMainWindow()?.isFocused()) {
 				this.showCompletionNotification(downloadDir, notificationImage, notificationImagePlacement);

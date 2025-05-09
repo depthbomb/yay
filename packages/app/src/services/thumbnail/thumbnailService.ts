@@ -12,7 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import type { HttpClient } from '~/services/http';
 
 @injectable()
-export class ThumbnailDownloader {
+export class ThumbnailService {
 	private readonly httpClient: HttpClient;
 	private readonly cacheDir: string;
 
@@ -20,21 +20,21 @@ export class ThumbnailDownloader {
 		private readonly logger = inject(LoggingService),
 		private readonly http   = inject(HttpService),
 	) {
-		this.httpClient = this.http.getClient('ThumbnailDownloader', { userAgent: USER_AGENT });
+		this.httpClient = this.http.getClient('ThumbnailService', { userAgent: USER_AGENT });
 		this.cacheDir   = join(app.getPath('userData'), 'thumbnail_cache');
 	}
 
-	public async downloadThumbnail(videoId: string): Promise<string> {
+	public async downloadThumbnail(videoId: string) {
 		const thumbnailPath   = join(this.cacheDir, `${videoId}.jpg`);
 		const thumbnailExists = await fileExists(thumbnailPath);
 		if (thumbnailExists) {
-			this.logger.info('Found existing thumbnail', { thumbnailPath });
-			return thumbnailPath;
+			this.logger.debug('Found existing thumbnail', { thumbnailPath });
+			return;
 		}
 
 		const cacheDirExists = await dirExists(this.cacheDir);
 		if (!cacheDirExists) {
-			this.logger.info('Created thumbnail cache directory', { dir: this.cacheDir });
+			this.logger.debug('Created thumbnail cache directory', { dir: this.cacheDir });
 			await mkdir(this.cacheDir, { recursive: true });
 		}
 
@@ -44,6 +44,15 @@ export class ThumbnailDownloader {
 		await finished(Readable.fromWeb(res.body!).pipe(fs));
 
 		this.logger.info('Wrote thumbnail to disk', { url, thumbnailPath });
+	}
+
+	public async getThumbnail(videoId: string) {
+		const thumbnailPath   = join(this.cacheDir, `${videoId}.jpg`);
+		const thumbnailExists = await fileExists(thumbnailPath);
+		if (!thumbnailExists) {
+			this.logger.warn('No thumbnail found?', { thumbnailPath });
+			return null;
+		}
 
 		return thumbnailPath;
 	}

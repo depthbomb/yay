@@ -144,7 +144,8 @@ export class MainWindowService implements IBootstrappable {
 		//#endregion
 
 		//#region Events
-		this.ytdlp.events.on('downloadStarted', () => this.mainWindow!.setProgressBar(1, { mode: 'indeterminate' }));
+		this.ytdlp.events.on('downloadStarted',  () => this.mainWindow!.setProgressBar(1, { mode: 'indeterminate' }));
+		this.ytdlp.events.on('downloadProgress', p => this.mainWindow!.setProgressBar(p, { mode: 'normal' }));
 		this.ytdlp.events.on('downloadFinished', () => {
 			this.mainWindow!.setProgressBar(0, { mode: 'none' });
 			this.mainWindow!.flashFrame(true);
