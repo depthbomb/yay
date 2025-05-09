@@ -91,7 +91,7 @@ export class YtdlpService implements IBootstrappable {
 		const ytdlpArgs    = [] as string[];
 
 		if (audioOnly) {
-			ytdlpArgs.push('-x', '--audio-format', 'mp3', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
+			ytdlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '0', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		} else {
 			ytdlpArgs.push(url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		}
@@ -109,7 +109,6 @@ export class YtdlpService implements IBootstrappable {
 			this.thumbnail.downloadThumbnail(youtubeMatch[1]);
 		}
 
-		const mainWindow     = this.window.getMainWindow()!;
 		const percentPattern = /\b(\d+(?:\.\d+)?)%/;
 
 		this.logger.debug('Spawning yt-dlp process', { args: ytdlpArgs });
