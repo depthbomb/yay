@@ -23,13 +23,15 @@
 	"workspaces": [
 		"packages/app",
 		"packages/renderer",
-		"packages/shared"
+		"packages/shared",
+		"packages/windows-process-tree"
 	],
 	"devDependencies": {
 		"@octokit/types": "^14.0.0",
 		"@types/node": "^22.15.17",
 		"cross-env": "^7.0.3",
 		"electron-builder": "26.0.15",
+		"node-gyp": "^11.2.0",
 		"ts-node": "^10.9.2",
 		"typescript": "^5.8.3"
 	},

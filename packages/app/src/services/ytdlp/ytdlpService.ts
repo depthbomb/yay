@@ -1,5 +1,4 @@
 import mitt from 'mitt';
-import kill from 'tree-kill';
 import { dialog } from 'electron';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
@@ -8,6 +7,7 @@ import { join, posix, win32 } from 'node:path';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
+import { ProcessService } from '~/services/process';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
@@ -34,6 +34,7 @@ export class YtdlpService implements IBootstrappable {
 		private readonly window        = inject(WindowService),
 		private readonly notifications = inject(NotificationsService),
 		private readonly thumbnail     = inject(ThumbnailService),
+		private readonly process       = inject(ProcessService)
 	) {
 		this.youtubeUrlPattern   = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
 	}
@@ -58,10 +59,10 @@ export class YtdlpService implements IBootstrappable {
 				await unlink(cookiesFilePath);
 			}
 		});
-		this.ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, () => this.cancelDownload(false));
+		this.ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, async () => await this.cancelDownload(false));
 		this.ipc.registerHandler(IpcChannel.Ytdlp_UpdateBinary,   async () => await this.updateBinary());
 
-		this.lifecycle.events.on('shutdown', () => this.cancelDownload(true));
+		this.lifecycle.events.on('shutdown', async () => await this.cancelDownload(true));
 	}
 
 	public async download(url: string, audioOnly = false) {
@@ -159,10 +160,12 @@ export class YtdlpService implements IBootstrappable {
 		});
 	}
 
-	public cancelDownload(shutdown: boolean) {
+	public async cancelDownload(shutdown: boolean) {
 		if (this.proc) {
 			this.logger.info('Killing yt-dlp process', { shutdown });
-			kill(this.proc.pid!, 'SIGINT');
+
+			await this.process.killProcessTree(this.proc.pid!);
+
 			this.cleanupProcess();
 
 			if (!shutdown) {

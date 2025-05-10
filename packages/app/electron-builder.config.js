@@ -50,20 +50,9 @@ const config = {
 		{ from: '../../static/extra/licenses/ffmpeg.txt', to: 'licenses/ffmpeg.txt' },
 	],
 	extraResources: [
-		// { from: '../../static/extra/notifications/logo.png', to: 'notifications/logo.png' },
-		{ from: '../../static/extra/notifications.asar', to: 'notifications.asar' },
-		//
-		// { from: '../../static/extra/tray/action-icons/close.png',       to: 'tray/action-icons/close.png' },
-		// { from: '../../static/extra/tray/action-icons/cog.png',         to: 'tray/action-icons/cog.png' },
-		// { from: '../../static/extra/tray/action-icons/folder-open.png', to: 'tray/action-icons/folder-open.png' },
-		// { from: '../../static/extra/tray/action-icons/logo-16.png',     to: 'tray/action-icons/logo-16.png' },
-		// { from: '../../static/extra/tray/action-icons/music-note.png',  to: 'tray/action-icons/music-note.png' },
-		// { from: '../../static/extra/tray/action-icons/open-in-new.png', to: 'tray/action-icons/open-in-new.png' },
-		// { from: '../../static/extra/tray/action-icons/video.png',       to: 'tray/action-icons/video.png' },
-		//
-		// { from: '../../static/extra/tray/tray.ico',             to: 'tray/tray.ico' },
-		// { from: '../../static/extra/tray/tray-downloading.ico', to: 'tray/tray-downloading.ico' },
-		{ from: '../../static/extra/tray.asar', to: 'tray.asar' },
+		{ from: '../../static/extra/notifications.asar',                           to: 'notifications.asar' },
+		{ from: '../../static/extra/tray.asar',                                    to: 'tray.asar' },
+		{ from: '../windows-process-tree/build/Release/windows-process-tree.node', to: 'native/windows-process-tree.node' },
 	],
 	win: {
 		icon: '../../static/icon.ico',

@@ -1,0 +1,12 @@
+{
+	"private": true,
+	"gypfile": true,
+	"name": "windows-process-tree",
+	"scripts": {
+		"build:d": "node-gyp rebuild",
+		"build:p": "node-gyp rebuild"
+	},
+	"devDependencies": {
+		"node-addon-api": "^8.3.1"
+	}
+}
