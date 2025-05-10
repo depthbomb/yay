@@ -1,3 +1,10 @@
+# 1.18.0
+
+- Added the app's full title back to the app header
+- A message box is now shown when after attempting to update yt-dlp with info about the update process
+- Fixed showing a text selection context menu when right-clicking in the app with nothing selected
+- Fixed the taskbar icon progress bar moving backwards in some cases
+
 # 1.17.1
 
 - Tray context menu icons and global menu icons will now use dark icons when using the light theme in Windows

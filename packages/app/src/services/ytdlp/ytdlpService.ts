@@ -188,12 +188,40 @@ export class YtdlpService implements IBootstrappable {
 		const ytDlpPath = this.settings.get<string>(SettingsKey.YtdlpPath);
 
 		return new Promise<void>((res) => {
-			const proc = spawn(ytDlpPath, ['-U']);
+			const proc           = spawn(ytDlpPath, ['-U']);
+			const versionPattern = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
 
-			proc.stdout!.on('data', data => this.logger.silly(`yt-dlp -U: ${data}`));
-			proc.once('close', code => {
+			let wasUpdated    = false;
+			let latestVersion = '';
+
+			proc.stdout!.on('data', data => {
+				const line = data.toString().trim() as string;;
+				this.logger.silly(`yt-dlp -U: ${line}`);
+
+				wasUpdated = !line.includes('is up to date');
+
+				const versionMatch = line.match(versionPattern);
+				if (versionMatch) {
+					latestVersion = versionMatch[0];
+				}
+			});
+			proc.once('close', async code => {
 				this.logger.info('yt-dlp update process exited', { code });
 				this.window.emitAll(IpcChannel.Ytdlp_UpdatedBinary);
+				if (wasUpdated) {
+					await dialog.showMessageBox({
+						type: 'info',
+						title: 'yt-dlp update',
+						message: `yt-dlp was updated to ${latestVersion}.`
+					});
+				} else {
+					await dialog.showMessageBox({
+						type: 'info',
+						title: 'yt-dlp update',
+						message: `You are using the latest version of yt-dlp (${latestVersion}).`
+					});
+				}
+
 				res();
 			});
 		});
