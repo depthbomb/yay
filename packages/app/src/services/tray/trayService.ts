@@ -1,14 +1,14 @@
 import { product } from 'shared';
 import { unlink } from 'node:fs/promises';
-import { app, Menu, Tray } from 'electron';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
-import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
+import { app, Menu, Tray, nativeTheme } from 'electron';
 import { WindowPositionService } from '~/services/windowPosition';
 import { SettingsWindowService } from '~/services/settingsWindow';
+import { getThemedIcon, getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import type { Maybe } from 'shared';
 import type { MenuItemConstructorOptions } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
@@ -16,12 +16,12 @@ import type { IBootstrappable } from '~/common/IBootstrappable';
 @injectable()
 export class TrayService implements IBootstrappable {
 	private tray: Maybe<Tray>;
+	private settingsIcon: string;
+	private showIcon: string;
+	private quitIcon: string;
 
 	private readonly trayTooltip: string;
 	private readonly logoIcon: string;
-	private readonly showIcon: string;
-	private readonly settingsIcon: string;
-	private readonly quitIcon: string;
 	private readonly trayIcon: string;
 	private readonly trayDownloadingIcon: string;
 
@@ -35,9 +35,9 @@ export class TrayService implements IBootstrappable {
 	) {
 		this.trayTooltip         = product.description;
 		this.logoIcon            = getFilePathFromAsar('tray/action-icons/logo-16.png');
-		this.showIcon            = getFilePathFromAsar('tray/action-icons/open-in-new.png');
-		this.settingsIcon        = getFilePathFromAsar('tray/action-icons/cog.png');
-		this.quitIcon            = getFilePathFromAsar('tray/action-icons/close.png');
+		this.showIcon            = getThemedIcon('open-in-new.png');
+		this.settingsIcon        = getThemedIcon('cog.png');
+		this.quitIcon            = getThemedIcon('close.png');
 		this.trayIcon            = getFilePathFromAsar('tray/tray.ico');
 		this.trayDownloadingIcon = getFilePathFromAsar('tray/tray-downloading.ico');
 	}
@@ -48,68 +48,7 @@ export class TrayService implements IBootstrappable {
 
 			this.tray = new Tray(this.trayIcon);
 			this.tray.setToolTip(this.trayTooltip);
-
-			const menu = [] as MenuItemConstructorOptions[];
-
-			menu.push(
-				{
-					label: 'yay',
-					icon: this.logoIcon,
-					enabled: false,
-				},
-				{ type: 'separator' }
-			);
-
-			if (import.meta.env.DEV) {
-				menu.push(
-					{
-						label: 'Developer',
-						submenu: [
-							{
-								label: 'Delete downloadable binaries',
-								click: async () => {
-									await Promise.allSettled([
-										unlink(getExtraFilePath('yt-dlp.exe')),
-										unlink(getExtraFilePath('ffmpeg.exe')),
-										unlink(getExtraFilePath('ffprobe.exe')),
-									]);
-								}
-							},
-							{
-								label: 'Relaunch',
-								click: () => {
-									app.relaunch();
-									app.quit();
-								}
-							}
-						]
-					},
-					{ type: 'separator' }
-				);
-			}
-
-			menu.push(
-				{
-					label: 'Show',
-					icon: this.showIcon,
-					click: () => this.tray!.emit('click')
-				},
-				{
-					label: 'Settings',
-					icon: this.settingsIcon,
-					click: () => this.settingsWindow.show()
-				},
-				{
-					type: 'separator'
-				},
-				{
-					label: 'Quit',
-					icon: this.quitIcon,
-					click: () => app.quit()
-				}
-			);
-
-			this.tray.setContextMenu(Menu.buildFromTemplate(menu));
+			this.tray.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
 			this.tray.on('click', () => {
 				const mainWindow = this.window.getMainWindow()!;
 				this.windowPosition.setWindowPositionAtTray(mainWindow, this.tray!);
@@ -134,5 +73,75 @@ export class TrayService implements IBootstrappable {
 				this.tray = undefined;
 			}
 		});
+
+		nativeTheme.on('updated', () => {
+			this.showIcon     = getThemedIcon('open-in-new.png');
+			this.settingsIcon = getThemedIcon('cog.png');
+			this.quitIcon     = getThemedIcon('close.png');
+			this.tray!.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
+		});
+	}
+
+	private createTrayMenu() {
+		const menu = [] as MenuItemConstructorOptions[];
+		menu.push(
+			{
+				label: 'yay',
+				icon: this.logoIcon,
+				enabled: false,
+			},
+			{ type: 'separator' }
+		);
+
+		if (import.meta.env.DEV) {
+			menu.push(
+				{
+					label: 'Developer',
+					submenu: [
+						{
+							label: 'Delete downloadable binaries',
+							click: async () => {
+								await Promise.allSettled([
+									unlink(getExtraFilePath('yt-dlp.exe')),
+									unlink(getExtraFilePath('ffmpeg.exe')),
+									unlink(getExtraFilePath('ffprobe.exe')),
+								]);
+							}
+						},
+						{
+							label: 'Relaunch',
+							click: () => {
+								app.relaunch();
+								app.quit();
+							}
+						}
+					]
+				},
+				{ type: 'separator' }
+			);
+		}
+
+		menu.push(
+			{
+				label: 'Show',
+				icon: this.showIcon,
+				click: () => this.tray!.emit('click')
+			},
+			{
+				label: 'Settings',
+				icon: this.settingsIcon,
+				click: () => this.settingsWindow.show()
+			},
+			{
+				type: 'separator'
+			},
+			{
+				label: 'Quit',
+				icon: this.quitIcon,
+				click: () => app.quit()
+			}
+		);
+
+		return menu;
 	}
 }

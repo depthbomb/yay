@@ -1,13 +1,12 @@
-import { globalShortcut } from 'electron';
-import { IpcService } from '~/services/ipc';
-import { getFilePathFromAsar } from '~/utils';
 import { YtdlpService } from '~/services/ytdlp';
 import { Menu, shell, clipboard } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsKey, isValidHttpUrl } from 'shared';
 import { SettingsService } from '~/services/settings';
+import { nativeTheme, globalShortcut } from 'electron';
 import { LifecycleService } from '~/services/lifecycle';
+import { getThemedIcon, getFilePathFromAsar } from '~/utils';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 import type { MenuItem, MenuItemConstructorOptions } from 'electron';
 
@@ -18,24 +17,30 @@ const accelerator = 'Super+Y' as const;
 @injectable()
 export class GlobalMenuService implements IBootstrappable {
 	private menuShown = false;
-	private menu: Menu;
+	private disableDownloadActions = false;
 
-	private readonly logoIcon               = getFilePathFromAsar('tray/action-icons/logo-16.png');
-	private readonly videoIcon              = getFilePathFromAsar('tray/action-icons/video.png');
-	private readonly audioIcon              = getFilePathFromAsar('tray/action-icons/music-note.png');
-	private readonly openDownloadFolderIcon = getFilePathFromAsar('tray/action-icons/folder-open.png');
-	private readonly closeIcon              = getFilePathFromAsar('tray/action-icons/close.png');
+	private menu: Menu;
+	private videoIcon: string;
+	private audioIcon: string;
+	private openDownloadFolderIcon: string;
+	private closeIcon: string;
+
+	private readonly logoIcon = getFilePathFromAsar('tray/action-icons/logo-16.png');
 
 	public constructor(
 		private readonly logger    = inject(LoggingService),
 		private readonly lifecycle = inject(LifecycleService),
-		private readonly ipc       = inject(IpcService),
 		private readonly settings  = inject(SettingsService),
 		private readonly ytdlp     = inject(YtdlpService),
 	) {
-		this.menu = Menu.buildFromTemplate(this.createMenu(false));
+		this.menu = Menu.buildFromTemplate(this.createMenu());
 		this.menu.on('menu-will-show',  () => this.menuShown = true);
 		this.menu.on('menu-will-close', () => this.menuShown = false);
+
+		this.videoIcon              = getThemedIcon('video.png');
+		this.audioIcon              = getThemedIcon('music-note.png');
+		this.openDownloadFolderIcon = getThemedIcon('folder-open.png');
+		this.closeIcon              = getThemedIcon('close.png');
 	}
 
 	public async bootstrap() {
@@ -44,8 +49,14 @@ export class GlobalMenuService implements IBootstrappable {
 			this.lifecycle.events.on('readyPhase', () => globalShortcut.register(accelerator, callback));
 		}
 
-		this.ytdlp.events.on('downloadStarted',  () => this.setMenu(true));
-		this.ytdlp.events.on('downloadFinished', () => this.setMenu(false));
+		this.ytdlp.events.on('downloadStarted',  () => {
+			this.disableDownloadActions = true;
+			this.setMenu();
+		});
+		this.ytdlp.events.on('downloadFinished', () => {
+			this.disableDownloadActions = false;
+			this.setMenu();
+		});
 		this.settings.events.on('settingsUpdated', ({ key, value }) => {
 			if (key === SettingsKey.EnableGlobalMenu) {
 				if (value as boolean) {
@@ -54,6 +65,17 @@ export class GlobalMenuService implements IBootstrappable {
 					globalShortcut.unregister(accelerator);
 				}
 			}
+		});
+
+		/**
+		 * Update icons when the theme changes
+		 */
+		nativeTheme.on('updated', () => {
+			this.videoIcon              = getThemedIcon('video.png');
+			this.audioIcon              = getThemedIcon('music-note.png');
+			this.openDownloadFolderIcon = getThemedIcon('folder-open.png');
+			this.closeIcon              = getThemedIcon('close.png');
+			this.menu                   = Menu.buildFromTemplate(this.createMenu());
 		});
 	}
 
@@ -68,8 +90,8 @@ export class GlobalMenuService implements IBootstrappable {
 		this.menu.popup();
 	}
 
-	public setMenu(disableDownloadActions: boolean) {
-		this.menu = Menu.buildFromTemplate(this.createMenu(disableDownloadActions));
+	public setMenu() {
+		this.menu = Menu.buildFromTemplate(this.createMenu());
 	}
 
 	private async tryDownloadFromClipboard(downloadAudio: boolean = false) {
@@ -87,7 +109,7 @@ export class GlobalMenuService implements IBootstrappable {
 		await this.ytdlp.download(text, downloadAudio);
 	}
 
-	private createMenu(disableDownloadActions: boolean) {
+	private createMenu() {
 		return [
 			{
 				label: 'yay',
@@ -98,13 +120,13 @@ export class GlobalMenuService implements IBootstrappable {
 			{
 				label: 'Download video from clipboard',
 				icon: this.videoIcon,
-				enabled: !disableDownloadActions,
+				enabled: !this.disableDownloadActions,
 				click: async () => await this.tryDownloadFromClipboard()
 			},
 			{
 				label: 'Download audio from clipboard',
 				icon: this.audioIcon,
-				enabled: !disableDownloadActions,
+				enabled: !this.disableDownloadActions,
 				click: async () => await this.tryDownloadFromClipboard(true)
 			},
 			{ type: 'separator' },

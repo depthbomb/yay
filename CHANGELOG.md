@@ -1,3 +1,7 @@
+# 1.17.1
+
+- Tray context menu icons and global menu icons will now use dark icons when using the light theme in Windows
+
 # 1.17.0
 
 - The main window's taskbar icon, when shown, now shows an accurate download progress percentage when downloading media
