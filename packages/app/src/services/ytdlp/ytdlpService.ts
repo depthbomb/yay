@@ -114,6 +114,7 @@ export class YtdlpService implements IBootstrappable {
 			this.thumbnail.downloadThumbnail(youtubeMatch[1]);
 		}
 
+		let lastPercentage   = 0;
 		const percentPattern = /\b(\d+(?:\.\d+)?)%/;
 
 		this.logger.debug('Spawning yt-dlp process', { args: ytdlpArgs });
@@ -125,7 +126,11 @@ export class YtdlpService implements IBootstrappable {
 
 			const percentMatch = line.match(percentPattern);
 			if (percentMatch) {
-				this.events.emit('downloadProgress', parseInt(percentMatch[1]) / 100);
+				const percentage = parseInt(percentMatch[1]) / 100;
+				if (percentage > lastPercentage) {
+					this.events.emit('downloadProgress', percentage);
+					lastPercentage = percentage;
+				}
 			}
 		});
 		this.proc.stderr!.on('data', data => {
