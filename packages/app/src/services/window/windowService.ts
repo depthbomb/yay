@@ -65,7 +65,10 @@ export class WindowService implements IBootstrappable {
 
 		const window = new BrowserWindow(browserWindowOptions);
 
-		window.once('closed', () => this.windows.delete(name));
+		window.once('closed', () => {
+			this.windows.delete(name);
+			this.logger.debug('Window closed', { name });
+		});
 
 		if (import.meta.env.DEV) {
 			window.webContents.on('before-input-event', (_, input) => {
