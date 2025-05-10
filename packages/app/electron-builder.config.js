@@ -60,9 +60,6 @@ const config = {
 			publisherName: author
 		},
 	},
-	portable: {
-		artifactName: `${applicationName}.exe`
-	},
 	electronFuses: {
 		runAsNode: !isProduction,
 		onlyLoadAppFromAsar: isProduction,
