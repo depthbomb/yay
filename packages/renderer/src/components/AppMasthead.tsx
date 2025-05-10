@@ -46,8 +46,7 @@ export const AppMasthead = () => {
 	return (
 		<header className={headerCss}>
 			<SeasonalLogo/>
-			<div className="w-full"/>
-			<div className="flex space-x-0.5 z-10">
+			<div className="flex space-x-0.5 shrink-0 z-10">
 				{updateAvailable && <UpdateIndicator/>}
 				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="bottom" onClick={() => openDownloadDir()}/>
 				<IconButton icon={isWindowPinned ? mdiPinOff : mdiPin} title={isWindowPinned ? 'Unpin menu' : 'Pin menu'} tooltipSide="bottom" onClick={onPinWindowButtonClicked}/>
