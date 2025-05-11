@@ -46,7 +46,7 @@ export class MainService {
 
 		this.logger.info('Bootstrapping services');
 
-		Promise.allSettled([
+		await Promise.allSettled([
 			this.lifecycle.bootstrap(),
 			this.settings.bootstrap(),
 			this.featureFlags.bootstrap(),
@@ -58,10 +58,9 @@ export class MainService {
 			this.tray.bootstrap(),
 			this.mainWindow.bootstrap(),
 			this.settingsWindow.bootstrap(),
-			this.setup.performSetupActions(),
+			this.setup.bootstrap(),
 			this.updater.bootstrap(),
-		])
-		.then(() => this.lifecycle.phase = LifecyclePhase.Ready);
+		]);
 
 		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => {
 			this.logger.debug('Showing messagebox', { options });
@@ -103,5 +102,7 @@ export class MainService {
 
 			await shell.openPath(join(app.getPath('userData'), 'logs', 'yay.log'));
 		});
+
+		this.lifecycle.phase = LifecyclePhase.Ready;
 	}
 }

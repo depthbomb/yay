@@ -15,7 +15,7 @@ type PositionOptions = {
 	 * @default 0
 	 */
 	padding?: number;
-}
+};
 
 @injectable()
 export class WindowPositionService {

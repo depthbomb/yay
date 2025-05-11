@@ -1,14 +1,14 @@
 import mitt from 'mitt';
 import { join } from 'node:path';
 import { ROOT_PATH } from '~/constants';
+import { BrowserWindow } from 'electron';
 import { IpcService } from '~/services/ipc';
-import { app, BrowserWindow } from 'electron';
 import { DEV_PORT, IpcChannel } from 'shared';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { Awaitable } from 'shared';
 import type { IBootstrappable } from '~/common/IBootstrappable';
-import type { AboutPanelOptionsOptions, BrowserWindowConstructorOptions } from 'electron';
+import type { BrowserWindowConstructorOptions } from 'electron';
 
 type CreateWindowOptions = {
 	/**
@@ -129,19 +129,6 @@ export class WindowService implements IBootstrappable {
 
 			window.close();
 		}
-	}
-
-	public showAboutWindow(options: AboutPanelOptionsOptions = {}) {
-		const aboutOptions: AboutPanelOptionsOptions = {
-			iconPath: options.iconPath ?? '',
-			applicationName: options.applicationName ?? app.getName(),
-			applicationVersion: options.applicationVersion ?? app.getVersion(),
-			copyright: options.copyright ?? '',
-			website: options.website ?? '',
-		};
-
-		app.setAboutPanelOptions(aboutOptions);
-		app.showAboutPanel();
 	}
 
 	public emitMain(channel: IpcChannel, ...args: unknown[]) {

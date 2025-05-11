@@ -10,9 +10,10 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
 import { fileExists, getExtraFilePath } from '~/utils';
+import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
-export class SetupService {
+export class SetupService implements IBootstrappable {
 	private cancelled = false;
 
 	private readonly abort = new AbortController();
@@ -28,16 +29,20 @@ export class SetupService {
 		this.ipc.registerHandler(IpcChannel.Setup_Cancel, () => this.cancel());
 	}
 
-	public async performSetupActions() {
-		await this.setDefaultSettings();
-		await this.settings.migrateLegacySettings();
-		await this.settings.removeDeprecatedSettings();
-		await this.checkForBinaries();
+	public async bootstrap() {
+		await this.performSetupActions();
 	}
 
 	public cancel() {
 		this.cancelled = true;
 		this.abort.abort();
+	}
+
+	private async performSetupActions() {
+		await this.setDefaultSettings();
+		await this.settings.migrateLegacySettings();
+		await this.settings.removeDeprecatedSettings();
+		await this.checkForBinaries();
 	}
 
 	private async setDefaultSettings() {
