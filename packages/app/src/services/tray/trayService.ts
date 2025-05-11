@@ -1,14 +1,14 @@
 import { product } from 'shared';
 import { unlink } from 'node:fs/promises';
+import { app, Menu, Tray } from 'electron';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
-import { app, Menu, Tray, nativeTheme } from 'electron';
+import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import { WindowPositionService } from '~/services/windowPosition';
 import { SettingsWindowService } from '~/services/settingsWindow';
-import { getThemedIcon, getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import type { Maybe } from 'shared';
 import type { MenuItemConstructorOptions } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
@@ -35,9 +35,9 @@ export class TrayService implements IBootstrappable {
 	) {
 		this.trayTooltip         = product.description;
 		this.logoIcon            = getFilePathFromAsar('tray/action-icons/logo-16.png');
-		this.showIcon            = getThemedIcon('open-in-new.png');
-		this.settingsIcon        = getThemedIcon('cog.png');
-		this.quitIcon            = getThemedIcon('close.png');
+		this.showIcon            = getFilePathFromAsar('tray/action-icons/open-in-new.png');
+		this.settingsIcon        = getFilePathFromAsar('tray/action-icons/cog.png');
+		this.quitIcon            = getFilePathFromAsar('tray/action-icons/close.png');
 		this.trayIcon            = getFilePathFromAsar('tray/tray.ico');
 		this.trayDownloadingIcon = getFilePathFromAsar('tray/tray-downloading.ico');
 	}
@@ -72,13 +72,6 @@ export class TrayService implements IBootstrappable {
 				this.tray?.destroy();
 				this.tray = undefined;
 			}
-		});
-
-		nativeTheme.on('updated', () => {
-			this.showIcon     = getThemedIcon('open-in-new.png');
-			this.settingsIcon = getThemedIcon('cog.png');
-			this.quitIcon     = getThemedIcon('close.png');
-			this.tray!.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
 		});
 	}
 

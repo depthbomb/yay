@@ -1,12 +1,12 @@
+import { globalShortcut } from 'electron';
+import { getFilePathFromAsar } from '~/utils';
 import { YtdlpService } from '~/services/ytdlp';
 import { Menu, shell, clipboard } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsKey, isValidHttpUrl } from 'shared';
 import { SettingsService } from '~/services/settings';
-import { nativeTheme, globalShortcut } from 'electron';
 import { LifecycleService } from '~/services/lifecycle';
-import { getThemedIcon, getFilePathFromAsar } from '~/utils';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 import type { MenuItem, MenuItemConstructorOptions } from 'electron';
 
@@ -17,15 +17,14 @@ const accelerator = 'Super+Y' as const;
 @injectable()
 export class GlobalMenuService implements IBootstrappable {
 	private menuShown = false;
+	private menu: Menu;
 	private disableDownloadActions = false;
 
-	private menu: Menu;
-	private videoIcon: string;
-	private audioIcon: string;
-	private openDownloadFolderIcon: string;
-	private closeIcon: string;
-
-	private readonly logoIcon = getFilePathFromAsar('tray/action-icons/logo-16.png');
+	private readonly videoIcon              = getFilePathFromAsar('tray/action-icons/video.png');
+	private readonly audioIcon              = getFilePathFromAsar('tray/action-icons/music-note.png');
+	private readonly openDownloadFolderIcon = getFilePathFromAsar('tray/action-icons/folder-open.png');
+	private readonly closeIcon              = getFilePathFromAsar('tray/action-icons/close.png');
+	private readonly logoIcon               = getFilePathFromAsar('tray/action-icons/logo-16.png');
 
 	public constructor(
 		private readonly logger    = inject(LoggingService),
@@ -36,11 +35,6 @@ export class GlobalMenuService implements IBootstrappable {
 		this.menu = Menu.buildFromTemplate(this.createMenu());
 		this.menu.on('menu-will-show',  () => this.menuShown = true);
 		this.menu.on('menu-will-close', () => this.menuShown = false);
-
-		this.videoIcon              = getThemedIcon('video.png');
-		this.audioIcon              = getThemedIcon('music-note.png');
-		this.openDownloadFolderIcon = getThemedIcon('folder-open.png');
-		this.closeIcon              = getThemedIcon('close.png');
 	}
 
 	public async bootstrap() {
@@ -65,17 +59,6 @@ export class GlobalMenuService implements IBootstrappable {
 					globalShortcut.unregister(accelerator);
 				}
 			}
-		});
-
-		/**
-		 * Update icons when the theme changes
-		 */
-		nativeTheme.on('updated', () => {
-			this.videoIcon              = getThemedIcon('video.png');
-			this.audioIcon              = getThemedIcon('music-note.png');
-			this.openDownloadFolderIcon = getThemedIcon('folder-open.png');
-			this.closeIcon              = getThemedIcon('close.png');
-			this.menu                   = Menu.buildFromTemplate(this.createMenu());
 		});
 	}
 
