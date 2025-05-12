@@ -4,6 +4,8 @@ import { spawn } from 'node:child_process';
 const definitions: { [key: string]: string } = {
 	Company: product.author,
 	NameLong: product.nameLong,
+	Description: product.description,
+	Copyright: `Copyright (C) 2024-${new Date().getFullYear()} ${product.author}`,
 	DirName: product.dirName,
 	Version: product.version,
 	RawVersion: product.version.replace(/-\w+$/, ''),

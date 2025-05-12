@@ -5,6 +5,7 @@ AppVersion={#Version}
 AppVerName={#NameLong}
 VersionInfoVersion={#Version}
 AppPublisher={#Company}
+AppCopyright={#Copyright}
 AppPublisherURL={#RepoURL}
 AppSupportURL={#RepoURL}
 AppUpdatesURL={#RepoURL}
@@ -17,12 +18,16 @@ OutputDir=..\build\release
 OutputBaseFilename={#ExeBasename}-setup
 SetupIconFile=..\static\icon.ico
 Compression=lzma/ultra64
+LZMAUseSeparateProcess=yes
 ; Compression=none
 SolidCompression=yes
 ArchitecturesAllowed=x64compatible
 MinVersion=10.0
 WizardStyle=modern
 WizardResizable=no
+ShowTasksTreeLines=yes
+UninstallDisplayIcon={app}\{#ExeBasename}.exe
+UninstallDisplayName={#Description}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
