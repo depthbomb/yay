@@ -82,7 +82,7 @@ export const UpdaterPage = () => {
 						{commits.map(c => (
 							<a key={c.sha} href={c.html_url} target="_blank" className="p-3 space-x-2 flex items-center bg-gray-800 odd:bg-gray-900 hover:bg-gray-700 active:bg-gray-950 transition-colors">
 								<img src={c.author?.avatar_url} className="w-8 rounded-full" loading="lazy" draggable="false"/>
-								<p><span className="font-bold">{c.author?.login}</span> committed <span className="font-mono">{c.commit.message}</span></p>
+								<p><span className="font-bold">{c.author?.login}</span> <span className="font-mono">{c.commit.message}</span></p>
 								<p className="ml-auto text-sm font-mono text-gray-400">{c.sha.slice(0, 7)}</p>
 							</a>
 						))}
