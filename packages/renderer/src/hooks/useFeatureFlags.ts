@@ -9,5 +9,5 @@ export const useFeatureFlags = () => {
 		return flag?.enabled ?? false;
 	};
 
-	return [isEnabled] as const;
+	return [isEnabled, flags] as const;
 }

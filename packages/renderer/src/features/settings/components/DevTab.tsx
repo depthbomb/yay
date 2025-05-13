@@ -1,5 +1,6 @@
 import Icon from '@mdi/react';
 import { mdiGithub } from '@mdi/js';
+import { useFeatureFlags } from '~/hooks';
 import { Anchor } from '~/components/Anchor';
 import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
@@ -26,6 +27,8 @@ const InfoSection: FC<InfoSectionProps> = ({ title, values }) => {
 };
 
 export const DevTab = () => {
+	const [,featureFlags] = useFeatureFlags();
+
 	return (
 		<div className="space-y-3 flex flex-col">
 			<InfoSection title="Application" values={[
@@ -44,6 +47,7 @@ export const DevTab = () => {
 				['Release', window.system.release()],
 				['Architecture', window.system.arch()],
 			]}/>
+			<InfoSection title="Feature Flags" values={featureFlags.map(ff => [ff.description, ff.enabled.toString()])}/>
 			<div className="space-x-3 flex items-center">
 				<Anchor href="https://github.com/depthbomb/yay" target="_blank" className="text-sm">
 					<Icon path={mdiGithub} className="size-4"/>
