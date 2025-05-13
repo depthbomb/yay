@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Tabs } from 'radix-ui';
 import { useAtom } from 'jotai';
 import { useIpc } from '~/hooks';
+import { useEffect } from 'react';
 import { IpcChannel } from 'shared';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
@@ -40,10 +41,12 @@ export const SettingsPage = () => {
 	const [onUpdatingYtdlpBinary] = useIpc(IpcChannel.Ytdlp_UpdatingBinary);
 	const [onUpdatedYtdlpBinary]  = useIpc(IpcChannel.Ytdlp_UpdatedBinary);
 
-	onUpdatingYtdlpBinary(() => setIsUpdating(true));
-	onUpdatedYtdlpBinary(()  => setIsUpdating(false));
-	onDownloadStarted(()     => setIsWorking(true));
-	onDownloadFinished(()    => setIsWorking(false));
+	useEffect(() => {
+		onUpdatingYtdlpBinary(() => setIsUpdating(true));
+		onUpdatedYtdlpBinary(()  => setIsUpdating(false));
+		onDownloadStarted(()     => setIsWorking(true));
+		onDownloadFinished(()    => setIsWorking(false));
+	}, []);
 
 	return (
 		<Tabs.Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
