@@ -5,6 +5,7 @@ import { RESET, atomWithReset } from 'jotai/utils';
 export const updateAvailableAtom = atomWithReset<boolean>(false);
 export const updatingAtom        = atomWithReset<boolean>(false);
 export const workingAtom         = atomWithReset<boolean>(false);
+export const lastUpdateCheckAtom = atomWithReset<Date>(new Date());
 export const windowPinnedAtom    = atomWithReset<boolean>(import.meta.env.DEV);
 export const urlAtom             = atomWithReset<string>('');
 export const isUrlValidAtom      = atom(get => isValidHttpUrl(get(urlAtom)));

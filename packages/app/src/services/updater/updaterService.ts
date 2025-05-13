@@ -78,6 +78,8 @@ export class UpdaterService implements IBootstrappable {
 	public async checkForUpdates(manual: boolean = false) {
 		this.logger.info('Checking for updates', { manual });
 
+		this.window.emitAll(IpcChannel.Updater_CheckingForUpdates);
+
 		try {
 			const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
 			const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
