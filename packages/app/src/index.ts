@@ -27,8 +27,12 @@ if (existsSync(configFilePath)) {
 	const config = parse(toml);
 	if (SettingsKey.DisableHardwareAcceleration in config && config[SettingsKey.DisableHardwareAcceleration] === false) {
 		app.disableHardwareAcceleration();
+		app.commandLine.appendSwitch('--disable-software-rasterizer');
+		app.commandLine.appendSwitch('--disable-gpu');
 	}
 }
+
+app.commandLine.appendSwitch('disable-features', 'UseEcoQoSForBackgroundProcess');
 
 app.whenReady().then(async () => {
 	if (__WIN32__) {

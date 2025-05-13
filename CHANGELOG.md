@@ -1,3 +1,8 @@
+# 1.19.0
+
+- Tray context menu and global menu icon styles have been updated
+- Feature flags can now be viewed in the Developer section of the Settings window
+
 # 1.18.0
 
 - Added the app's full title back to the app header
