@@ -27,6 +27,7 @@ export type CoreApi = {
 	openCookiesFilePicker(): Promise<void>;
 	toggleWindowPinned(): Promise<boolean>;
 	openLogFile(): Promise<void>;
+	openAppData(): Promise<void>;
 	//
 	cancelSetup(): Promise<void>;
 	//

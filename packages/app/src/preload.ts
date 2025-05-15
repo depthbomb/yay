@@ -87,6 +87,9 @@ const coreApi = {
 	openLogFile() {
 		return ipcRenderer.invoke(IpcChannel.Main_OpenLogFile);
 	},
+	openAppData() {
+		return ipcRenderer.invoke(IpcChannel.Main_OpenAppData);
+	},
 	//
 	cancelSetup() {
 		return ipcRenderer.invoke(IpcChannel.Setup_Cancel);

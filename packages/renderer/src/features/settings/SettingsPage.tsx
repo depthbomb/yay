@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Icon from '@mdi/react';
 import { Tabs } from 'radix-ui';
 import { useAtom } from 'jotai';
 import { useIpc } from '~/hooks';
@@ -11,13 +12,19 @@ import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { InterfaceTab } from './components/InterfaceTab';
 import { DownloadsTab } from './components/DownloadsTab';
+import { mdiCogs, mdiYoutube, mdiDownload, mdiViewQuilt, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
 
-type TabButtonProps = Tabs.TabsTriggerProps;
+type TabButtonProps = Tabs.TabsTriggerProps & {
+	title: string;
+	icon: string;
+};
 
-const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
+const TabButton: FC<TabButtonProps> = ({ title, icon, value, className }) => {
 	const css = clsx(
+		'space-x-2',
 		'py-0.25 px-3',
+		'flex items-center justify-between',
 		'text-sm text-gray-300 hover:text-white',
 		'data-[state=active]:text-white! data-[state=active]:bg-brand-500 data-[state=active]:rounded',
 		'data-[state=inactive]:bg-transparent data-[state=inactive]:hover:border-l-brand-500',
@@ -28,7 +35,8 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 
 	return (
 		<Tabs.Trigger value={value} className={css}>
-			{props.children}
+			<Icon className="size-4" path={icon}/>
+			<span>{title}</span>
 		</Tabs.Trigger>
 	);
 };
@@ -50,25 +58,13 @@ export const SettingsPage = () => {
 
 	return (
 		<Tabs.Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
-			<Tabs.List className="p-3 space-y-1.5 w-32 flex flex-col shrink-0 bg-gray-900">
-				<TabButton value="app">
-					Application
-				</TabButton>
-				<TabButton value="interface">
-					Interface
-				</TabButton>
-				<TabButton value="downloads">
-					Downloads
-				</TabButton>
-				<TabButton value="youtube">
-					YouTube
-				</TabButton>
-				<TabButton value="advanced">
-					Advanced
-				</TabButton>
-				<TabButton value="dev">
-					Developer
-				</TabButton>
+			<Tabs.List className="p-3 space-y-1.5 w-38 flex flex-col shrink-0 bg-gray-900">
+				<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
+				<TabButton value="interface" title="Interface" icon={mdiViewQuilt}/>
+				<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
+				<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
+				<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
+				<TabButton value="dev" title="Developer" icon={mdiCodeBraces}/>
 			</Tabs.List>
 			<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
 				<Tabs.Content value="app">

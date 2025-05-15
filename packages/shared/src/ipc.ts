@@ -14,6 +14,7 @@ export enum IpcChannel {
 	Main_PickCookiesFile    = 'main:pick-cookies-file',
 	Main_ToggleWindowPinned = 'main:toggle-window-pinned',
 	Main_OpenLogFile        = 'main:open-log-file',
+	Main_OpenAppData        = 'main:open-app-data',
 	// Settings channels
 	Settings_Changed = 'settings:changed',
 	Settings_Set     = 'settings:get',

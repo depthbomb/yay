@@ -98,9 +98,19 @@ export class MainService {
 		});
 
 		this.ipc.registerHandler(IpcChannel.Main_OpenLogFile, async () => {
-			this.logger.debug('Opening log file in default application');
+			const path = join(app.getPath('userData'), 'logs', 'yay.log');
 
-			await shell.openPath(join(app.getPath('userData'), 'logs', 'yay.log'));
+			this.logger.debug('Opening log file in default application', { path });
+
+			await shell.openPath(path);
+		});
+
+		this.ipc.registerHandler(IpcChannel.Main_OpenAppData, async () => {
+			const path = app.getPath('userData')
+
+			this.logger.debug('Opening application data folder', { path });
+
+			await shell.openPath(path);
 		});
 
 		this.lifecycle.phase = LifecyclePhase.Ready;

@@ -54,6 +54,7 @@ export const AppTab = () => {
 			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={!canCheckUpdates || updateAvailable}>Check for updates</Button>
 				<Button variant="brand" onClick={() => window.api.openLogFile()}>Open log file</Button>
+				<Button variant="brand" onClick={() => window.api.openAppData()}>Open data folder</Button>
 			</div>
 		</div>
 	);
