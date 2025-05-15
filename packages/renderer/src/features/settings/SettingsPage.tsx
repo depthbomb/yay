@@ -24,7 +24,7 @@ const TabButton: FC<TabButtonProps> = ({ title, icon, value, className }) => {
 	const css = clsx(
 		'space-x-2',
 		'py-0.25 px-3',
-		'flex items-center justify-between',
+		'flex items-center',
 		'text-sm text-gray-300 hover:text-white',
 		'data-[state=active]:text-white! data-[state=active]:bg-brand-500 data-[state=active]:rounded',
 		'data-[state=inactive]:bg-transparent data-[state=inactive]:hover:border-l-brand-500',

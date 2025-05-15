@@ -37,9 +37,7 @@ export class SettingsService implements IBootstrappable {
 		this.settingsFilePath       = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
 		this.legacySettingsFilePath = join(app.getPath('userData'), `settings.${import.meta.env.MODE}.json`);
 		this.internalStore          = this.store.createStore<Settings>(this.settingsFilePath);
-		this.deprecatedSettings     = [
-			'show-window-frame'
-		];
+		this.deprecatedSettings     = ['show-window-frame'];
 	}
 
 	public async bootstrap() {

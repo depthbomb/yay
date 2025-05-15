@@ -1,3 +1,9 @@
+# 1.20.0
+
+- There is now a cooldown between manually checking for app updates
+- Added icons to tab buttons in the Settings window
+- Added a button to open the application's data folder to the Application section of the Settings window
+
 # 1.19.0
 
 - Tray context menu and global menu icon styles have been updated
