@@ -27,7 +27,7 @@
 	],
 	"devDependencies": {
 		"@octokit/types": "^14.0.0",
-		"@types/node": "^22.15.18",
+		"@types/node": "^22.15.21",
 		"cross-env": "^7.0.3",
 		"electron-builder": "26.0.15",
 		"node-gyp": "^11.2.0",
