@@ -26,8 +26,8 @@
 		"packages/windows-process-tree"
 	],
 	"devDependencies": {
-		"@octokit/types": "^14.0.0",
-		"@types/node": "^22.15.21",
+		"@octokit/types": "^14.1.0",
+		"@types/node": "^22.15.29",
 		"cross-env": "^7.0.3",
 		"electron-builder": "26.0.15",
 		"node-gyp": "^11.2.0",
