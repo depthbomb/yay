@@ -1,5 +1,8 @@
-import { useFeatureFlags } from '~/hooks';
-import { forwardRef, useMemo } from 'react';
+import { useAtom } from 'jotai';
+import { IpcChannel } from 'shared';
+import { windowPinnedAtom } from '~/atoms/app';
+import { useIpc, useFeatureFlags } from '~/hooks';
+import { useMemo, useState, useEffect, forwardRef } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
 import logo from '~/assets/img/logo.svg';
@@ -13,15 +16,29 @@ const seasonalLogos = [
 	{
 		condition: (date: Date) => date.getMonth() === 5,
 		options: [
-			{ probability: 50, src: bkLogo, className: baseCss },
-			{ probability: 50, src: logo, className: `${baseCss} animate-hue-rotate` }
+			{ probability: 25, src: bkLogo, className: baseCss },
+			{ probability: 75, src: logo, className: `${baseCss} animate-hue-rotate` }
 		]
 	},
 ];
 
 export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
-	const currentDate          = useMemo(() => new Date(), []);
-	const [isFeatureEnabled]   = useFeatureFlags();
+	const currentDate               = useMemo(() => new Date(), []);
+	const [isBlurred, setIsBlurred] = useState(true);
+	const [windowPinned]            = useAtom(windowPinnedAtom);
+	const [isFeatureEnabled]        = useFeatureFlags();
+	const [onWindowBlurred]         = useIpc(IpcChannel.Window_IsBlurred);
+	const [onWindowFocused]         = useIpc(IpcChannel.Window_IsFocused);
+
+	useEffect(() => {
+		onWindowBlurred(() => {
+			if (!windowPinned) {
+				setIsBlurred(true);
+			}
+		});
+		onWindowFocused(() => setIsBlurred(false));
+	}, [windowPinned]);
+
 	const [logoSrc, className] = useMemo(() => {
 		const matchingSeason = seasonalLogos.find(season => season.condition(currentDate));
 		if (matchingSeason) {
@@ -37,7 +54,7 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 		}
 
 		return [logo, baseCss] as const;
-	}, [currentDate]);
+	}, [currentDate, isBlurred]);
 
 	return (
 		<div className="space-x-3 w-full flex items-center">

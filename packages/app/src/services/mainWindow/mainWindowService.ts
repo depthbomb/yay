@@ -60,7 +60,10 @@ export class MainWindowService implements IBootstrappable {
 
 			this.window.emitMain(IpcChannel.Window_IsBlurred);
 		});
-		this.mainWindow.on('focus', () => this.mainWindow!.flashFrame(false));
+		this.mainWindow.on('focus', () => {
+			this.mainWindow!.flashFrame(false);
+			this.window.emitMain(IpcChannel.Window_IsFocused);
+		});
 		this.mainWindow.on('close', e => {
 			if (!this.lifecycle.shutdownRequested) {
 				e.preventDefault();
