@@ -142,7 +142,7 @@ export class UpdaterService implements IBootstrappable {
 		this.aborted = false;
 
 		const { signal }  = this.abort;
-		const downloadUrl = this.latestRelease.assets[0].browser_download_url;
+		const downloadUrl = this.latestRelease.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
 
 		this.logger.info('Downloading latest release', { downloadUrl });
 
