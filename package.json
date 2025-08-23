@@ -27,12 +27,12 @@
 	],
 	"devDependencies": {
 		"@octokit/types": "^14.1.0",
-		"@types/node": "^22.16.0",
+		"@types/node": "^22.17.2",
 		"cross-env": "^7.0.3",
-		"electron-builder": "26.0.17",
-		"node-gyp": "^11.2.0",
+		"electron-builder": "26.0.12",
+		"node-gyp": "^11.4.1",
 		"ts-node": "^10.9.2",
-		"typescript": "^5.8.3"
+		"typescript": "^5.9.2"
 	},
-	"packageManager": "yarn@4.9.2"
+	"packageManager": "yarn@4.9.3"
 }

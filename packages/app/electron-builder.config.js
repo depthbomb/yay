@@ -56,9 +56,7 @@ const config = {
 	],
 	win: {
 		icon: '../../static/icon.ico',
-		signtoolOptions: {
-			publisherName: author
-		},
+		verifyUpdateCodeSignature: false
 	},
 	electronFuses: {
 		runAsNode: !isProduction,

@@ -1,3 +1,7 @@
+# 1.20.3
+
+- Upgraded to [Electron 37.3.1](https://releases.electronjs.org/release/v37.3.1)
+
 # 1.20.2
 
 - Upgraded to [Electron 37.1.0](https://releases.electronjs.org/release/v37.1.0)
