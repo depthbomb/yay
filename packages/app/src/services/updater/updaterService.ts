@@ -166,7 +166,7 @@ export class UpdaterService implements IBootstrappable {
 
 		this.logger.info('Spawning setup process', { setupPath: tempPath });
 
-		const proc = spawn(tempPath, ['/update=yes'], { detached: true, shell: false });
+		const proc = spawn(tempPath, ['/UPDATE', '/SILENT'], { detached: true, shell: false });
 
 		proc.once('spawn', () => app.exit(0));
 		proc.unref();

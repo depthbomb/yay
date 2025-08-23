@@ -1,4 +1,3 @@
-import { join } from 'node:path';
 import { createPackage } from '@electron/asar';
 
 const directories = [

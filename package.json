@@ -9,7 +9,8 @@
 		"build:p": "yarn clean-dist && cross-env ENV=PRODUCTION yarn workspaces foreach -Apti run build:p",
 		"clean-dist": "ts-node scripts/clean-dist.ts",
 		"create-asars": "ts-node scripts/create-asars.ts",
-		"create-installer": "ts-node scripts/create-installer.ts"
+		"create-installer": "yarn create-online-files-archive && ts-node scripts/create-installer.ts",
+		"create-online-files-archive": "ts-node scripts/create-online-files-archive.ts"
 	},
 	"repository": {
 		"type": "git",

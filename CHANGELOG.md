@@ -1,5 +1,8 @@
-# 1.20.3
+# 1.21.0
 
+- Improved app updating
+  - The setup executable now uses Inno Setup's new file download system, resulting in a very small executable
+  - The setup, when ran via updating, now requires no user interaction (silent mode)
 - Upgraded to [Electron 37.3.1](https://releases.electronjs.org/release/v37.3.1)
 
 # 1.20.2
