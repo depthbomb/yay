@@ -104,7 +104,7 @@ export class BinaryDownloader {
 			return;
 		}
 
-		const asset = release.assets.find(a => a.name === 'ffmpeg-master-latest-win64-gpl.zip');
+		const asset = release.assets.find(a => a.name.includes('win64-gpl.zip'));
 		if (!asset) {
 			this.logger.error('Could not find appropriate asset from yt-dlp/FFmpeg-Builds release');
 			return;
