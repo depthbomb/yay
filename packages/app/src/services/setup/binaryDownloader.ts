@@ -41,7 +41,7 @@ export class BinaryDownloader {
 	) {
 		const url = await this.resolveFfmpegDownloadUrl();
 		if (!url) {
-			return;
+			throw new Error('Could not resolve FFmpeg release download URL');
 		}
 
 		const res = await this.httpClient.get(url, { signal });
@@ -100,11 +100,16 @@ export class BinaryDownloader {
 	private async resolveFfmpegDownloadUrl() {
 		const release = await this.github.getLatestRepositoryRelease('yt-dlp', 'FFmpeg-Builds');
 		if (!release) {
+			this.logger.error('Could not retrieve latest release for yt-dlp/FFmpeg-Builds');
 			return;
 		}
 
 		const asset = release.assets.find(a => a.name === 'ffmpeg-master-latest-win64-gpl.zip');
+		if (!asset) {
+			this.logger.error('Could not find appropriate asset from yt-dlp/FFmpeg-Builds release');
+			return;
+		}
 
-		return asset?.browser_download_url;
+		return asset.browser_download_url;
 	}
 }

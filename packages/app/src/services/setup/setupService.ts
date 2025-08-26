@@ -1,8 +1,8 @@
-import { app, dialog } from 'electron';
 import { spawn } from 'node:child_process';
 import { PRELOAD_PATH } from '~/constants';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
+import { app, shell, dialog } from 'electron';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
@@ -69,6 +69,8 @@ export class SetupService implements IBootstrappable {
 		const ffmpegPath  = getExtraFilePath('ffmpeg.exe');
 		const ffprobePath = getExtraFilePath('ffprobe.exe');
 
+		const mainWindow = this.window.getMainWindow()!;
+
 		const setupWindow = this.window.createWindow('setup', {
 			url: this.window.resolveRendererHTML('setup.html'),
 			browserWindowOptions: {
@@ -108,7 +110,6 @@ export class SetupService implements IBootstrappable {
 						setupWindow.show();
 					}
 
-					const mainWindow          = this.window.getMainWindow()!;
 					const missingDependencies = [];
 
 					if (!hasYtdlp) missingDependencies.push('yt-dlp');
@@ -145,19 +146,39 @@ export class SetupService implements IBootstrappable {
 				if (!hasFfmpeg) {
 					this.window.emit('setup', IpcChannel.Setup_Step, 'Starting FFmpeg download...');
 
-					await this.downloader.downloadFfmpegBinary(
-						ffmpegPath,
-						this.abort.signal,
-						progress => {
-							this.window.emit('setup', IpcChannel.Setup_Step, `Downloading FFmpeg... (${progress}%)`);
-							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
-						},
-						() => {
-							this.window.emit('setup', IpcChannel.Setup_Step, 'Extracting FFmpeg...');
-							setupWindow.setProgressBar(1, { mode: 'indeterminate' });
-						},
-						() => this.window.emit('setup', IpcChannel.Setup_Step, 'Cleaning up...')
-					);
+					try {
+						await this.downloader.downloadFfmpegBinary(
+							ffmpegPath,
+							this.abort.signal,
+							progress => {
+								this.window.emit('setup', IpcChannel.Setup_Step, `Downloading FFmpeg... (${progress}%)`);
+								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
+							},
+							() => {
+								this.window.emit('setup', IpcChannel.Setup_Step, 'Extracting FFmpeg...');
+								setupWindow.setProgressBar(1, { mode: 'indeterminate' });
+							},
+							() => this.window.emit('setup', IpcChannel.Setup_Step, 'Cleaning up...')
+						);
+					} catch (err) {
+						const res = await dialog.showMessageBox(mainWindow, {
+							type: 'error',
+							message: `There was an issue downloading the latest release of FFmpeg.\nYou can try to manually download the latest release and extract the files into the same folder as yay.exe\n\nWould you like to continue?`,
+							buttons: ['Yes', 'No'],
+							checkboxLabel: 'Open latest release page?',
+							checkboxChecked: false,
+							defaultId: 0
+						});
+
+						if (res.checkboxChecked) {
+							await shell.openExternal('https://github.com/yt-dlp/FFmpeg-Builds/releases/latest')
+						}
+
+						if (res.response !== 0) {
+							app.exit(0);
+							return;
+						}
+					}
 				}
 
 				checkFinished = true;
