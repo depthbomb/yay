@@ -1,3 +1,8 @@
+# 1.21.1
+
+- You are now alerted during the setup process when something fails to download instead of silently failing
+- Fixed FFmpeg not being downloaded
+
 # 1.21.0
 
 - Improved app updating
