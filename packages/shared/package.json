@@ -12,7 +12,7 @@
 		"build:p": "tsup"
 	},
 	"devDependencies": {
-		"@swc/core": "1.13.4",
+		"@swc/core": "1.13.5",
 		"electron": "37.3.1",
 		"tslib": "^2.8.1",
 		"tsup": "^8.5.0",
