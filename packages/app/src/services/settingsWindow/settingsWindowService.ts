@@ -49,7 +49,10 @@ export class SettingsWindowService implements IBootstrappable {
 						devTools: import.meta.env.DEV,
 						preload: PRELOAD_PATH,
 					}
-				}
+				},
+				onReadyToShow: () => {
+					this.settingsWindow!.show();
+				},
 			});
 
 			this.settingsWindow.on('close', e => {
@@ -62,7 +65,6 @@ export class SettingsWindowService implements IBootstrappable {
 			this.settingsWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 
 			this.settingsWindow.center();
-			this.settingsWindow.show();
 		}
 	}
 }
