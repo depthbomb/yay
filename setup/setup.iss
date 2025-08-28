@@ -37,7 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "https://github.com/depthbomb/yay/releases/latest/download/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: 76000000; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
+Source: "https://github.com/depthbomb/yay/releases/latest/download/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: 280000000; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; AppUserModelID: "{#AppUserModelId}"; AppUserModelToastActivatorCLSID: "{#AppUserModelToastActivatorClsid}"
