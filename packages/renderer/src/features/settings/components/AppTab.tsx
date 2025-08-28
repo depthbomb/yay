@@ -31,7 +31,7 @@ export const AppTab = () => {
 	useEffect(() => {
 		const interval = setInterval(() => {
 			const now = new Date();
-			setCanCheckUpdates(lastUpdateCheck <= new Date(now.getTime() - 180 * 1_000));
+			setCanCheckUpdates(lastUpdateCheck <= new Date(now.getTime() - 15 * 1_000));
 		}, 1_000);
 
 		return () => clearInterval(interval);

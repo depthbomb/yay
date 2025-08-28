@@ -10,6 +10,7 @@ export class OnlineChecker {
 
 	public async checkIfOnline() {
 		this.logger.info('Checking online status');
+
 		const tasks = [
 			this.checkIfOnlineViaNetModule(),
 			this.checkIfOnlineViaProbe(),
