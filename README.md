@@ -23,3 +23,18 @@ Upon first run, yay will automatically download the latest version of yt-dlp if 
 ![The main window of yay showing the download buttons enabled](art/ss2.png "The main window of yay showing the download buttons enabled")
 ![The main window of yay showing a download in progress](art/ss3.png "The main window of yay showing a download in progress")
 ![The main window of yay showing a completed download](art/ss4.png "The main window of yay showing a completed download")
+
+## Development
+
+The Vite configs for the _app_ and _renderer_ both require the _shared_ package to be built. Run `yarn build` at least once before any further development commands.
+
+Run the renderer in watch mode with `yarn watch` and the application in development mode with `yarn dev`.
+
+## Distribution
+
+The following needs to be installed on your system and added to the PATH:
+
+- [Inno Setup >= 6.5](https://jrsoftware.org/isinfo.php)
+- [7-Zip](https://www.7-zip.org/)
+
+Run `yarn package` to build compile the application and `yarn create-installer` to create both the online files archive and the setup binary.
