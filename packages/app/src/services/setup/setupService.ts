@@ -266,7 +266,7 @@ export class SetupService implements IBootstrappable {
 
 	private async checkIfOnline() {
 		const isOnline = await this.onlineChecker.checkIfOnline();
-		if (!isOnline) {
+		if (isOnline) {
 			return;
 		}
 

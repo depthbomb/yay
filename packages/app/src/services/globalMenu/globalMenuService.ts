@@ -74,7 +74,9 @@ export class GlobalMenuService implements IBootstrappable {
 	}
 
 	public setMenu() {
-		this.menu = Menu.buildFromTemplate(this.createMenu());
+		this.menu = Menu.buildFromTemplate(
+			this.createMenu()
+		);
 	}
 
 	private async tryDownloadFromClipboard(downloadAudio: boolean = false) {

@@ -54,16 +54,13 @@ export class SettingsWindowService implements IBootstrappable {
 					this.settingsWindow!.show();
 				},
 			});
-
 			this.settingsWindow.on('close', e => {
 				if (!this.lifecycle.shutdownRequested) {
 					e.preventDefault();
 					this.settingsWindow!.hide();
 				}
 			});
-
 			this.settingsWindow.webContents.setWindowOpenHandler(windowOpenHandler);
-
 			this.settingsWindow.center();
 		}
 	}

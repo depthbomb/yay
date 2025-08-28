@@ -92,8 +92,8 @@ export class UpdaterService implements IBootstrappable {
 				this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
 				/**
-				 * If this is the first time checking for updates (immediately after setup) then show
-				 * the updater window.
+				 * If this is the first time checking for updates (immediately after setup) then
+				 * show the updater window.
 				 */
 				if (this.isStartupCheck) {
 					// So we don't show a notification the next time we check

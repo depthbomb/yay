@@ -4,7 +4,9 @@ import { inject, injectable } from '@needle-di/core';
 
 @injectable()
 export class OnlineChecker {
-	public constructor(private readonly logger = inject(LoggingService)) {}
+	public constructor(
+		private readonly logger = inject(LoggingService)
+	) {}
 
 	public async checkIfOnline() {
 		this.logger.info('Checking online status');
