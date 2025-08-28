@@ -8,13 +8,14 @@ spawn('7z.exe',
 		'a',
 		'-t7z',
 		onlineFilesPath,
-		`*`,
+		'*',
 		'-mx=9',
 		'-m0=lzma2',
 		'-md=128m',
 		'-mfb=64',
 		'-ms=on',
-		'-mmt=on'
+		'-mmt=on',
+		'-x!*.html'
 	], {
 		cwd: releaseFilesDir
 	}
