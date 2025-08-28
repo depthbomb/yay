@@ -1,15 +1,12 @@
 import { useAtom } from 'jotai';
 import { useSetting } from '~/hooks';
 import { SettingsKey } from 'shared';
-import { useState, useEffect } from 'react';
 import { Switch } from '~/components/Switch';
 import { Button } from '~/components/Button';
-import { updateAvailableAtom, lastUpdateCheckAtom } from '~/atoms/app';
+import { updateAvailableAtom } from '~/atoms/app';
 
 export const AppTab = () => {
-	const [canCheckUpdates, setCanCheckUpdates]                     = useState(false);
 	const [updateAvailable]                                         = useAtom(updateAvailableAtom);
-	const [lastUpdateCheck, setLastUpdateCheck]                     = useAtom(lastUpdateCheckAtom);
 	const [hideSetupWindow, setHideSetupWindow]                     = useSetting<boolean>(SettingsKey.HideSetupWindow, { reactive: false });
 	const [enableUpdateNotifications, setEnableUpdateNotifications] = useSetting<boolean>(SettingsKey.EnableNewReleaseToast, { reactive: false });
 	const [autoStartEnabled, setAutoStartEnabled]                   = useSetting<boolean>(SettingsKey.AutoStart, { reactive: false });
@@ -23,19 +20,7 @@ export const AppTab = () => {
 				message: 'You are using the latest version of yay!'
 			});
 		}
-
-		setLastUpdateCheck(new Date());
-		setCanCheckUpdates(false);
 	};
-
-	useEffect(() => {
-		const interval = setInterval(() => {
-			const now = new Date();
-			setCanCheckUpdates(lastUpdateCheck <= new Date(now.getTime() - 15 * 1_000));
-		}, 1_000);
-
-		return () => clearInterval(interval);
-	}, [lastUpdateCheck]);
 
 	return (
 		<div className="flex flex-col items space-y-6">
@@ -52,7 +37,7 @@ export const AppTab = () => {
 				<Switch checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
 			</div>
 			<div className="space-x-2 flex items-center">
-				<Button variant="brand" onClick={checkForUpdates} disabled={!canCheckUpdates || updateAvailable}>Check for updates</Button>
+				<Button variant="brand" onClick={checkForUpdates} disabled={updateAvailable}>Check for updates</Button>
 				<Button variant="brand" onClick={() => window.api.openLogFile()}>Open log file</Button>
 				<Button variant="brand" onClick={() => window.api.openAppData()}>Open data folder</Button>
 			</div>
