@@ -3,6 +3,7 @@ import { PRELOAD_PATH } from '~/constants';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { app, shell, dialog } from 'electron';
+import { OnlineChecker } from './onlineChecker';
 import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
@@ -19,12 +20,13 @@ export class SetupService implements IBootstrappable {
 	private readonly abort = new AbortController();
 
 	public constructor(
-		private readonly logger     = inject(LoggingService),
-		private readonly cli        = inject(CliService),
-		private readonly ipc        = inject(IpcService),
-		private readonly window     = inject(WindowService),
-		private readonly settings   = inject(SettingsService),
-		private readonly downloader = inject(BinaryDownloader),
+		private readonly logger        = inject(LoggingService),
+		private readonly cli           = inject(CliService),
+		private readonly ipc           = inject(IpcService),
+		private readonly window        = inject(WindowService),
+		private readonly settings      = inject(SettingsService),
+		private readonly downloader    = inject(BinaryDownloader),
+		private readonly onlineChecker = inject(OnlineChecker),
 	) {
 		this.ipc.registerHandler(IpcChannel.Setup_Cancel, () => this.cancel());
 	}
@@ -42,6 +44,7 @@ export class SetupService implements IBootstrappable {
 		await this.setDefaultSettings();
 		await this.settings.migrateLegacySettings();
 		await this.settings.removeDeprecatedSettings();
+		await this.checkIfOnline();
 		await this.checkForBinaries();
 	}
 
@@ -259,5 +262,23 @@ export class SetupService implements IBootstrappable {
 				}
 			});
 		});
+	}
+
+	private async checkIfOnline() {
+		const isOnline = await this.onlineChecker.checkIfOnline();
+		if (!isOnline) {
+			return;
+		}
+
+		const mainWindow = this.window.getMainWindow()!;
+		const res = await dialog.showMessageBox(mainWindow, {
+			type: 'warning',
+			message: 'It appears that you have no internet connection.\nThis application cannot function without an internet connection.\n\nWould you still like to continue?',
+			buttons: ['Yes', 'No'],
+			defaultId: 0
+		});
+		if (res.response !== 0) {
+			app.exit(0);
+		}
 	}
 }

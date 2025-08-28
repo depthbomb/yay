@@ -1,3 +1,9 @@
+# 1.22.0
+
+- Fixed the settings window flashing when opening for the first time
+- Added an online check during startup
+- Upgraded to [Electron 37.4.0](https://releases.electronjs.org/release/v37.4.0)
+
 # 1.21.1
 
 - You are now alerted during the setup process when something fails to download instead of silently failing
