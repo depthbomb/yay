@@ -213,13 +213,18 @@ export class SetupService implements IBootstrappable {
 	private async hasYtdlpBinary(localPath: string): Promise<boolean> {
 		this.logger.info('Checking for yt-dlp binary');
 
+		const currentPath       = this.settings.get(SettingsKey.YtdlpPath);
 		const localBinaryExists = await fileExists(localPath);
 		if (localBinaryExists) {
 			this.logger.info('Found yt-dlp binary', { path: localPath });
+
+			if (currentPath !== localPath) {
+				await this.settings.set(SettingsKey.YtdlpPath, localPath);
+			}
+
 			return true;
 		}
 
-		const currentPath = this.settings.get(SettingsKey.YtdlpPath);
 		if (currentPath === 'yt-dlp') {
 			this.logger.info('Verifying yt-dlp binary in PATH');
 
