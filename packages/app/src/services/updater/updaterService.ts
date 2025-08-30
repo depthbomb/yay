@@ -188,6 +188,7 @@ export class UpdaterService implements IBootstrappable {
 		this.updaterWindow = this.window.createWindow('updater', {
 			url: this.window.resolveRendererHTML('updater.html'),
 			browserWindowOptions: {
+				show: false,
 				width: 800,
 				minWidth: 800,
 				height: 500,
@@ -200,6 +201,9 @@ export class UpdaterService implements IBootstrappable {
 					preload: PRELOAD_PATH,
 				}
 			},
+			onReadyToShow: () => {
+				this.updaterWindow!.show();
+			}
 		});
 
 		this.updaterWindow.webContents.setWindowOpenHandler(windowOpenHandler);
