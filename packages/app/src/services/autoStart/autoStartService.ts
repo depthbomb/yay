@@ -19,6 +19,7 @@ export class AutoStartService implements IBootstrappable {
 		if (this.cli.flags.uninstall) {
 			this.setAutoStart(false);
 			app.exit(0);
+			return;
 		}
 
 		this.ipc.registerHandler(IpcChannel.Autostart_Enable,  () => this.setAutoStart(true));
