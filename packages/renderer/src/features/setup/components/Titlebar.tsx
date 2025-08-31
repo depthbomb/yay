@@ -1,5 +1,8 @@
+import clsx from 'clsx';
+import { useState } from 'react';
 import logo from '~/assets/img/logo.svg';
 import { TitlebarButton } from './TitlebarButton';
+import { useWindowFocus } from '~/hooks/useWindowFocus';
 import type { FC } from 'react';
 
 type TitlebarProps = {
@@ -8,6 +11,13 @@ type TitlebarProps = {
 };
 
 export const Titlebar: FC<TitlebarProps> = ({ title, showIcon = true }) => {
+	const [focused, setFocused] = useState(true);
+
+	useWindowFocus(
+		() => setFocused(true),
+		() => setFocused(false)
+	);
+
 	return (
 		<div className="absolute top-0 pt-[1px] pr-[1px] w-full h-8 flex items-center">
 			{showIcon && (
@@ -15,7 +25,7 @@ export const Titlebar: FC<TitlebarProps> = ({ title, showIcon = true }) => {
 					<img src={logo} className="size-4" width="16" height="16" draggable="false"/>
 				</div>
 			)}
-			{title && <p className="min-w-max h-8 leading-8 text-xs draggable">{title}</p>}
+			{title && <p className={clsx('min-w-max h-8 leading-8 text-xs draggable', focused ? 'text-white' : 'text-gray-300')}>{title}</p>}
 			<span className="size-full draggable"/>
 			<TitlebarButton onClick={() => window.api.minimizeWindow('setup')} type="minimize"/>
 			<TitlebarButton onClick={() => window.api.cancelSetup()} type="close"/>
