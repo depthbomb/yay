@@ -36,7 +36,7 @@ export class YtdlpService implements IBootstrappable {
 		private readonly thumbnail     = inject(ThumbnailService),
 		private readonly process       = inject(ProcessService)
 	) {
-		this.youtubeUrlPattern   = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+		this.youtubeUrlPattern = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
 	}
 
 	public get isBusy() {

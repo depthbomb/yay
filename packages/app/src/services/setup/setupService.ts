@@ -11,13 +11,12 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
 import { fileExists, getExtraFilePath } from '~/utils';
+import { CancellationTokenSource, OperationCancelledError } from '~/common/cancellation';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class SetupService implements IBootstrappable {
-	private cancelled = false;
-
-	private readonly abort = new AbortController();
+	private readonly cts = new CancellationTokenSource();
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
@@ -36,8 +35,8 @@ export class SetupService implements IBootstrappable {
 	}
 
 	public cancel() {
-		this.cancelled = true;
-		this.abort.abort();
+		this.window.emit('setup', IpcChannel.Setup_Step, 'Cancelling...');
+		this.cts.cancel();
 	}
 
 	private async performSetupActions() {
@@ -68,6 +67,8 @@ export class SetupService implements IBootstrappable {
 	private async checkForBinaries() {
 		let checkFinished = false;
 
+		const token       = this.cts.token;
+		const signal      = token.toAbortSignal();
 		const ytdlpPath   = getExtraFilePath('yt-dlp.exe');
 		const ffmpegPath  = getExtraFilePath('ffmpeg.exe');
 		const ffprobePath = getExtraFilePath('ffprobe.exe');
@@ -106,7 +107,10 @@ export class SetupService implements IBootstrappable {
 
 				this.window.emit('setup', IpcChannel.Setup_Step, 'Checking for FFmpeg...');
 
-				const hasFfmpeg = await Promise.all([fileExists(ffmpegPath), fileExists(ffprobePath)]).then(r => r.every(Boolean));
+				const hasFfmpeg = await Promise.all([
+					fileExists(ffmpegPath),
+					fileExists(ffprobePath)
+				]).then(r => r.every(Boolean));
 
 				if (!hasYtdlp || !hasFfmpeg) {
 					if (hideSetupWindow) {
@@ -131,28 +135,46 @@ export class SetupService implements IBootstrappable {
 					}
 				}
 
-				if (!hasYtdlp) {
+				if (!hasYtdlp && !this.cts.isCancellationRequested) {
 					this.window.emit('setup', IpcChannel.Setup_Step, 'Starting yt-dlp download...');
 
-					await this.downloader.downloadYtdlpBinary(
-						ytdlpPath,
-						this.abort.signal,
-						progress => {
-							this.window.emit('setup', IpcChannel.Setup_Step, `Downloading yt-dlp... (${progress}%)`);
-							setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
-						}
-					);
+					try {
+						await this.downloader.downloadYtdlpBinary(
+							ytdlpPath,
+							signal,
+							progress => {
+								this.window.emit('setup', IpcChannel.Setup_Step, `Downloading yt-dlp... (${progress}%)`);
+								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
+							}
+						);
 
-					await this.settings.set(SettingsKey.YtdlpPath, ytdlpPath);
+						await this.settings.set(SettingsKey.YtdlpPath, ytdlpPath);
+					} catch (err) {
+						if (!(err instanceof OperationCancelledError)) {
+							const res = await dialog.showMessageBox(mainWindow, {
+								type: 'error',
+								message: `There was an issue downloading the latest release of yt-dlp.\nYou can try to manually download the latest release and place the file into the same folder as yay.exe\n\nWould you like to continue to the download?`,
+								buttons: ['Yes', 'No'],
+								defaultId: 0
+							});
+
+							if (res.response === 0) {
+								await shell.openExternal('https://github.com/yt-dlp/yt-dlp/releases/download/latest/yt-dlp.exe')
+							} else {
+								app.exit(0);
+								return;
+							}
+						}
+					}
 				}
 
-				if (!hasFfmpeg) {
+				if (!hasFfmpeg && !this.cts.isCancellationRequested) {
 					this.window.emit('setup', IpcChannel.Setup_Step, 'Starting FFmpeg download...');
 
 					try {
 						await this.downloader.downloadFfmpegBinary(
 							ffmpegPath,
-							this.abort.signal,
+							signal,
 							progress => {
 								this.window.emit('setup', IpcChannel.Setup_Step, `Downloading FFmpeg... (${progress}%)`);
 								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
@@ -164,30 +186,31 @@ export class SetupService implements IBootstrappable {
 							() => this.window.emit('setup', IpcChannel.Setup_Step, 'Cleaning up...')
 						);
 					} catch (err) {
-						const res = await dialog.showMessageBox(mainWindow, {
-							type: 'error',
-							message: `There was an issue downloading the latest release of FFmpeg.\nYou can try to manually download the latest release and extract the files into the same folder as yay.exe\n\nWould you like to continue?`,
-							buttons: ['Yes', 'No'],
-							checkboxLabel: 'Open latest release page?',
-							checkboxChecked: false,
-							defaultId: 0
-						});
+						if (!(err instanceof OperationCancelledError)) {
+							const res = await dialog.showMessageBox(mainWindow, {
+								type: 'error',
+								message: `There was an issue downloading the latest release of FFmpeg.\nYou can try to manually download the latest release and extract the files into the same folder as yay.exe\n\nWould you like to continue?`,
+								buttons: ['Yes', 'No'],
+								checkboxLabel: 'Open latest release page?',
+								checkboxChecked: false,
+								defaultId: 0
+							});
 
-						if (res.checkboxChecked) {
-							await shell.openExternal('https://github.com/yt-dlp/FFmpeg-Builds/releases/latest')
-						}
+							if (res.checkboxChecked) {
+								await shell.openExternal('https://github.com/yt-dlp/FFmpeg-Builds/releases/latest')
+							}
 
-						if (res.response !== 0) {
-							app.exit(0);
-							return;
+							if (res.response !== 0) {
+								app.exit(0);
+								return;
+							}
 						}
 					}
 				}
 
 				checkFinished = true;
 
-				if (this.cancelled) {
-					this.window.emit('setup', IpcChannel.Setup_Step, 'Cancelling...');
+				if (this.cts.isCancellationRequested) {
 					setupWindow.setProgressBar(1, { mode: 'error' });
 				} else {
 					this.window.emit('setup', IpcChannel.Setup_Step, 'Done!');
@@ -200,7 +223,7 @@ export class SetupService implements IBootstrappable {
 
 		return new Promise<void>((res) => {
 			const interval = setInterval(() => {
-				if (this.abort.signal.aborted) {
+				if (this.cts.isCancellationRequested) {
 					app.exit(0);
 					clearInterval(interval);
 				} else if (checkFinished) {

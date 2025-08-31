@@ -12,6 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { MarkdownService } from '~/services/markdown';
 import { LifecycleService } from '~/services/lifecycle';
+import { CancellationTokenSource } from '~/common/cancellation';
 import { product, GIT_HASH, IpcChannel, SettingsKey } from 'shared';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -30,8 +31,7 @@ export class UpdaterService implements IBootstrappable {
 	public commits: Nullable<Commits>        = null;
 	public latestChangelog: Nullable<string> = null;
 
-	private abort          = new AbortController();
-	private aborted        = false;
+	private cts            = new CancellationTokenSource();
 	private isStartupCheck = true;
 	private isNotified     = false;
 	private checkInterval: Maybe<NodeJS.Timeout>;
@@ -138,10 +138,10 @@ export class UpdaterService implements IBootstrappable {
 			return;
 		}
 
-		this.abort   = new AbortController();
-		this.aborted = false;
+		this.cts = new CancellationTokenSource();
 
-		const { signal }  = this.abort;
+		const token       = this.cts.token;
+		const signal      = token.toAbortSignal();
 		const downloadUrl = this.latestRelease.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
 
 		this.logger.info('Downloading latest release', { downloadUrl });
@@ -158,7 +158,7 @@ export class UpdaterService implements IBootstrappable {
 		const tempPath = join(app.getPath('temp'), 'yay-setup.exe');
 		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
 
-		if (this.aborted) {
+		if (this.cts.isCancellationRequested) {
 			return;
 		}
 
@@ -173,8 +173,7 @@ export class UpdaterService implements IBootstrappable {
 	}
 
 	public cancelUpdate() {
-		this.aborted = true;
-		this.abort.abort();
+		this.cts.cancel();
 	}
 
 	public showUpdaterWindow() {

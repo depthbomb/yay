@@ -6,7 +6,7 @@ import { useMemo, useState, useEffect, forwardRef } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
 import logo from '~/assets/img/logo.svg';
-import bkLogo from '~/assets/img/seasonal-logos/bk.png';
+import skele from '~/assets/img/seasonal-logos/skeleton.gif';
 
 type SeasonalLogoProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>;
 
@@ -16,10 +16,17 @@ const seasonalLogos = [
 	{
 		condition: (date: Date) => date.getMonth() === 5,
 		options: [
-			{ probability: 25, src: bkLogo, className: baseCss },
-			{ probability: 75, src: logo, className: `${baseCss} animate-hue-rotate` }
+			// { probability: 25, src: bkLogo, className: baseCss },
+			{ probability: 100, src: logo, className: `${baseCss} animate-hue-rotate` }
 		]
 	},
+	{
+		condition: (date: Date) => date.getMonth() === 9 && date.getDay() === 31,
+		options: [
+			// { probability: 25, src: bkLogo, className: baseCss },
+			{ probability: 100, src: skele, className: baseCss }
+		]
+	}
 ];
 
 export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
@@ -63,7 +70,7 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 			) : (
 				<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
 			)}
-			<span className="font-light">Yet Another YouTube Downloader</span>
+			<span className="font-light text-sm">Yet Another YouTube Downloader</span>
 		</div>
 	)
 });

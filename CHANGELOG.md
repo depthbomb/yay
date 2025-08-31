@@ -1,3 +1,8 @@
+# 1.22.1
+
+- Slightly adjusted the styling of the setup window
+- Further improved error handling during the setup process
+
 # 1.22.0
 
 - Fixed the settings window flashing when opening for the first time
