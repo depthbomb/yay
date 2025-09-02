@@ -1,11 +1,11 @@
 import { app } from 'electron';
 import { USER_AGENT } from '~/constants';
-import { unlink } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
 import { getExtraFilePath } from '~/utils';
 import { HttpService } from '~/services/http';
 import { GithubService } from '~/services/github';
+import { unlink, rename } from 'node:fs/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { HttpClient } from '~/services/http';
@@ -29,7 +29,15 @@ export class BinaryDownloader {
 		}
 
 		const res = await this.httpClient.get(url, { signal });
-		await this.httpClient.downloadWithProgress(res, path, { signal, onProgress });
+		if (!res.ok) {
+			return;
+		}
+
+		const tempPath = join(app.getPath('temp'), '_yt-dlp.exe');
+
+		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
+
+		await rename(tempPath, path);
 	}
 
 	public async downloadFfmpegBinary(
