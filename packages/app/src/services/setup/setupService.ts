@@ -16,6 +16,7 @@ import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class SetupService implements IBootstrappable {
+	private finished = false;
 	private readonly cts = new CancellationTokenSource();
 
 	public constructor(
@@ -65,8 +66,6 @@ export class SetupService implements IBootstrappable {
 	}
 
 	private async checkForBinaries() {
-		let checkFinished = false;
-
 		const token       = this.cts.token;
 		const signal      = token.toAbortSignal();
 		const ytdlpPath   = getExtraFilePath('yt-dlp.exe');
@@ -208,7 +207,7 @@ export class SetupService implements IBootstrappable {
 					}
 				}
 
-				checkFinished = true;
+				this.finished = true;
 
 				if (this.cts.isCancellationRequested) {
 					setupWindow.setProgressBar(1, { mode: 'error' });
@@ -219,14 +218,18 @@ export class SetupService implements IBootstrappable {
 			}
 		});
 
-		setupWindow.once('close', () => this.cancel());
+		setupWindow.once('close', () => {
+			if (!this.finished) {
+				this.cancel();
+			}
+		});
 
 		return new Promise<void>((res) => {
 			const interval = setInterval(() => {
 				if (this.cts.isCancellationRequested) {
 					app.exit(0);
 					clearInterval(interval);
-				} else if (checkFinished) {
+				} else if (this.finished) {
 					setupWindow.closable = true;
 					setupWindow.close();
 					clearInterval(interval);
