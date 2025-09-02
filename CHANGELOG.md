@@ -1,3 +1,8 @@
+# 1.22.2
+
+- Fixed the setup window saying _Cancelling..._ when it finishes successfully
+- The yt-dlp binary is now downloaded to `%TEMP%` before being moved to its destination
+
 # 1.22.1
 
 - Slightly adjusted the styling of the setup window
