@@ -20,7 +20,6 @@ jobs:
       - name: Install node-gyp dependencies
         run: |
           npm install -g node-gyp
-          npm install -g windows-build-tools
 
       - name: Install dependencies
         run: yarn install
