@@ -26,8 +26,6 @@ Upon first run, yay will automatically download the latest version of yt-dlp if 
 
 ## Development
 
-Node.js >= 22.19.0 is required due to stripping types by default, eliminating the need for `ts-node` to run development scripts.
-
 The Vite configs for the _app_ and _renderer_ both require the _shared_ package to be built. Run `yarn build` at least once before any further development commands.
 
 Run the renderer in watch mode with `yarn watch` and the application in development mode with `yarn dev`.

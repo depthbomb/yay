@@ -8,10 +8,10 @@
 		"build": "yarn create-asars && yarn workspaces foreach -Apti run build:d",
 		"package": "yarn create-asars && cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:dist",
 		"build:p": "yarn clean-dist && cross-env ENV=PRODUCTION yarn workspaces foreach -Apti run build:p",
-		"clean-dist": "node scripts/clean-dist.ts",
-		"create-asars": "node scripts/create-asars.ts",
-		"create-installer": "yarn create-online-files-archive && node scripts/create-installer.ts",
-		"create-online-files-archive": "node scripts/create-online-files-archive.ts"
+		"clean-dist": "ts-node scripts/clean-dist.ts",
+		"create-asars": "ts-node scripts/create-asars.ts",
+		"create-installer": "yarn create-online-files-archive && ts-node scripts/create-installer.ts",
+		"create-online-files-archive": "ts-node scripts/create-online-files-archive.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -33,6 +33,7 @@
 		"cross-env": "^10.0.0",
 		"electron-builder": "26.0.16",
 		"node-gyp": "^11.4.2",
+		"ts-node-maintained": "^10.9.6",
 		"typescript": "^5.9.2"
 	},
 	"packageManager": "yarn@4.9.4"
