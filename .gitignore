@@ -13,6 +13,7 @@ node_modules/
 !.yarn/sdks
 !.yarn/versions
 
+.env
 .env.*
 
 static/extra/*.asar

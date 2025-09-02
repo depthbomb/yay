@@ -10,7 +10,8 @@
 		"clean-dist": "ts-node scripts/clean-dist.ts",
 		"create-asars": "ts-node scripts/create-asars.ts",
 		"create-installer": "yarn create-online-files-archive && ts-node scripts/create-installer.ts",
-		"create-online-files-archive": "ts-node scripts/create-online-files-archive.ts"
+		"create-online-files-archive": "ts-node scripts/create-online-files-archive.ts",
+		"create-release": "ts-node scripts/create-release.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -27,9 +28,11 @@
 		"packages/nativelib"
 	],
 	"devDependencies": {
+		"@octokit/rest": "^22.0.0",
 		"@octokit/types": "^14.1.0",
 		"@types/node": "^22.18.0",
 		"cross-env": "^10.0.0",
+		"dotenv": "^17.2.1",
 		"electron-builder": "26.0.16",
 		"node-gyp": "^11.4.2",
 		"ts-node-maintained": "^10.9.6",
