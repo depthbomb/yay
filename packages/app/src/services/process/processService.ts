@@ -20,11 +20,11 @@ export class ProcessService {
 	) {
 		if (import.meta.env.DEV) {
 			this.native = require(
-				join(MONOREPO_ROOT_PATH, 'packages', 'windows-process-tree', 'build', 'Release', 'windows-process-tree.node')
+				join(MONOREPO_ROOT_PATH, 'packages', 'nativelib', 'build', 'Release', 'nativelib.node')
 			);
 		} else {
 			this.native = require(
-				getExtraResourcePath('native/windows-process-tree.node')
+				getExtraResourcePath('native/nativelib.node')
 			);
 		}
 	}

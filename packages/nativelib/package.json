@@ -1,7 +1,7 @@
 {
 	"private": true,
 	"gypfile": true,
-	"name": "windows-process-tree",
+	"name": "nativelib",
 	"scripts": {
 		"build:d": "node-gyp build",
 		"build:p": "node-gyp build"

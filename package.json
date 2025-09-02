@@ -25,7 +25,7 @@
 		"packages/app",
 		"packages/renderer",
 		"packages/shared",
-		"packages/windows-process-tree"
+		"packages/nativelib"
 	],
 	"devDependencies": {
 		"@octokit/types": "^14.1.0",

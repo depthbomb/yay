@@ -50,9 +50,9 @@ const config = {
 		{ from: '../../static/extra/licenses/ffmpeg.txt', to: 'licenses/ffmpeg.txt' },
 	],
 	extraResources: [
-		{ from: '../../static/extra/notifications.asar',                           to: 'notifications.asar' },
-		{ from: '../../static/extra/tray.asar',                                    to: 'tray.asar' },
-		{ from: '../windows-process-tree/build/Release/windows-process-tree.node', to: 'native/windows-process-tree.node' },
+		{ from: '../../static/extra/notifications.asar',     to: 'notifications.asar' },
+		{ from: '../../static/extra/tray.asar',              to: 'tray.asar' },
+		{ from: '../nativelib/build/Release/nativelib.node', to: 'native/nativelib.node' },
 	],
 	win: {
 		icon: '../../static/icon.ico',

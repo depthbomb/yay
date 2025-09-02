@@ -6410,6 +6410,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nativelib@workspace:packages/nativelib":
+  version: 0.0.0-use.local
+  resolution: "nativelib@workspace:packages/nativelib"
+  dependencies:
+    node-addon-api: "npm:^8.5.0"
+  languageName: unknown
+  linkType: soft
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -7131,7 +7139,7 @@ __metadata:
     terser: "npm:^5.43.1"
     typescript: "npm:^5.9.2"
     typescript-eslint: "npm:^8.41.0"
-    vite: "npm:^7.1.3"
+    vite: "npm:^7.1.4"
   languageName: unknown
   linkType: soft
 
@@ -8520,9 +8528,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "vite@npm:7.1.3"
+"vite@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "vite@npm:7.1.4"
   dependencies:
     esbuild: "npm:^0.25.0"
     fdir: "npm:^6.5.0"
@@ -8571,7 +8579,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/792cba6d5090cc6713a1f72ee43578902df0e231db0b4d313589ec380919d3612a01903615e183ebca6a903f83ee4fbfceb3d07a5443d5698d5d992dbc60a995
+  checksum: 10/40c6292227e8177470b9f1014fabe2fa324222d6bdc06eb994f7aa6872a56790cd1e45a2f7017a381413eb2fde48fde0f2f58933a045936ca6af2061862bf338
   languageName: node
   linkType: hard
 
@@ -8623,14 +8631,6 @@ __metadata:
   checksum: 10/6ec99e89ba32c7e748b8a3144e64bfc74aa63e2b2eacbb61a0060ad0b961eb1a632b08fb1de067ed59b002cec3e21de18299216ebf2325ef0f78e0f121e14e90
   languageName: node
   linkType: hard
-
-"windows-process-tree@workspace:packages/windows-process-tree":
-  version: 0.0.0-use.local
-  resolution: "windows-process-tree@workspace:packages/windows-process-tree"
-  dependencies:
-    node-addon-api: "npm:^8.5.0"
-  languageName: unknown
-  linkType: soft
 
 "winston-transport@npm:^4.9.0":
   version: 4.9.0
@@ -8797,7 +8797,7 @@ __metadata:
     type-flag: "npm:^3.0.0"
     typescript: "npm:^5.9.2"
     ufo: "npm:^1.6.1"
-    vite: "npm:^7.1.3"
+    vite: "npm:^7.1.4"
     winston: "npm:^3.17.0"
   languageName: unknown
   linkType: soft
