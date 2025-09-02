@@ -1,7 +1,6 @@
 {
 	"private": true,
 	"name": "yay-root",
-	"type": "module",
 	"scripts": {
 		"dev": "yarn workspace yay run dev",
 		"watch": "yarn workspace renderer run watch",
