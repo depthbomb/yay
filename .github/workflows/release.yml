@@ -20,6 +20,11 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Configure native module
+        run: |
+          cd packages/nativelib
+          node-gyp configure
+
       - name: Build and package
         run: yarn package && yarn create-installer
 
