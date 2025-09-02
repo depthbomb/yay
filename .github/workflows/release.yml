@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install node-gyp dependencies
+        run: |
+          npm install -g node-gyp
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Configure native module
+        run: |
+          cd packages/nativelib
+          node-gyp configure
+
+      - name: Build and package
+        run: yarn package && yarn create-installer
+
+      - name: Extract changelog for release body
+        id: changelog
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          awk "/^# $VERSION/{flag=1;next}/^# /{flag=0}flag" CHANGELOG.md > release_body.md
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref_name }}
+          body_path: release_body.md
+          draft: false
+          prerelease: false
+
+      - name: Upload setup exe
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/release/yay-setup.exe
+          asset_name: yay-setup.exe
+          asset_content_type: application/octet-stream
+
+      - name: Upload online files archive
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/release/yay-online-files.7z
+          asset_name: yay-online-files.7z
+          asset_content_type: application/x-7z-compressed
