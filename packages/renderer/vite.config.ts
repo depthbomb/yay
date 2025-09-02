@@ -4,6 +4,7 @@ import { defineConfig } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { URL, fileURLToPath } from 'node:url';
+import { ViteMinifyPlugin } from 'vite-plugin-minify';
 import type { UserConfigExport } from 'vite';
 
 export default defineConfig(({ mode }) => {
@@ -39,7 +40,8 @@ export default defineConfig(({ mode }) => {
 		},
 		plugins: [
 			react(),
-			tailwindcss()
+			tailwindcss(),
+			ViteMinifyPlugin()
 		],
 		resolve: {
 			alias: {
