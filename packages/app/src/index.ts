@@ -1,9 +1,7 @@
 import { App } from './app';
 import { dialog } from 'electron';
 
-const app = new App();
-
-app.start().catch((err) => {
+new App().start().catch((err) => {
 	console.error('Unhandled exception during app startup', err);
 
 	dialog.showErrorBox(

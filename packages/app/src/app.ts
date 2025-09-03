@@ -5,6 +5,7 @@ import { app, Menu, shell } from 'electron';
 import { Container } from '@needle-di/core';
 import { product, SettingsKey } from 'shared';
 import { MainService } from '~/services/main';
+import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, unlink, readFile } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
@@ -18,13 +19,28 @@ export class App {
 
 		app.setPath('userData', join(app.getPath('appData'), product.author, product.dirName));
 		app.commandLine.appendSwitch('disable-features', 'UseEcoQoSForBackgroundProcess');
+
+		{
+			// Because the settings service is instantiated after the app's `ready` event, we need to
+			// load a subset of the config file to do things such as appending command line switches.
+			const configFilePath   = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
+			const configFileExists = existsSync(configFilePath);
+			if (configFileExists) {
+				const toml   = readFileSync(configFilePath, 'utf8');
+				const config = parse(toml);
+				if (SettingsKey.DisableHardwareAcceleration in config && config[SettingsKey.DisableHardwareAcceleration]) {
+					app.disableHardwareAcceleration();
+					app.commandLine.appendSwitch('--disable-software-rasterizer');
+					app.commandLine.appendSwitch('--disable-gpu');
+				}
+			}
+		}
 	}
 
 	public async start() {
 		Menu.setApplicationMenu(null);
 
 		await app.whenReady();
-		await this.applyEarlySettings();
 
 		if (__WIN32__) {
 			app.setAppUserModelId(product.appUserModelId);
@@ -39,23 +55,6 @@ export class App {
 
 	public stop() {
 		app.quit();
-	}
-
-	private async applyEarlySettings() {
-		// Because the settings service is instantiated after the app's `ready` event, we need to
-		// load a subset of the config file to do things such as appending command line switches.
-
-		const configFilePath = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
-		const confFileExists = await fileExists(configFilePath);
-		if (confFileExists) {
-			const toml   = await readFile(configFilePath, 'utf8');
-			const config = parse(toml);
-			if (SettingsKey.DisableHardwareAcceleration in config && config[SettingsKey.DisableHardwareAcceleration] === false) {
-				app.disableHardwareAcceleration();
-				app.commandLine.appendSwitch('--disable-software-rasterizer');
-				app.commandLine.appendSwitch('--disable-gpu');
-			}
-		}
 	}
 
 	private async createDevelopmentShortcut() {
