@@ -23,8 +23,8 @@ export class App {
 	public async start() {
 		Menu.setApplicationMenu(null);
 
-		await this.applyEarlySettings();
 		await app.whenReady();
+		await this.applyEarlySettings();
 
 		if (__WIN32__) {
 			app.setAppUserModelId(product.appUserModelId);
