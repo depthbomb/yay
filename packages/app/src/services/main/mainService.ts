@@ -47,7 +47,7 @@ export class MainService {
 
 		this.logger.info('Bootstrapping services');
 
-		await Promise.allSettled([
+		await Promise.all([
 			this.lifecycle.bootstrap(),
 			this.settings.bootstrap(),
 			this.featureFlags.bootstrap(),

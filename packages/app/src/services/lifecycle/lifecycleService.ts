@@ -72,7 +72,6 @@ export class LifecycleService implements IBootstrappable {
 
 			this.logger.info('Shutdown initiated, allowing time for service shutdown routines');
 
-			// Allow some time for services to perform their shutdown routine
 			timeout(1_500).finally(() => {
 				this.logger.info('Quitting');
 				app.quit();
