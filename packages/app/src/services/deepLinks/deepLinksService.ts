@@ -4,16 +4,14 @@ import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
-import { MainWindowService } from '~/services/mainWindow';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class DeepLinksService implements IBootstrappable {
 	public constructor(
-		private readonly logger     = inject(LoggingService),
-		private readonly updater    = inject(UpdaterService),
-		private readonly mainWindow = inject(MainWindowService),
-		private readonly ytdlp      = inject(YtdlpService),
+		private readonly logger  = inject(LoggingService),
+		private readonly updater = inject(UpdaterService),
+		private readonly ytdlp   = inject(YtdlpService),
 	) {}
 
 	public async bootstrap(): Promise<any> {
@@ -32,8 +30,7 @@ export class DeepLinksService implements IBootstrappable {
 	public async handleDeepLinks(args: string[] = []) {
 		const deepLink = args.find(a => a.startsWith(`${product.urlProtocol}://`));
 		if (!deepLink) {
-			this.logger.info('No deeplink found in second instance args, showing main window');
-			this.mainWindow.showMainWindow();
+			this.logger.info('No deeplink found');
 			return;
 		}
 
