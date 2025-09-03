@@ -6,6 +6,7 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
+import { MainWindowService } from '~/services/mainWindow';
 import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
 import { WindowPositionService } from '~/services/windowPosition';
 import { SettingsWindowService } from '~/services/settingsWindow';
@@ -15,7 +16,8 @@ import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class TrayService implements IBootstrappable {
-	private tray: Maybe<Tray>;
+	public tray: Maybe<Tray>;
+
 	private settingsIcon: string;
 	private showIcon: string;
 	private quitIcon: string;
@@ -29,6 +31,7 @@ export class TrayService implements IBootstrappable {
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
 		private readonly window         = inject(WindowService),
+		private readonly mainWindow     = inject(MainWindowService, { lazy: true }),
 		private readonly settingsWindow = inject(SettingsWindowService),
 		private readonly windowPosition = inject(WindowPositionService),
 		private readonly ytdlp          = inject(YtdlpService),
@@ -49,12 +52,7 @@ export class TrayService implements IBootstrappable {
 			this.tray = new Tray(this.trayIcon);
 			this.tray.setToolTip(this.trayTooltip);
 			this.tray.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
-			this.tray.on('click', () => {
-				const mainWindow = this.window.getMainWindow()!;
-				this.windowPosition.setWindowPositionAtTray(mainWindow, this.tray!);
-				mainWindow.show();
-				mainWindow.focus();
-			});
+			this.tray.on('click', () => this.mainWindow().showMainWindow());
 
 			this.ytdlp.events.on('downloadStarted', url => {
 				this.tray!.setImage(this.trayDownloadingIcon);

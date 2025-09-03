@@ -1,5 +1,6 @@
 import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
+import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
 import { unlink, copyFile } from 'fs/promises';
 import { YtdlpService } from '~/services/ytdlp';
@@ -9,6 +10,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
+import { WindowPositionService } from '~/services/windowPosition';
 import { fileExists, getExtraFilePath, windowOpenHandler } from '~/utils';
 import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
@@ -20,12 +22,14 @@ export class MainWindowService implements IBootstrappable {
 	private windowPinned = import.meta.env.DEV;
 
 	public constructor(
-		private readonly logger    = inject(LoggingService),
-		private readonly lifecycle = inject(LifecycleService),
-		private readonly ipc       = inject(IpcService),
-		private readonly settings  = inject(SettingsService),
-		private readonly window    = inject(WindowService),
-		private readonly ytdlp     = inject(YtdlpService),
+		private readonly logger         = inject(LoggingService),
+		private readonly lifecycle      = inject(LifecycleService),
+		private readonly ipc            = inject(IpcService),
+		private readonly settings       = inject(SettingsService),
+		private readonly window         = inject(WindowService),
+		private readonly windowPosition = inject(WindowPositionService),
+		private readonly tray           = inject(TrayService, { lazy: true }),
+		private readonly ytdlp          = inject(YtdlpService),
 	) {}
 
 	public async bootstrap(): Promise<void> {
@@ -161,5 +165,15 @@ export class MainWindowService implements IBootstrappable {
 				this.mainWindow.close();
 			}
 		});
+	}
+
+	public showMainWindow() {
+		const { tray }   = this.tray();
+		const mainWindow = this.mainWindow!;
+
+		this.windowPosition.setWindowPositionAtTray(mainWindow, tray!);
+
+		mainWindow.show();
+		mainWindow.focus();
 	}
 }
