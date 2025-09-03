@@ -34,11 +34,11 @@ const octokit     = new Octokit({ auth: token });
 
 	const { upload_url } = release.data;
 	for (const asset of [
-		{ path: setupExePath, name: 'yay-setup.exe', contentType: 'application/octet-stream' },
-		{ path: archivePath, name: 'yay-online-files.7z', contentType: 'application/x-7z-compressed' },
+		{ path: setupExePath, name: 'yay-setup.exe',       contentType: 'application/octet-stream' },
+		{ path: archivePath,  name: 'yay-online-files.7z', contentType: 'application/x-7z-compressed' },
 	]) {
 		const data = readFileSync(asset.path);
-		const url = upload_url.replace('{?name,label}', `?name=${encodeURIComponent(asset.name)}`);
+		const url  = upload_url.replace('{?name,label}', `?name=${encodeURIComponent(asset.name)}`);
 		await octokit.request({
 			method: 'POST',
 			url,

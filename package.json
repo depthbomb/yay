@@ -32,7 +32,7 @@
 		"@octokit/types": "^14.1.0",
 		"@types/node": "^22.18.0",
 		"cross-env": "^10.0.0",
-		"dotenv": "^17.2.1",
+		"dotenv": "^17.2.2",
 		"electron-builder": "26.0.16",
 		"node-gyp": "^11.4.2",
 		"ts-node-maintained": "^10.9.6",
