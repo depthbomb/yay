@@ -40,8 +40,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Source: "https://github.com/depthbomb/yay/releases/latest/download/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: 280000000; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
-Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; AppUserModelID: "{#AppUserModelId}"; AppUserModelToastActivatorCLSID: "{#AppUserModelToastActivatorClsid}"
-Name: "{autodesktop}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; Tasks: desktopicon
+Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; AppUserModelID: "{#AppUserModelId}"; AppUserModelToastActivatorCLSID: "{#AppUserModelToastActivatorClsid}"; Comment: "yay start menu shortcut"; Parameters: "--from-shortcut"
+Name: "{autodesktop}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; Tasks: desktopicon; Comment: "yay desktop shortcut"; Parameters: "--from-shortcut"
 
 [Run]
 Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringChange(NameLong, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

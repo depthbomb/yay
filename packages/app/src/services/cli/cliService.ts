@@ -12,6 +12,10 @@ export class CliService {
 				type: Boolean,
 				default: false
 			},
+			fromShortcut: {
+				type: Boolean,
+				default: false
+			},
 			uninstall: {
 				type: Boolean,
 				default: false

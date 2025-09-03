@@ -1,3 +1,8 @@
+# 1.22.3
+
+- Errors during startup are now properly handled instead of being ignored
+- Upgraded to [Electron 38.0.0](https://releases.electronjs.org/release/v38.0.0)
+
 # 1.22.2
 
 - Fixed the setup window saying _Cancelling..._ when it finishes successfully
