@@ -1,3 +1,8 @@
+# 1.23.0
+
+- Fixed the main window displaying in the center of the screen if opened via a second instance if it hasn't been displayed already
+- Deep links can now be handled when the app is not running
+
 # 1.22.3
 
 - Errors during startup are now properly handled instead of being ignored

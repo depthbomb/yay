@@ -1,5 +1,6 @@
 import { join } from 'node:path';
 import { IpcChannel } from 'shared';
+import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
@@ -22,6 +23,7 @@ import type { MessageBoxOptions, MenuItemConstructorOptions } from 'electron';
 @injectable()
 export class MainService {
 	public constructor(
+		private readonly cli            = inject(CliService),
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
 		private readonly ipc            = inject(IpcService),
@@ -115,5 +117,7 @@ export class MainService {
 		});
 
 		this.lifecycle.phase = LifecyclePhase.Ready;
+
+		await this.deepLinks.handleDeepLinks(this.cli.args._);
 	}
 }
