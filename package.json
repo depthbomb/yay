@@ -30,7 +30,7 @@
 	"devDependencies": {
 		"@octokit/rest": "^22.0.0",
 		"@octokit/types": "^14.1.0",
-		"@types/node": "^22.18.0",
+		"@types/node": "^22.18.1",
 		"cross-env": "^10.0.0",
 		"dotenv": "^17.2.2",
 		"electron-builder": "26.0.16",
