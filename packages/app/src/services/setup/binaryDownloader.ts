@@ -2,7 +2,7 @@ import { app } from 'electron';
 import { USER_AGENT } from '~/constants';
 import { join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
-import { getExtraFilePath } from '~/utils';
+import { getExtraFilePath } from '~/common';
 import { HttpService } from '~/services/http';
 import { GithubService } from '~/services/github';
 import { unlink, rename } from 'node:fs/promises';

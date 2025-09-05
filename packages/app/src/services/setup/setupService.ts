@@ -10,7 +10,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
-import { fileExists, getExtraFilePath } from '~/utils';
+import { fileExists, getExtraFilePath } from '~/common';
 import { CancellationTokenSource, OperationCancelledError } from '~/common/cancellation';
 import type { IBootstrappable } from '~/common/IBootstrappable';
 

@@ -1,6 +1,6 @@
 import { join } from 'node:path';
 import { parse } from 'smol-toml';
-import { fileExists } from './utils';
+import { fileExists } from './common';
 import { app, Menu, shell } from 'electron';
 import { Container } from '@needle-di/core';
 import { product, SettingsKey } from 'shared';

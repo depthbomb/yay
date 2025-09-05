@@ -1,5 +1,5 @@
 import { globalShortcut } from 'electron';
-import { getFilePathFromAsar } from '~/utils';
+import { getFilePathFromAsar } from '~/common';
 import { YtdlpService } from '~/services/ytdlp';
 import { Menu, shell, clipboard } from 'electron';
 import { LoggingService } from '~/services/logging';

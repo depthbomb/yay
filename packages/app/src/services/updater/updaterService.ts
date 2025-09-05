@@ -3,7 +3,6 @@ import { app } from 'electron';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
-import { windowOpenHandler } from '~/utils';
 import { HttpService } from '~/services/http';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
@@ -14,8 +13,8 @@ import { MarkdownService } from '~/services/markdown';
 import { LifecycleService } from '~/services/lifecycle';
 import { CancellationTokenSource } from '~/common/cancellation';
 import { product, GIT_HASH, IpcChannel, SettingsKey } from 'shared';
-import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH } from '~/constants';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
+import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
 import type { Maybe, Nullable } from 'shared';
 import type { Endpoints } from '@octokit/types';
@@ -186,6 +185,7 @@ export class UpdaterService implements IBootstrappable {
 
 		this.updaterWindow = this.window.createWindow('updater', {
 			url: this.window.resolveRendererHTML('updater.html'),
+			externalUrlRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
 				width: 800,
@@ -204,7 +204,5 @@ export class UpdaterService implements IBootstrappable {
 				this.updaterWindow!.show();
 			}
 		});
-
-		this.updaterWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 	}
 }

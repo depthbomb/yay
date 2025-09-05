@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import { join } from 'node:path';
 import { IpcChannel } from 'shared';
-import { fileExists } from '~/utils';
+import { fileExists } from '~/common';
 import { IpcService } from '~/services/ipc';
 import { parse, stringify } from 'smol-toml';
 import { inject, injectable } from '@needle-di/core';

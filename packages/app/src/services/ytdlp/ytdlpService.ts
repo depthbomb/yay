@@ -12,7 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { ThumbnailService } from '~/services/thumbnail';
-import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
+import { getExtraFilePath, getFilePathFromAsar } from '~/common';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import type { Nullable } from 'shared';
 import type { ChildProcess } from 'node:child_process';

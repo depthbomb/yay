@@ -1,7 +1,7 @@
 import mitt from 'mitt';
 import { app } from 'electron';
 import { join } from 'node:path';
-import { fileExists } from '~/utils';
+import { fileExists } from '~/common';
 import { safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';

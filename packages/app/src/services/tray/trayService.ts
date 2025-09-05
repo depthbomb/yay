@@ -7,7 +7,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import { MainWindowService } from '~/services/mainWindow';
-import { getExtraFilePath, getFilePathFromAsar } from '~/utils';
+import { getExtraFilePath, getFilePathFromAsar } from '~/common';
 import { WindowPositionService } from '~/services/windowPosition';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import type { Maybe } from 'shared';

@@ -1,9 +1,9 @@
 import mitt from 'mitt';
 import { join } from 'node:path';
 import { ROOT_PATH } from '~/constants';
-import { BrowserWindow } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { DEV_PORT, IpcChannel } from 'shared';
+import { shell, BrowserWindow } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { Awaitable } from 'shared';
@@ -19,6 +19,10 @@ type CreateWindowOptions = {
 	 * {@link BrowserWindowConstructorOptions}
 	 */
 	browserWindowOptions: BrowserWindowConstructorOptions;
+	/**
+	 * Rules to determine if a URL should be opened externally (in the user's default browser).
+	 */
+	externalUrlRules?: Array<(url: URL) => boolean>;
 	/**
 	 * The function to call when the window is ready to be shown.
 	 */
@@ -56,14 +60,24 @@ export class WindowService implements IBootstrappable {
 	}
 
 	public createWindow(name: string, options: CreateWindowOptions) {
-		const { url, browserWindowOptions, onReadyToShow } = options;
-
+		const { url, browserWindowOptions, externalUrlRules, onReadyToShow } = options;
 		if (this.windows.has(name)) {
 			this.windows.get(name)?.destroy();
 			this.windows.delete(name);
 		}
 
 		const window = new BrowserWindow(browserWindowOptions);
+
+		if (externalUrlRules) {
+			window.webContents.setWindowOpenHandler(({ url }) => {
+				const requestedUrl = new URL(url);
+				if (externalUrlRules.some(r => r(requestedUrl))) {
+					shell.openExternal(url);
+				}
+
+				return { action: 'deny' };
+			});
+		}
 
 		window.once('closed', () => {
 			this.windows.delete(name);

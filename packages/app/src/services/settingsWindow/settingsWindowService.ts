@@ -1,11 +1,10 @@
 import { IpcChannel } from 'shared';
-import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
-import { windowOpenHandler } from '~/utils';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
+import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
@@ -34,6 +33,7 @@ export class SettingsWindowService implements IBootstrappable {
 			this.logger.debug('Creating settings window');
 			this.settingsWindow = this.window.createWindow('settings', {
 				url: this.window.resolveRendererHTML('settings.html'),
+				externalUrlRules: EXTERNAL_URL_RULES,
 				browserWindowOptions: {
 					show: false,
 					minWidth: 600,
@@ -60,7 +60,6 @@ export class SettingsWindowService implements IBootstrappable {
 					this.settingsWindow!.hide();
 				}
 			});
-			this.settingsWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 			this.settingsWindow.center();
 		}
 	}

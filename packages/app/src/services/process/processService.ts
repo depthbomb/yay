@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { getExtraResourcePath } from '~/utils';
+import { getExtraResourcePath } from '~/common';
 import { MONOREPO_ROOT_PATH } from '~/constants';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';

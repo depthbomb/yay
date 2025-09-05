@@ -1,4 +1,3 @@
-import { PRELOAD_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
@@ -10,8 +9,9 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
+import { fileExists, getExtraFilePath } from '~/common';
+import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
-import { fileExists, getExtraFilePath, windowOpenHandler } from '~/utils';
 import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common/IBootstrappable';
@@ -36,6 +36,7 @@ export class MainWindowService implements IBootstrappable {
 		//#region Window creation
 		this.mainWindow = this.window.createMainWindow({
 			url: this.window.resolveRendererHTML('index.html'),
+			externalUrlRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
 				width: 400,
@@ -74,7 +75,6 @@ export class MainWindowService implements IBootstrappable {
 				this.mainWindow!.hide();
 			}
 		});
-		this.mainWindow.webContents.setWindowOpenHandler(windowOpenHandler);
 		//#endregion
 
 		//#region IPC
