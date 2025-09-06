@@ -16,12 +16,11 @@ export const useKeyCombo = (combo: KeyCombo, handler: KeyComboHandler) => {
 		(event: KeyboardEvent) => {
 			pressedKeys.current.add(event.key.toLowerCase());
 
-			const keyMatches = event.key.toLowerCase() === combo.key.toLowerCase();
-			const ctrlMatches = combo.ctrl === undefined || event.ctrlKey === combo.ctrl;
+			const keyMatches   = event.key.toLowerCase() === combo.key.toLowerCase();
+			const ctrlMatches  = combo.ctrl === undefined || event.ctrlKey === combo.ctrl;
 			const shiftMatches = combo.shift === undefined || event.shiftKey === combo.shift;
-			const altMatches = combo.alt === undefined || event.altKey === combo.alt;
-			const metaMatches = combo.meta === undefined || event.metaKey === combo.meta;
-
+			const altMatches   = combo.alt === undefined || event.altKey === combo.alt;
+			const metaMatches  = combo.meta === undefined || event.metaKey === combo.meta;
 			if (keyMatches && ctrlMatches && shiftMatches && altMatches && metaMatches) {
 				event.preventDefault();
 				handler();

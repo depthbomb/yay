@@ -1,3 +1,7 @@
+# 1.24.1
+
+- Fixed the context menu not appearing
+
 # 1.24.0
 
 - Further adjusted the styling of the setup window depending on window focus

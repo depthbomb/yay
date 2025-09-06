@@ -14,8 +14,7 @@ export const DownloadsTab = () => {
 	const [enableNotifications, setEnableNotifications]     = useSetting<boolean>(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
-
-	const onDownloadNameTemplateFieldChanged = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value);
+	const onDownloadNameTemplateFieldChanged      = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value);
 
 	return (
 		<div className="flex flex-col space-y-6">
