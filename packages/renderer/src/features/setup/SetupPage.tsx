@@ -1,15 +1,14 @@
 import { useIpc } from '~/hooks';
-import { IpcChannel } from 'shared';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/SpinnerV2';
 import { Titlebar } from './components/Titlebar';
 
 export const SetupPage = () => {
 	const [setupStep, setSetupStep] = useState('Checking requirements...');
-	const [onSetupStep]             = useIpc(IpcChannel.Setup_Step);
+	const [onSetupStep]             = useIpc('setup->step');
 
 	useEffect(() => {
-		const removeListener = onSetupStep((step: string) => setSetupStep(step));
+		const removeListener = onSetupStep(({ message }) => setSetupStep(message));
 		return () => removeListener();
 	}, []);
 

@@ -54,7 +54,7 @@ export const HomePage = () => {
 			return;
 		}
 
-		await window.api.downloadDefault(url);
+		await window.ipc.invoke('yt-dlp<-download-default', url);
 	};
 
 	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => setUrl(event.target.value.trim());
@@ -82,9 +82,9 @@ export const HomePage = () => {
 				readOnly={isWorking || isUpdating}
 			/>
 			<DownloadButtons
-				onDownloadVideoClick={() => window.api.downloadVideo(url)}
-				onDownloadAudioClick={() => window.api.downloadAudio(url)}
-				onCancelDownloadClick={() => window.api.cancelDownload()}
+				onDownloadVideoClick={() => window.ipc.invoke('yt-dlp<-download-video', url)}
+				onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
+				onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
 				working={isWorking}
 				disabled={!isValidUrl || isUpdating}
 			/>

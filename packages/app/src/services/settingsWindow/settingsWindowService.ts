@@ -1,4 +1,3 @@
-import { IpcChannel } from 'shared';
 import { IpcService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
@@ -7,7 +6,7 @@ import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class SettingsWindowService implements IBootstrappable {
@@ -21,7 +20,7 @@ export class SettingsWindowService implements IBootstrappable {
 	) {}
 
 	public async bootstrap(): Promise<void> {
-		this.ipc.registerHandler(IpcChannel.Settings_ShowUi, () => this.show());
+		this.ipc.registerHandler('settings<-show-ui', () => this.show());
 
 		this.lifecycle.events.on('shutdown', () => this.settingsWindow?.close());
 	}

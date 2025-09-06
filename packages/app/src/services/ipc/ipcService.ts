@@ -1,56 +1,49 @@
 import { ipcMain } from 'electron';
 import { injectable } from '@needle-di/core';
-import { IpcChannel, IpcChannels } from 'shared';
+import { IpcChannels, type IIpcContract } from 'shared';
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 
-type HandlerFunction     = (event: IpcMainInvokeEvent, ...args: any[]) => unknown;
-type SyncHandlerFunction = (event: IpcMainEvent, ...args: any[]) => unknown;
+type Handler<K extends keyof IIpcContract> = (event: IpcMainInvokeEvent, ...args: IIpcContract[K]['args']) => IIpcContract[K]['return'] | Promise<IIpcContract[K]['return']>;
+type SyncHandler<K extends keyof IIpcContract> = (event: IpcMainEvent, ...args: IIpcContract[K]['args']) => void;
 
 @injectable()
 export class IpcService {
-	public registerHandler(channel: IpcChannel, handler: HandlerFunction): void {
+	public registerHandler<K extends keyof IIpcContract>(channel: K, handler: Handler<K>) {
 		this.assertValidIpcChannel(channel);
-
 		ipcMain.handle(channel, handler);
 	}
 
-	public registerSyncHandler(channel: IpcChannel, handler: SyncHandlerFunction): void {
+	public registerSyncHandler<K extends keyof IIpcContract>(channel: K, handler: SyncHandler<K>) {
 		this.assertValidIpcChannel(channel);
-
 		ipcMain.on(channel, handler);
 	}
 
-	public registerOnceHandler(channel: IpcChannel, handler: HandlerFunction): void {
+	public registerOnceHandler<K extends keyof IIpcContract>(channel: K, handler: Handler<K>) {
 		this.assertValidIpcChannel(channel);
-
 		ipcMain.handleOnce(channel, handler);
 	}
 
-	public registerOnceSyncHandler(channel: IpcChannel, handler: SyncHandlerFunction): void {
+	public registerOnceSyncHandler<K extends keyof IIpcContract>(channel: K, handler: SyncHandler<K>) {
 		this.assertValidIpcChannel(channel);
-
 		ipcMain.once(channel, handler);
 	}
 
-	public removeHandlers(channel: IpcChannel): void {
+	public removeHandlers<K extends keyof IIpcContract>(channel: K) {
 		this.assertValidIpcChannel(channel);
-
 		ipcMain.removeHandler(channel);
 	}
 
-	public channelHasHandlers(channel: IpcChannel): boolean {
+	public channelHasHandlers<K extends keyof IIpcContract>(channel: K) {
 		this.assertValidIpcChannel(channel);
-
 		return this.getHandlerCount(channel) > 0;
 	}
 
-	public getHandlerCount(channel: IpcChannel): number {
+	public getHandlerCount<K extends keyof IIpcContract>(channel: K) {
 		this.assertValidIpcChannel(channel);
-
 		return ipcMain.listenerCount(channel);
 	}
 
-	private assertValidIpcChannel(channel: IpcChannel): void | never {
+	private assertValidIpcChannel(channel: keyof IIpcContract): void | never {
 		if (!IpcChannels.includes(channel)) {
 			throw new Error(`Invalid IPC channel "${channel}"`);
 		}

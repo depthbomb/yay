@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { Tabs } from 'radix-ui';
 import { useIpc } from '~/hooks';
-import { IpcChannel } from 'shared';
 import { mdiDownload } from '@mdi/js';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/SpinnerV2';
@@ -31,7 +30,7 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 	);
 };
 
-const defaultStatus = 'Updating...' as const;
+const defaultStatus = 'Updating...';
 
 export const UpdaterPage = () => {
 	const [updating, setUpdating]   = useState(false);
@@ -39,32 +38,32 @@ export const UpdaterPage = () => {
 	const [release, setRelease]     = useState<Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>>(null);
 	const [changelog, setChangelog] = useState('');
 	const [commits, setCommits]     = useState<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>([]);
-	const [onUpdateStep]            = useIpc(IpcChannel.Updater_Step);
+	const [onUpdateStep]            = useIpc('updater->update-step');
 
 	const onDownloadButtonClicked = async () => {
 		setUpdating(true);
-		await window.api.startUpdate();
+		await window.ipc.invoke('updater<-update');
 	}
 
 	const onCancelButtonClicked = async () => {
-		await window.api.cancelUpdate();
+		await window.ipc.invoke('updater<-cancel-update');
 		setUpdating(false);
 		setStatus(defaultStatus);
 	}
 
 	useEffect(() => {
-		window.api.getLatestRelease().then(setRelease);
+		window.ipc.invoke('updater<-get-latest-release').then(setRelease);
 	}, []);
 
 	useEffect(() => {
-		window.api.getLatestChangelog().then(setChangelog);
+		window.ipc.invoke('updater<-get-latest-changelog').then(changelog => setChangelog(changelog ?? 'No changelog available'));
 	}, []);
 
 	useEffect(() => {
-		window.api.getCommitsSinceBuild().then(setCommits);
+		window.ipc.invoke('updater<-get-commits-since-build').then(commits => setCommits(commits ?? []));
 	}, []);
 
-	useEffect(() => onUpdateStep(setStatus), []);
+	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? 'Updating...')), []);
 
 	return (release ? (
 		<Tabs.Root defaultValue="changelog" className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">

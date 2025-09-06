@@ -1,5 +1,7 @@
 export * from './constants';
 export * from './featureFlags';
+export * from './ipc-channels.generated';
+export * from './ipc-events.generated';
 export * from './ipc';
 export * from './product';
 export * from './settings';

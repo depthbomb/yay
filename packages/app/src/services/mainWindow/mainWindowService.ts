@@ -1,9 +1,9 @@
+import { SettingsKey } from 'shared';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
 import { unlink, copyFile } from 'fs/promises';
 import { YtdlpService } from '~/services/ytdlp';
-import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
@@ -14,7 +14,7 @@ import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
 import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class MainWindowService implements IBootstrappable {
@@ -63,11 +63,11 @@ export class MainWindowService implements IBootstrappable {
 				this.mainWindow!.hide();
 			}
 
-			this.window.emitMain(IpcChannel.Window_IsBlurred);
+			this.window.emitMain('window->is-blurred');
 		});
 		this.mainWindow.on('focus', () => {
 			this.mainWindow!.flashFrame(false);
-			this.window.emitMain(IpcChannel.Window_IsFocused);
+			this.window.emitMain('window->is-focused');
 		});
 		this.mainWindow.on('close', e => {
 			if (!this.lifecycle.shutdownRequested) {
@@ -78,13 +78,13 @@ export class MainWindowService implements IBootstrappable {
 		//#endregion
 
 		//#region IPC
-		this.ipc.registerHandler(IpcChannel.Main_ToggleWindowPinned, () => this.windowPinned = !this.windowPinned);
-		this.ipc.registerHandler(IpcChannel.Main_OpenDownloadDir, async () => {
+		this.ipc.registerHandler('main<-toggle-window-pinned', () => this.windowPinned = !this.windowPinned);
+		this.ipc.registerHandler('main<-open-download-dir', async () => {
 			this.logger.info('Opening download directory');
 
 			await shell.openPath(this.settings.get(SettingsKey.DownloadDir));
 		});
-		this.ipc.registerHandler(IpcChannel.Main_PickDownloadDir, async () => {
+		this.ipc.registerHandler('main<-pick-download-dir', async () => {
 			this.logger.info('Opening download directory picker');
 
 			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
@@ -104,7 +104,7 @@ export class MainWindowService implements IBootstrappable {
 
 			return null;
 		});
-		this.ipc.registerHandler(IpcChannel.Main_PickCookiesFile, async () => {
+		this.ipc.registerHandler('main<-pick-cookies-file', async () => {
 			this.logger.info('Opening cookies file picker');
 
 			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
@@ -127,7 +127,7 @@ export class MainWindowService implements IBootstrappable {
 
 			return null;
 		});
-		this.ipc.registerHandler(IpcChannel.Ytdlp_RecheckBinaries, async () => {
+		this.ipc.registerHandler('yt-dlp<-recheck-binaries', async () => {
 			this.logger.info('Rechecking binaries');
 
 			for (const bin of ['yt-dlp.exe', 'ffmpeg.exe', 'ffprobe.exe']) {

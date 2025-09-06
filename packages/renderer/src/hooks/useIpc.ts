@@ -1,13 +1,13 @@
 import { useRef, useEffect } from 'react';
-import type { Nullable, IpcChannel } from 'shared';
+import type { Nullable, IIpcEvents } from 'shared';
 
-type IpcListener = (...args: any[]) => unknown;
-type ListenerRemover = Nullable<() => void>;
+type Listener<K extends keyof IIpcEvents> = (payload: IIpcEvents[K]) => void;
+type ListenerRemover                      = Nullable<() => void>;
 
-export const useIpc = (channel: IpcChannel) => {
+export const useIpc = <K extends keyof IIpcEvents>(channel: K) => {
 	const listenerRemovers = useRef<ListenerRemover[]>([]);
 
-	const on = (listener: IpcListener) => {
+	const on = (listener: Listener<K>) => {
 		const removeListener = window.ipc.on(channel, listener);
 
 		listenerRemovers.current.push(removeListener);
@@ -15,11 +15,11 @@ export const useIpc = (channel: IpcChannel) => {
 		return removeListener;
 	};
 
-	const once = (listener: IpcListener) => {
+	const once = (listener: Listener<K>) => {
 		return window.ipc.once(channel, listener);
 	};
 
-	const off = (listener: IpcListener) => {
+	const off = (listener: Listener<K>) => {
 		return window.ipc.off(channel, listener);
 	};
 

@@ -6,20 +6,20 @@ import { IpcService } from '~/services/ipc';
 import { HttpService } from '~/services/http';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
+import { CancellationTokenSource } from '~/common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { MarkdownService } from '~/services/markdown';
 import { LifecycleService } from '~/services/lifecycle';
-import { CancellationTokenSource } from '~/common/cancellation';
-import { product, GIT_HASH, IpcChannel, SettingsKey } from 'shared';
+import { product, GIT_HASH, SettingsKey } from 'shared';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
 import type { Maybe, Nullable } from 'shared';
 import type { Endpoints } from '@octokit/types';
+import type { IBootstrappable } from '~/common';
 import type { HttpClient } from '~/services/http';
-import type { IBootstrappable } from '~/common/IBootstrappable';
 
 type Release = Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number];
 type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
@@ -59,16 +59,16 @@ export class UpdaterService implements IBootstrappable {
 	public async bootstrap() {
 		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 180_000);
 
-		this.ipc.registerHandler(IpcChannel.Updater_ShowWindow,           () => this.showUpdaterWindow());
-		this.ipc.registerHandler(IpcChannel.Updater_GetLatestRelease,     () => this.latestRelease);
-		this.ipc.registerHandler(IpcChannel.Updater_GetLatestChangelog,   () => this.latestChangelog);
-		this.ipc.registerHandler(IpcChannel.Updater_GetCommitsSinceBuild, () => this.commits);
-		this.ipc.registerHandler(IpcChannel.Updater_CheckForUpdates,      async () => {
+		this.ipc.registerHandler('updater<-show-window',           () => this.showUpdaterWindow());
+		this.ipc.registerHandler('updater<-get-latest-release',    () => this.latestRelease);
+		this.ipc.registerHandler('updater<-get-latest-changelog',  () => this.latestChangelog);
+		this.ipc.registerHandler('updater<-get-commits-since-build', () => this.commits);
+		this.ipc.registerHandler('updater<-check-for-updates',      async () => {
 			await this.checkForUpdates(true);
 			return this.hasNewRelease;
 		});
-		this.ipc.registerHandler(IpcChannel.Updater_Update,               async () => await this.startUpdate());
-		this.ipc.registerHandler(IpcChannel.Updater_Cancel,               () => this.cancelUpdate());
+		this.ipc.registerHandler('updater<-update',               async () => await this.startUpdate());
+		this.ipc.registerHandler('updater<-cancel-update',               () => this.cancelUpdate());
 
 		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
 		this.lifecycle.events.on('shutdown',   () => clearInterval(this.checkInterval));
@@ -77,7 +77,7 @@ export class UpdaterService implements IBootstrappable {
 	public async checkForUpdates(manual: boolean = false) {
 		this.logger.info('Checking for updates', { manual });
 
-		this.window.emitAll(IpcChannel.Updater_CheckingForUpdates);
+		this.window.emitAll('updater->checking-for-updates');
 
 		try {
 			const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
@@ -101,7 +101,7 @@ export class UpdaterService implements IBootstrappable {
 					this.showUpdaterWindow();
 				}
 
-				this.window.emitMain(IpcChannel.Updater_Outdated, this.latestRelease);
+				this.window.emitMain('updater->outdated', { latestRelease: this.latestRelease });
 
 				if (manual) {
 					this.showUpdaterWindow();
@@ -151,7 +151,7 @@ export class UpdaterService implements IBootstrappable {
 		}
 
 		const onProgress = async (progress: number) => {
-			this.window.emit('updater', IpcChannel.Updater_Step, `Downloading installer... (${progress}%)`);
+			this.window.emit('updater', 'updater->update-step', { message: `Downloading installer... (${progress}%)` });
 		}
 
 		const tempPath = join(app.getPath('temp'), 'yay-setup.exe');
@@ -161,7 +161,7 @@ export class UpdaterService implements IBootstrappable {
 			return;
 		}
 
-		this.window.emit('updater', IpcChannel.Updater_Step, 'Running setup...');
+		this.window.emit('updater', 'updater->update-step', { message: 'Running setup...' });
 
 		this.logger.info('Spawning setup process', { setupPath: tempPath });
 

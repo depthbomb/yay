@@ -1,23 +1,23 @@
 import mitt from 'mitt';
 import { app } from 'electron';
 import { join } from 'node:path';
+import { SettingsKey } from 'shared';
 import { fileExists } from '~/common';
 import { safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
-import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
 import type { Settings } from './types';
 import type { Store } from '~/services/store';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 
-type SettingsManagetGetOptions = {
+type SettingsManagerGetOptions = {
 	secure?: boolean;
 };
-type SettingsManagetSetOptions = SettingsManagetGetOptions;
+type SettingsManagerSetOptions = SettingsManagerGetOptions;
 
 @injectable()
 export class SettingsService implements IBootstrappable {
@@ -42,19 +42,19 @@ export class SettingsService implements IBootstrappable {
 
 	public async bootstrap() {
 		this.ipc.registerSyncHandler(
-			IpcChannel.Settings_Get,
+			'settings<-get',
 			(e, key, defaultValue, secure) => e.returnValue = this.get(key, defaultValue, { secure })
 		);
 		this.ipc.registerHandler(
-			IpcChannel.Settings_Get,
+			'settings<-get',
 			(_, key, defaultValue, secure) => this.get(key, defaultValue, { secure })
 		);
 		this.ipc.registerHandler(
-			IpcChannel.Settings_Set,
+			'settings<-set',
 			async (_, key, value, secure) => await this.set(key, value, { secure })
 		);
 		this.ipc.registerHandler(
-			IpcChannel.Settings_Reset,
+			'settings<-reset',
 			async () => {
 				await this.reset();
 				app.relaunch();
@@ -62,10 +62,10 @@ export class SettingsService implements IBootstrappable {
 			}
 		);
 
-		this.events.on('settingsUpdated', ({ key, value }) => this.window.emitAll(IpcChannel.Settings_Changed, key, value));
+		this.events.on('settingsUpdated', ({ key, value }) => this.window.emitAll('settings->changed', { key, value }));
 	}
 
-	public get<T>(key: SettingsKey, defaultValue?: T, options?: SettingsManagetGetOptions) {
+	public get<T>(key: SettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) {
 		const value = this.internalStore.get(key, defaultValue);
 		if (options?.secure) {
 			if (value) {
@@ -78,14 +78,14 @@ export class SettingsService implements IBootstrappable {
 		}
 	}
 
-	public async set<T>(key: SettingsKey, value: T, options?: SettingsManagetSetOptions) {
+	public async set<T>(key: SettingsKey, value: T, options?: SettingsManagerSetOptions) {
 		const $value = options?.secure ? this.encryptValue(value) : value;
 		await this.internalStore.set(key, $value);
 
 		this.events.emit('settingsUpdated', { key, value });
 	}
 
-	public async setDefault<T>(key: SettingsKey, value: T, options?: SettingsManagetSetOptions) {
+	public async setDefault<T>(key: SettingsKey, value: T, options?: SettingsManagerSetOptions) {
 		if (this.get(key, null, options) === null) {
 			await this.set(key, value, options);
 		}

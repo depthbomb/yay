@@ -27,8 +27,8 @@ export const Titlebar: FC<TitlebarProps> = ({ title, showIcon = true }) => {
 			)}
 			{title && <p className={clsx('min-w-max h-8 leading-8 text-xs draggable', focused ? 'text-white' : 'text-gray-300')}>{title}</p>}
 			<span className="size-full draggable"/>
-			<TitlebarButton onClick={() => window.api.minimizeWindow('setup')} type="minimize"/>
-			<TitlebarButton onClick={() => window.api.cancelSetup()} type="close"/>
+			<TitlebarButton onClick={() => window.ipc.invoke('window<-minimize', 'setup')} type="minimize"/>
+			<TitlebarButton onClick={() => window.ipc.invoke('setup<-cancel')} type="close"/>
 		</div>
 	);
 };

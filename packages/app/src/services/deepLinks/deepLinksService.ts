@@ -4,7 +4,7 @@ import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class DeepLinksService implements IBootstrappable {

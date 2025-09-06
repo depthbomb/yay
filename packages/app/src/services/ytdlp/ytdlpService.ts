@@ -15,8 +15,8 @@ import { ThumbnailService } from '~/services/thumbnail';
 import { getExtraFilePath, getFilePathFromAsar } from '~/common';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import type { Nullable } from 'shared';
+import type { IBootstrappable } from '~/common';
 import type { ChildProcess } from 'node:child_process';
-import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class YtdlpService implements IBootstrappable {
@@ -44,13 +44,13 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerHandler(IpcChannel.Ytdlp_DownloadVideo,   async (_, url: string) => await this.download(url));
-		this.ipc.registerHandler(IpcChannel.Ytdlp_DownloadAudio,   async (_, url: string) => await this.download(url, true));
-		this.ipc.registerHandler(IpcChannel.Ytdlp_DownloadDefault, async (_, url: string) => {
+		this.ipc.registerHandler('yt-dlp<-download-video',   async (_, url: string) => await this.download(url));
+		this.ipc.registerHandler('yt-dlp<-download-audio',   async (_, url: string) => await this.download(url, true));
+		this.ipc.registerHandler('yt-dlp<-download-default', async (_, url: string) => {
 			const defaultAction = this.settings.get(SettingsKey.DefaultDownloadAction);
 			await this.download(url, defaultAction === 'audio');
 		});
-		this.ipc.registerHandler(IpcChannel.Ytdlp_RemoveCookiesFile, async () => {
+		this.ipc.registerHandler('yt-dlp<-remove-cookies-file', async () => {
 			const cookiesFilePath = this.settings.get<Nullable<string>>(SettingsKey.CookiesFilePath, null);
 
 			await this.settings.set(SettingsKey.CookiesFilePath, null);
@@ -59,8 +59,8 @@ export class YtdlpService implements IBootstrappable {
 				await unlink(cookiesFilePath);
 			}
 		});
-		this.ipc.registerHandler(IpcChannel.Ytdlp_CancelDownload, async () => await this.cancelDownload(false));
-		this.ipc.registerHandler(IpcChannel.Ytdlp_UpdateBinary,   async () => await this.updateBinary());
+		this.ipc.registerHandler('yt-dlp<-cancel-download', async () => await this.cancelDownload(false));
+		this.ipc.registerHandler('yt-dlp<-update-binary',   async () => await this.updateBinary());
 
 		this.lifecycle.events.on('shutdown', async () => await this.cancelDownload(true));
 	}
@@ -78,10 +78,10 @@ export class YtdlpService implements IBootstrappable {
 				return;
 			}
 
-			this.window.emitMain(IpcChannel.Ytdlp_Stdout, line);
+			this.window.emitMain('yt-dlp->stdout', { line });
 		};
 
-		this.window.emitAll(IpcChannel.Ytdlp_DownloadStarted, url);
+		this.window.emitAll('yt-dlp->download-started', { url });
 		this.events.emit('downloadStarted', url);
 		this.logger.info('Starting media download', { url, audioOnly });
 
@@ -139,7 +139,7 @@ export class YtdlpService implements IBootstrappable {
 		});
 		this.proc.once('close', async code => {
 			this.logger.info('yt-dlp process exited', { code });
-			this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished, code);
+			this.window.emitAll('yt-dlp->download-finished');
 			this.events.emit('downloadFinished');
 
 			if (youtubeMatch) {
@@ -174,8 +174,8 @@ export class YtdlpService implements IBootstrappable {
 			this.cleanupProcess();
 
 			if (!shutdown) {
-				this.window.emitAll(IpcChannel.Ytdlp_DownloadCanceled);
-				this.window.emitAll(IpcChannel.Ytdlp_DownloadFinished);
+				this.window.emitAll('yt-dlp->download-canceled');
+				this.window.emitAll('yt-dlp->download-finished');
 				this.events.emit('downloadFinished');
 			}
 		}
@@ -183,7 +183,7 @@ export class YtdlpService implements IBootstrappable {
 
 	public async updateBinary() {
 		this.logger.info('Attempting to update yt-dlp binary');
-		this.window.emitAll(IpcChannel.Ytdlp_UpdatingBinary);
+		this.window.emitAll('yt-dlp->updating-binary');
 
 		const ytDlpPath = this.settings.get<string>(SettingsKey.YtdlpPath);
 
@@ -207,7 +207,7 @@ export class YtdlpService implements IBootstrappable {
 			});
 			proc.once('close', async code => {
 				this.logger.info('yt-dlp update process exited', { code });
-				this.window.emitAll(IpcChannel.Ytdlp_UpdatedBinary);
+				this.window.emitAll('yt-dlp->updated-binary');
 				if (wasUpdated) {
 					await dialog.showMessageBox({
 						type: 'info',

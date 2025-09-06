@@ -12,9 +12,9 @@ export const AppTab = () => {
 	const [autoStartEnabled, setAutoStartEnabled]                   = useSetting<boolean>(SettingsKey.AutoStart, { reactive: false });
 
 	const checkForUpdates = async () => {
-		const hasUpdate = await window.api.checkForUpdates();
+		const hasUpdate = await window.ipc.invoke('updater<-check-for-updates');
 		if (!hasUpdate) {
-			await window.api.showMessageBox({
+			await window.ipc.invoke('show-message-box', {
 				type: 'info',
 				title: 'Check for updates',
 				message: 'You are using the latest version of yay!'
@@ -38,8 +38,8 @@ export const AppTab = () => {
 			</div>
 			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateAvailable}>Check for updates</Button>
-				<Button variant="brand" onClick={() => window.api.openLogFile()}>Open log file</Button>
-				<Button variant="brand" onClick={() => window.api.openAppData()}>Open data folder</Button>
+				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-log-file')}>Open log file</Button>
+				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
 			</div>
 		</div>
 	);

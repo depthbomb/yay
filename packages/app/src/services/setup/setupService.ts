@@ -1,18 +1,17 @@
+import { SettingsKey } from 'shared';
 import { spawn } from 'node:child_process';
 import { PRELOAD_PATH } from '~/constants';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { app, shell, dialog } from 'electron';
 import { OnlineChecker } from './onlineChecker';
-import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
-import { fileExists, getExtraFilePath } from '~/common';
-import { CancellationTokenSource, OperationCancelledError } from '~/common/cancellation';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import { fileExists, getExtraFilePath, CancellationTokenSource, OperationCancelledError } from '~/common';
+import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class SetupService implements IBootstrappable {
@@ -28,7 +27,7 @@ export class SetupService implements IBootstrappable {
 		private readonly downloader    = inject(BinaryDownloader),
 		private readonly onlineChecker = inject(OnlineChecker),
 	) {
-		this.ipc.registerHandler(IpcChannel.Setup_Cancel, () => this.cancel());
+		this.ipc.registerHandler('setup<-cancel', () => this.cancel());
 	}
 
 	public async bootstrap() {
@@ -36,7 +35,7 @@ export class SetupService implements IBootstrappable {
 	}
 
 	public cancel() {
-		this.window.emit('setup', IpcChannel.Setup_Step, 'Cancelling...');
+		this.emitStep('Cancelling...');
 		this.cts.cancel();
 	}
 
@@ -71,9 +70,7 @@ export class SetupService implements IBootstrappable {
 		const ytdlpPath   = getExtraFilePath('yt-dlp.exe');
 		const ffmpegPath  = getExtraFilePath('ffmpeg.exe');
 		const ffprobePath = getExtraFilePath('ffprobe.exe');
-
-		const mainWindow = this.window.getMainWindow()!;
-
+		const mainWindow  = this.window.getMainWindow()!;
 		const setupWindow = this.window.createWindow('setup', {
 			url: this.window.resolveRendererHTML('setup.html'),
 			browserWindowOptions: {
@@ -100,11 +97,11 @@ export class SetupService implements IBootstrappable {
 
 				setupWindow.setProgressBar(1, { mode: 'indeterminate' });
 
-				this.window.emit('setup', IpcChannel.Setup_Step, 'Checking for yt-dlp...');
+				this.emitStep('Checking for yt-dlp...');
 
 				const hasYtdlp = await this.hasYtdlpBinary(ytdlpPath);
 
-				this.window.emit('setup', IpcChannel.Setup_Step, 'Checking for FFmpeg...');
+				this.emitStep('Checking for FFmpeg...');
 
 				const hasFfmpeg = await Promise.all([
 					fileExists(ffmpegPath),
@@ -135,14 +132,14 @@ export class SetupService implements IBootstrappable {
 				}
 
 				if (!hasYtdlp && !this.cts.isCancellationRequested) {
-					this.window.emit('setup', IpcChannel.Setup_Step, 'Starting yt-dlp download...');
+					this.emitStep('Starting yt-dlp download...');
 
 					try {
 						await this.downloader.downloadYtdlpBinary(
 							ytdlpPath,
 							signal,
 							progress => {
-								this.window.emit('setup', IpcChannel.Setup_Step, `Downloading yt-dlp... (${progress}%)`);
+								this.emitStep(`Downloading yt-dlp... (${progress}%)`);
 								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
 							}
 						);
@@ -168,21 +165,21 @@ export class SetupService implements IBootstrappable {
 				}
 
 				if (!hasFfmpeg && !this.cts.isCancellationRequested) {
-					this.window.emit('setup', IpcChannel.Setup_Step, 'Starting FFmpeg download...');
+					this.emitStep('Starting FFmpeg download...');
 
 					try {
 						await this.downloader.downloadFfmpegBinary(
 							ffmpegPath,
 							signal,
 							progress => {
-								this.window.emit('setup', IpcChannel.Setup_Step, `Downloading FFmpeg... (${progress}%)`);
+								this.emitStep(`Downloading FFmpeg... (${progress}%)`);
 								setupWindow.setProgressBar(progress / 100, { mode: 'normal' });
 							},
 							() => {
-								this.window.emit('setup', IpcChannel.Setup_Step, 'Extracting FFmpeg...');
+								this.emitStep('Extracting FFmpeg...');
 								setupWindow.setProgressBar(1, { mode: 'indeterminate' });
 							},
-							() => this.window.emit('setup', IpcChannel.Setup_Step, 'Cleaning up...')
+							() => this.emitStep('Finalizing...')
 						);
 					} catch (err) {
 						if (!(err instanceof OperationCancelledError)) {
@@ -212,11 +209,13 @@ export class SetupService implements IBootstrappable {
 				if (this.cts.isCancellationRequested) {
 					setupWindow.setProgressBar(1, { mode: 'error' });
 				} else {
-					this.window.emit('setup', IpcChannel.Setup_Step, 'Done!');
+					this.emitStep('Done!');
 					setupWindow.setProgressBar(1, { mode: 'normal' });
 				}
 			}
 		});
+
+		const { promise, resolve } = Promise.withResolvers<void>();
 
 		setupWindow.once('close', () => {
 			if (!this.finished) {
@@ -224,19 +223,19 @@ export class SetupService implements IBootstrappable {
 			}
 		});
 
-		return new Promise<void>((res) => {
-			const interval = setInterval(() => {
-				if (this.cts.isCancellationRequested) {
-					app.exit(0);
-					clearInterval(interval);
-				} else if (this.finished) {
-					setupWindow.closable = true;
-					setupWindow.close();
-					clearInterval(interval);
-					res();
-				}
-			}, 500);
-		});
+		const interval = setInterval(() => {
+			if (this.cts.isCancellationRequested) {
+				app.exit(0);
+				clearInterval(interval);
+			} else if (this.finished) {
+				setupWindow.closable = true;
+				setupWindow.close();
+				clearInterval(interval);
+				resolve();
+			}
+		}, 500);
+
+		return promise;
 	}
 
 	private async hasYtdlpBinary(localPath: string): Promise<boolean> {
@@ -306,5 +305,9 @@ export class SetupService implements IBootstrappable {
 		if (res.response !== 0) {
 			app.exit(0);
 		}
+	}
+
+	private emitStep(message: string) {
+		this.window.emit('setup', 'setup->step', { message });
 	}
 }

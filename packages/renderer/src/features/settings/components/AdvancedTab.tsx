@@ -8,7 +8,7 @@ import { workingAtom, updatingAtom } from '~/atoms/app';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
 const onRecheckBinariesButtonClicked = async () => {
-	const { response } = await window.api.showMessageBox({
+	const { response } = await window.ipc.invoke('show-message-box', {
 		type: 'info',
 		title: 'Recheck binaries',
 		message: 'yay needs to restart to check necessary binaries.\nWould you like to continue?',
@@ -17,12 +17,12 @@ const onRecheckBinariesButtonClicked = async () => {
 	});
 
 	if (response === 0) {
-		await window.api.recheckBinaries();
+		await window.ipc.invoke('yt-dlp<-recheck-binaries');
 	}
 };
 
 const onResetSettingsButtonClicked = async () => {
-	const { response } = await window.api.showMessageBox({
+	const { response } = await window.ipc.invoke('show-message-box', {
 		type: 'info',
 		title: 'Reset settings',
 		message: 'Your settings will be reset to their defaults and yay will restart.\nWould you like to continue?',
@@ -31,7 +31,7 @@ const onResetSettingsButtonClicked = async () => {
 	});
 
 	if (response === 0) {
-		await window.api.resetSettings();
+		await window.ipc.invoke('settings<-reset');
 	}
 };
 
@@ -54,7 +54,7 @@ export const AdvancedTab = () => {
 					<Icon path={mdiDownload} className="size-3"/>
 					<span>Recheck required binaries</span>
 				</PushButton>
-				<PushButton onClick={() => window.api.updateYtdlpBinary()} disabled={isWorking || isUpdating}>
+				<PushButton onClick={() => window.ipc.invoke('yt-dlp<-update-binary')} disabled={isWorking || isUpdating}>
 					<Icon path={mdiUpdate} className="size-3"/>
 					<span>Update yt-dlp</span>
 				</PushButton>

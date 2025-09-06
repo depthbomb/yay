@@ -1,13 +1,13 @@
 import mitt from 'mitt';
 import { join } from 'node:path';
+import { DEV_PORT } from 'shared';
 import { ROOT_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
-import { DEV_PORT, IpcChannel } from 'shared';
 import { shell, BrowserWindow } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import type { Awaitable } from 'shared';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
+import type { Awaitable, IIpcEvents } from 'shared';
 import type { BrowserWindowConstructorOptions } from 'electron';
 
 type CreateWindowOptions = {
@@ -45,7 +45,7 @@ export class WindowService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerHandler(IpcChannel.Window_Minimize, (_, windowName: string) => this.minimizeWindow(windowName));
+		this.ipc.registerHandler('window<-minimize', (_e, windowName: string) => this.minimizeWindow(windowName));
 	}
 
 	public createMainWindow(options: CreateMainWindowOptions) {
@@ -145,17 +145,26 @@ export class WindowService implements IBootstrappable {
 		}
 	}
 
-	public emitMain(channel: IpcChannel, ...args: unknown[]) {
+	public emitMain<K extends keyof IIpcEvents>(
+		channel: K,
+		...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]
+	) {
 		this.emit(this.mainWindowName, channel, ...args);
 	}
 
-	public emit(windowName: string, channel: IpcChannel, ...args: unknown[]) {
+	public emit<K extends keyof IIpcEvents>(
+		windowName: string,
+		channel: K,
+		...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]
+	) {
 		const window = this.getWindow(windowName);
-
 		window?.webContents.send(channel, ...args);
 	}
 
-	public emitAll(channel: IpcChannel, ...args: unknown[]) {
+	public emitAll<K extends keyof IIpcEvents>(
+		channel: K,
+		...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]
+	) {
 		for (const window of this.windows.values()) {
 			window?.webContents.send(channel, ...args);
 		}

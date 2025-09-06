@@ -1,5 +1,4 @@
 import { join } from 'node:path';
-import { IpcChannel } from 'shared';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
@@ -65,12 +64,12 @@ export class MainService {
 			this.updater.bootstrap(),
 		]);
 
-		this.ipc.registerHandler(IpcChannel.ShowMessageBox, async (_, options: MessageBoxOptions) => {
+		this.ipc.registerHandler('show-message-box', async (_e, options) => {
 			this.logger.debug('Showing messagebox', { options });
 			return dialog.showMessageBox(this.window.getMainWindow()!, options);
 		});
 
-		this.ipc.registerHandler(IpcChannel.ShowTextSelectionMenu, async (_, type: 'input' | 'input-selection' | 'text-selection') => {
+		this.ipc.registerHandler('show-text-selection-menu', async (_e, type) => {
 			this.logger.debug('Showing text selection menu', { type });
 
 			const menuItems = [] as MenuItemConstructorOptions[];
@@ -100,7 +99,7 @@ export class MainService {
 			Menu.buildFromTemplate(menuItems).popup();
 		});
 
-		this.ipc.registerHandler(IpcChannel.Main_OpenLogFile, async () => {
+		this.ipc.registerHandler('main<-open-log-file', async () => {
 			const path = join(app.getPath('userData'), 'logs', 'yay.log');
 
 			this.logger.debug('Opening log file in default application', { path });
@@ -108,7 +107,7 @@ export class MainService {
 			await shell.openPath(path);
 		});
 
-		this.ipc.registerHandler(IpcChannel.Main_OpenAppData, async () => {
+		this.ipc.registerHandler('main<-open-app-data', async () => {
 			const path = app.getPath('userData')
 
 			this.logger.debug('Opening application data folder', { path });

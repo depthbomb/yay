@@ -1,5 +1,4 @@
 import { useAtom } from 'jotai';
-import { IpcChannel } from 'shared';
 import { windowPinnedAtom } from '~/atoms/app';
 import { useIpc, useFeatureFlags } from '~/hooks';
 import { useMemo, useState, useEffect, forwardRef } from 'react';
@@ -34,8 +33,8 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 	const [isBlurred, setIsBlurred] = useState(true);
 	const [windowPinned]            = useAtom(windowPinnedAtom);
 	const [isFeatureEnabled]        = useFeatureFlags();
-	const [onWindowBlurred]         = useIpc(IpcChannel.Window_IsBlurred);
-	const [onWindowFocused]         = useIpc(IpcChannel.Window_IsFocused);
+	const [onWindowBlurred]         = useIpc('window->is-blurred');
+	const [onWindowFocused]         = useIpc('window->is-focused');
 
 	useEffect(() => {
 		onWindowBlurred(() => {

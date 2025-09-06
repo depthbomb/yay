@@ -7,7 +7,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsKey, isValidHttpUrl } from 'shared';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 import type { MenuItem, MenuItemConstructorOptions } from 'electron';
 
 type MenuTemplate = Array<(MenuItemConstructorOptions) | (MenuItem)>;

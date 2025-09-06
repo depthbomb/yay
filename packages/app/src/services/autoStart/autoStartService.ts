@@ -5,7 +5,7 @@ import { IpcService } from '~/services/ipc';
 import { IpcChannel, SettingsKey } from 'shared';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class AutoStartService implements IBootstrappable {
@@ -22,9 +22,9 @@ export class AutoStartService implements IBootstrappable {
 			return;
 		}
 
-		this.ipc.registerHandler(IpcChannel.Autostart_Enable,  () => this.setAutoStart(true));
-		this.ipc.registerHandler(IpcChannel.Autostart_Disable, () => this.setAutoStart(false));
-		this.ipc.registerHandler(IpcChannel.Autostart_Toggle,  () => this.setAutoStart(!this.isAutoStartEnabled()));
+		this.ipc.registerHandler('autostart<-enable',  () => this.setAutoStart(true));
+		this.ipc.registerHandler('autostart<-disable', () => this.setAutoStart(false));
+		this.ipc.registerHandler('autostart<-toggle',  () => this.setAutoStart(!this.isAutoStartEnabled()));
 
 		this.settings.events.on('settingsUpdated', ({ key, value }) => {
 			if (key === SettingsKey.AutoStart) {

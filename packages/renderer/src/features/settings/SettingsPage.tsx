@@ -4,7 +4,6 @@ import { Tabs } from 'radix-ui';
 import { useAtom } from 'jotai';
 import { useIpc } from '~/hooks';
 import { useEffect } from 'react';
-import { IpcChannel } from 'shared';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
 import { YoutubeTab } from './components/YoutubeTab';
@@ -44,10 +43,10 @@ const TabButton: FC<TabButtonProps> = ({ title, icon, value, className }) => {
 export const SettingsPage = () => {
 	const [,setIsWorking]         = useAtom(workingAtom);
 	const [,setIsUpdating]        = useAtom(updatingAtom);
-	const [onDownloadStarted]     = useIpc(IpcChannel.Ytdlp_DownloadStarted);
-	const [onDownloadFinished]    = useIpc(IpcChannel.Ytdlp_DownloadFinished);
-	const [onUpdatingYtdlpBinary] = useIpc(IpcChannel.Ytdlp_UpdatingBinary);
-	const [onUpdatedYtdlpBinary]  = useIpc(IpcChannel.Ytdlp_UpdatedBinary);
+	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
+	const [onDownloadFinished]    = useIpc('yt-dlp->download-finished');
+	const [onUpdatingYtdlpBinary] = useIpc('yt-dlp->updating-binary');
+	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
 
 	useEffect(() => {
 		onUpdatingYtdlpBinary(() => setIsUpdating(true));

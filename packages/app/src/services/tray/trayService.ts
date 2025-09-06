@@ -2,17 +2,15 @@ import { product } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { app, Menu, Tray } from 'electron';
 import { YtdlpService } from '~/services/ytdlp';
-import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import { MainWindowService } from '~/services/mainWindow';
 import { getExtraFilePath, getFilePathFromAsar } from '~/common';
-import { WindowPositionService } from '~/services/windowPosition';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import type { Maybe } from 'shared';
+import type { IBootstrappable } from '~/common';
 import type { MenuItemConstructorOptions } from 'electron';
-import type { IBootstrappable } from '~/common/IBootstrappable';
 
 @injectable()
 export class TrayService implements IBootstrappable {
@@ -30,10 +28,8 @@ export class TrayService implements IBootstrappable {
 	public constructor(
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
-		private readonly window         = inject(WindowService),
 		private readonly mainWindow     = inject(MainWindowService, { lazy: true }),
 		private readonly settingsWindow = inject(SettingsWindowService),
-		private readonly windowPosition = inject(WindowPositionService),
 		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.trayTooltip         = product.description;

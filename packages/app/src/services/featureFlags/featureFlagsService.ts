@@ -6,14 +6,8 @@ import { IpcService } from '~/services/ipc';
 import { parse, stringify } from 'smol-toml';
 import { inject, injectable } from '@needle-di/core';
 import { readFile, writeFile } from 'node:fs/promises';
-import type { FeatureFlagUuids } from 'shared';
-import type { IBootstrappable } from '~/common/IBootstrappable';
-
-export type FeatureFlag = {
-	uuid: typeof FeatureFlagUuids[number];
-	description: string;
-	enabled: boolean;
-};
+import type { IBootstrappable } from '~/common';
+import type { FeatureFlag, FeatureFlagUuids } from 'shared';
 
 export type FeatureFlagConfig = {
 	version: number;
@@ -34,7 +28,7 @@ export class FeatureFlagsService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerSyncHandler(IpcChannel.FeatureFlag_GetFeatureFlags, e => e.returnValue = Array.from(this.featureFlags));
+		this.ipc.registerSyncHandler('feature-flag<-get-feature-flags', e => e.returnValue = Array.from(this.featureFlags));
 
 		await this.processConfig();
 	}

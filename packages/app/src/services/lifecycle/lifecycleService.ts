@@ -1,9 +1,9 @@
 import mitt from 'mitt';
 import { app } from 'electron';
-import { timeout } from '~/common/async';
+import { timeout } from '~/common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import type { IBootstrappable } from '~/common/IBootstrappable';
+import type { IBootstrappable } from '~/common';
 
 type LifecycleEvents = {
 	shutdown: void;

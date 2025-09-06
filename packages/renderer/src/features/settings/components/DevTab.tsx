@@ -54,7 +54,7 @@ export const DevTab = () => {
 					<span>GitHub</span>
 				</Anchor>
 				{import.meta.env.DEV && (
-					<Anchor className="text-sm" onClick={() => window.api.showUpdaterWindow()}>(DEV) Show updater window</Anchor>
+					<Anchor className="text-sm" onClick={() => window.ipc.invoke('updater<-show-window')}>(DEV) Show updater window</Anchor>
 				)}
 			</div>
 		</div>

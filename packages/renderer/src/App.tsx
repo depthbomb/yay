@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
+import { SettingsKey } from 'shared';
 import { useIpc, useSetting } from './hooks';
 import { Spinner } from './components/SpinnerV2';
-import { IpcChannel, SettingsKey } from 'shared';
 import { AppFooter } from './components/AppFooter';
 import { HomePage } from './features/home/HomePage';
 import { AppMasthead } from './components/AppMasthead';
@@ -20,13 +20,13 @@ export const App = () => {
 	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
 	const [,setUpdateAvailable]       = useAtom(updateAvailableAtom);
 	const [showHintFooter]            = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
-	const [onDownloadStarted]         = useIpc(IpcChannel.Ytdlp_DownloadStarted);
-	const [onDownloadOutput]          = useIpc(IpcChannel.Ytdlp_Stdout);
-	const [onDownloadCanceled]        = useIpc(IpcChannel.Ytdlp_DownloadCanceled);
-	const [onDownloadFinished]        = useIpc(IpcChannel.Ytdlp_DownloadFinished);
-	const [onUpdatingYtdlpBinary]     = useIpc(IpcChannel.Ytdlp_UpdatingBinary);
-	const [onUpdatedYtdlpBinary]      = useIpc(IpcChannel.Ytdlp_UpdatedBinary);
-	const [onUpdateAvailable]         = useIpc(IpcChannel.Updater_Outdated);
+	const [onDownloadStarted]         = useIpc('yt-dlp->download-started');
+	const [onDownloadOutput]          = useIpc('yt-dlp->stdout');
+	const [onDownloadCanceled]        = useIpc('yt-dlp->download-canceled');
+	const [onDownloadFinished]        = useIpc('yt-dlp->download-finished');
+	const [onUpdatingYtdlpBinary]     = useIpc('yt-dlp->updating-binary');
+	const [onUpdatedYtdlpBinary]      = useIpc('yt-dlp->updated-binary');
+	const [onUpdateAvailable]         = useIpc('updater->outdated');
 
 	const accentCss = clsx(
 		'absolute -z-10',
@@ -39,14 +39,14 @@ export const App = () => {
 	useNativeTextMenu();
 
 	useEffect(() => {
-		onDownloadStarted((url: string) => {
+		onDownloadStarted(({ url }) => {
 			setUrl(url);
 			setIsWorking(true);
 			clearLog();
 			pushToLog('OPERATION STARTED');
 		});
 
-		onDownloadOutput((line: string) => pushToLog(line));
+		onDownloadOutput(({ line }) => pushToLog(line));
 
 		onDownloadFinished(() => {
 			resetApp();

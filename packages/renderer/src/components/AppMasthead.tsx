@@ -21,7 +21,7 @@ const UpdateIndicator = () => {
 
 	return (
 		<Tooltip content="Update available!">
-			<button className="p-1" type="button" onClick={() => window.api.showUpdaterWindow()}>
+			<button className="p-1" type="button" onClick={() => window.ipc.invoke('updater<-show-window')}>
 				<Icon path={mdiUpdate} className={`size-4 ${isColored ? 'text-yellow-500' : 'text-white'}`}/>
 			</button>
 		</Tooltip>
@@ -29,7 +29,7 @@ const UpdateIndicator = () => {
 };
 
 export const AppMasthead = () => {
-	const openDownloadDir                   = useThrottle(window.api.openDownloadDir, 2_500);
+	const openDownloadDir                   = useThrottle(() => window.ipc.invoke('main<-open-download-dir'), 2_500);
 	const holdingAlt                        = useModifierKey('Alt');
 	const [isWindowPinned, setWindowPinned] = useAtom(windowPinnedAtom);
 	const [updateAvailable]                 = useAtom(updateAvailableAtom);
@@ -41,7 +41,7 @@ export const AppMasthead = () => {
 		}
 	);
 
-	const onPinWindowButtonClicked = () => window.api.toggleWindowPinned().then(setWindowPinned);
+	const onPinWindowButtonClicked = () => window.ipc.invoke('main<-toggle-window-pinned').then(setWindowPinned);
 
 	return (
 		<header className={headerCss}>
@@ -50,7 +50,7 @@ export const AppMasthead = () => {
 				{updateAvailable && <UpdateIndicator/>}
 				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="bottom" onClick={() => openDownloadDir()}/>
 				<IconButton icon={isWindowPinned ? mdiPinOff : mdiPin} title={isWindowPinned ? 'Unpin menu' : 'Pin menu'} tooltipSide="bottom" onClick={onPinWindowButtonClicked}/>
-				<IconButton icon={mdiCog} title="Settings" tooltipSide="bottom" onClick={() => window.api.showSettingsUI()}/>
+				<IconButton icon={mdiCog} title="Settings" tooltipSide="bottom" onClick={() => window.ipc.invoke('settings<-show-ui')}/>
 			</div>
 		</header>
 	);

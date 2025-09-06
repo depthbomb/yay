@@ -21,8 +21,8 @@ export const DownloadsTab = () => {
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Download folder</p>
-				<TextInput value={downloadDir} onClick={() => window.api.openDownloadDirPicker()} type="text" readOnly className="w-full" size="small"/>
-				<Anchor onClick={() => window.api.openDownloadDirPicker()} className="text-xs cursor-pointer">Change...</Anchor>
+				<TextInput value={downloadDir} onClick={() => window.ipc.invoke('main<-pick-download-dir')} type="text" readOnly className="w-full" size="small"/>
+				<Anchor onClick={() => window.ipc.invoke('main<-pick-download-dir')} className="text-xs cursor-pointer">Change...</Anchor>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Output name template</p>
