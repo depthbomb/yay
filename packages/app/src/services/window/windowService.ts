@@ -45,7 +45,12 @@ export class WindowService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerHandler('window<-minimize', (_e, windowName: string) => this.minimizeWindow(windowName));
+		this.ipc.registerHandler('window<-minimize', (e) => {
+			const window = BrowserWindow.fromWebContents(e.sender);
+			if (window?.minimizable) {
+				window?.minimize();
+			}
+		});
 	}
 
 	public createMainWindow(options: CreateMainWindowOptions) {
@@ -133,6 +138,7 @@ export class WindowService implements IBootstrappable {
 
 	public closeAllWindows(force = false) {
 		this.logger.debug('Attempting to close all windows', { force });
+
 		for (const name in this.windows) {
 			const window = this.windows.get(name)!;
 			if (force) {
@@ -145,26 +151,16 @@ export class WindowService implements IBootstrappable {
 		}
 	}
 
-	public emitMain<K extends keyof IIpcEvents>(
-		channel: K,
-		...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]
-	) {
+	public emitMain<K extends keyof IIpcEvents>(channel: K, ...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]) {
 		this.emit(this.mainWindowName, channel, ...args);
 	}
 
-	public emit<K extends keyof IIpcEvents>(
-		windowName: string,
-		channel: K,
-		...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]
-	) {
+	public emit<K extends keyof IIpcEvents>(windowName: string, channel: K, ...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]) {
 		const window = this.getWindow(windowName);
 		window?.webContents.send(channel, ...args);
 	}
 
-	public emitAll<K extends keyof IIpcEvents>(
-		channel: K,
-		...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]
-	) {
+	public emitAll<K extends keyof IIpcEvents>(channel: K, ...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]) {
 		for (const window of this.windows.values()) {
 			window?.webContents.send(channel, ...args);
 		}

@@ -1,7 +1,4 @@
-import type { SettingsKey } from './settings';
-import type { Endpoints } from '@octokit/types';
 import type { IIpcEvents, IIpcContract, IpcChannel } from '.';
-import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
 export type Awaitable<T> = PromiseLike<T> | T;
 export type Maybe<T>     = T | undefined;
@@ -17,50 +14,6 @@ export type IpcApi = {
 	off<K extends keyof IIpcEvents>(channel: K, listener: (payload: IIpcEvents[K]) => void): void;
 	removeAllListeners: (channel: IpcChannel) => void;
 };
-
-// export type CoreApi = {
-// 	showMessageBox(options: MessageBoxOptions): Promise<MessageBoxReturnValue>;
-// 	showTextSelectionMenu(type: 'input' | 'input-selection' | 'text-selection'): Promise<void>;
-// 	//
-// 	minimizeWindow(windowName: string): Promise<void>;
-// 	openDownloadDir(): Promise<void>;
-// 	openDownloadDirPicker(): Promise<void>;
-// 	openCookiesFilePicker(): Promise<void>;
-// 	toggleWindowPinned(): Promise<boolean>;
-// 	openLogFile(): Promise<void>;
-// 	openAppData(): Promise<void>;
-// 	//
-// 	cancelSetup(): Promise<void>;
-// 	//
-// 	getSettingsValue<T>(key: SettingsKey, defaultValue?: any, secure?: boolean): Promise<T>;
-// 	setSettingsValue(key: SettingsKey, value: any, secure?: boolean): Promise<void>;
-// 	resetSettings(): Promise<void>;
-// 	showSettingsUI(): Promise<void>;
-// 	//
-// 	downloadVideo(url: string): Promise<void>;
-// 	downloadAudio(url: string): Promise<void>;
-// 	downloadDefault(url: string): Promise<void>;
-// 	removeCookiesFile(): Promise<void>;
-// 	cancelDownload(): Promise<void>;
-// 	recheckBinaries(): Promise<void>;
-// 	updateYtdlpBinary(): Promise<void>;
-// 	//
-// 	enableAutoStart(): Promise<void>;
-// 	disableAutoStart(): Promise<void>;
-// 	toggleAutoStart(): Promise<boolean>;
-// 	//
-// 	enableGlobalMenu(): Promise<void>;
-// 	disableGlobalMenu(): Promise<void>;
-// 	toggleGlobalMenu(): Promise<boolean>;
-// 	//
-// 	showUpdaterWindow(): Promise<void>;
-// 	getLatestRelease(): Promise<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>;
-// 	getLatestChangelog(): Promise<string>;
-// 	getCommitsSinceBuild(): Promise<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>;
-// 	checkForUpdates(): Promise<boolean>;
-// 	startUpdate(): Promise<void>;
-// 	cancelUpdate(): Promise<void>;
-// };
 
 export type SystemApi = {
 	arch: () => string;
