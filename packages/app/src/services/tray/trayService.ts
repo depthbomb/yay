@@ -16,10 +16,9 @@ import type { MenuItemConstructorOptions } from 'electron';
 export class TrayService implements IBootstrappable {
 	public tray: Maybe<Tray>;
 
-	private settingsIcon: string;
-	private showIcon: string;
-	private quitIcon: string;
-
+	private readonly settingsIcon: string;
+	private readonly showIcon: string;
+	private readonly quitIcon: string;
 	private readonly trayTooltip: string;
 	private readonly logoIcon: string;
 	private readonly trayIcon: string;
@@ -28,7 +27,8 @@ export class TrayService implements IBootstrappable {
 	public constructor(
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
-		private readonly mainWindow     = inject(MainWindowService, { lazy: true }),
+		// @ts-expect-error circular type inference
+		private readonly mainWindow     = inject(MainWindowService),
 		private readonly settingsWindow = inject(SettingsWindowService),
 		private readonly ytdlp          = inject(YtdlpService),
 	) {
@@ -48,7 +48,7 @@ export class TrayService implements IBootstrappable {
 			this.tray = new Tray(this.trayIcon);
 			this.tray.setToolTip(this.trayTooltip);
 			this.tray.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
-			this.tray.on('click', () => this.mainWindow().showMainWindow());
+			this.tray.on('click', () => this.mainWindow.showMainWindow());
 
 			this.ytdlp.events.on('downloadStarted', url => {
 				this.tray!.setImage(this.trayDownloadingIcon);

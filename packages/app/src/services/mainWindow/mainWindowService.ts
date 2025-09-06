@@ -28,6 +28,7 @@ export class MainWindowService implements IBootstrappable {
 		private readonly settings       = inject(SettingsService),
 		private readonly window         = inject(WindowService),
 		private readonly windowPosition = inject(WindowPositionService),
+		// @ts-expect-error circular type inference
 		private readonly tray           = inject(TrayService, { lazy: true }),
 		private readonly ytdlp          = inject(YtdlpService),
 	) {}
