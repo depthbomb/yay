@@ -1,3 +1,8 @@
+# 1.24.0
+
+- Further adjusted the styling of the setup window depending on window focus
+- Improved backend systems, however you won't notice any differences
+
 # 1.23.0
 
 - Fixed the main window displaying in the center of the screen if opened via a second instance if it hasn't been displayed already

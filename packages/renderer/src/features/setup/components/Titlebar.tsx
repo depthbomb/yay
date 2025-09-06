@@ -25,9 +25,9 @@ export const Titlebar: FC<TitlebarProps> = ({ title, showIcon = true }) => {
 					<img src={logo} className="size-4" width="16" height="16" draggable="false"/>
 				</div>
 			)}
-			{title && <p className={clsx('min-w-max h-8 leading-8 text-xs draggable', focused ? 'text-white' : 'text-gray-300')}>{title}</p>}
+			{title && <p className={clsx('min-w-max h-8 leading-8 text-xs draggable', focused ? 'opacity-100' : 'opacity-70')}>{title}</p>}
 			<span className="size-full draggable"/>
-			<TitlebarButton onClick={() => window.ipc.invoke('window<-minimize', 'setup')} type="minimize"/>
+			<TitlebarButton onClick={() => window.ipc.invoke('window<-minimize')} type="minimize"/>
 			<TitlebarButton onClick={() => window.ipc.invoke('setup<-cancel')} type="close"/>
 		</div>
 	);
