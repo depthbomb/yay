@@ -271,22 +271,24 @@ export class SetupService implements IBootstrappable {
 	}
 
 	private verifyYtdlpBinary(binaryPath: string): Promise<boolean> {
-		const versionPattern = /\d{4}\.\d+\.\d+/;
-		return new Promise<boolean>((res, rej) => {
-			let output = '';
-			const proc = spawn(binaryPath, ['--version']);
-			proc.stdout.on('data', data => output += data.toString());
-			proc.on('error', err => rej(err));
-			proc.on('close', () => {
-				const matches = versionPattern.exec(output.trim());
-				if (matches) {
-					this.logger.debug('PATH yt-dlp binary is verified', { version: matches[0] });
-					res(true);
-				} else {
-					rej(new Error('Version pattern not found in output'));
-				}
-			});
+		const versionPattern               = /\d{4}\.\d+\.\d+/;
+		const { resolve, reject, promise } = Promise.withResolvers<boolean>();
+
+		let output = '';
+		const proc = spawn(binaryPath, ['--version']);
+		proc.stdout.on('data', data => output += data.toString());
+		proc.once('error', err => reject(err));
+		proc.once('close', () => {
+			const matches = versionPattern.exec(output.trim());
+			if (matches) {
+				this.logger.debug('PATH yt-dlp binary is verified', { version: matches[0] });
+				resolve(true);
+			} else {
+				reject(new Error('Version pattern not found in output'));
+			}
 		});
+
+		return promise;
 	}
 
 	private async checkIfOnline() {

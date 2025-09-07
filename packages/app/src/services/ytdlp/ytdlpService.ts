@@ -1,10 +1,10 @@
 import mitt from 'mitt';
 import { dialog } from 'electron';
+import { SettingsKey } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
-import { IpcChannel, SettingsKey } from 'shared';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { ProcessService } from '~/services/process';
@@ -66,12 +66,13 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	public async download(url: string, audioOnly = false) {
-		const ytDlpPath            = this.settings.get<string>(SettingsKey.YtdlpPath);
-		const downloadNameTemplate = this.settings.get<string>(SettingsKey.DownloadNameTemplate);
-		const downloadDir          = this.settings.get<string>(SettingsKey.DownloadDir);
-		const showNotification     = this.settings.get<boolean>(SettingsKey.EnableDownloadCompletionToast);
-		const ffmpegPath           = getExtraFilePath('ffmpeg.exe');
-		const downloadPath         = join(downloadDir, downloadNameTemplate).replaceAll(win32.sep, posix.sep);
+		const { resolve, reject, promise } = Promise.withResolvers<void>();
+		const ytDlpPath                    = this.settings.get<string>(SettingsKey.YtdlpPath);
+		const downloadNameTemplate         = this.settings.get<string>(SettingsKey.DownloadNameTemplate);
+		const downloadDir                  = this.settings.get<string>(SettingsKey.DownloadDir);
+		const showNotification             = this.settings.get<boolean>(SettingsKey.EnableDownloadCompletionToast);
+		const ffmpegPath                   = getExtraFilePath('ffmpeg.exe');
+		const downloadPath                 = join(downloadDir, downloadNameTemplate).replaceAll(win32.sep, posix.sep);
 
 		const emitLog = (line: string) => {
 			if (line.length === 0) {
@@ -152,6 +153,8 @@ export class YtdlpService implements IBootstrappable {
 			}
 
 			this.cleanupProcess();
+
+			resolve();
 		});
 		this.proc.once('error', async err => {
 			this.logger.error('yt-dlp process error', { err });
@@ -162,7 +165,11 @@ export class YtdlpService implements IBootstrappable {
 				message: err.message,
 				detail: err.stack
 			});
+
+			reject(err);
 		});
+
+		return promise;
 	}
 
 	public async cancelDownload(shutdown: boolean) {
@@ -185,46 +192,48 @@ export class YtdlpService implements IBootstrappable {
 		this.logger.info('Attempting to update yt-dlp binary');
 		this.window.emitAll('yt-dlp->updating-binary');
 
+		const { resolve, promise } = Promise.withResolvers<void>();
+
 		const ytDlpPath = this.settings.get<string>(SettingsKey.YtdlpPath);
 
-		return new Promise<void>((res) => {
-			const proc           = spawn(ytDlpPath, ['-U']);
-			const versionPattern = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
+		const proc           = spawn(ytDlpPath, ['-U']);
+		const versionPattern = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
 
-			let wasUpdated    = false;
-			let latestVersion = '';
+		let wasUpdated    = false;
+		let latestVersion = '';
 
-			proc.stdout!.on('data', data => {
-				const line = data.toString().trim() as string;;
-				this.logger.silly(`yt-dlp -U: ${line}`);
+		proc.stdout!.on('data', data => {
+			const line = data.toString().trim() as string;;
+			this.logger.silly(`yt-dlp -U: ${line}`);
 
-				wasUpdated = !line.includes('is up to date');
+			wasUpdated = !line.includes('is up to date');
 
-				const versionMatch = line.match(versionPattern);
-				if (versionMatch) {
-					latestVersion = versionMatch[0];
-				}
-			});
-			proc.once('close', async code => {
-				this.logger.info('yt-dlp update process exited', { code });
-				this.window.emitAll('yt-dlp->updated-binary');
-				if (wasUpdated) {
-					await dialog.showMessageBox({
-						type: 'info',
-						title: 'yt-dlp update',
-						message: `yt-dlp was updated to ${latestVersion}.`
-					});
-				} else {
-					await dialog.showMessageBox({
-						type: 'info',
-						title: 'yt-dlp update',
-						message: `You are using the latest version of yt-dlp (${latestVersion}).`
-					});
-				}
-
-				res();
-			});
+			const versionMatch = line.match(versionPattern);
+			if (versionMatch) {
+				latestVersion = versionMatch[0];
+			}
 		});
+		proc.once('close', async code => {
+			this.logger.info('yt-dlp update process exited', { code });
+			this.window.emitAll('yt-dlp->updated-binary');
+			if (wasUpdated) {
+				await dialog.showMessageBox({
+					type: 'info',
+					title: 'yt-dlp update',
+					message: `yt-dlp was updated to ${latestVersion}.`
+				});
+			} else {
+				await dialog.showMessageBox({
+					type: 'info',
+					title: 'yt-dlp update',
+					message: `You are using the latest version of yt-dlp (${latestVersion}).`
+				});
+			}
+
+			resolve();
+		});
+
+		return promise;
 	}
 
 	private cleanupProcess() {

@@ -63,35 +63,46 @@ export class BinaryDownloader {
 
 		const sevenZipPath = getExtraFilePath('7za.exe');
 
-		return new Promise<void>((res, rej) => {
-			if (signal.aborted) {
-				return res();
-			}
+		const { promise, resolve, reject } = Promise.withResolvers<void>();
 
-			onExtracting?.();
-			const extraction = spawn(sevenZipPath, [
-				'e',
-				tempPath,
-				'-r',
-				`-o${dirname(path)}`,
-				'-aoa',
-				'ffmpeg.exe',
-				'ffprobe.exe',
-			]);
+		if (signal.aborted) {
+			resolve();
+			return promise;
+		}
 
-			extraction.once('error', err => this.logger.error('Error while extracting archive', { err }));
-			extraction.once('close', async code => {
+		onExtracting?.();
+
+		const extraction = spawn(sevenZipPath, [
+			'e',
+			tempPath,
+			'-r',
+			`-o${dirname(path)}`,
+			'-aoa',
+			'ffmpeg.exe',
+			'ffprobe.exe',
+		]);
+
+		extraction.once('error', err => {
+			this.logger.error('Error while extracting archive', { err });
+			reject(err);
+		});
+
+		extraction.once('close', async code => {
+			try {
 				onCleaningUp?.();
-
 				await unlink(tempPath);
 
 				if (code === 0) {
-					res();
+					resolve();
 				} else {
-					rej(new Error('Failed to extract FFmpeg binary'))
+					reject(new Error('Failed to extract FFmpeg binary'));
 				}
-			});
+			} catch (err) {
+				reject(err as Error);
+			}
 		});
+
+		return promise;
 	}
 
 	private async resolveYtdlpDownloadUrl() {
