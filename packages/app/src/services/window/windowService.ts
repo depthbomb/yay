@@ -112,6 +112,18 @@ export class WindowService implements IBootstrappable {
 		return this.windows.get(name);
 	}
 
+	public useRendererRouter(pageHash: string = '') {
+		if (import.meta.env.DEV) {
+			return `http://localhost:${DEV_PORT}/renderer.html#${pageHash}`;
+		}
+
+		return this.getHTMLPath(`renderer.html#${pageHash}`);
+	}
+
+	/**
+	 * @deprecated As of v1.25.0, BrowserViews now use a single `renderer.html` file and display
+	 * different pages via hash routing. Use {@link useRendererRouter} instead.
+	 */
 	public resolveRendererHTML(indexPath: string) {
 		if (import.meta.env.DEV) {
 			return `http://localhost:${DEV_PORT}/${indexPath}`;

@@ -112,3 +112,5 @@ export const UpdaterPage = () => {
 		</div>
 	));
 };
+
+export default UpdaterPage;

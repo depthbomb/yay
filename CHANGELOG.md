@@ -1,6 +1,10 @@
+# 1.25.0
+
+- Additional optimizations and improvements to underlying systems - again, you probably won't notice any differences
+
 # 1.24.1
 
-- Fixed the context menu not appearing
+- Fixed the context menu not appearing when right-clicking the URL input
 
 # 1.24.0
 

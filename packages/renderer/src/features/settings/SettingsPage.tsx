@@ -88,3 +88,5 @@ export const SettingsPage = () => {
 		</Tabs.Root>
 	);
 };
+
+export default SettingsPage;

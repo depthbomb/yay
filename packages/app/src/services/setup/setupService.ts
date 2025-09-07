@@ -72,7 +72,7 @@ export class SetupService implements IBootstrappable {
 		const ffprobePath = getExtraFilePath('ffprobe.exe');
 		const mainWindow  = this.window.getMainWindow()!;
 		const setupWindow = this.window.createWindow('setup', {
-			url: this.window.resolveRendererHTML('setup.html'),
+			url: this.window.useRendererRouter('setup'),
 			browserWindowOptions: {
 				show: false,
 				width: 450,

@@ -3,4 +3,7 @@ export * from './useIpc';
 export * from './useKeyCombo';
 export * from './useModifierKey';
 export * from './useSetting';
+export * from './useNativeTextMenu';
+export * from './useProbability';
 export * from './useThrottle';
+export * from './useWindowFocus';

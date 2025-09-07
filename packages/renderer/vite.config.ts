@@ -21,10 +21,7 @@ export default defineConfig(({ mode }) => {
 			assetsInlineLimit: (path) => path.endsWith('.png') || path.endsWith('.jpg') || path.endsWith('.svg'),
 			rollupOptions: {
 				input: {
-					index: resolve('./src/index.html'),
-					settings: resolve('./src/settings.html'),
-					setup: resolve('./src/setup.html'),
-					updater: resolve('./src/updater.html'),
+					renderer: resolve('./src/renderer.html'),
 				},
 				output: {
 					entryFileNames: '[hash].js',

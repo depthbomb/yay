@@ -16,7 +16,7 @@ export class SettingsWindowService implements IBootstrappable {
 		private readonly window    = inject(WindowService),
 	) {
 		this.settingsWindow = this.window.createWindow('settings', {
-			url: this.window.resolveRendererHTML('settings.html'),
+			url: this.window.useRendererRouter('settings'),
 			externalUrlRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
@@ -45,6 +45,8 @@ export class SettingsWindowService implements IBootstrappable {
 				this.settingsWindow!.hide();
 			}
 		});
+
+		console.log(this.settingsWindow.webContents.getURL());
 	}
 
 	public async bootstrap() {

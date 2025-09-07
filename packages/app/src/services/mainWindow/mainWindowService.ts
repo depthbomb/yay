@@ -36,7 +36,7 @@ export class MainWindowService implements IBootstrappable {
 	public async bootstrap() {
 		//#region Window creation
 		this.mainWindow = this.window.createMainWindow({
-			url: this.window.resolveRendererHTML('index.html'),
+			url: this.window.useRendererRouter(),
 			externalUrlRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,

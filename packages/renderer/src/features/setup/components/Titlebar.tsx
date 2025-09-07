@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { useState } from 'react';
 import logo from '~/assets/img/logo.svg';
+import { useWindowFocus } from '~/hooks';
 import { TitlebarButton } from './TitlebarButton';
-import { useWindowFocus } from '~/hooks/useWindowFocus';
 import type { FC } from 'react';
 
 type TitlebarProps = {
