@@ -6,4 +6,5 @@ export * from './useSetting';
 export * from './useNativeTextMenu';
 export * from './useProbability';
 export * from './useThrottle';
+export * from './useTitle';
 export * from './useWindowFocus';

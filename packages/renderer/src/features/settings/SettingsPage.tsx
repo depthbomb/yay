@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { Tabs } from 'radix-ui';
 import { useAtom } from 'jotai';
-import { useIpc } from '~/hooks';
 import { useEffect } from 'react';
+import { useIpc, useTitle } from '~/hooks';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
 import { YoutubeTab } from './components/YoutubeTab';
@@ -47,6 +47,8 @@ export const SettingsPage = () => {
 	const [onDownloadFinished]    = useIpc('yt-dlp->download-finished');
 	const [onUpdatingYtdlpBinary] = useIpc('yt-dlp->updating-binary');
 	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
+
+	useTitle('Settings');
 
 	useEffect(() => {
 		onUpdatingYtdlpBinary(() => setIsUpdating(true));

@@ -7,8 +7,8 @@ import { AppFooter } from '~/components/AppFooter';
 import { SettingsKey, isValidHttpUrl } from 'shared';
 import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
-import { useIpc, useSetting, useKeyCombo, useNativeTextMenu } from '~/hooks';
 import { logAtom, shiftLogAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
+import { useIpc, useTitle, useSetting, useKeyCombo, useNativeTextMenu } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -82,6 +82,7 @@ export const HomePage = () => {
 		await window.ipc.invoke('yt-dlp<-download-default', url);
 	};
 
+	useTitle('yay');
 	useNativeTextMenu();
 
 	useKeyCombo({ key: 'enter' }, trySubmitting);

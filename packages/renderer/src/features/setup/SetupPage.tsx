@@ -1,4 +1,4 @@
-import { useIpc } from '~/hooks';
+import { useIpc, useTitle } from '~/hooks';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/SpinnerV2';
 import { Titlebar } from './components/Titlebar';
@@ -6,6 +6,8 @@ import { Titlebar } from './components/Titlebar';
 export const SetupPage = () => {
 	const [setupStep, setSetupStep] = useState('Checking requirements...');
 	const [onSetupStep]             = useIpc('setup->step');
+
+	useTitle('yay setup');
 
 	useEffect(() => {
 		const removeListener = onSetupStep(({ message }) => setSetupStep(message));

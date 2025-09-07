@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { Tabs } from 'radix-ui';
-import { useIpc } from '~/hooks';
 import { mdiDownload } from '@mdi/js';
+import { useIpc, useTitle } from '~/hooks';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/SpinnerV2';
 import { PushButton } from '~/components/PushButton';
@@ -50,6 +50,8 @@ export const UpdaterPage = () => {
 		setUpdating(false);
 		setStatus(defaultStatus);
 	}
+
+	useTitle('Updater');
 
 	useEffect(() => {
 		window.ipc.invoke('updater<-get-latest-release').then(setRelease);
