@@ -9,5 +9,5 @@ for (const dir of directories) {
 	const src  = `static/extra/${dir}/`;
 	const dest = `static/extra/${dir}.asar`;
 
-	createPackage(src, dest).then(() => console.log('Created asar', dest, 'from', src)).catch(console.error);
+	createPackage(src, dest).then(() => console.log('✅ Created asar', dest, 'from', src)).catch(console.error);
 }

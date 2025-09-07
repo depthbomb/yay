@@ -14,7 +14,6 @@
 	},
 	"devDependencies": {
 		"@swc/core": "1.13.5",
-		"ts-morph": "26.0.0",
 		"tslib": "^2.8.1",
 		"tsup": "^8.5.0",
 		"typescript": "^5.9.2"

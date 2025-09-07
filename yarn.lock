@@ -8044,7 +8044,6 @@ __metadata:
   resolution: "shared@workspace:packages/shared"
   dependencies:
     "@swc/core": "npm:1.13.5"
-    ts-morph: "npm:26.0.0"
     tslib: "npm:^2.8.1"
     tsup: "npm:^8.5.0"
     typescript: "npm:^5.9.2"
@@ -9159,6 +9158,7 @@ __metadata:
     dotenv: "npm:^17.2.2"
     electron-builder: "npm:26.0.16"
     node-gyp: "npm:^11.4.2"
+    ts-morph: "npm:26.0.0"
     ts-node-maintained: "npm:^10.9.6"
     typescript: "npm:^5.9.2"
   languageName: unknown

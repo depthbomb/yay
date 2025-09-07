@@ -17,7 +17,7 @@ import { GlobalMenuService } from '~/services/globalMenu';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
-import type { MessageBoxOptions, MenuItemConstructorOptions } from 'electron';
+import type { MenuItemConstructorOptions } from 'electron';
 
 @injectable()
 export class MainService {
@@ -41,11 +41,6 @@ export class MainService {
 	) {}
 
 	public async boot() {
-		this.logger.info('Session started');
-
-		this.featureFlags.set('0196518a-ab04-74b7-b69f-98f85176382a', 'Enable seasonal logos', true);
-		this.featureFlags.set('ed25052a-531e-4147-b91c-5b123adf0fe7', 'Enable new tray context menu', false);
-
 		this.logger.info('Bootstrapping services');
 
 		await Promise.all([

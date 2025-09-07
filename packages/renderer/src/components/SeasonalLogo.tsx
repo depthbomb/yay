@@ -64,7 +64,7 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 
 	return (
 		<div className="space-x-3 w-full flex items-center">
-			{!isFeatureEnabled('0196518a-ab04-74b7-b69f-98f85176382a') ? (
+			{!isFeatureEnabled('SeasonalEffects') ? (
 				<img ref={ref} src={logo} className={baseCss} draggable="false" width="32" height="32" {...props}/>
 			) : (
 				<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>

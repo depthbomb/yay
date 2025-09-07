@@ -1,24 +1,24 @@
 import { app } from 'electron';
 import { join } from 'node:path';
-import { IpcChannel } from 'shared';
 import { fileExists } from '~/common';
+import { FeatureFlags } from 'shared';
 import { IpcService } from '~/services/ipc';
 import { parse, stringify } from 'smol-toml';
 import { inject, injectable } from '@needle-di/core';
 import { readFile, writeFile } from 'node:fs/promises';
 import type { IBootstrappable } from '~/common';
-import type { FeatureFlag, FeatureFlagUuids } from 'shared';
+import type { FeatureFlag, FeatureFlagKey, FeatureFlagUuid } from 'shared';
 
 export type FeatureFlagConfig = {
 	version: number;
-	featureFlags: Array<FeatureFlag>;
+	featureFlags: FeatureFlag[];
 };
 
 @injectable()
 export class FeatureFlagsService implements IBootstrappable {
-	public readonly version      = 1 as const;
-	public readonly featureFlags = new Set<FeatureFlag>();
+	public readonly version = 1 as const;
 
+	private readonly featureFlags = new Map<FeatureFlagUuid, FeatureFlag>();
 	private readonly featureFlagsConfigPath: string;
 
 	public constructor(
@@ -28,43 +28,46 @@ export class FeatureFlagsService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerSyncHandler('feature-flag<-get-feature-flags', e => e.returnValue = Array.from(this.featureFlags));
+		this.ipc.registerSyncHandler('feature-flag<-get-feature-flags', e => (e.returnValue = Array.from(this.featureFlags.values())));
 
 		await this.processConfig();
 	}
 
-	public set(uuid: typeof FeatureFlagUuids[number], description: string, enabled: boolean) {
-		const featureFlag         = { uuid, description, enabled };
-		const existingFeatureFlag = this.featureFlags.values().find(f => f.uuid === uuid);
-		if (existingFeatureFlag) {
-			this.featureFlags.delete(existingFeatureFlag);
-		}
+	public isEnabled(key: FeatureFlagKey): boolean {
+		const def  = FeatureFlags[key];
+		const flag = this.featureFlags.get(def.uuid);
 
-		this.featureFlags.add(featureFlag);
-	}
-
-	public isEnabled(uuid: typeof FeatureFlagUuids[number]) {
-		const featureFlag = this.featureFlags.values().find(f => f.uuid === uuid);
-		if (!featureFlag) {
-			throw new Error(`Invalid feature flag UUID: ${uuid}`);
-		}
-
-		return featureFlag.enabled;
+		return flag?.enabled ?? def.default;
 	}
 
 	private async processConfig() {
-		const configExists = await fileExists(this.featureFlagsConfigPath);
-		if (configExists) {
+		for (const key of Object.keys(FeatureFlags) as FeatureFlagKey[]) {
+			const def = FeatureFlags[key];
+			this.featureFlags.set(def.uuid, {
+				uuid: def.uuid,
+				description: def.description,
+				enabled: def.default,
+			});
+		}
+
+		if (await fileExists(this.featureFlagsConfigPath)) {
 			const toml = await readFile(this.featureFlagsConfigPath, 'utf8');
 			const data = parse(toml) as FeatureFlagConfig;
+
 			if (data.version === this.version) {
-				for (const { uuid, description, enabled } of data.featureFlags) {
-					this.set(uuid, description, enabled);
+				for (const { uuid, enabled } of data.featureFlags) {
+					const existing = this.featureFlags.get(uuid);
+					if (existing) {
+						this.featureFlags.set(uuid, { ...existing, enabled });
+					}
 				}
 			}
 		}
 
-		const configToml = stringify({ version: this.version, featureFlags: Array.from(this.featureFlags) });
+		const configToml = stringify({
+			version: this.version,
+			featureFlags: Array.from(this.featureFlags.values()),
+		});
 		await writeFile(this.featureFlagsConfigPath, configToml, 'utf8');
 	}
 }
