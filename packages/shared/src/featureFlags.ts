@@ -8,9 +8,4 @@ export const FeatureFlags = {
 		description: 'Enable seasonal effects',
 		default: true,
 	},
-	FancyMenus: {
-		uuid: 'ed25052a-531e-4147-b91c-5b123adf0fe7',
-		description: 'Enable fancy menus',
-		default: false,
-	},
 } as const;

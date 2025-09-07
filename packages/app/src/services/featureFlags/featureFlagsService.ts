@@ -68,6 +68,7 @@ export class FeatureFlagsService implements IBootstrappable {
 			version: this.version,
 			featureFlags: Array.from(this.featureFlags.values()),
 		});
+
 		await writeFile(this.featureFlagsConfigPath, configToml, 'utf8');
 	}
 }
