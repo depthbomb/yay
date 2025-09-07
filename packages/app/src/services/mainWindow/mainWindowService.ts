@@ -33,7 +33,7 @@ export class MainWindowService implements IBootstrappable {
 		private readonly ytdlp          = inject(YtdlpService),
 	) {}
 
-	public async bootstrap(): Promise<void> {
+	public async bootstrap() {
 		//#region Window creation
 		this.mainWindow = this.window.createMainWindow({
 			url: this.window.resolveRendererHTML('index.html'),

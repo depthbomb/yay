@@ -14,7 +14,7 @@ export class DeepLinksService implements IBootstrappable {
 		private readonly ytdlp   = inject(YtdlpService),
 	) {}
 
-	public async bootstrap(): Promise<any> {
+	public async bootstrap() {
 		if (!app.isDefaultProtocolClient(product.urlProtocol)) {
 			this.logger.info('Setting app as default handler for protocol', { protocol: product.urlProtocol });
 			app.setAsDefaultProtocolClient(product.urlProtocol);

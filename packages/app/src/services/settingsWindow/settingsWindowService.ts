@@ -1,65 +1,59 @@
 import { IpcService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
-import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
-import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class SettingsWindowService implements IBootstrappable {
-	private settingsWindow: Maybe<BrowserWindow>;
+	private readonly settingsWindow: BrowserWindow;
 
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
-		private readonly logger    = inject(LoggingService),
 		private readonly ipc       = inject(IpcService),
 		private readonly window    = inject(WindowService),
-	) {}
+	) {
+		this.settingsWindow = this.window.createWindow('settings', {
+			url: this.window.resolveRendererHTML('settings.html'),
+			externalUrlRules: EXTERNAL_URL_RULES,
+			browserWindowOptions: {
+				show: false,
+				minWidth: 600,
+				width: 600,
+				minHeight: 500,
+				height: 500,
+				backgroundColor: '#09090b',
+				roundedCorners: true,
+				webPreferences: {
+					spellcheck: false,
+					enableWebSQL: false,
+					nodeIntegration: true,
+					devTools: import.meta.env.DEV,
+					preload: PRELOAD_PATH,
+				}
+			},
+			onReadyToShow: () => {
+				this.settingsWindow.center();
+			},
+		});
 
-	public async bootstrap(): Promise<void> {
+		this.settingsWindow.on('close', e => {
+			if (!this.lifecycle.shutdownRequested) {
+				e.preventDefault();
+				this.settingsWindow!.hide();
+			}
+		});
+	}
+
+	public async bootstrap() {
 		this.ipc.registerHandler('settings<-show-ui', () => this.show());
 
-		this.lifecycle.events.on('shutdown', () => this.settingsWindow?.close());
+		this.lifecycle.events.on('shutdown', () => this.settingsWindow.close());
 	}
 
 	public show() {
-		if (this.settingsWindow) {
-			this.settingsWindow.show();
-		} else {
-			this.logger.debug('Creating settings window');
-			this.settingsWindow = this.window.createWindow('settings', {
-				url: this.window.resolveRendererHTML('settings.html'),
-				externalUrlRules: EXTERNAL_URL_RULES,
-				browserWindowOptions: {
-					show: false,
-					minWidth: 600,
-					width: 600,
-					minHeight: 500,
-					height: 500,
-					backgroundColor: '#09090b',
-					roundedCorners: true,
-					webPreferences: {
-						spellcheck: false,
-						enableWebSQL: false,
-						nodeIntegration: true,
-						devTools: import.meta.env.DEV,
-						preload: PRELOAD_PATH,
-					}
-				},
-				onReadyToShow: () => {
-					this.settingsWindow!.show();
-				},
-			});
-			this.settingsWindow.on('close', e => {
-				if (!this.lifecycle.shutdownRequested) {
-					e.preventDefault();
-					this.settingsWindow!.hide();
-				}
-			});
-			this.settingsWindow.center();
-		}
+		this.settingsWindow.show();
 	}
 }
