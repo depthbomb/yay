@@ -53,6 +53,7 @@ export class SetupService implements IBootstrappable {
 		await this.updateYtdlp();
 
 		this.emitStep('Done!');
+		this.setupWindow!.setProgressBar(1, { mode: 'none' });
 		this.finished = true;
 	}
 
