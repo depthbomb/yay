@@ -20,7 +20,7 @@ export class GithubService {
 	}
 
 	public async getRepositoryReleases(owner: string, repo: string) {
-		const { data } = await this.octokit.rest.repos.listReleases({ owner, repo });
+		const { data } = await this.octokit.rest.repos.listReleases({ owner, repo, mediaType: { format: 'html' } });
 
 		return data;
 	}

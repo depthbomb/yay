@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { Tabs } from 'radix-ui';
 import { mdiDownload } from '@mdi/js';
+import { HTML } from '~/components/HTML';
 import { useIpc, useTitle } from '~/hooks';
 import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/SpinnerV2';
@@ -76,7 +77,7 @@ export const UpdaterPage = () => {
 			</Tabs.List>
 			<div className="w-full overflow-y-auto rounded-lg">
 				<Tabs.Content value="changelog">
-					<div dangerouslySetInnerHTML={{ __html: changelog }}/>
+					<HTML html={changelog}/>
 				</Tabs.Content>
 				<Tabs.Content value="commits">
 					<div className="flex flex-col">

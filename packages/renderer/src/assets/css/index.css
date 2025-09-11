@@ -2,6 +2,8 @@
 @import '@fontsource-variable/noto-sans-mono';
 @import 'tailwindcss';
 
+@plugin '@tailwindcss/typography';
+
 @theme {
 	/**
 	* Colors

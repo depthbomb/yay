@@ -10,7 +10,6 @@ import { CancellationTokenSource } from '~/common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import { MarkdownService } from '~/services/markdown';
 import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -47,7 +46,6 @@ export class UpdaterService implements IBootstrappable {
 		private readonly http          = inject(HttpService),
 		private readonly github        = inject(GithubService),
 		private readonly notifications = inject(NotificationsService),
-		private readonly markdown      = inject(MarkdownService),
 	) {
 		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
 	}
@@ -82,12 +80,13 @@ export class UpdaterService implements IBootstrappable {
 		try {
 			const releases   = await this.github.getRepositoryReleases(REPO_OWNER, REPO_NAME);
 			const newRelease = releases.find(r => semver.gt(r.tag_name, product.version));
+
 			if (newRelease) {
 				this.latestRelease = newRelease;
 
 				this.logger.info('Found new release', { tag: newRelease.tag_name });
 
-				this.latestChangelog = await this.markdown.parse(newRelease.body!);
+				this.latestChangelog = newRelease.body_html!;
 				this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
 				/**
@@ -125,7 +124,9 @@ export class UpdaterService implements IBootstrappable {
 				this.logger.info('No new releases found');
 			}
 		} catch (err) {
-			this.logger.error('Error while checking for new releases', { err });
+			const { message, stack } = (err as Error);
+
+			this.logger.error('Error while checking for new releases', { error: { message, stack } });
 		}
 
 		this.isStartupCheck = false;
