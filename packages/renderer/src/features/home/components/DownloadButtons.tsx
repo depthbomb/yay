@@ -57,7 +57,7 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 			</button>
 		</div>
 	) : (
-		<Button onClick={onCancelDownloadClick} size="lg">
+		<Button onClick={onCancelDownloadClick} variant="danger" size="lg">
 			<Icon path={mdiCancel} className="size-4"/>
 			<span>Cancel</span>
 		</Button>
