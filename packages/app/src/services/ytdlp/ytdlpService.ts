@@ -188,16 +188,14 @@ export class YtdlpService implements IBootstrappable {
 		}
 	}
 
-	public async updateBinary() {
+	public async updateBinary(silent: boolean = false) {
 		this.logger.info('Attempting to update yt-dlp binary');
 		this.window.emitAll('yt-dlp->updating-binary');
 
 		const { resolve, promise } = Promise.withResolvers<void>();
-
-		const ytDlpPath = this.settings.get<string>(SettingsKey.YtdlpPath);
-
-		const proc           = spawn(ytDlpPath, ['-U']);
-		const versionPattern = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
+		const ytDlpPath            = this.settings.get<string>(SettingsKey.YtdlpPath);
+		const proc                 = spawn(ytDlpPath, ['-U']);
+		const versionPattern       = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
 
 		let wasUpdated    = false;
 		let latestVersion = '';
@@ -216,18 +214,21 @@ export class YtdlpService implements IBootstrappable {
 		proc.once('close', async code => {
 			this.logger.info('yt-dlp update process exited', { code });
 			this.window.emitAll('yt-dlp->updated-binary');
-			if (wasUpdated) {
-				await dialog.showMessageBox({
-					type: 'info',
-					title: 'yt-dlp update',
-					message: `yt-dlp was updated to ${latestVersion}.`
-				});
-			} else {
-				await dialog.showMessageBox({
-					type: 'info',
-					title: 'yt-dlp update',
-					message: `You are using the latest version of yt-dlp (${latestVersion}).`
-				});
+
+			if (!silent) {
+				if (wasUpdated) {
+					await dialog.showMessageBox({
+						type: 'info',
+						title: 'yt-dlp update',
+						message: `yt-dlp was updated to ${latestVersion}.`
+					});
+				} else {
+					await dialog.showMessageBox({
+						type: 'info',
+						title: 'yt-dlp update',
+						message: `You are using the latest version of yt-dlp (${latestVersion}).`
+					});
+				}
 			}
 
 			resolve();
