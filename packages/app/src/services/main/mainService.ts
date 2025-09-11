@@ -5,7 +5,6 @@ import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
-import { app, Menu, shell, dialog } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
@@ -16,6 +15,7 @@ import { MainWindowService } from '~/services/mainWindow';
 import { GlobalMenuService } from '~/services/globalMenu';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
+import { app, Menu, shell, dialog, BrowserWindow } from 'electron';
 import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
 import type { MenuItemConstructorOptions } from 'electron';
 
@@ -59,9 +59,16 @@ export class MainService {
 			this.updater.bootstrap(),
 		]);
 
-		this.ipc.registerHandler('show-message-box', async (_e, options) => {
-			this.logger.debug('Showing messagebox', { options });
-			return dialog.showMessageBox(this.window.getMainWindow()!, options);
+		this.ipc.registerHandler('show-message-box', async (e, options) => {
+			const window = BrowserWindow.fromWebContents(e.sender);
+
+			this.logger.debug('Showing messagebox', { window, options });
+
+			if (window) {
+				return dialog.showMessageBox(window, options);
+			} else {
+				return dialog.showMessageBox(options);
+			}
 		});
 
 		this.ipc.registerHandler('show-text-selection-menu', async (_e, type) => {
