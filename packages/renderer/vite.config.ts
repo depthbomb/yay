@@ -18,7 +18,6 @@ export default defineConfig(({ mode }) => {
 			emptyOutDir: false,
 			sourcemap: mode !== 'production',
 			minify: isProduction ? 'terser' : false,
-			assetsInlineLimit: (path) => path.endsWith('.png') || path.endsWith('.jpg') || path.endsWith('.svg'),
 			rollupOptions: {
 				input: {
 					renderer: resolve('./src/renderer.html'),

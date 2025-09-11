@@ -74,6 +74,7 @@ export class LifecycleService implements IBootstrappable {
 
 			timeout(1_500).finally(() => {
 				this.logger.info('Quitting');
+				this.logger.end();
 				app.quit();
 			});
 		});

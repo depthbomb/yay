@@ -1,3 +1,15 @@
+# 1.26.0
+
+- Updates to yt-dlp will now be checked on startup
+- Fixed some message boxes appearing in the wrong location
+- Updated the setup window:
+  - Updated window background
+  - Moved the position of the spinner and status text
+  - The window can now be dragged from additional areas
+- Improved the changelog display of the updater window
+- Log files are now rotated, keeping the last 5 days of logs instead of always writing to a single file
+- Upgraded to [Electron 38.1.0](https://releases.electronjs.org/release/v38.1.0)
+
 # 1.25.0
 
 - Additional optimizations and improvements to underlying systems - again, you probably won't notice any differences

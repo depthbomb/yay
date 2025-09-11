@@ -1,3 +1,4 @@
+import 'winston-daily-rotate-file';
 import { app } from 'electron';
 import { join } from 'node:path';
 import { injectable } from '@needle-di/core';
@@ -26,9 +27,12 @@ export class LoggingService {
 						})
 					)
 				}),
-				new transports.File({
+				new transports.DailyRotateFile({
 					level: 'silly',
-					filename: join(app.getPath('userData'), 'logs', 'yay.log'),
+					filename: join(app.getPath('userData'), 'logs', 'yay.%DATE%.log'),
+					datePattern: 'YYYYMMDD',
+					maxFiles: '5d',
+					zippedArchive: true,
 					format: format.combine(
 						format.timestamp(),
 						format.printf(({ level, message, timestamp, ...meta }) => {
@@ -70,5 +74,9 @@ export class LoggingService {
 
 	public silly(message: string, ...meta: any[]) {
 		return this.logger.debug(message, ...meta);
+	}
+
+	public end() {
+		this.logger.end();
 	}
 }
