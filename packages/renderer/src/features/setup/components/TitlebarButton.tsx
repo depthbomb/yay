@@ -8,7 +8,7 @@ type TitlebarButtonProps = {
 
 export const TitlebarButton: FC<TitlebarButtonProps> = ({ type, onClick }) => {
 	const css = clsx(
-		'text-center leading-8 shrink-0 w-[46px] h-[32px] text-gray-400 hover:text-white',
+		'text-center leading-8 shrink-0 w-[46px] h-[32px] text-gray-200 hover:text-white transition',
 		{
 			'hover:bg-white/25': type !== 'close',
 			'hover:bg-[#e81123]': type === 'close'

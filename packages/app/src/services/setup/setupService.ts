@@ -83,12 +83,12 @@ export class SetupService implements IBootstrappable {
 			url: this.window.useRendererRouter('setup'),
 			browserWindowOptions: {
 				show: false,
-				width: 450,
-				height: 350,
+				width: 500,
+				height: 300,
 				titleBarStyle: 'hidden',
 				resizable: false,
 				maximizable: false,
-				backgroundColor: '#000',
+				backgroundColor: '#191919',
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
@@ -122,7 +122,7 @@ export class SetupService implements IBootstrappable {
 				this.setupWindow!.close();
 				clearInterval(interval);
 			}
-		}, 500);
+		}, 250);
 
 		return promise;
 	}

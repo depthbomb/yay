@@ -15,11 +15,12 @@ export const SetupPage = () => {
 	}, []);
 
 	return (
-		<div className="relative flex flex-col justify-center h-screen w-screen [background:linear-gradient(to_bottom,black,transparent),_linear-gradient(to_right,#FF0033,#FF2790)] border border-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.2)] overflow-hidden">
+		<div className="relative flex flex-col justify-center h-screen w-screen bg-[url('~/assets/img/setup-bg.jpg')] bg-no-repeat border border-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)] overflow-hidden">
 			<Titlebar title="yay setup"/>
-			<div className="space-y-4 flex flex-col items-center justify-center">
-				<Spinner className="size-18"/>
-				<p>{setupStep}</p>
+			<div className="h-full draggable"/>
+			<div className="p-2 space-x-2 flex flex-row items-center draggable">
+				<Spinner className="size-5"/>
+				<p className="text-sm font-mono">{setupStep}</p>
 			</div>
 		</div>
 	);
