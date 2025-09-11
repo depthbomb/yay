@@ -1,6 +1,6 @@
 # 1.26.0
 
-- Updates to yt-dlp will now be checked on startup
+- Added an option to check for yt-dlp updates on startup
 - Fixed some message boxes appearing in the wrong location
 - Updated the setup window:
   - Updated window background
