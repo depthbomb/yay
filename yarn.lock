@@ -4716,16 +4716,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:38.0.0":
-  version: 38.0.0
-  resolution: "electron@npm:38.0.0"
+"electron@npm:38.1.0":
+  version: 38.1.0
+  resolution: "electron@npm:38.1.0"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/a245bf63fae60d1db85acddbe5787750e4d07acb273a1a5058163aee427fe07e52100b0d5a1e6b41efbdc1b398b6e7ec0fb3df75672e9148e95b31309d0c8f3a
+  checksum: 10/af70863af514b7a0ab929ef06db2d826ee83a6fcb4628b3599cf5160bcd943215874cd8b6f5f23fb336f22659bbc38c3735199cbf62852841928080ed0228849
   languageName: node
   linkType: hard
 
@@ -7423,7 +7423,7 @@ __metadata:
     "@types/react-dom": "npm:^19.1.9"
     "@vitejs/plugin-react-swc": "npm:^4.0.1"
     clsx: "npm:^2.1.1"
-    electron: "npm:38.0.0"
+    electron: "npm:38.1.0"
     eslint: "npm:^9.35.0"
     eslint-plugin-react-hooks: "npm:^5.2.0"
     eslint-plugin-react-refresh: "npm:^0.4.20"
@@ -9188,7 +9188,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.43.0"
     cockatiel: "npm:^3.2.1"
     cross-env: "npm:^10.0.0"
-    electron: "npm:38.0.0"
+    electron: "npm:38.1.0"
     eslint: "npm:^9.35.0"
     marked: "npm:^16.2.1"
     mitt: "npm:^3.0.1"
