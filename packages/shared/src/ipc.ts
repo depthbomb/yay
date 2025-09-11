@@ -1,15 +1,15 @@
 import type { Nullable } from './types';
-import type { SettingsKey } from './settings';
+import type { ESettingsKey } from './settings';
 import type { Endpoints } from '@octokit/types';
 import type { FeatureFlag } from './featureFlags';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
 export interface IIpcContract {
-	'show-message-box': {
+	'main<-show-message-box': {
 		args: [options: MessageBoxOptions];
 		return: MessageBoxReturnValue;
 	}
-	'show-text-selection-menu': {
+	'main<-show-text-selection-menu': {
 		args: [type: 'input' | 'input-selection' | 'text-selection'];
 		return: void;
 	}
@@ -50,11 +50,11 @@ export interface IIpcContract {
 	}
 	//
 	'settings<-set': {
-		args: [key: SettingsKey, value: any, secure?: boolean];
+		args: [key: ESettingsKey, value: any, secure?: boolean];
 		return: void;
 	}
 	'settings<-get': {
-		args: [key: SettingsKey, defaultValue?: any, secure?: boolean];
+		args: [key: ESettingsKey, defaultValue?: any, secure?: boolean];
 		return: any;
 	}
 	'settings<-reset': {
@@ -163,7 +163,7 @@ export interface IIpcEvents {
 	// Setup Events
 	'setup->step': { message: string; };
 	// Settings Events
-	'settings->changed': { key: SettingsKey; value: any };
+	'settings->changed': { key: ESettingsKey; value: any };
 	// yt-dlp Events
 	'yt-dlp->download-started': { url: string; };
 	'yt-dlp->download-canceled': void;

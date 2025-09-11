@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 import { dialog } from 'electron';
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
@@ -47,13 +47,13 @@ export class YtdlpService implements IBootstrappable {
 		this.ipc.registerHandler('yt-dlp<-download-video',   async (_, url: string) => await this.download(url));
 		this.ipc.registerHandler('yt-dlp<-download-audio',   async (_, url: string) => await this.download(url, true));
 		this.ipc.registerHandler('yt-dlp<-download-default', async (_, url: string) => {
-			const defaultAction = this.settings.get(SettingsKey.DefaultDownloadAction);
+			const defaultAction = this.settings.get(ESettingsKey.DefaultDownloadAction);
 			await this.download(url, defaultAction === 'audio');
 		});
 		this.ipc.registerHandler('yt-dlp<-remove-cookies-file', async () => {
-			const cookiesFilePath = this.settings.get<Nullable<string>>(SettingsKey.CookiesFilePath, null);
+			const cookiesFilePath = this.settings.get<Nullable<string>>(ESettingsKey.CookiesFilePath, null);
 
-			await this.settings.set(SettingsKey.CookiesFilePath, null);
+			await this.settings.set(ESettingsKey.CookiesFilePath, null);
 
 			if (cookiesFilePath) {
 				await unlink(cookiesFilePath);
@@ -67,10 +67,10 @@ export class YtdlpService implements IBootstrappable {
 
 	public async download(url: string, audioOnly = false) {
 		const { resolve, reject, promise } = Promise.withResolvers<void>();
-		const ytDlpPath                    = this.settings.get<string>(SettingsKey.YtdlpPath);
-		const downloadNameTemplate         = this.settings.get<string>(SettingsKey.DownloadNameTemplate);
-		const downloadDir                  = this.settings.get<string>(SettingsKey.DownloadDir);
-		const showNotification             = this.settings.get<boolean>(SettingsKey.EnableDownloadCompletionToast);
+		const ytDlpPath                    = this.settings.get<string>(ESettingsKey.YtdlpPath);
+		const downloadNameTemplate         = this.settings.get<string>(ESettingsKey.DownloadNameTemplate);
+		const downloadDir                  = this.settings.get<string>(ESettingsKey.DownloadDir);
+		const showNotification             = this.settings.get<boolean>(ESettingsKey.EnableDownloadCompletionToast);
 		const ffmpegPath                   = getExtraFilePath('ffmpeg.exe');
 		const downloadPath                 = join(downloadDir, downloadNameTemplate).replaceAll(win32.sep, posix.sep);
 
@@ -95,19 +95,19 @@ export class YtdlpService implements IBootstrappable {
 		if (audioOnly) {
 			ytdlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '0', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 
-			if (this.settings.get<boolean>(SettingsKey.UseThumbnailForCoverArt)) {
+			if (this.settings.get<boolean>(ESettingsKey.UseThumbnailForCoverArt)) {
 				ytdlpArgs.push('--embed-thumbnail');
 			}
 		} else {
 			ytdlpArgs.push(url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
 		}
 
-		const cookiesFilePath = this.settings.get<Nullable<string>>(SettingsKey.CookiesFilePath, null);
+		const cookiesFilePath = this.settings.get<Nullable<string>>(ESettingsKey.CookiesFilePath, null);
 		if (cookiesFilePath) {
 			ytdlpArgs.push('--cookies', cookiesFilePath!);
 		}
 
-		if (this.settings.get(SettingsKey.SkipYoutubePlaylists)) {
+		if (this.settings.get(ESettingsKey.SkipYoutubePlaylists)) {
 			ytdlpArgs.push('--no-playlist')
 		}
 
@@ -193,7 +193,7 @@ export class YtdlpService implements IBootstrappable {
 		this.window.emitAll('yt-dlp->updating-binary');
 
 		const { resolve, promise } = Promise.withResolvers<void>();
-		const ytDlpPath            = this.settings.get<string>(SettingsKey.YtdlpPath);
+		const ytDlpPath            = this.settings.get<string>(ESettingsKey.YtdlpPath);
 		const proc                 = spawn(ytDlpPath, ['-U']);
 		const versionPattern       = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
 

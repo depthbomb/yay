@@ -4,8 +4,8 @@ import { YtdlpService } from '~/services/ytdlp';
 import { Menu, shell, clipboard } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import { SettingsKey, isValidHttpUrl } from 'shared';
 import { SettingsService } from '~/services/settings';
+import { ESettingsKey, isValidHttpUrl } from 'shared';
 import { LifecycleService } from '~/services/lifecycle';
 import type { IBootstrappable } from '~/common';
 import type { MenuItem, MenuItemConstructorOptions } from 'electron';
@@ -39,7 +39,7 @@ export class GlobalMenuService implements IBootstrappable {
 
 	public async bootstrap() {
 		const callback = () => this.showMenu();
-		if (this.settings.get(SettingsKey.EnableGlobalMenu) === true) {
+		if (this.settings.get(ESettingsKey.EnableGlobalMenu) === true) {
 			this.lifecycle.events.on('readyPhase', () => globalShortcut.register(accelerator, callback));
 		}
 
@@ -52,7 +52,7 @@ export class GlobalMenuService implements IBootstrappable {
 			this.setMenu();
 		});
 		this.settings.events.on('settingsUpdated', ({ key, value }) => {
-			if (key === SettingsKey.EnableGlobalMenu) {
+			if (key === ESettingsKey.EnableGlobalMenu) {
 				if (value as boolean) {
 					globalShortcut.register(accelerator, callback);
 				} else {
@@ -118,7 +118,7 @@ export class GlobalMenuService implements IBootstrappable {
 			{
 				label: 'Open download folder',
 				icon: this.openDownloadFolderIcon,
-				click: async () => await shell.openPath(this.settings.get(SettingsKey.DownloadDir))
+				click: async () => await shell.openPath(this.settings.get(ESettingsKey.DownloadDir))
 			},
 			{ type: 'separator' },
 			{

@@ -1,5 +1,5 @@
 import { useSetting } from '~/hooks';
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { Switch } from '~/components/Switch';
 import { Anchor } from '~/components/Anchor';
 import { KeyCombo } from '~/components/KeyCombo';
@@ -7,11 +7,11 @@ import { Select, TextInput } from '~/components/input';
 import type { ChangeEvent } from 'react';
 
 export const DownloadsTab = () => {
-	const [downloadDir]                                     = useSetting<string>(SettingsKey.DownloadDir);
-	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(SettingsKey.DownloadNameTemplate, { reactive: false });
-	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(SettingsKey.DefaultDownloadAction, { reactive: false });
-	const [embedThumbnail, setEmbedThumbnail]               = useSetting<boolean>(SettingsKey.UseThumbnailForCoverArt, { reactive: false });
-	const [enableNotifications, setEnableNotifications]     = useSetting<boolean>(SettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
+	const [downloadDir]                                     = useSetting<string>(ESettingsKey.DownloadDir);
+	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(ESettingsKey.DownloadNameTemplate, { reactive: false });
+	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(ESettingsKey.DefaultDownloadAction, { reactive: false });
+	const [embedThumbnail, setEmbedThumbnail]               = useSetting<boolean>(ESettingsKey.UseThumbnailForCoverArt, { reactive: false });
+	const [enableNotifications, setEnableNotifications]     = useSetting<boolean>(ESettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
 	const onDownloadNameTemplateFieldChanged      = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value);

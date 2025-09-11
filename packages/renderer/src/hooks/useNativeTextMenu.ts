@@ -6,7 +6,7 @@ const onContextMenu = async () => {
 	const isInput   = active?.tagName === 'TEXTAREA' || (active?.tagName === 'INPUT' && (active as HTMLInputElement).type === 'text');
 	const menuType  = isInput ? selection ? 'input-selection' : 'input' : selection ? 'text-selection' : null;
 	if (menuType) {
-		await window.ipc.invoke('show-text-selection-menu', menuType);
+		await window.ipc.invoke('main<-show-text-selection-menu', menuType);
 	}
 };
 

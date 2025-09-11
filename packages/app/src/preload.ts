@@ -92,119 +92,6 @@ const ipcApi = {
 	}
 } satisfies IpcApi;
 
-// const coreApi = {
-// 	showMessageBox(...args: IpcArgs<'show-message-box'>) {
-// 		return ipcApi.invoke('show-message-box', ...args);
-// 	},
-// 	showTextSelectionMenu(...args: IpcArgs<'show-text-selection-menu'>) {
-// 		return ipcApi.invoke('show-text-selection-menu', ...args);
-// 	},
-// 	//
-// 	minimizeWindow(...args: IpcArgs<'window<-minimize'>) {
-// 		return ipcApi.invoke('window<-minimize', ...args);
-// 	},
-// 	//
-// 	openDownloadDirPicker(...args: IpcArgs<'main<-pick-download-dir'>): Promise<IpcReturn<'main<-pick-download-dir'>> {
-// 		return ipcApi.invoke('main<-pick-download-dir', ...args);
-// 	},
-// 	openDownloadDir(...args: IpcArgs<'main<-open-download-dir'>) {
-// 		return ipcApi.invoke('main<-open-download-dir', ...args);
-// 	},
-// 	openCookiesFilePicker(...args: IpcArgs<'main<-pick-cookies-file'>) {
-// 		return ipcApi.invoke('main<-pick-cookies-file', ...args);
-// 	},
-// 	toggleWindowPinned() {
-// 		return ipcRenderer.invoke(IpcChannel.Main_ToggleWindowPinned);
-// 	},
-// 	openLogFile() {
-// 		return ipcRenderer.invoke(IpcChannel.Main_OpenLogFile);
-// 	},
-// 	openAppData() {
-// 		return ipcRenderer.invoke(IpcChannel.Main_OpenAppData);
-// 	},
-// 	//
-// 	cancelSetup() {
-// 		return ipcRenderer.invoke(IpcChannel.Setup_Cancel);
-// 	},
-// 	//
-// 	getSettingsValue(key: SettingsKey, defaultValue?: any, secure: boolean = false) {
-// 		return ipcRenderer.invoke(IpcChannel.Settings_Get, key, defaultValue, secure);
-// 	},
-// 	setSettingsValue(key: SettingsKey, value: any, secure: boolean = false) {
-// 		return ipcRenderer.invoke(IpcChannel.Settings_Set, key, value, secure);
-// 	},
-// 	resetSettings() {
-// 		return ipcRenderer.invoke(IpcChannel.Settings_Reset);
-// 	},
-// 	showSettingsUI() {
-// 		return ipcRenderer.invoke(IpcChannel.Settings_ShowUi);
-// 	},
-// 	//
-// 	downloadVideo(url: string) {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadVideo, url);
-// 	},
-// 	downloadAudio(url: string) {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadAudio, url);
-// 	},
-// 	downloadDefault(url: string) {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_DownloadDefault, url);
-// 	},
-// 	removeCookiesFile() {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_RemoveCookiesFile);
-// 	},
-// 	cancelDownload() {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_CancelDownload);
-// 	},
-// 	recheckBinaries() {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_RecheckBinaries);
-// 	},
-// 	updateYtdlpBinary() {
-// 		return ipcRenderer.invoke(IpcChannel.Ytdlp_UpdateBinary);
-// 	},
-// 	//
-// 	enableAutoStart() {
-// 		return ipcRenderer.invoke(IpcChannel.Autostart_Enable);
-// 	},
-// 	disableAutoStart() {
-// 		return ipcRenderer.invoke(IpcChannel.Autostart_Disable);
-// 	},
-// 	toggleAutoStart() {
-// 		return ipcRenderer.invoke(IpcChannel.Autostart_Toggle);
-// 	},
-// 	//
-// 	enableGlobalMenu() {
-// 		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Enable);
-// 	},
-// 	disableGlobalMenu() {
-// 		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Disable);
-// 	},
-// 	toggleGlobalMenu() {
-// 		return ipcRenderer.invoke(IpcChannel.GlobalMenu_Toggle);
-// 	},
-// 	//
-// 	showUpdaterWindow() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_ShowWindow);
-// 	},
-// 	getLatestRelease() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_GetLatestRelease);
-// 	},
-// 	getLatestChangelog() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_GetLatestChangelog);
-// 	},
-// 	getCommitsSinceBuild() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_GetCommitsSinceBuild);
-// 	},
-// 	checkForUpdates() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_CheckForUpdates, true);
-// 	},
-// 	startUpdate() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_Update);
-// 	},
-// 	cancelUpdate() {
-// 		return ipcRenderer.invoke(IpcChannel.Updater_Cancel);
-// 	},
-// } satisfies CoreApi;
-
 const systemApi = { arch, type, release, platform, hostname } satisfies SystemApi;
 
 const settingsApi = {
@@ -215,14 +102,13 @@ const settingsApi = {
 
 const featureFlagsApi = {
 	getFeatureFlags() {
-		return ipcApi.sendSync('feature-flag<-get-feature-flags');
+		return ipcApi.sendSync('feature-flag<-get-feature-flags')!;
 	},
 } satisfies FeatureFlagsApi;
 
 contextBridge.exposeInMainWorld('versions', versionsApi);
 contextBridge.exposeInMainWorld('buildDate', new Date(__BUILD_DATE__));
 contextBridge.exposeInMainWorld('ipc', ipcApi);
-// contextBridge.exposeInMainWorld('api', coreApi);
 contextBridge.exposeInMainWorld('system', systemApi);
 contextBridge.exposeInMainWorld('settings', settingsApi);
 contextBridge.exposeInMainWorld('featureFlags', featureFlagsApi);

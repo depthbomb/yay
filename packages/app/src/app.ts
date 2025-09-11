@@ -3,8 +3,8 @@ import { parse } from 'smol-toml';
 import { fileExists } from './common';
 import { app, Menu, shell } from 'electron';
 import { Container } from '@needle-di/core';
-import { product, SettingsKey } from 'shared';
 import { MainService } from '~/services/main';
+import { product, ESettingsKey } from 'shared';
 import { existsSync, readFileSync } from 'node:fs';
 import { mkdir, unlink, readFile } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
@@ -61,7 +61,7 @@ export class App {
 		if (configFileExists) {
 			const toml   = readFileSync(configFilePath, 'utf8');
 			const config = parse(toml);
-			if (SettingsKey.DisableHardwareAcceleration in config && config[SettingsKey.DisableHardwareAcceleration]?.valueOf()) {
+			if (ESettingsKey.DisableHardwareAcceleration in config && config[ESettingsKey.DisableHardwareAcceleration]?.valueOf()) {
 				app.disableHardwareAcceleration();
 				app.commandLine.appendSwitch('--disable-software-rasterizer');
 				app.commandLine.appendSwitch('--disable-gpu');

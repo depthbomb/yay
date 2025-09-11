@@ -1,4 +1,4 @@
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
@@ -83,20 +83,20 @@ export class MainWindowService implements IBootstrappable {
 		this.ipc.registerHandler('main<-open-download-dir', async () => {
 			this.logger.info('Opening download directory');
 
-			await shell.openPath(this.settings.get(SettingsKey.DownloadDir));
+			await shell.openPath(this.settings.get(ESettingsKey.DownloadDir));
 		});
 		this.ipc.registerHandler('main<-pick-download-dir', async () => {
 			this.logger.info('Opening download directory picker');
 
 			const { filePaths, canceled } = await dialog.showOpenDialog(this.window.getWindow('settings')!, {
 				title: 'Choose a download folder',
-				defaultPath: this.settings.get(SettingsKey.DownloadDir, ''),
+				defaultPath: this.settings.get(ESettingsKey.DownloadDir, ''),
 				properties: ['openDirectory']
 			});
 
 			if (!canceled && filePaths.length === 1) {
 				const chosenPath = filePaths[0];
-				await this.settings.set(SettingsKey.DownloadDir, chosenPath);
+				await this.settings.set(ESettingsKey.DownloadDir, chosenPath);
 
 				this.logger.debug('Set download directory', { chosenPath });
 
@@ -119,7 +119,7 @@ export class MainWindowService implements IBootstrappable {
 				const destinationPath = getExtraFilePath('cookies.txt');
 
 				await copyFile(chosenPath, destinationPath);
-				await this.settings.set(SettingsKey.CookiesFilePath, destinationPath);
+				await this.settings.set(ESettingsKey.CookiesFilePath, destinationPath);
 
 				this.logger.debug('Copied cookies file', { from: chosenPath, to: destinationPath });
 
@@ -142,7 +142,7 @@ export class MainWindowService implements IBootstrappable {
 				await unlink(binPath);
 			}
 
-			await this.settings.set(SettingsKey.YtdlpPath, null);
+			await this.settings.set(ESettingsKey.YtdlpPath, null);
 
 			this.logger.debug('Relaunching app');
 

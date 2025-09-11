@@ -1,3 +1,3 @@
-import type { SettingsKey } from 'shared';
+import type { ESettingsKey } from 'shared';
 
-export type Settings = Record<SettingsKey, unknown>;
+export type Settings = Record<ESettingsKey, unknown>;

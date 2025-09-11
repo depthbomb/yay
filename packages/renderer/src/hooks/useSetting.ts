@@ -1,4 +1,4 @@
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { useState, useEffect } from 'react';
 
 type UseSettingsOptions<T> = {
@@ -6,7 +6,7 @@ type UseSettingsOptions<T> = {
 	reactive?: boolean;
 };
 
-export const useSetting = <T>(settingsKey: SettingsKey, options?: UseSettingsOptions<T>) => {
+export const useSetting = <T>(settingsKey: ESettingsKey, options?: UseSettingsOptions<T>) => {
 	const isReactive        = options?.reactive ?? true;
 	const [value, setValue] = useState<T>(window.settings.getValue(settingsKey, options?.defaultValue));
 

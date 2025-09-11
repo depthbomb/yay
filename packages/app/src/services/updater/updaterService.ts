@@ -12,7 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { MarkdownService } from '~/services/markdown';
 import { LifecycleService } from '~/services/lifecycle';
-import { product, GIT_HASH, SettingsKey } from 'shared';
+import { product, GIT_HASH, ESettingsKey } from 'shared';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
@@ -106,7 +106,7 @@ export class UpdaterService implements IBootstrappable {
 				if (manual) {
 					this.showUpdaterWindow();
 				} else if (
-					this.settings.get(SettingsKey.EnableNewReleaseToast, true) &&
+					this.settings.get(ESettingsKey.EnableNewReleaseToast, true) &&
 					!this.isStartupCheck &&
 					!this.isNotified &&
 					!this.window.getMainWindow()?.isFocused()

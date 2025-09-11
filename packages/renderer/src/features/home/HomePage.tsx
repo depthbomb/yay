@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import { TextInput } from '~/components/input';
 import { Spinner } from '~/components/SpinnerV2';
 import { AppFooter } from '~/components/AppFooter';
-import { SettingsKey, isValidHttpUrl } from 'shared';
+import { ESettingsKey, isValidHttpUrl } from 'shared';
 import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, shiftLogAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
@@ -43,7 +43,7 @@ export const HomePage = () => {
 	const [logs]                      = useAtom(logAtom);
 	const [,shiftLog]                 = useAtom(shiftLogAtom);
 
-	const [showHintFooter]            = useSetting(SettingsKey.ShowHintFooter, { defaultValue: true });
+	const [showHintFooter]            = useSetting(ESettingsKey.ShowHintFooter, { defaultValue: true });
 
 	const [onDownloadStarted]         = useIpc('yt-dlp->download-started');
 	const [onDownloadOutput]          = useIpc('yt-dlp->stdout');

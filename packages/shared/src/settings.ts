@@ -1,4 +1,4 @@
-export enum SettingsKey {
+export enum ESettingsKey {
 	EnableNewReleaseToast         = 'enable-new-release-toast',
 	EnableGlobalMenu              = 'enable-global-menu',
 	AutoStart                     = 'auto-start',
@@ -13,6 +13,7 @@ export enum SettingsKey {
 	YtdlpPath                     = 'yt-dlp-path',
 	SkipYoutubePlaylists          = 'skip-youtube-playlists',
 	DisableHardwareAcceleration   = 'disable-hardware-acceleration',
+	UpdateYtdlpOnStartup          = 'update-ytdlp-on-startup',
 }
 
-export const SettingsKeys = Object.values(SettingsKey);
+export const SettingsKeys = Object.values(ESettingsKey);

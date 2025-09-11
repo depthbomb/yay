@@ -1,13 +1,13 @@
 import { useSetting } from '~/hooks';
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { Switch } from '~/components/Switch';
 import { Anchor } from '~/components/Anchor';
 import { TextInput } from '~/components/input';
 import type { Nullable } from 'shared';
 
 export const YoutubeTab = () => {
-	const [cookiesFilePath]                               = useSetting<Nullable<string>>(SettingsKey.CookiesFilePath);
-	const [skipYoutubePlaylists, setSkipYoutubePlaylists] = useSetting(SettingsKey.SkipYoutubePlaylists, { defaultValue: true, reactive: false });
+	const [cookiesFilePath]                               = useSetting<Nullable<string>>(ESettingsKey.CookiesFilePath);
+	const [skipYoutubePlaylists, setSkipYoutubePlaylists] = useSetting(ESettingsKey.SkipYoutubePlaylists, { defaultValue: true, reactive: false });
 
 	return (
 		<div className="flex flex-col space-y-6">

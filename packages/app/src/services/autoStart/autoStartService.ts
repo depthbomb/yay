@@ -1,8 +1,7 @@
 import { app } from 'electron';
-import { product } from 'shared';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
-import { IpcChannel, SettingsKey } from 'shared';
+import { product, ESettingsKey } from 'shared';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import type { IBootstrappable } from '~/common';
@@ -27,7 +26,7 @@ export class AutoStartService implements IBootstrappable {
 		this.ipc.registerHandler('autostart<-toggle',  () => this.setAutoStart(!this.isAutoStartEnabled()));
 
 		this.settings.events.on('settingsUpdated', ({ key, value }) => {
-			if (key === SettingsKey.AutoStart) {
+			if (key === ESettingsKey.AutoStart) {
 				this.setAutoStart(value as boolean);
 			}
 		});

@@ -1,14 +1,14 @@
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { useSetting } from '~/hooks';
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { Switch } from '~/components/Switch';
 import { PushButton } from '~/components/PushButton';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
 const onRecheckBinariesButtonClicked = async () => {
-	const { response } = await window.ipc.invoke('show-message-box', {
+	const { response } = await window.ipc.invoke('main<-show-message-box', {
 		type: 'info',
 		title: 'Recheck binaries',
 		message: 'yay needs to restart to check necessary binaries.\nWould you like to continue?',
@@ -22,7 +22,7 @@ const onRecheckBinariesButtonClicked = async () => {
 };
 
 const onResetSettingsButtonClicked = async () => {
-	const { response } = await window.ipc.invoke('show-message-box', {
+	const { response } = await window.ipc.invoke('main<-show-message-box', {
 		type: 'info',
 		title: 'Reset settings',
 		message: 'Your settings will be reset to their defaults and yay will restart.\nWould you like to continue?',
@@ -38,7 +38,7 @@ const onResetSettingsButtonClicked = async () => {
 export const AdvancedTab = () => {
 	const [isWorking]  = useAtom(workingAtom);
 	const [isUpdating] = useAtom(updatingAtom);
-	const [disableHardwareAcceleration, setDisableHardwareAcceleration] = useSetting<boolean>(SettingsKey.DisableHardwareAcceleration, { reactive: false });
+	const [disableHardwareAcceleration, setDisableHardwareAcceleration] = useSetting<boolean>(ESettingsKey.DisableHardwareAcceleration, { reactive: false });
 
 	return (
 		<div className="flex flex-col items-start space-y-6">

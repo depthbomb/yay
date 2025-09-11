@@ -1,8 +1,8 @@
 import mitt from 'mitt';
 import { app } from 'electron';
 import { join } from 'node:path';
-import { SettingsKey } from 'shared';
 import { fileExists } from '~/common';
+import { ESettingsKey } from 'shared';
 import { safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
@@ -10,6 +10,7 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
+import type { Maybe } from 'shared';
 import type { Settings } from './types';
 import type { Store } from '~/services/store';
 import type { IBootstrappable } from '~/common';
@@ -21,7 +22,7 @@ type SettingsManagerSetOptions = SettingsManagerGetOptions;
 
 @injectable()
 export class SettingsService implements IBootstrappable {
-	public readonly events = mitt<{ settingsUpdated: { key: SettingsKey, value: unknown } }>();
+	public readonly events = mitt<{ settingsUpdated: { key: ESettingsKey, value: unknown } }>();
 
 	private readonly internalStore: Store<Settings>;
 	private readonly settingsFilePath: string;
@@ -65,7 +66,7 @@ export class SettingsService implements IBootstrappable {
 		this.events.on('settingsUpdated', ({ key, value }) => this.window.emitAll('settings->changed', { key, value }));
 	}
 
-	public get<T>(key: SettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) {
+	public get<T>(key: ESettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) {
 		const value = this.internalStore.get(key, defaultValue);
 		if (options?.secure) {
 			if (value) {
@@ -78,16 +79,25 @@ export class SettingsService implements IBootstrappable {
 		}
 	}
 
-	public async set<T>(key: SettingsKey, value: T, options?: SettingsManagerSetOptions) {
+	public async set<T>(key: ESettingsKey, value: T, options?: SettingsManagerSetOptions) {
 		const $value = options?.secure ? this.encryptValue(value) : value;
 		await this.internalStore.set(key, $value);
 
 		this.events.emit('settingsUpdated', { key, value });
 	}
 
-	public async setDefault<T>(key: SettingsKey, value: T, options?: SettingsManagerSetOptions) {
+	public async setDefault<T>(key: ESettingsKey, value: T, options?: SettingsManagerSetOptions) {
 		if (this.get(key, null, options) === null) {
 			await this.set(key, value, options);
+		}
+	}
+
+	public async setDefaults(settings: Array<[ESettingsKey, unknown] | [ESettingsKey, unknown, Maybe<SettingsManagerSetOptions>]>): Promise<void>;
+	public async setDefaults(settings: Array<[ESettingsKey, unknown]>): Promise<void>;
+	public async setDefaults(settings: Array<[ESettingsKey, unknown] | [ESettingsKey, unknown, Maybe<SettingsManagerSetOptions>]>) {
+		for (const setting of settings) {
+			const [key, value, options = undefined] = setting;
+			await this.setDefault(key, value, options);
 		}
 	}
 
@@ -117,7 +127,7 @@ export class SettingsService implements IBootstrappable {
 			if (key in this.internalStore.store) {
 				this.logger.info('Deleting deprecated settings value', { key });
 
-				delete this.internalStore.store[key as SettingsKey];
+				delete this.internalStore.store[key as ESettingsKey];
 
 				shouldSave = true;
 			}

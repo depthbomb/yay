@@ -59,7 +59,7 @@ export class MainService {
 			this.updater.bootstrap(),
 		]);
 
-		this.ipc.registerHandler('show-message-box', async (e, options) => {
+		this.ipc.registerHandler('main<-show-message-box', async (e, options) => {
 			const window = BrowserWindow.fromWebContents(e.sender);
 
 			this.logger.debug('Showing messagebox', { window, options });
@@ -71,7 +71,7 @@ export class MainService {
 			}
 		});
 
-		this.ipc.registerHandler('show-text-selection-menu', async (_e, type) => {
+		this.ipc.registerHandler('main<-show-text-selection-menu', async (_e, type) => {
 			this.logger.debug('Showing text selection menu', { type });
 
 			const menuItems = [] as MenuItemConstructorOptions[];

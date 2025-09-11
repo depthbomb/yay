@@ -1,12 +1,12 @@
 import { useSetting } from '~/hooks';
-import { SettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { Switch } from '~/components/Switch';
 import { mdiMicrosoftWindows } from '@mdi/js';
 import { KeyCombo } from '~/components/KeyCombo';
 
 export const InterfaceTab = () => {
-	const [showHintFooter, setShowHintFooter]       = useSetting<boolean>(SettingsKey.ShowHintFooter, { reactive: false });
-	const [globalMenuEnabled, setGlobalMenuEnabled] = useSetting<boolean>(SettingsKey.EnableGlobalMenu, { reactive: false });
+	const [showHintFooter, setShowHintFooter]       = useSetting<boolean>(ESettingsKey.ShowHintFooter, { reactive: false });
+	const [globalMenuEnabled, setGlobalMenuEnabled] = useSetting<boolean>(ESettingsKey.EnableGlobalMenu, { reactive: false });
 
 	return (
 		<div className="flex flex-col items space-y-6">
