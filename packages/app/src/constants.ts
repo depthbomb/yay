@@ -16,13 +16,11 @@ export const EXE_DIR            = dirname(EXE_PATH);
 export const RESOURCES_PATH     = join(EXE_DIR, 'resources');
 export const PRELOAD_PATH       = join(ROOT_PATH, 'preload.js');
 
-export const USER_AGENT = `yay/${product.version}+${GIT_HASH_SHORT} (github:${REPO_OWNER}/${REPO_NAME})` as const;
+export const USER_AGENT = `${product.applicationName}/${product.version}+${GIT_HASH_SHORT} (github:${REPO_OWNER}/${REPO_NAME})` as const;
 
 /**
  * An array of functions that take a `URL` and return a `bool`, used as "rules" to determine if a
  * URL should be opened externally.
- *
- * @see `utils/browserWindow.ts`
  */
 export const EXTERNAL_URL_RULES = [
 	(url: URL) => url.host === 'github.com',

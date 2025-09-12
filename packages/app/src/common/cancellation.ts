@@ -1,23 +1,23 @@
 import { EventEmitter } from 'node:events';
 
-export interface CancellationTokenOptions {
+export type CancellationTokenOptions = {
 	timeout?: number;
 	signal?: AbortSignal;
 	parent?: CancellationToken;
-}
+};
 
-export interface CancellationTokenRegistration {
+export type CancellationTokenRegistration = {
 	readonly token: CancellationToken;
 	unregister(): void;
-}
+};
 
-export interface CancellationCallback {
+export type CancellationCallback = {
 	(token: CancellationToken): void;
-}
+};
 
-export interface AsyncCancellationCallback {
+export type AsyncCancellationCallback = {
 	(token: CancellationToken): Promise<void>;
-}
+};
 
 export class OperationCancelledError extends Error {
 	public readonly token: CancellationToken;
@@ -37,31 +37,31 @@ export class TimeoutError extends OperationCancelledError {
 }
 
 class TokenRegistration implements CancellationTokenRegistration {
-	private _isUnregistered = false;
+	private isUnregistered = false;
 
 	constructor(
 		public readonly token: CancellationToken,
-		private readonly _callback: CancellationCallback | AsyncCancellationCallback,
-		private readonly _emitter: EventEmitter,
-		private readonly _isAsync: boolean = false
+		private readonly callback: CancellationCallback | AsyncCancellationCallback,
+		private readonly emitter: EventEmitter,
+		private readonly isAsync: boolean = false
 	) {
-		if (_isAsync) {
-			this._emitter.on('cancelled', this._asyncHandler);
+		if (isAsync) {
+			this.emitter.on('cancelled', this.asyncHandler);
 		} else {
-			this._emitter.on('cancelled', this._syncHandler);
+			this.emitter.on('cancelled', this.syncHandler);
 		}
 	}
 
-	private _syncHandler = (token: CancellationToken) => {
-		if (!this._isUnregistered && !this._isAsync) {
-			(this._callback as CancellationCallback)(token);
+	private syncHandler = (token: CancellationToken) => {
+		if (!this.isUnregistered && !this.isAsync) {
+			(this.callback as CancellationCallback)(token);
 		}
 	};
 
-	private _asyncHandler = async (token: CancellationToken) => {
-		if (!this._isUnregistered && this._isAsync) {
+	private asyncHandler = async (token: CancellationToken) => {
+		if (!this.isUnregistered && this.isAsync) {
 			try {
-				await (this._callback as AsyncCancellationCallback)(token);
+				await (this.callback as AsyncCancellationCallback)(token);
 			} catch (error) {
 				console.error('Error in async cancellation callback:', error);
 			}
@@ -69,31 +69,29 @@ class TokenRegistration implements CancellationTokenRegistration {
 	};
 
 	unregister(): void {
-		if (this._isUnregistered) {
-			return;
-		}
+		if (this.isUnregistered) return;
 
-		this._isUnregistered = true;
-		this._emitter.removeListener('cancelled', this._syncHandler);
-		this._emitter.removeListener('cancelled', this._asyncHandler);
+		this.isUnregistered = true;
+		this.emitter.removeListener('cancelled', this.syncHandler);
+		this.emitter.removeListener('cancelled', this.asyncHandler);
 	}
 }
 
 export class CancellationToken extends EventEmitter {
-	private _isCancelled = false;
-	private _cancellationReason?: string;
-	private _cancellationTime?: Date;
-	private _registrations = new Set<TokenRegistration>();
-	private _children = new Set<CancellationToken>();
-	private _parent?: CancellationToken;
-	private _timeoutId?: NodeJS.Timeout;
-	private _abortController?: AbortController;
+	public cancellationReason?: string;
+	public cancellationTime?: Date;
+
+	private isCancelled = false;
+	private registrations = new Set<TokenRegistration>();
+	private children = new Set<CancellationToken>();
+	private parent?: CancellationToken;
+	private timeoutId?: NodeJS.Timeout;
+	private abortController?: AbortController;
 
 	public static readonly None = new CancellationToken();
 	public static readonly Cancelled = (() => {
 		const token = new CancellationToken();
 		token.cancel('Pre-cancelled token');
-
 		return token;
 	})();
 
@@ -101,20 +99,18 @@ export class CancellationToken extends EventEmitter {
 		super();
 
 		if (options.parent) {
-			this._parent = options.parent;
-			options.parent._children.add(this);
+			this.parent = options.parent;
+			options.parent.children.add(this);
 
 			if (options.parent.isCancellationRequested) {
 				this.cancel(options.parent.cancellationReason);
 			} else {
-				options.parent.register(() => {
-					this.cancel('Parent token cancelled');
-				});
+				options.parent.register(() => this.cancel('Parent token cancelled'));
 			}
 		}
 
 		if (options.timeout && options.timeout > 0) {
-			this._timeoutId = setTimeout(() => {
+			this.timeoutId = setTimeout(() => {
 				this.cancel(`Operation timed out after ${options.timeout}ms`);
 			}, options.timeout);
 		}
@@ -131,60 +127,50 @@ export class CancellationToken extends EventEmitter {
 	}
 
 	public get isCancellationRequested(): boolean {
-		return this._isCancelled;
+		return this.isCancelled;
 	}
 
 	public get canBeCancelled(): boolean {
 		return true;
 	}
 
-	public get cancellationReason(): string | undefined {
-		return this._cancellationReason;
-	}
-
-	public get cancellationTime(): Date | undefined {
-		return this._cancellationTime;
-	}
-
 	public get hasParent(): boolean {
-		return this._parent !== undefined;
+		return this.parent !== undefined;
 	}
 
-	public get parent(): CancellationToken | undefined {
-		return this._parent;
+	public get parentToken(): CancellationToken | undefined {
+		return this.parent;
 	}
 
 	public get childrenCount(): number {
-		return this._children.size;
+		return this.children.size;
 	}
 
 	public get registrationCount(): number {
-		return this._registrations.size;
+		return this.registrations.size;
 	}
 
 	public throwIfCancellationRequested(message?: string): void {
-		if (this._isCancelled) {
+		if (this.isCancelled) {
 			throw new OperationCancelledError(
-				message || this._cancellationReason || 'Operation was cancelled',
+				message || this.cancellationReason || 'Operation was cancelled',
 				this
 			);
 		}
 	}
 
 	public register(callback: CancellationCallback): CancellationTokenRegistration {
-		if (this._isCancelled) {
+		if (this.isCancelled) {
 			setImmediate(() => callback(this));
 		}
 
 		const registration = new TokenRegistration(this, callback, this);
-
-		this._registrations.add(registration);
-
+		this.registrations.add(registration);
 		return registration;
 	}
 
 	public registerAsync(callback: AsyncCancellationCallback): CancellationTokenRegistration {
-		if (this._isCancelled) {
+		if (this.isCancelled) {
 			setImmediate(async () => {
 				try {
 					await callback(this);
@@ -195,37 +181,33 @@ export class CancellationToken extends EventEmitter {
 		}
 
 		const registration = new TokenRegistration(this, callback, this, true);
-
-		this._registrations.add(registration);
-
+		this.registrations.add(registration);
 		return registration;
 	}
 
 	public cancel(reason?: string): void {
-		if (this._isCancelled) {
-			return;
+		if (this.isCancelled) return;
+
+		this.isCancelled = true;
+		this.cancellationReason = reason || 'Operation was cancelled';
+		this.cancellationTime = new Date();
+
+		if (this.timeoutId) {
+			clearTimeout(this.timeoutId);
+			this.timeoutId = undefined;
 		}
 
-		this._isCancelled = true;
-		this._cancellationReason = reason || 'Operation was cancelled';
-		this._cancellationTime = new Date();
-
-		if (this._timeoutId) {
-			clearTimeout(this._timeoutId);
-			this._timeoutId = undefined;
-		}
-
-		for (const child of this._children) {
+		for (const child of this.children) {
 			child.cancel('Parent token cancelled');
 		}
 
 		this.emit('cancelled', this);
 
-		for (const registration of this._registrations) {
+		for (const registration of this.registrations) {
 			registration.unregister();
 		}
 
-		this._registrations.clear();
+		this.registrations.clear();
 	}
 
 	public createLinkedToken(options: Omit<CancellationTokenOptions, 'parent'> = {}): CancellationToken {
@@ -233,18 +215,16 @@ export class CancellationToken extends EventEmitter {
 	}
 
 	public waitForCancellation(): Promise<void> {
-		if (this._isCancelled) {
-			return Promise.resolve();
-		}
+		if (this.isCancelled) return Promise.resolve();
 
 		return new Promise<void>((resolve) => {
-			const registration = this.register(() => resolve());
+			this.register(() => resolve());
 		});
 	}
 
 	public race<T>(promise: Promise<T>): Promise<T> {
-		if (this._isCancelled) {
-			return Promise.reject(new OperationCancelledError(this._cancellationReason, this));
+		if (this.isCancelled) {
+			return Promise.reject(new OperationCancelledError(this.cancellationReason, this));
 		}
 
 		return new Promise<T>((resolve, reject) => {
@@ -265,98 +245,91 @@ export class CancellationToken extends EventEmitter {
 	}
 
 	public delay(ms: number): Promise<void> {
-		return this.race(new Promise<void>(resolve => setTimeout(resolve, ms)));
+		return this.race(new Promise<void>((resolve) => setTimeout(resolve, ms)));
 	}
 
 	public toAbortSignal(): AbortSignal {
-		if (!this._abortController) {
-			this._abortController = new AbortController();
+		if (!this.abortController) {
+			this.abortController = new AbortController();
 
-			if (this._isCancelled) {
-				this._abortController.abort();
+			if (this.isCancelled) {
+				this.abortController.abort();
 			} else {
-				this.register(() => {
-					this._abortController!.abort();
-				});
+				this.register(() => this.abortController!.abort());
 			}
 		}
 
-		return this._abortController.signal;
+		return this.abortController.signal;
 	}
 
 	public dispose(): void {
 		this.cancel('Token disposed');
 		this.removeAllListeners();
 
-		if (this._parent) {
-			this._parent._children.delete(this);
+		if (this.parent) {
+			this.parent.children.delete(this);
 		}
 	}
 
 	public override toString(): string {
-		const status = this._isCancelled ? 'Cancelled' : 'Active';
-		const reason = this._cancellationReason ? ` (${this._cancellationReason})` : '';
-		const time = this._cancellationTime ? ` at ${this._cancellationTime.toISOString()}` : '';
-
+		const status = this.isCancelled ? 'Cancelled' : 'Active';
+		const reason = this.cancellationReason ? ` (${this.cancellationReason})` : '';
+		const time = this.cancellationTime ? ` at ${this.cancellationTime.toISOString()}` : '';
 		return `CancellationToken[${status}${reason}${time}]`;
 	}
 
 	public toJSON() {
 		return {
-			isCancellationRequested: this._isCancelled,
-			cancellationReason: this._cancellationReason,
-			cancellationTime: this._cancellationTime?.toISOString(),
+			isCancellationRequested: this.isCancelled,
+			cancellationReason: this.cancellationReason,
+			cancellationTime: this.cancellationTime?.toISOString(),
 			hasParent: this.hasParent,
 			childrenCount: this.childrenCount,
-			registrationCount: this.registrationCount
+			registrationCount: this.registrationCount,
 		};
 	}
 }
 
 export class CancellationTokenSource {
-	private _token: CancellationToken;
-	private _isDisposed = false;
+	private tokenInstance: CancellationToken;
+	private isDisposed = false;
 
 	constructor(options: CancellationTokenOptions = {}) {
-		this._token = new CancellationToken(options);
+		this.tokenInstance = new CancellationToken(options);
 	}
 
 	public get token(): CancellationToken {
 		this.throwIfDisposed();
-		return this._token;
+		return this.tokenInstance;
 	}
 
 	public get isCancellationRequested(): boolean {
-		return this._token.isCancellationRequested;
+		return this.tokenInstance.isCancellationRequested;
 	}
 
 	public cancel(reason?: string): void {
 		this.throwIfDisposed();
-		this._token.cancel(reason);
+		this.tokenInstance.cancel(reason);
 	}
 
 	public cancelAfter(delay: number, reason?: string): void {
 		this.throwIfDisposed();
 		setTimeout(() => {
-			if (!this._isDisposed && !this._token.isCancellationRequested) {
+			if (!this.isDisposed && !this.tokenInstance.isCancellationRequested) {
 				this.cancel(reason || `Cancelled after ${delay}ms delay`);
 			}
 		}, delay);
 	}
 
 	public dispose(): void {
-		if (this._isDisposed) {
-			return;
-		}
+		if (this.isDisposed) return;
 
-		this._isDisposed = true;
-		this._token.dispose();
+		this.isDisposed = true;
+		this.tokenInstance.dispose();
 	}
 
 	private throwIfDisposed(): void {
-		if (this._isDisposed) {
-			throw new Error('CancellationTokenSource has been disposed');
-		}
+		if (this.isDisposed) throw new Error('CancellationTokenSource has been disposed');
 	}
 
 	public static createLinkedTokenSource(...tokens: CancellationToken[]): CancellationTokenSource {
@@ -396,31 +369,25 @@ export namespace CancellationTokenUtils {
 
 	export function withTimeout<T>(promise: Promise<T>, timeoutMs: number, token?: CancellationToken): Promise<T> {
 		const timeoutSource = new CancellationTokenSource({ timeout: timeoutMs });
-		const combinedToken = token
-			? combineTokens(token, timeoutSource.token)
-			: timeoutSource.token;
+		const combinedToken = token ? combineTokens(token, timeoutSource.token) : timeoutSource.token;
 
-		return combinedToken.race(promise).finally(() => {
-			timeoutSource.dispose();
-		});
+		return combinedToken.race(promise).finally(() => timeoutSource.dispose());
 	}
 
 	export function cancellable<T extends any[], R>(fn: (...args: [...T, CancellationToken]) => Promise<R>) {
 		return (...args: T) => {
-			const token = args[args.length - 1] as CancellationToken || CancellationToken.None;
+			const token = (args[args.length - 1] as CancellationToken) || CancellationToken.None;
 			return fn(...args, token);
 		};
 	}
 
-	export function promisifyWithCancellation<T extends any[], R>(fn: (...args: [...T, (error: any, result?: R) => void]) => void): (...args: [...T, CancellationToken?]) => Promise<R> {
+	export function promisifyWithCancellation<T extends any[], R>(
+		fn: (...args: [...T, (error: any, result?: R) => void]) => void
+	): (...args: [...T, CancellationToken?]) => Promise<R> {
 		return (...args) => {
 			const token = args[args.length - 1] as CancellationToken;
-			const fnArgs = token instanceof CancellationToken
-				? args.slice(0, -1) as T
-				: args as unknown as T;
-			const cancellationToken = token instanceof CancellationToken
-				? token
-				: CancellationToken.None;
+			const fnArgs = token instanceof CancellationToken ? args.slice(0, -1) as T : args as unknown as T;
+			const cancellationToken = token instanceof CancellationToken ? token : CancellationToken.None;
 
 			return new Promise<R>((resolve, reject) => {
 				const registration = cancellationToken.register((cancelToken) => {
@@ -430,11 +397,8 @@ export namespace CancellationTokenUtils {
 				try {
 					fn(...fnArgs, (error: any, result?: R) => {
 						registration.unregister();
-						if (error) {
-							reject(error);
-						} else {
-							resolve(result!);
-						}
+						if (error) reject(error);
+						else resolve(result!);
 					});
 				} catch (error) {
 					registration.unregister();
@@ -446,49 +410,46 @@ export namespace CancellationTokenUtils {
 }
 
 export class CancellableOperation<T = any> {
-	private _source: CancellationTokenSource;
-	private _promise: Promise<T>;
-	private _isCompleted = false;
+	private source: CancellationTokenSource;
+	private promise: Promise<T>;
+	private isCompleted = false;
 
-	constructor(
-		operation: (token: CancellationToken) => Promise<T>,
-		options: CancellationTokenOptions = {}
-	) {
-		this._source = new CancellationTokenSource(options);
-		this._promise = this.executeOperation(operation);
+	constructor(operation: (token: CancellationToken) => Promise<T>, options: CancellationTokenOptions = {}) {
+		this.source = new CancellationTokenSource(options);
+		this.promise = this.executeOperation(operation);
 	}
 
 	public get token(): CancellationToken {
-		return this._source.token;
+		return this.source.token;
 	}
 
-	public get isCompleted(): boolean {
-		return this._isCompleted;
+	public get isCompletedOperation(): boolean {
+		return this.isCompleted;
 	}
 
 	public get isCancelled(): boolean {
-		return this._source.isCancellationRequested;
+		return this.source.isCancellationRequested;
 	}
 
 	private async executeOperation(operation: (token: CancellationToken) => Promise<T>): Promise<T> {
 		try {
-			const result = await this._source.token.race(operation(this._source.token));
-			this._isCompleted = true;
+			const result = await this.source.token.race(operation(this.source.token));
+			this.isCompleted = true;
 			return result;
 		} catch (error) {
-			this._isCompleted = true;
+			this.isCompleted = true;
 			throw error;
 		} finally {
-			this._source.dispose();
+			this.source.dispose();
 		}
 	}
 
 	public cancel(reason?: string): void {
-		this._source.cancel(reason);
+		this.source.cancel(reason);
 	}
 
 	public async waitForCompletion(): Promise<T> {
-		return this._promise;
+		return this.promise;
 	}
 }
 
@@ -498,5 +459,5 @@ export default {
 	CancellationTokenUtils,
 	CancellableOperation,
 	OperationCancelledError,
-	TimeoutError
+	TimeoutError,
 };
