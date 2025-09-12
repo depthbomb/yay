@@ -18,6 +18,7 @@ import type { IBootstrappable } from '~/common';
 @injectable()
 export class SetupService implements IBootstrappable {
 	private finished = false;
+	private downloadedYtdlpBinary = false;
 	private setupWindow: Maybe<BrowserWindow>;
 	private readonly cts = new CancellationTokenSource();
 
@@ -185,6 +186,8 @@ export class SetupService implements IBootstrappable {
 					}
 				);
 
+				this.downloadedYtdlpBinary = true;
+
 				await this.settings.set(ESettingsKey.YtdlpPath, ytdlpPath);
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
@@ -322,7 +325,7 @@ export class SetupService implements IBootstrappable {
 	}
 
 	private async updateYtdlp() {
-		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true)) {
+		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true) && !this.downloadedYtdlpBinary) {
 			this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
 			this.emitStep('Checking for yt-dlp updates...');
 			await this.ytdlp.updateBinary(true);

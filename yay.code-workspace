@@ -36,7 +36,6 @@
 		},
 		"typescript.tsdk": "Root\\node_modules\\typescript\\lib",
 		"markdown.validate.enabled": true,
-		"C_Cpp.autocompleteAddParentheses": true,
 	},
 	"extensions": {
 		"recommendations": [
