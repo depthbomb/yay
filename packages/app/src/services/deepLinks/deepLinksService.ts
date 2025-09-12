@@ -39,13 +39,13 @@ export class DeepLinksService implements IBootstrappable {
 		this.logger.info('Handling deeplink', { host, searchParams });
 
 		if (searchParams.has('url')) {
-			const mediaUrl = searchParams.get('url')!;
+			const mediaURL = searchParams.get('url')!;
 			switch (host) {
 				case 'download-video':
-					await this.ytdlp.download(mediaUrl, false);
+					await this.ytdlp.download(mediaURL, false);
 					break;
 				case 'download-audio':
-					await this.ytdlp.download(mediaUrl, true);
+					await this.ytdlp.download(mediaURL, true);
 					break;
 			}
 		} else if (host === 'open-updater') {

@@ -1,4 +1,4 @@
-export const enum WindowPosition {
+export const enum EWindowPosition {
 	TopRight     = 'TopRight',
 	MiddleRight  = 'MiddleRight',
 	BottomRight  = 'BottomRight',

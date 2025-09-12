@@ -1,5 +1,5 @@
 import { Tray, screen } from 'electron';
-import { WindowPosition } from './WindowPosition';
+import { EWindowPosition } from './EWindowPosition';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { Rectangle, BrowserWindow } from 'electron';
@@ -23,7 +23,7 @@ export class WindowPositionService {
 		private readonly logger = inject(LoggingService),
 	) {}
 
-	public setWindowPosition(window: BrowserWindow, position: WindowPosition, options: PositionOptions = {}) {
+	public setWindowPosition(window: BrowserWindow, position: EWindowPosition, options: PositionOptions = {}) {
 		const { usePrimaryDisplay = true, padding = 0 } = options;
 		const display                                   = this.getTargetDisplay(usePrimaryDisplay);
 		const windowBounds                              = window.getBounds();
@@ -135,7 +135,7 @@ export class WindowPositionService {
 	}
 
 	private calculatePosition(
-		position: WindowPosition,
+		position: EWindowPosition,
 		workArea: Rectangle,
 		windowWidth: number,
 		windowHeight: number,
@@ -149,23 +149,23 @@ export class WindowPositionService {
 		const centerY = workArea.y + Math.floor(workArea.height / 2) - Math.floor(windowHeight / 2);
 
 		switch (position) {
-			case WindowPosition.TopRight:
+			case EWindowPosition.TopRight:
 				return { x: right, y: top };
-			case WindowPosition.MiddleRight:
+			case EWindowPosition.MiddleRight:
 				return { x: right, y: centerY };
-			case WindowPosition.BottomRight:
+			case EWindowPosition.BottomRight:
 				return { x: right, y: bottom };
-			case WindowPosition.BottomMiddle:
+			case EWindowPosition.BottomMiddle:
 				return { x: centerX, y: bottom };
-			case WindowPosition.BottomLeft:
+			case EWindowPosition.BottomLeft:
 				return { x: left, y: bottom };
-			case WindowPosition.MiddleLeft:
+			case EWindowPosition.MiddleLeft:
 				return { x: left, y: centerY };
-			case WindowPosition.TopLeft:
+			case EWindowPosition.TopLeft:
 				return { x: left, y: top };
-			case WindowPosition.MiddleTop:
+			case EWindowPosition.MiddleTop:
 				return { x: centerX, y: top };
-			case WindowPosition.Center:
+			case EWindowPosition.Center:
 				return { x: centerX, y: centerY };
 			default:
 				return { x: centerX, y: centerY }; // Default to center

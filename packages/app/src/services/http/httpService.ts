@@ -18,8 +18,8 @@ export class HttpService {
 			return this.clients.get(name)!;
 		}
 
-		const { baseUrl, userAgent, retry } = options;
-		const client                        = new HttpClient({ name, baseUrl, userAgent, retry }, this.logger);
+		const { baseURL, userAgent, retry } = options;
+		const client                        = new HttpClient({ name, baseURL, userAgent, retry }, this.logger);
 
 		this.clients.set(name, client);
 

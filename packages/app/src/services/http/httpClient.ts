@@ -10,7 +10,7 @@ import type { GETOptions, RequestOptions, HttpClientOptions, DownloadOptions } f
 
 export class HttpClient {
 	private readonly name: string;
-	private readonly baseUrl?: string;
+	private readonly baseURL?: string;
 	private readonly userAgent: string;
 	private readonly retry: boolean;
 	private readonly retryPolicy: RetryPolicy;
@@ -19,7 +19,7 @@ export class HttpClient {
 
 	public constructor(options: HttpClientOptions, logger: LoggingService) {
 		this.name        = options?.name;
-		this.baseUrl     = options?.baseUrl;
+		this.baseURL     = options?.baseURL;
 		this.userAgent   = options.userAgent;
 		this.retry       = !!options?.retry;
 		this.retryPolicy = retry(handleResultType(Response, (res) => res.status > 399), {
@@ -51,21 +51,21 @@ export class HttpClient {
 			},
 		};
 
-		let requestUrl = this.baseUrl ? joinURL(this.baseUrl, input) : input;
+		let requestURL = this.baseURL ? joinURL(this.baseURL, input) : input;
 
 		if (options?.query) {
-			requestUrl = withQuery(requestUrl, options.query);
+			requestURL = withQuery(requestURL, options.query);
 		}
 
 		const requestId = this.idGenerator.nextId();
 
-		this.logger.debug('Making HTTP request', { requestId, method: options?.method, url: requestUrl, retry: this.retry });
+		this.logger.debug('Making HTTP request', { requestId, method: options?.method, url: requestURL, retry: this.retry });
 
 		let res: Response;
 		if (this.retry) {
-			res = await this.retryPolicy.execute(() => fetch(requestUrl, requestInit));
+			res = await this.retryPolicy.execute(() => fetch(requestURL, requestInit));
 		} else {
-			res = await fetch(requestUrl, requestInit);
+			res = await fetch(requestURL, requestInit);
 		}
 
 		this.logger.debug('Finished HTTP request', {

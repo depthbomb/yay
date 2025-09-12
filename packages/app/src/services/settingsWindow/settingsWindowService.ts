@@ -45,8 +45,6 @@ export class SettingsWindowService implements IBootstrappable {
 				this.settingsWindow!.hide();
 			}
 		});
-
-		console.log(this.settingsWindow.webContents.getURL());
 	}
 
 	public async bootstrap() {

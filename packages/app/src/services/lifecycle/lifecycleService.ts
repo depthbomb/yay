@@ -7,11 +7,11 @@ import type { IBootstrappable } from '~/common';
 
 type LifecycleEvents = {
 	shutdown: void;
-	phaseChanged: LifecyclePhase;
+	phaseChanged: ELifecyclePhase;
 	readyPhase: void;
 };
 
-export const enum LifecyclePhase {
+export const enum ELifecyclePhase {
 	Starting,
 	Ready
 }
@@ -20,7 +20,7 @@ export const enum LifecyclePhase {
 export class LifecycleService implements IBootstrappable {
 	public readonly events = mitt<LifecycleEvents>();
 
-	private _phase             = LifecyclePhase.Starting;
+	private _phase             = ELifecyclePhase.Starting;
 	private _shutdownRequested = false;
 
 	public constructor(
@@ -31,7 +31,7 @@ export class LifecycleService implements IBootstrappable {
 		return this._phase;
 	}
 
-	public set phase(value: LifecyclePhase) {
+	public set phase(value: ELifecyclePhase) {
 		if (value < this._phase) {
 			throw new Error('Lifecycle phase cannot go backwards');
 		}
@@ -43,7 +43,7 @@ export class LifecycleService implements IBootstrappable {
 		this._phase = value;
 		this.events.emit('phaseChanged', this._phase);
 
-		if (this._phase === LifecyclePhase.Ready) {
+		if (this._phase === ELifecyclePhase.Ready) {
 			this.events.emit('readyPhase');
 		}
 

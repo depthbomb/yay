@@ -16,7 +16,7 @@ import { GlobalMenuService } from '~/services/globalMenu';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { app, Menu, shell, dialog, BrowserWindow } from 'electron';
-import { LifecyclePhase, LifecycleService } from '~/services/lifecycle';
+import { ELifecyclePhase, LifecycleService } from '~/services/lifecycle';
 import type { MenuItemConstructorOptions } from 'electron';
 
 @injectable()
@@ -109,7 +109,7 @@ export class MainService {
 			await shell.openPath(path);
 		});
 
-		this.lifecycle.phase = LifecyclePhase.Ready;
+		this.lifecycle.phase = ELifecyclePhase.Ready;
 
 		await this.deepLinks.handleDeepLinks(this.cli.args._);
 	}

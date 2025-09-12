@@ -6,7 +6,7 @@ export type HttpClientOptions = {
 	/**
 	 * The base URL of requests the client makes.
 	 */
-	baseUrl?: string;
+	baseURL?: string;
 	/**
 	 * The user agent to send with all requests from this client.
 	 */

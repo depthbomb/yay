@@ -1,2 +1,2 @@
-export * from './WindowPosition';
+export * from './EWindowPosition';
 export * from './windowPositionService';
