@@ -40,10 +40,6 @@ export interface IIpcContract {
 		args: [];
 		return: boolean;
 	}
-	'main<-open-log-file': {
-		args: [];
-		return: void;
-	}
 	'main<-open-app-data': {
 		args: [];
 		return: void;

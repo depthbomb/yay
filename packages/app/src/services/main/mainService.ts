@@ -101,14 +101,6 @@ export class MainService {
 			Menu.buildFromTemplate(menuItems).popup();
 		});
 
-		this.ipc.registerHandler('main<-open-log-file', async () => {
-			const path = join(app.getPath('userData'), 'logs', 'yay.log');
-
-			this.logger.debug('Opening log file in default application', { path });
-
-			await shell.openPath(path);
-		});
-
 		this.ipc.registerHandler('main<-open-app-data', async () => {
 			const path = app.getPath('userData')
 

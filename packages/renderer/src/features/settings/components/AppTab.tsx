@@ -43,7 +43,6 @@ export const AppTab = () => {
 			</div>
 			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateAvailable}>Check for updates</Button>
-				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-log-file')}>Open log file</Button>
 				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
 			</div>
 		</div>
