@@ -1,4 +1,3 @@
-import { join } from 'node:path';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
@@ -109,8 +108,10 @@ export class MainService {
 			await shell.openPath(path);
 		});
 
-		this.lifecycle.phase = ELifecyclePhase.Ready;
+		if (!this.lifecycle.shutdownRequested) {
+			this.lifecycle.phase = ELifecyclePhase.Ready;
 
-		await this.deepLinks.handleDeepLinks(this.cli.args._);
+			await this.deepLinks.handleDeepLinks(this.cli.args._);
+		}
 	}
 }
