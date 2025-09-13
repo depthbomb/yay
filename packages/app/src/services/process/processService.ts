@@ -3,13 +3,7 @@ import { getExtraResourcePath } from '~/common';
 import { MONOREPO_ROOT_PATH } from '~/constants';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import type { Maybe } from 'shared';
-
-type ProcessTree = {
-	pid: number;
-	name: string;
-	children: ProcessTree[];
-};
+import * as nativelib from 'nativelib';
 
 @injectable()
 export class ProcessService {
@@ -20,27 +14,23 @@ export class ProcessService {
 	) {
 		if (import.meta.env.DEV) {
 			this.native = require(
-				join(MONOREPO_ROOT_PATH, 'packages', 'nativelib', 'build', 'Release', 'nativelib.node')
+				join(MONOREPO_ROOT_PATH, 'packages', 'nativelib', 'dist', 'nativelib.win32-x64-msvc.node')
 			);
 		} else {
 			this.native = require(
-				getExtraResourcePath('native/nativelib.node')
+				getExtraResourcePath('native/nativelib.win32-x64-msvc.node')
 			);
 		}
+
+		this.native.test();
 	}
 
-	public listProcesses(pid: number, cb: (tree: Maybe<ProcessTree>) => void): void {
-		return this.native.getProcessTree(pid, cb);
-	}
-
-	public listProcessesAsync(pid: number): Promise<Maybe<ProcessTree>> {
-		return new Promise(res => {
-			this.native.getProcessTree(pid, res);
-		});
+	public getProcessTree(pid: number): ReturnType<typeof nativelib.getProcessTree> {
+		return this.native.getProcessTree(pid)
 	}
 
 	public async killProcessTree(pid: number) {
-		const tree = await this.listProcessesAsync(pid);
+		const tree = await this.getProcessTree(pid);
 		if (!tree) {
 			return;
 		}

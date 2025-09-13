@@ -1,12 +1,38 @@
 {
-	"private": true,
-	"gypfile": true,
 	"name": "nativelib",
+	"version": "0.1.0",
+	"files": [
+		"dist"
+	],
+	"types": "dist/index.d.ts",
+	"napi": {
+		"binaryName": "nativelib",
+		"targets": [
+			"x86_64-pc-windows-msvc"
+		]
+	},
+	"engines": {
+		"node": ">= 12.22.0 < 13 || >= 14.17.0 < 15 || >= 15.12.0 < 16 || >= 16.0.0"
+	},
 	"scripts": {
-		"build:d": "node-gyp build",
-		"build:p": "node-gyp build"
+		"artifacts": "napi artifacts",
+		"build:p": "napi build --platform --release -o dist --no-js --esm --strip",
+		"build:d": "napi build --platform -o dist --no-js --esm",
+		"format": "run-p format:rs format:toml",
+		"format:toml": "taplo format",
+		"format:rs": "cargo fmt",
+		"preversion": "napi build --platform && git add .",
+		"version": "napi version"
 	},
 	"devDependencies": {
-		"node-addon-api": "^8.5.0"
-	}
+		"@emnapi/core": "^1.5.0",
+		"@emnapi/runtime": "^1.5.0",
+		"@napi-rs/cli": "^3.2.0",
+		"@oxc-node/core": "^0.0.32",
+		"@taplo/cli": "^0.7.0",
+		"chalk": "^5.6.2",
+		"npm-run-all2": "^8.0.4",
+		"typescript": "^5.9.2"
+	},
+	"packageManager": "yarn@4.9.4"
 }

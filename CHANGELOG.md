@@ -1,3 +1,9 @@
+# 1.26.1
+
+- Updates to yt-dlp won't be checked if yt-dlp was just downloaded
+- Fixed an error when declining to download required binaries
+- Fixed the setup window's minimize and close buttons not being clickable
+
 # 1.26.0
 
 - Added an option to check for yt-dlp updates on startup
