@@ -10,6 +10,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
+import { LifecycleService } from '~/services/lifecycle';
 import { app, shell, dialog, BrowserWindow } from 'electron';
 import { fileExists, getExtraFilePath, CancellationTokenSource, OperationCancelledError } from '~/common';
 import type { Maybe } from 'shared';
@@ -23,6 +24,7 @@ export class SetupService implements IBootstrappable {
 	private readonly cts = new CancellationTokenSource();
 
 	public constructor(
+		private readonly lifecycle     = inject(LifecycleService),
 		private readonly logger        = inject(LoggingService),
 		private readonly cli           = inject(CliService),
 		private readonly ipc           = inject(IpcService),
@@ -50,7 +52,14 @@ export class SetupService implements IBootstrappable {
 		await this.settings.migrateLegacySettings();
 		await this.settings.removeDeprecatedSettings();
 		await this.checkIfOnline();
-		await this.checkForBinaries();
+
+		const ok = await this.checkForBinaries();
+		if (!ok) {
+			// ok quit
+			app.quit();
+			return;
+		}
+
 		await this.updateYtdlp();
 
 		this.emitStep('Done!');
@@ -116,7 +125,8 @@ export class SetupService implements IBootstrappable {
 
 		const interval = setInterval(() => {
 			if (this.cts.isCancellationRequested) {
-				app.exit(0);
+				// cancel quit
+				app.quit();
 				clearInterval(interval);
 			} else if (this.finished) {
 				this.setupWindow!.closable = true;
@@ -138,7 +148,6 @@ export class SetupService implements IBootstrappable {
 		const ytdlpPath       = getExtraFilePath('yt-dlp.exe');
 		const ffmpegPath      = getExtraFilePath('ffmpeg.exe');
 		const ffprobePath     = getExtraFilePath('ffprobe.exe');
-		const mainWindow      = this.window.getMainWindow()!;
 		const hideSetupWindow = this.settings.get<boolean>(ESettingsKey.HideSetupWindow);
 
 		const hasYtdlp = await this.hasYtdlpBinary(ytdlpPath);
@@ -160,15 +169,14 @@ export class SetupService implements IBootstrappable {
 			if (!hasYtdlp) missingDependencies.push('yt-dlp');
 			if (!hasFfmpeg) missingDependencies.push('FFmpeg');
 			if (!this.cli.flags.updateBinaries) {
-				const res = await dialog.showMessageBox(mainWindow, {
+				const res = await dialog.showMessageBox(this.setupWindow!, {
 					type: 'info',
 					message: `yay needs to download the following files to operate:\n\n${missingDependencies.join('\n')}\n\nWould you like to continue?`,
 					buttons: ['Yes', 'No'],
 					defaultId: 0
 				});
 				if (res.response !== 0) {
-					app.exit(0);
-					return;
+					return false;
 				}
 			}
 		}
@@ -191,7 +199,7 @@ export class SetupService implements IBootstrappable {
 				await this.settings.set(ESettingsKey.YtdlpPath, ytdlpPath);
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
-					const res = await dialog.showMessageBox(mainWindow, {
+					const res = await dialog.showMessageBox(this.setupWindow!, {
 						type: 'error',
 						message: `There was an issue downloading the latest release of yt-dlp.\nYou can try to manually download the latest release and place the file into the same folder as yay.exe\n\nWould you like to continue to the download?`,
 						buttons: ['Yes', 'No'],
@@ -201,8 +209,7 @@ export class SetupService implements IBootstrappable {
 					if (res.response === 0) {
 						await shell.openExternal('https://github.com/yt-dlp/yt-dlp/releases/download/latest/yt-dlp.exe')
 					} else {
-						app.exit(0);
-						return;
+						return false;
 					}
 				}
 			}
@@ -227,7 +234,7 @@ export class SetupService implements IBootstrappable {
 				);
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
-					const res = await dialog.showMessageBox(mainWindow, {
+					const res = await dialog.showMessageBox(this.setupWindow!, {
 						type: 'error',
 						message: `There was an issue downloading the latest release of FFmpeg.\nYou can try to manually download the latest release and extract the files into the same folder as yay.exe\n\nWould you like to continue?`,
 						buttons: ['Yes', 'No'],
@@ -241,8 +248,7 @@ export class SetupService implements IBootstrappable {
 					}
 
 					if (res.response !== 0) {
-						app.exit(0);
-						return;
+						return false;
 					}
 				}
 			}
@@ -251,6 +257,8 @@ export class SetupService implements IBootstrappable {
 		if (this.cts.isCancellationRequested) {
 			this.setupWindow!.setProgressBar(1, { mode: 'error' });
 		}
+
+		return true;
 	}
 
 	private async hasYtdlpBinary(localPath: string): Promise<boolean> {
@@ -312,15 +320,14 @@ export class SetupService implements IBootstrappable {
 			return;
 		}
 
-		const mainWindow = this.window.getMainWindow()!;
-		const res = await dialog.showMessageBox(mainWindow, {
+		const res = await dialog.showMessageBox(this.setupWindow!, {
 			type: 'warning',
 			message: 'It appears that you have no internet connection.\nThis application cannot function without an internet connection.\n\nWould you still like to continue?',
 			buttons: ['Yes', 'No'],
 			defaultId: 0
 		});
 		if (res.response !== 0) {
-			app.exit(0);
+			app.quit();
 		}
 	}
 
