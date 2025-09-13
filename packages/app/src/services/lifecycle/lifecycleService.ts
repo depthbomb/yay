@@ -1,6 +1,5 @@
 import mitt from 'mitt';
 import { app } from 'electron';
-import { timeout } from '~/common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { IBootstrappable } from '~/common';
@@ -70,13 +69,9 @@ export class LifecycleService implements IBootstrappable {
 		app.once('will-quit', e => {
 			e.preventDefault();
 
-			this.logger.info('Shutdown initiated, allowing time for service shutdown routines');
-
-			timeout(1_500).finally(() => {
-				this.logger.info('Quitting');
-				this.logger.end();
-				app.quit();
-			});
+			this.logger.info('Quitting');
+			this.logger.end();
+			app.exit(0);
 		});
 	}
 }
