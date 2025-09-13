@@ -21,14 +21,14 @@
 		"radix-ui": "^1.4.3",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
-		"react-router": "^7.8.2",
+		"react-router": "^7.9.1",
 		"shared": "workspace:*"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.35.0",
 		"@tailwindcss/typography": "^0.5.16",
 		"@tailwindcss/vite": "^4.1.13",
-		"@types/react": "^19.1.12",
+		"@types/react": "^19.1.13",
 		"@types/react-dom": "^19.1.9",
 		"@vitejs/plugin-react-swc": "^4.0.1",
 		"electron": "38.1.0",

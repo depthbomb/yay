@@ -3407,12 +3407,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.18.1":
-  version: 22.18.1
-  resolution: "@types/node@npm:22.18.1"
+"@types/node@npm:^22.18.3":
+  version: 22.18.3
+  resolution: "@types/node@npm:22.18.3"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/da67f3c3fa4107fbca704e7a71fee36c27f3b6f44af1c466cd5c71eab76a9ffcd6a16f3b97d1e757b9763f1fa1085eebb60cb648c272e36794aca7305b2a15d9
+  checksum: 10/6acec9f6efbd1afe7bb4168ccbec60933a6c5562e8d2cd3912e4ec4c291fbafd3c75c939d478f20156dc808b6533685b59e202a2b952964b3fac2be5d3ed4f11
   languageName: node
   linkType: hard
 
@@ -3444,12 +3444,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.1.12":
-  version: 19.1.12
-  resolution: "@types/react@npm:19.1.12"
+"@types/react@npm:^19.1.13":
+  version: 19.1.13
+  resolution: "@types/react@npm:19.1.13"
   dependencies:
     csstype: "npm:^3.0.2"
-  checksum: 10/c03d595b84faecb15079757555c96871e84ea6eef9a5eddb13ec1f648f718f9624bebc4199e86267edb825b23df97758324ea39ff840d9ad328386f96971f588
+  checksum: 10/a4e12df335ded76e931cc2ba2a4c8a61872ed840081eca83612fbdadc4afbf0cbd0ae31fdedc7fae7f0e02c90dac98dda517dfa73bec653dd4b1de2755431a62
   languageName: node
   linkType: hard
 
@@ -7615,9 +7615,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:^7.8.2":
-  version: 7.8.2
-  resolution: "react-router@npm:7.8.2"
+"react-router@npm:^7.9.1":
+  version: 7.9.1
+  resolution: "react-router@npm:7.9.1"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -7627,7 +7627,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10/d1af3980cdfe8b915f6a8b219d57f18f9e3c4c062fa33bbb0946d4ff18c4c09fbf2f5c3616f5953f576c1d3be31616e4578773794cbb6eacf7812050997e04a2
+  checksum: 10/f15aa70bfe95bf05f755283c2b67d3316cd037c99aebf5cc6b4fd49db99a5a4a36ba0664661a84bf7d60a7643dd0457f1835896891dbf7b8f16e670e79e80491
   languageName: node
   linkType: hard
 
@@ -7710,7 +7710,7 @@ __metadata:
     "@mdi/react": "npm:^1.6.1"
     "@tailwindcss/typography": "npm:^0.5.16"
     "@tailwindcss/vite": "npm:^4.1.13"
-    "@types/react": "npm:^19.1.12"
+    "@types/react": "npm:^19.1.13"
     "@types/react-dom": "npm:^19.1.9"
     "@vitejs/plugin-react-swc": "npm:^4.0.1"
     clsx: "npm:^2.1.1"
@@ -7725,7 +7725,7 @@ __metadata:
     radix-ui: "npm:^1.4.3"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
-    react-router: "npm:^7.8.2"
+    react-router: "npm:^7.9.1"
     sass-embedded: "npm:^1.92.1"
     shared: "workspace:*"
     tailwindcss: "npm:^4.1.13"
@@ -9491,7 +9491,7 @@ __metadata:
   dependencies:
     "@octokit/rest": "npm:^22.0.0"
     "@octokit/types": "npm:^14.1.0"
-    "@types/node": "npm:^22.18.1"
+    "@types/node": "npm:^22.18.3"
     asar-trim: "npm:^1.2.2"
     cross-env: "npm:^10.0.0"
     dotenv: "npm:^17.2.2"
@@ -9511,7 +9511,7 @@ __metadata:
     "@needle-di/core": "npm:1.0.0"
     "@swc-node/sourcemap-support": "npm:^0.6.1"
     "@types/eslint": "npm:^9.6.1"
-    "@types/node": "npm:^22.18.1"
+    "@types/node": "npm:^22.18.3"
     "@types/semver": "npm:^7.7.1"
     "@typescript-eslint/eslint-plugin": "npm:^8.43.0"
     "@typescript-eslint/parser": "npm:^8.43.0"

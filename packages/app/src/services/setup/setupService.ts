@@ -328,6 +328,7 @@ export class SetupService implements IBootstrappable {
 		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true) && !this.downloadedYtdlpBinary) {
 			this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
 			this.emitStep('Checking for yt-dlp updates...');
+
 			await this.ytdlp.updateBinary(true);
 		}
 	}

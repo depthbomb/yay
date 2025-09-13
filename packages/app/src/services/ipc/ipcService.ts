@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
+import { IpcChannels } from 'shared';
 import { injectable } from '@needle-di/core';
-import { IpcChannels, type IIpcContract } from 'shared';
+import type { IIpcContract } from 'shared';
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 
 type Handler<K extends keyof IIpcContract> = (event: IpcMainInvokeEvent, ...args: IIpcContract[K]['args']) => IIpcContract[K]['return'] | Promise<IIpcContract[K]['return']>;
