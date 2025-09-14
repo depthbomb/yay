@@ -575,17 +575,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/noto-sans-mono@npm:^5.2.8":
-  version: 5.2.8
-  resolution: "@fontsource-variable/noto-sans-mono@npm:5.2.8"
-  checksum: 10/2a03f16ba268aa2b5ca9328a2470c3d67ffceaf914b18628a7967600af2a732a72cd8d27675203079cf76788573c87124201009e187877b663383a765b4bce90
+"@fontsource-variable/noto-sans-mono@npm:^5.2.9":
+  version: 5.2.9
+  resolution: "@fontsource-variable/noto-sans-mono@npm:5.2.9"
+  checksum: 10/3160f7cdbddb38d83dd75ec9216807e748d62d89513c7f08979567aa0dd1c502a0964cb8790f4500dc0ecd141e4f777fb62d2adcf534fecb7c313f2b3e36c974
   languageName: node
   linkType: hard
 
-"@fontsource-variable/noto-sans@npm:^5.2.8":
-  version: 5.2.8
-  resolution: "@fontsource-variable/noto-sans@npm:5.2.8"
-  checksum: 10/1254c46c9a1dd0e6dbda29f557a63e0a7696a9fc22b8f9565c74f14d52f3c15a3c2b29a87a00661cd4f624e3dd4cd102575abeb5c60d9bbcb285d3af2a08f62c
+"@fontsource-variable/noto-sans@npm:^5.2.9":
+  version: 5.2.9
+  resolution: "@fontsource-variable/noto-sans@npm:5.2.9"
+  checksum: 10/8e0d3ba3247b52d005d108ea23cc3453f9d50f1cd1cfc8e09ba8c015e96e703cc7da03a2e39e6215354f72ad7c847a57e749c7d1d8f96549a27a24e9dfef502f
   languageName: node
   linkType: hard
 
@@ -8949,8 +8949,8 @@ __metadata:
   resolution: "renderer@workspace:packages/renderer"
   dependencies:
     "@eslint/js": "npm:^9.35.0"
-    "@fontsource-variable/noto-sans": "npm:^5.2.8"
-    "@fontsource-variable/noto-sans-mono": "npm:^5.2.8"
+    "@fontsource-variable/noto-sans": "npm:^5.2.9"
+    "@fontsource-variable/noto-sans-mono": "npm:^5.2.9"
     "@mdi/js": "npm:^7.4.47"
     "@mdi/react": "npm:^1.6.1"
     "@tailwindcss/typography": "npm:^0.5.16"
