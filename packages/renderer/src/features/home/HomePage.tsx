@@ -1,5 +1,7 @@
 import clsx from 'clsx';
+import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
+import { mdiUpdate } from '@mdi/js';
 import { useRef, useEffect } from 'react';
 import { TextInput } from '~/components/input';
 import { Spinner } from '~/components/SpinnerV2';
@@ -32,26 +34,26 @@ const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 };
 
 export const HomePage = () => {
-	const [,clearLog]                 = useAtom(clearLogAtom);
-	const [,pushToLog]                = useAtom(pushToLogAtom);
-	const [,resetApp]                 = useAtom(resetAppAtom);
-	const [url, setUrl]               = useAtom(urlAtom);
-	const [isWorking, setIsWorking]   = useAtom(workingAtom);
-	const [isUpdating, setIsUpdating] = useAtom(updatingAtom);
-	const [,setUpdateAvailable]       = useAtom(updateAvailableAtom);
-	const [isValidUrl]                = useAtom(isUrlValidAtom);
-	const [logs]                      = useAtom(logAtom);
-	const [,shiftLog]                 = useAtom(shiftLogAtom);
+	const [,clearLog]                           = useAtom(clearLogAtom);
+	const [,pushToLog]                          = useAtom(pushToLogAtom);
+	const [,resetApp]                           = useAtom(resetAppAtom);
+	const [url, setUrl]                         = useAtom(urlAtom);
+	const [isWorking, setIsWorking]             = useAtom(workingAtom);
+	const [isUpdating, setIsUpdating]           = useAtom(updatingAtom);
+	const [updateAvailable, setUpdateAvailable] = useAtom(updateAvailableAtom);
+	const [isValidUrl]                          = useAtom(isUrlValidAtom);
+	const [logs]                                = useAtom(logAtom);
+	const [,shiftLog]                           = useAtom(shiftLogAtom);
 
-	const [showHintFooter]            = useSetting(ESettingsKey.ShowHintFooter, { defaultValue: true });
+	const [showHintFooter] = useSetting(ESettingsKey.ShowHintFooter, { defaultValue: true });
 
-	const [onDownloadStarted]         = useIpc('yt-dlp->download-started');
-	const [onDownloadOutput]          = useIpc('yt-dlp->stdout');
-	const [onDownloadCanceled]        = useIpc('yt-dlp->download-canceled');
-	const [onDownloadFinished]        = useIpc('yt-dlp->download-finished');
-	const [onUpdatingYtdlpBinary]     = useIpc('yt-dlp->updating-binary');
-	const [onUpdatedYtdlpBinary]      = useIpc('yt-dlp->updated-binary');
-	const [onUpdateAvailable]         = useIpc('updater->outdated');
+	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
+	const [onDownloadOutput]      = useIpc('yt-dlp->stdout');
+	const [onDownloadCanceled]    = useIpc('yt-dlp->download-canceled');
+	const [onDownloadFinished]    = useIpc('yt-dlp->download-finished');
+	const [onUpdatingYtdlpBinary] = useIpc('yt-dlp->updating-binary');
+	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
+	const [onUpdateAvailable]     = useIpc('updater->outdated');
 
 	const mediaUrlEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
@@ -134,29 +136,35 @@ export const HomePage = () => {
 					<>
 						<AppMasthead/>
 						<div className="p-3 h-full flex flex-col space-y-4 overflow-hidden">
-						<TextInput
-							ref={mediaUrlEl}
-							onChange={onInputChange}
-							value={url}
-							placeholder="Media URL"
-							disabled={isWorking || isUpdating}
-							readOnly={isWorking || isUpdating}
-						/>
-						<DownloadButtons
-							onDownloadVideoClick={() => window.ipc.invoke('yt-dlp<-download-video', url)}
-							onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
-							onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
-							working={isWorking}
-							disabled={!isValidUrl || isUpdating}
-						/>
-						<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
-							<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
-								{logs.map((line, i) => (
-									<LogLine key={i} line={line}/>
-								))}
+							{updateAvailable && (
+								<a className="py-1.5 px-2 flex flex-row items-center space-x-2 text-sky-100 bg-sky-950/50 border border-sky-900 hover:text-white hover:bg-sky-900 hover:border-sky-600 rounded cursor-pointer transition" onClick={() => window.ipc.invoke('updater<-show-window')}>
+									<Icon path={mdiUpdate} className="size-4"/>
+									<p className="text-sm">A new version of yay is available.</p>
+								</a>
+							)}
+							<TextInput
+								ref={mediaUrlEl}
+								onChange={onInputChange}
+								value={url}
+								placeholder="Media URL"
+								disabled={isWorking || isUpdating}
+								readOnly={isWorking || isUpdating}
+							/>
+							<DownloadButtons
+								onDownloadVideoClick={() => window.ipc.invoke('yt-dlp<-download-video', url)}
+								onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
+								onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
+								working={isWorking}
+								disabled={!isValidUrl || isUpdating}
+							/>
+							<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
+								<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
+									{logs.map((line, i) => (
+										<LogLine key={i} line={line}/>
+									))}
+								</div>
 							</div>
 						</div>
-					</div>
 						{showHintFooter && <AppFooter/>}
 					</>
 				)}

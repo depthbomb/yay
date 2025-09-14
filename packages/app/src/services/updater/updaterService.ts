@@ -89,26 +89,13 @@ export class UpdaterService implements IBootstrappable {
 				this.latestChangelog = newRelease.body_html!;
 				this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
-				/**
-				 * If this is the first time checking for updates (immediately after setup) then
-				 * show the updater window.
-				 */
-				if (this.isStartupCheck) {
-					// So we don't show a notification the next time we check
-					this.logger.debug('Showing updater window due to startup update check');
-					this.isNotified = true;
-					this.showUpdaterWindow();
-				}
-
-				this.window.emitMain('updater->outdated', { latestRelease: this.latestRelease });
+				this.window.emitAll('updater->outdated', { latestRelease: this.latestRelease });
 
 				if (manual) {
 					this.showUpdaterWindow();
 				} else if (
 					this.settings.get(ESettingsKey.EnableNewReleaseToast, true) &&
-					!this.isStartupCheck &&
-					!this.isNotified &&
-					!this.window.getMainWindow()?.isFocused()
+					!this.isNotified
 				) {
 					this.logger.debug('Showing update toast notification');
 
@@ -128,8 +115,6 @@ export class UpdaterService implements IBootstrappable {
 
 			this.logger.error('Error while checking for new releases', { error: { message, stack } });
 		}
-
-		this.isStartupCheck = false;
 	}
 
 	public async startUpdate() {
