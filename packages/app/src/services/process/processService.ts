@@ -21,8 +21,6 @@ export class ProcessService {
 				getExtraResourcePath('native/nativelib.win32-x64-msvc.node')
 			);
 		}
-
-		this.native.test();
 	}
 
 	public getProcessTree(pid: number): ReturnType<typeof nativelib.getProcessTree> {

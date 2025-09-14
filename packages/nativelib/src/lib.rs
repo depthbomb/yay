@@ -112,8 +112,3 @@ pub async fn get_process_tree(pid: u32) -> Option<JsProcessNode> {
 
 	Some(root.into())
 }
-
-#[napi]
-pub fn test() {
-	println!("Works")
-}

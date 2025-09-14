@@ -41,6 +41,7 @@ export class ThumbnailService {
 		const url = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
 		const res = await this.httpClient.get(url);
 		const fs  = createWriteStream(thumbnailPath);
+
 		await finished(Readable.fromWeb(res.body!).pipe(fs));
 
 		this.logger.info('Wrote thumbnail to disk', { url, thumbnailPath });
