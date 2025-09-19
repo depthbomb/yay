@@ -2,15 +2,14 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { mdiUpdate } from '@mdi/js';
+import { isValidHttpUrl } from 'shared';
 import { useRef, useEffect } from 'react';
 import { TextInput } from '~/components/input';
 import { Spinner } from '~/components/SpinnerV2';
-import { AppFooter } from '~/components/AppFooter';
-import { ESettingsKey, isValidHttpUrl } from 'shared';
 import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
+import { useIpc, useTitle, useKeyCombo, useNativeTextMenu } from '~/hooks';
 import { logAtom, shiftLogAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
-import { useIpc, useTitle, useSetting, useKeyCombo, useNativeTextMenu } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -44,8 +43,6 @@ export const HomePage = () => {
 	const [isValidUrl]                          = useAtom(isUrlValidAtom);
 	const [logs]                                = useAtom(logAtom);
 	const [,shiftLog]                           = useAtom(shiftLogAtom);
-
-	const [showHintFooter] = useSetting(ESettingsKey.ShowHintFooter, { defaultValue: true });
 
 	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
 	const [onDownloadOutput]      = useIpc('yt-dlp->stdout');
@@ -165,7 +162,6 @@ export const HomePage = () => {
 								</div>
 							</div>
 						</div>
-						{showHintFooter && <AppFooter/>}
 					</>
 				)}
 			</div>
