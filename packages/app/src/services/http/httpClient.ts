@@ -3,7 +3,7 @@ import { IdGenerator } from '~/common';
 import { joinURL, withQuery } from 'ufo';
 import { createWriteStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
-import { retry, handleResultType, ConstantBackoff } from 'cockatiel';
+import { retry, ConstantBackoff, handleResultType } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
 import type { LoggingService } from '~/services/logging';
 import type { GETOptions, RequestOptions, HttpClientOptions, DownloadOptions } from './types';

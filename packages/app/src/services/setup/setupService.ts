@@ -10,7 +10,6 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
-import { LifecycleService } from '~/services/lifecycle';
 import { app, shell, dialog, BrowserWindow } from 'electron';
 import { fileExists, getExtraFilePath, CancellationTokenSource, OperationCancelledError } from '~/common';
 import type { Maybe } from 'shared';
@@ -24,7 +23,6 @@ export class SetupService implements IBootstrappable {
 	private readonly cts = new CancellationTokenSource();
 
 	public constructor(
-		private readonly lifecycle     = inject(LifecycleService),
 		private readonly logger        = inject(LoggingService),
 		private readonly cli           = inject(CliService),
 		private readonly ipc           = inject(IpcService),
@@ -55,7 +53,6 @@ export class SetupService implements IBootstrappable {
 
 		const ok = await this.checkForBinaries();
 		if (!ok) {
-			// ok quit
 			app.quit();
 			return;
 		}
@@ -80,7 +77,6 @@ export class SetupService implements IBootstrappable {
 			[ESettingsKey.EnableDownloadCompletionToast, true],
 			[ESettingsKey.UseThumbnailForCoverArt, false],
 			[ESettingsKey.EnableNewReleaseToast, true],
-			[ESettingsKey.ShowHintFooter, true],
 			[ESettingsKey.HideSetupWindow, false],
 			[ESettingsKey.DisableHardwareAcceleration, false],
 			[ESettingsKey.UpdateYtdlpOnStartup, true],
@@ -125,7 +121,6 @@ export class SetupService implements IBootstrappable {
 
 		const interval = setInterval(() => {
 			if (this.cts.isCancellationRequested) {
-				// cancel quit
 				app.quit();
 				clearInterval(interval);
 			} else if (this.finished) {
