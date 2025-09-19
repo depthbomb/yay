@@ -40,8 +40,8 @@ export class MainWindowService implements IBootstrappable {
 			externalUrlRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
-				width: 400,
-				height: 550,
+				width: 380,
+				height: 500,
 				alwaysOnTop: true,
 				resizable: false,
 				frame: false,

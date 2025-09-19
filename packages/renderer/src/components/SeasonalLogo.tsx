@@ -4,12 +4,12 @@ import { useIpc, useFeatureFlags } from '~/hooks';
 import { useMemo, useState, useEffect, forwardRef } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
-import logo from '~/assets/img/logo.svg';
+import logo from '~/assets/img/logo.webp';
 import skele from '~/assets/img/seasonal-logos/skeleton.gif';
 
 type SeasonalLogoProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>;
 
-const baseCss = 'mr-2 size-8 shrink-0 z-10' as const;
+const baseCss = 'mr-2 size-7 shrink-0 z-10' as const;
 
 const seasonalLogos = [
 	{
@@ -65,9 +65,9 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 	return (
 		<div className="space-x-3 w-full flex items-center">
 			{!isFeatureEnabled('SeasonalEffects') ? (
-				<img ref={ref} src={logo} className={baseCss} draggable="false" width="32" height="32" {...props}/>
+				<img ref={ref} src={logo} className={baseCss} draggable="false" width="28" height="28" {...props}/>
 			) : (
-				<img ref={ref} src={logoSrc} className={className} draggable="false" width="32" height="32" {...props}/>
+				<img ref={ref} src={logoSrc} className={className} draggable="false" width="28" height="28" {...props}/>
 			)}
 			<span className="font-light text-sm">Yet Another YouTube Downloader</span>
 		</div>

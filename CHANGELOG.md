@@ -1,3 +1,10 @@
+# 1.27.0
+
+- The updater window is no longer displayed after startup if there is a new release
+- Updated the main window UI elements when there is a new release
+- Removed hints footer
+- Slightly reduced the overall size of the main window
+
 # 1.26.1
 
 - Updates to yt-dlp won't be checked if yt-dlp was just downloaded
