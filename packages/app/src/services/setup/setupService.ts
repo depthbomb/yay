@@ -159,7 +159,7 @@ export class SetupService implements IBootstrappable {
 			fileExists(ffprobePath)
 		]).then(r => r.every(Boolean));
 
-		if (!hasYtdlp || !hasFfmpeg) {
+		if (!hasYtdlp || !hasFfmpeg || !hasDeno) {
 			if (hideSetupWindow) {
 				this.setupWindow!.show();
 			}
