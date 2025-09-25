@@ -150,7 +150,7 @@ export class SetupService implements IBootstrappable {
 
 		this.emitStep('Checking for Deno...');
 
-		const hasDeno = await fileExists(denoPath);
+		const hasDeno = await this.hasDenoBinary(denoPath);
 
 		this.emitStep('Checking for FFmpeg...');
 
@@ -172,7 +172,7 @@ export class SetupService implements IBootstrappable {
 			if (!this.cli.flags.updateBinaries) {
 				const res = await dialog.showMessageBox(this.setupWindow!, {
 					type: 'info',
-					message: `yay needs to download the following files to operate:\n\n${missingDependencies.join('\n')}\n\nWould you like to continue?`,
+					message: `Some files that yay uses are missing from your system:\n\n${missingDependencies.join('\n')}\n\nWould you like yay to download them?`,
 					buttons: ['Yes', 'No'],
 					defaultId: 0
 				});
@@ -295,53 +295,65 @@ export class SetupService implements IBootstrappable {
 		return true;
 	}
 
-	private async hasYtdlpBinary(localPath: string): Promise<boolean> {
+	private async hasYtdlpBinary(path: string) {
 		this.logger.info('Checking for yt-dlp binary');
 
 		const currentPath       = this.settings.get(ESettingsKey.YtdlpPath);
-		const localBinaryExists = await fileExists(localPath);
+		const localBinaryExists = await fileExists(path);
+		const test              = (path: string) => this.testBinary(path, ['--version'], /\d{4}\.\d+\.\d+/);
 		if (localBinaryExists) {
-			this.logger.info('Found yt-dlp binary', { path: localPath });
+			this.logger.info('Found yt-dlp binary', { path });
 
-			if (currentPath !== localPath) {
-				await this.settings.set(ESettingsKey.YtdlpPath, localPath);
+			if (currentPath !== path) {
+				await this.settings.set(ESettingsKey.YtdlpPath, path);
 			}
 
-			return true;
+			return test(path);
 		}
 
-		if (currentPath === 'yt-dlp') {
-			this.logger.info('Verifying yt-dlp binary in PATH');
-
-			try {
-				const isValid = await this.verifyYtdlpBinary('yt-dlp');
-				if (isValid) {
-					this.logger.debug('PATH yt-dlp binary is valid');
-					return true;
-				}
-			} catch (err) {
-				this.logger.error('PATH yt-dlp binary no longer works', { err });
-			}
-		}
-
-		return false;
+		return test('yt-dlp');
 	}
 
-	private verifyYtdlpBinary(binaryPath: string): Promise<boolean> {
-		const versionPattern               = /\d{4}\.\d+\.\d+/;
-		const { resolve, reject, promise } = Promise.withResolvers<boolean>();
+	private async hasDenoBinary(path: string) {
+		this.logger.info('Checking for deno binary');
+
+		const currentPath       = this.settings.get(ESettingsKey.DenoPath);
+		const localBinaryExists = await fileExists(path);
+		const test              = (path: string) => this.testBinary(path, ['-v'], /\d+\.\d+\.\d+/);
+		if (localBinaryExists) {
+			this.logger.info('Found deno binary', { path });
+
+			if (currentPath !== path) {
+				await this.settings.set(ESettingsKey.DenoPath, path);
+			}
+
+			return test(path);
+		}
+
+		return test('deno');
+	}
+
+	private testBinary(name: string, args: string[], checkRegex: RegExp) {
+		const { resolve, promise } = Promise.withResolvers<boolean>();
+
+		this.logger.info('Testing binary', { name, args, regex: checkRegex.toString() })
 
 		let output = '';
-		const proc = spawn(binaryPath, ['--version']);
+		const proc = spawn(name, args);
 		proc.stdout.on('data', data => output += data.toString());
-		proc.once('error', err => reject(err));
+		proc.once('error', err => {
+			this.logger.error('Error spawning process for binary test', { err });
+			resolve(false);
+		});
 		proc.once('close', () => {
-			const matches = versionPattern.exec(output.trim());
+			output = output.trim();
+			const matches = checkRegex.exec(output);
 			if (matches) {
-				this.logger.debug('PATH yt-dlp binary is verified', { version: matches[0] });
+				this.logger.debug('Binary passes test', { output });
 				resolve(true);
 			} else {
-				reject(new Error('Version pattern not found in output'));
+				this.logger.debug('Binary does not pass test', { output });
+				resolve(false);
 			}
 		});
 

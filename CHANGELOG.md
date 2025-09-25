@@ -1,3 +1,11 @@
+# 1.28.1
+
+- Fixed the setup process not prompting to download Deno if it isn't found
+- Updated the missing dependency message box text
+- Deno will now also be checked if it is installed via the system PATH
+- yt-dlp binary is now verified if found locally (when placed alongside the yay executable)
+- Deno binary is now verified if found locally or in the PATH
+
 # 1.28.0
 
 - Added a setup step that will check for and download Deno if it isn't found

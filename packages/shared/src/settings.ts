@@ -10,6 +10,7 @@ export enum ESettingsKey {
 	UseThumbnailForCoverArt       = 'use-thumbnail-for-cover-art',
 	EnableDownloadCompletionToast = 'enable-download-completion-toast',
 	YtdlpPath                     = 'yt-dlp-path',
+	DenoPath                      = 'deno-path',
 	SkipYoutubePlaylists          = 'skip-youtube-playlists',
 	DisableHardwareAcceleration   = 'disable-hardware-acceleration',
 	UpdateYtdlpOnStartup          = 'update-ytdlp-on-startup',
