@@ -131,7 +131,7 @@ export class MainWindowService implements IBootstrappable {
 		this.ipc.registerHandler('yt-dlp<-recheck-binaries', async () => {
 			this.logger.info('Rechecking binaries');
 
-			for (const bin of ['yt-dlp.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
+			for (const bin of ['yt-dlp.exe', 'deno.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
 				const binPath = getExtraFilePath(bin);
 				if (!await fileExists(binPath)) {
 					continue;

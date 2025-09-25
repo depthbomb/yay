@@ -90,6 +90,7 @@ export class TrayService implements IBootstrappable {
 							click: async () => {
 								await Promise.allSettled([
 									unlink(getExtraFilePath('yt-dlp.exe')),
+									unlink(getExtraFilePath('deno.exe')),
 									unlink(getExtraFilePath('ffmpeg.exe')),
 									unlink(getExtraFilePath('ffprobe.exe')),
 								]);
