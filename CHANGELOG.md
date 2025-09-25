@@ -1,3 +1,8 @@
+# 1.28.0
+
+- Added a setup step that will check for and download Deno if it isn't found
+  - Read more about why this was added [here](https://github.com/yt-dlp/yt-dlp/issues/14404)
+
 # 1.27.0
 
 - The updater window is no longer displayed after startup if there is a new release

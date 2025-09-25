@@ -40,6 +40,70 @@ export class BinaryDownloader {
 		await rename(tempPath, path);
 	}
 
+	public async downloadDenoBinary(
+		path: string,
+		signal: AbortSignal,
+		onProgress?: (progress: number) => void,
+		onExtracting?: () => void,
+		onCleaningUp?: () => void,
+	) {
+		const url = await this.resolveDenoDownloadUrl();
+		if (!url) {
+			throw new Error('Could not resolve Deno release download URL');
+		}
+
+		const res = await this.httpClient.get(url, { signal });
+		if (!res.ok) {
+			return;
+		}
+
+		const tempPath = join(app.getPath('temp'), '_deno.zip');
+
+		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
+
+		const sevenZipPath = getExtraFilePath('7za.exe');
+
+		const { promise, resolve, reject } = Promise.withResolvers<void>();
+
+		if (signal.aborted) {
+			resolve();
+			return promise;
+		}
+
+		onExtracting?.();
+
+		const extraction = spawn(sevenZipPath, [
+			'e',
+			tempPath,
+			'-r',
+			`-o${dirname(path)}`,
+			'-aoa',
+			'deno.exe'
+		]);
+
+		extraction.once('error', err => {
+			this.logger.error('Error while extracting archive', { err });
+			reject(err);
+		});
+
+		extraction.once('close', async code => {
+			try {
+				onCleaningUp?.();
+				await unlink(tempPath);
+
+				if (code === 0) {
+					resolve();
+				} else {
+					reject(new Error('Failed to extract Deno binary'));
+				}
+			} catch (err) {
+				reject(err as Error);
+			}
+		});
+
+		return promise;
+	}
+
 	public async downloadFfmpegBinary(
 		path: string,
 		signal: AbortSignal,
@@ -112,6 +176,17 @@ export class BinaryDownloader {
 		}
 
 		const asset = release.assets.find(a => a.name === 'yt-dlp.exe');
+
+		return asset?.browser_download_url;
+	}
+
+	private async resolveDenoDownloadUrl() {
+		const release = await this.github.getLatestRepositoryRelease('denoland', 'deno');
+		if (!release) {
+			return;
+		}
+
+		const asset = release.assets.find(a => a.name.endsWith('deno-x86_64-pc-windows-msvc.zip'));
 
 		return asset?.browser_download_url;
 	}

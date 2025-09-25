@@ -136,16 +136,21 @@ export class SetupService implements IBootstrappable {
 	private async checkForBinaries() {
 		this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
 
-		this.emitStep('Checking for yt-dlp...');
-
 		const token           = this.cts.token;
 		const signal          = token.toAbortSignal();
 		const ytdlpPath       = getExtraFilePath('yt-dlp.exe');
+		const denoPath        = getExtraFilePath('deno.exe');
 		const ffmpegPath      = getExtraFilePath('ffmpeg.exe');
 		const ffprobePath     = getExtraFilePath('ffprobe.exe');
 		const hideSetupWindow = this.settings.get<boolean>(ESettingsKey.HideSetupWindow);
 
+		this.emitStep('Checking for yt-dlp...');
+
 		const hasYtdlp = await this.hasYtdlpBinary(ytdlpPath);
+
+		this.emitStep('Checking for Deno...');
+
+		const hasDeno = await fileExists(denoPath);
 
 		this.emitStep('Checking for FFmpeg...');
 
@@ -162,6 +167,7 @@ export class SetupService implements IBootstrappable {
 			const missingDependencies = [];
 
 			if (!hasYtdlp) missingDependencies.push('yt-dlp');
+			if (!hasDeno) missingDependencies.push('Deno');
 			if (!hasFfmpeg) missingDependencies.push('FFmpeg');
 			if (!this.cli.flags.updateBinaries) {
 				const res = await dialog.showMessageBox(this.setupWindow!, {
@@ -202,8 +208,41 @@ export class SetupService implements IBootstrappable {
 					});
 
 					if (res.response === 0) {
-						await shell.openExternal('https://github.com/yt-dlp/yt-dlp/releases/download/latest/yt-dlp.exe')
+						await shell.openExternal('https://github.com/yt-dlp/yt-dlp/releases/download/latest/yt-dlp.exe');
 					} else {
+						return false;
+					}
+				}
+			}
+		}
+
+		if (!hasDeno && !this.cts.isCancellationRequested) {
+			this.emitStep('Starting Deno download...');
+
+			try {
+				await this.downloader.downloadDenoBinary(
+					ffmpegPath,
+					signal,
+					progress => {
+						this.emitStep(`Downloading Deno... (${progress}%)`);
+						this.setupWindow!.setProgressBar(progress / 100, { mode: 'normal' });
+					},
+					() => {
+						this.emitStep('Extracting Deno...');
+						this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
+					},
+					() => this.emitStep('Cleaning up...')
+				);
+			} catch (err) {
+				if (!(err instanceof OperationCancelledError)) {
+					const res = await dialog.showMessageBox(this.setupWindow!, {
+						type: 'error',
+						message: `There was an issue downloading the latest release of Deno.\nThis file is currently not required but will likely be in the future.\n\nWould you like to continue?`,
+						buttons: ['Yes', 'No'],
+						defaultId: 0
+					});
+
+					if (res.response !== 0) {
 						return false;
 					}
 				}
@@ -225,7 +264,7 @@ export class SetupService implements IBootstrappable {
 						this.emitStep('Extracting FFmpeg...');
 						this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
 					},
-					() => this.emitStep('Finalizing...')
+					() => this.emitStep('Cleaning up...')
 				);
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
