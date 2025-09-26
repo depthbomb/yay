@@ -144,11 +144,11 @@ export class SetupService implements IBootstrappable {
 		const ffprobePath     = getExtraFilePath('ffprobe.exe');
 		const hideSetupWindow = this.settings.get<boolean>(ESettingsKey.HideSetupWindow);
 
-		this.emitStep('Checking for yt-dlp...');
+		this.emitStep('Verifying yt-dlp...');
 
 		const hasYtdlp = await this.hasYtdlpBinary(ytdlpPath);
 
-		this.emitStep('Checking for Deno...');
+		this.emitStep('Verifying Deno...');
 
 		const hasDeno = await this.hasDenoBinary(denoPath);
 
@@ -221,7 +221,6 @@ export class SetupService implements IBootstrappable {
 
 			try {
 				await this.downloader.downloadDenoBinary(
-					ffmpegPath,
 					signal,
 					progress => {
 						this.emitStep(`Downloading Deno... (${progress}%)`);
@@ -254,7 +253,6 @@ export class SetupService implements IBootstrappable {
 
 			try {
 				await this.downloader.downloadFfmpegBinary(
-					ffmpegPath,
 					signal,
 					progress => {
 						this.emitStep(`Downloading FFmpeg... (${progress}%)`);

@@ -90,14 +90,20 @@ export function getExtraResourcePath(path: string) {
  * `<root>/static/extra` (development) directory.
  */
 export function getExtraFilePath(path: string) {
-	let extraFilePath: string;
+	return join(getExtraFileDir(), path);
+}
+
+export function getExtraFileDir() {
+	let extraFileDir: string;
 	if (import.meta.env.DEV) {
-		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', path);
+		extraFileDir = join(MONOREPO_ROOT_PATH, 'static', 'extra');
 	} else {
-		extraFilePath = join(EXE_DIR, path);
+		extraFileDir = EXE_DIR;
 	}
 
-	return extraFilePath;
+	console.log(extraFileDir);
+
+	return extraFileDir;
 }
 
 function _getFilePathFromAsar(path: string) {

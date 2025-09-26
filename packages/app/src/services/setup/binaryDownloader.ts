@@ -1,13 +1,14 @@
 import { app } from 'electron';
+import { join } from 'node:path';
+import { randomUUID } from 'node:crypto';
 import { USER_AGENT } from '~/constants';
-import { join, dirname } from 'node:path';
 import { spawn } from 'node:child_process';
-import { getExtraFilePath } from '~/common';
 import { HttpService } from '~/services/http';
 import { GithubService } from '~/services/github';
 import { unlink, rename } from 'node:fs/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { getExtraFileDir, getExtraFilePath } from '~/common';
 import type { HttpClient } from '~/services/http';
 
 @injectable()
@@ -41,7 +42,6 @@ export class BinaryDownloader {
 	}
 
 	public async downloadDenoBinary(
-		path: string,
 		signal: AbortSignal,
 		onProgress?: (progress: number) => void,
 		onExtracting?: () => void,
@@ -52,60 +52,18 @@ export class BinaryDownloader {
 			throw new Error('Could not resolve Deno release download URL');
 		}
 
-		const res = await this.httpClient.get(url, { signal });
-		if (!res.ok) {
-			return;
-		}
-
-		const tempPath = join(app.getPath('temp'), '_deno.zip');
-
-		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
-
-		const sevenZipPath = getExtraFilePath('7za.exe');
-
-		const { promise, resolve, reject } = Promise.withResolvers<void>();
-
-		if (signal.aborted) {
-			resolve();
-			return promise;
-		}
-
-		onExtracting?.();
-
-		const extraction = spawn(sevenZipPath, [
-			'e',
-			tempPath,
-			'-r',
-			`-o${dirname(path)}`,
-			'-aoa',
-			'deno.exe'
-		]);
-
-		extraction.once('error', err => {
-			this.logger.error('Error while extracting archive', { err });
-			reject(err);
-		});
-
-		extraction.once('close', async code => {
-			try {
-				onCleaningUp?.();
-				await unlink(tempPath);
-
-				if (code === 0) {
-					resolve();
-				} else {
-					reject(new Error('Failed to extract Deno binary'));
-				}
-			} catch (err) {
-				reject(err as Error);
-			}
-		});
-
-		return promise;
+		await this.downloadAndExtract(
+			url,
+			['deno.exe'],
+			getExtraFileDir(),
+			signal,
+			onProgress,
+			onExtracting,
+			onCleaningUp
+		);
 	}
 
 	public async downloadFfmpegBinary(
-		path: string,
 		signal: AbortSignal,
 		onProgress?: (progress: number) => void,
 		onExtracting?: () => void,
@@ -116,57 +74,15 @@ export class BinaryDownloader {
 			throw new Error('Could not resolve FFmpeg release download URL');
 		}
 
-		const res = await this.httpClient.get(url, { signal });
-		if (!res.ok) {
-			return;
-		}
-
-		const tempPath = join(app.getPath('temp'), '_ffmpeg.zip');
-
-		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
-
-		const sevenZipPath = getExtraFilePath('7za.exe');
-
-		const { promise, resolve, reject } = Promise.withResolvers<void>();
-
-		if (signal.aborted) {
-			resolve();
-			return promise;
-		}
-
-		onExtracting?.();
-
-		const extraction = spawn(sevenZipPath, [
-			'e',
-			tempPath,
-			'-r',
-			`-o${dirname(path)}`,
-			'-aoa',
-			'ffmpeg.exe',
-			'ffprobe.exe',
-		]);
-
-		extraction.once('error', err => {
-			this.logger.error('Error while extracting archive', { err });
-			reject(err);
-		});
-
-		extraction.once('close', async code => {
-			try {
-				onCleaningUp?.();
-				await unlink(tempPath);
-
-				if (code === 0) {
-					resolve();
-				} else {
-					reject(new Error('Failed to extract FFmpeg binary'));
-				}
-			} catch (err) {
-				reject(err as Error);
-			}
-		});
-
-		return promise;
+		await this.downloadAndExtract(
+			url,
+			['ffmpeg.exe', 'ffprobe.exe'],
+			getExtraFileDir(),
+			signal,
+			onProgress,
+			onExtracting,
+			onCleaningUp
+		);
 	}
 
 	private async resolveYtdlpDownloadUrl() {
@@ -205,5 +121,63 @@ export class BinaryDownloader {
 		}
 
 		return asset.browser_download_url;
+	}
+
+	private async downloadAndExtract(
+		url: string,
+		filesToExtract: string[],
+		extractPath: string,
+		signal: AbortSignal,
+		onProgress?: (progress: number) => void,
+		onExtracting?: () => void,
+		onCleaningUp?: () => void
+	) {
+		const res = await this.httpClient.get(url, { signal });
+		if (!res.ok) {
+			return;
+		}
+
+		const tempPath = join(app.getPath('temp'), `_${randomUUID()}.zip`);
+
+		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
+
+		const sevenZipPath = getExtraFilePath('7za.exe');
+
+		const { promise, resolve, reject } = Promise.withResolvers<void>();
+
+		if (signal.aborted) {
+			resolve();
+			return promise;
+		}
+
+		onExtracting?.();
+
+		const extraction = spawn(sevenZipPath, [
+			'e',
+			tempPath,
+			'-r',
+			`-o${extractPath}`,
+			'-aoa',
+			...filesToExtract,
+		]);
+
+		extraction.once('error', err => {
+			this.logger.error('Error while extracting archive', { err });
+			reject(err);
+		});
+
+		extraction.once('close', async () => {
+			try {
+				onCleaningUp?.();
+
+				await unlink(tempPath);
+
+				resolve();
+			} catch (err) {
+				reject(err);
+			}
+		});
+
+		return promise;
 	}
 }
