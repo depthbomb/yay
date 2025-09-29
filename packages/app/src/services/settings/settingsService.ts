@@ -1,7 +1,6 @@
 import mitt from 'mitt';
 import { app } from 'electron';
 import { join } from 'node:path';
-import { fileExists } from '~/common';
 import { ESettingsKey } from 'shared';
 import { safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
@@ -10,6 +9,7 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
+import { fileExists } from '@depthbomb/node-common/fs';
 import type { Maybe } from 'shared';
 import type { Settings } from './types';
 import type { Store } from '~/services/store';

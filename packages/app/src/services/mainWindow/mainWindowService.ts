@@ -1,5 +1,6 @@
 import { ESettingsKey } from 'shared';
 import { IpcService } from '~/services/ipc';
+import { getExtraFilePath } from '~/common';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
 import { unlink, copyFile } from 'fs/promises';
@@ -8,8 +9,8 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
+import { fileExists } from '@depthbomb/node-common/fs';
 import { LifecycleService } from '~/services/lifecycle';
-import { fileExists, getExtraFilePath } from '~/common';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
 import type { Maybe } from 'shared';

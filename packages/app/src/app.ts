@@ -1,11 +1,11 @@
 import { join } from 'node:path';
 import { parse } from 'smol-toml';
-import { fileExists } from './common';
 import { app, Menu, shell } from 'electron';
 import { Container } from '@needle-di/core';
 import { MainService } from '~/services/main';
 import { product, ESettingsKey } from 'shared';
 import { existsSync, readFileSync } from 'node:fs';
+import { fileExists } from '@depthbomb/node-common/fs';
 import { mkdir, unlink, readFile } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 

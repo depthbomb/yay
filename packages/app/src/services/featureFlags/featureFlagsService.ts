@@ -1,10 +1,10 @@
 import { app } from 'electron';
 import { join } from 'node:path';
-import { fileExists } from '~/common';
 import { FeatureFlags } from 'shared';
 import { IpcService } from '~/services/ipc';
 import { parse, stringify } from 'smol-toml';
 import { inject, injectable } from '@needle-di/core';
+import { fileExists } from '@depthbomb/node-common/fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import type { IBootstrappable } from '~/common';
 import type { FeatureFlag, FeatureFlagKey, FeatureFlagUuid } from 'shared';

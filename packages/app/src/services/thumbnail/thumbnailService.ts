@@ -6,9 +6,9 @@ import { mkdir } from 'node:fs/promises';
 import { createWriteStream } from 'node:fs';
 import { HttpService } from '~/services/http';
 import { finished } from 'node:stream/promises';
-import { dirExists, fileExists } from '~/common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { dirExists, fileExists } from '@depthbomb/node-common/fs';
 import type { HttpClient } from '~/services/http';
 
 @injectable()

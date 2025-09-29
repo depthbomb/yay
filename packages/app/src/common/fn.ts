@@ -1,19 +1,24 @@
-/**
- * Creates a function that calls the given function only once.
- *
- * @param fn Function to be called only once
- * @returns A new function that calls the original function only once
- */
-export function once<T extends (...args: any[]) => any>(fn: T): T {
-	let called = false;
-	let result: ReturnType<T>;
+export function cache(ttlMs: number) {
+	return function <T extends object>(value: (this: T, ...args: any[]) => any, context: ClassMethodDecoratorContext<T>) {
+		const cache = new WeakMap<object, { value: any; expiry: number }>();
 
-	return ((...args: Parameters<T>) => {
-		if (!called) {
-			result = fn(...args);
-			called = true;
-		}
+		return function (this: T, ...args: any[]) {
+			const now = Date.now();
+			const entry = cache.get(this);
 
-		return result;
-	}) as T;
+			if (entry && entry.expiry > now) {
+				return entry.value;
+			}
+
+			const result = value.apply(this, args);
+
+			cache.set(this, {
+				value: result,
+				expiry: now + ttlMs,
+			});
+
+			return result;
+		};
+	};
 }
+

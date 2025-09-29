@@ -1,5 +1,5 @@
-import type { Nullable } from './types';
 import type { ESettingsKey } from './settings';
+import type { Maybe, Nullable } from './types';
 import type { Endpoints } from '@octokit/types';
 import type { FeatureFlag } from './featureFlags';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
@@ -119,7 +119,7 @@ export interface IIpcContract {
 	//
 	'updater<-get-latest-release': {
 		args: [];
-		return: Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>;
+		return: Maybe<any>;
 	}
 	'updater<-get-latest-changelog': {
 		args: [];
@@ -168,7 +168,7 @@ export interface IIpcEvents {
 	'yt-dlp->updating-binary': void;
 	'yt-dlp->updated-binary': void;
 	// Updater Events
-	'updater->outdated': { latestRelease: Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]; };
+	'updater->outdated': { latestRelease: any; };
 	'updater->show-window': void;
 	'updater->checking-for-updates': void;
 	'updater->update-step': { message: string; };
