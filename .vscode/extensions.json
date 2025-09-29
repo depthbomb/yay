@@ -1,8 +1,0 @@
-{
-	"recommendations": [
-		"stylelint.vscode-stylelint",
-		"dbaeumer.vscode-eslint",
-		"chouzz.vscode-innosetup",
-		"bradlc.vscode-tailwindcss"
-	]
-}
