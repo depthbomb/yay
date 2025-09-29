@@ -41,8 +41,6 @@ export function getExtraFileDir() {
 		extraFileDir = EXE_DIR;
 	}
 
-	console.log(extraFileDir);
-
 	return extraFileDir;
 }
 
