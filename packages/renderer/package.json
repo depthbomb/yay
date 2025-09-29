@@ -21,17 +21,17 @@
 		"radix-ui": "^1.4.3",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1",
-		"react-router": "^7.9.2",
+		"react-router": "^7.9.3",
 		"shared": "workspace:*"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.36.0",
 		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.1.13",
-		"@types/react": "^19.1.13",
+		"@types/react": "^19.1.15",
 		"@types/react-dom": "^19.1.9",
 		"@vitejs/plugin-react-swc": "^4.1.0",
-		"electron": "38.1.2",
+		"electron": "38.2.0",
 		"eslint": "^9.36.0",
 		"eslint-plugin-react-hooks": "^5.2.0",
 		"eslint-plugin-react-refresh": "^0.4.22",
@@ -41,7 +41,7 @@
 		"tailwindcss": "^4.1.13",
 		"terser": "^5.44.0",
 		"typescript": "^5.9.2",
-		"typescript-eslint": "^8.44.1",
+		"typescript-eslint": "^8.45.0",
 		"vite": "^7.1.7",
 		"vite-plugin-minify": "^2.1.0"
 	}
