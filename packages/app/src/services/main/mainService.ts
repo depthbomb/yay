@@ -108,6 +108,8 @@ export class MainService {
 			await shell.openPath(path);
 		});
 
+		this.ipc.registerHandler('main<-open-external-url', async (_e, url) => shell.openExternal(url));
+
 		if (!this.lifecycle.shutdownRequested) {
 			this.lifecycle.phase = ELifecyclePhase.Ready;
 

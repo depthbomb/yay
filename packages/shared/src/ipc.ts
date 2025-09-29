@@ -44,6 +44,10 @@ export interface IIpcContract {
 		args: [];
 		return: void;
 	}
+	'main<-open-external-url': {
+		args: [url: string];
+		return: void;
+	}
 	//
 	'settings<-set': {
 		args: [key: ESettingsKey, value: any, secure?: boolean];

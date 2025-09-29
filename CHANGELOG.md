@@ -1,3 +1,8 @@
+# 1.28.2
+
+- Added a button to the Application settings page that opens the bug report issue template on GitHub
+- Upgraded to [Electron 38.2.0](https://releases.electronjs.org/release/v38.2.0)
+
 # 1.28.1
 
 - Fixed the setup process not prompting to download Deno if it isn't found

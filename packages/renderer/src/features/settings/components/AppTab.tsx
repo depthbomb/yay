@@ -44,6 +44,7 @@ export const AppTab = () => {
 			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateAvailable}>Check for updates</Button>
 				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
+				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>Report a bug</Button>
 			</div>
 		</div>
 	);
