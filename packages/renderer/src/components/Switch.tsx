@@ -1,9 +1,9 @@
 import { Root, Thumb } from '@radix-ui/react-switch';
-import type { FC } from 'react';
+import type { FC, ReactElement } from 'react';
 import type { SwitchProps as RSwitchProps } from '@radix-ui/react-switch';
 
 type SwitchProps = RSwitchProps & {
-	label?: string;
+	label?: string | ReactElement;
 };
 
 export const Switch: FC<SwitchProps> = ({ label, checked, ...props }) => {

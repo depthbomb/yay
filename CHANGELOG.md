@@ -1,3 +1,9 @@
+# 1.28.3
+
+- Adjusted switch UI elements' accompanying labels
+- The global menu settings switch has been moved to the _Application_ section
+- Upgraded to [Electron 38.2.1](https://releases.electronjs.org/release/v38.2.1)
+
 # 1.28.2
 
 - Added a button to the Application settings page that opens the bug report issue template on GitHub

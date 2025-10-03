@@ -3,6 +3,8 @@ import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Switch } from '~/components/Switch';
 import { Button } from '~/components/Button';
+import { mdiMicrosoftWindows } from '@mdi/js';
+import { KeyCombo } from '~/components/KeyCombo';
 import { updateAvailableAtom } from '~/atoms/app';
 
 export const AppTab = () => {
@@ -10,6 +12,7 @@ export const AppTab = () => {
 	const [autoStartEnabled, setAutoStartEnabled]                     = useSetting<boolean>(ESettingsKey.AutoStart, { reactive: false });
 	const [enableYtdlpUpdateOnStartup, setEnableYtdlpUpdateOnStartup] = useSetting<boolean>(ESettingsKey.UpdateYtdlpOnStartup, { reactive: true });
 	const [hideSetupWindow, setHideSetupWindow]                       = useSetting<boolean>(ESettingsKey.HideSetupWindow, { reactive: false });
+	const [globalMenuEnabled, setGlobalMenuEnabled]                   = useSetting<boolean>(ESettingsKey.EnableGlobalMenu, { reactive: false });
 	const [enableUpdateNotifications, setEnableUpdateNotifications]   = useSetting<boolean>(ESettingsKey.EnableNewReleaseToast, { reactive: false });
 
 	const checkForUpdates = async () => {
@@ -29,6 +32,7 @@ export const AppTab = () => {
 			<Switch label="Update yt-dlp on startup" checked={enableYtdlpUpdateOnStartup} defaultChecked={enableYtdlpUpdateOnStartup} onCheckedChange={setEnableYtdlpUpdateOnStartup}/>
 			<Switch label="Hide setup window on startup" checked={hideSetupWindow} defaultChecked={hideSetupWindow} onCheckedChange={setHideSetupWindow}/>
 			<Switch label="Notify when an update is available" checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
+			<Switch label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
 			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateAvailable}>Check for updates</Button>
 				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>

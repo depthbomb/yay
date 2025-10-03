@@ -9,9 +9,8 @@ import { DevTab } from './components/DevTab';
 import { YoutubeTab } from './components/YoutubeTab';
 import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
-import { InterfaceTab } from './components/InterfaceTab';
 import { DownloadsTab } from './components/DownloadsTab';
-import { mdiCogs, mdiYoutube, mdiDownload, mdiViewQuilt, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
+import { mdiCogs, mdiYoutube, mdiDownload, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
 
 type TabButtonProps = Tabs.TabsTriggerProps & {
@@ -61,7 +60,6 @@ export const SettingsPage = () => {
 		<Tabs.Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
 			<Tabs.List className="p-3 space-y-1.5 w-38 flex flex-col shrink-0 bg-gray-900">
 				<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
-				<TabButton value="interface" title="Interface" icon={mdiViewQuilt}/>
 				<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
 				<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
 				<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
@@ -70,9 +68,6 @@ export const SettingsPage = () => {
 			<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
 				<Tabs.Content value="app">
 					<AppTab/>
-				</Tabs.Content>
-				<Tabs.Content value="interface">
-					<InterfaceTab/>
 				</Tabs.Content>
 				<Tabs.Content value="downloads">
 					<DownloadsTab/>
