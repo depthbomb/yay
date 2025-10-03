@@ -15,7 +15,7 @@
 	"dependencies": {
 		"@depthbomb/node-common": "1.0.0",
 		"@formatjs/fast-memoize": "^2.2.7",
-		"@needle-di/core": "1.0.0",
+		"@needle-di/core": "1.1.0",
 		"cockatiel": "^3.2.1",
 		"mitt": "^3.0.1",
 		"nativelib": "workspace:*",
@@ -25,21 +25,21 @@
 		"smol-toml": "1.4.2",
 		"type-flag": "^3.0.0",
 		"ufo": "^1.6.1",
-		"winston": "^3.17.0",
+		"winston": "^3.18.3",
 		"winston-daily-rotate-file": "^5.0.0"
 	},
 	"devDependencies": {
 		"@swc-node/sourcemap-support": "^0.6.1",
 		"@types/eslint": "^9.6.1",
-		"@types/node": "^22.18.7",
+		"@types/node": "^22.18.8",
 		"@types/semver": "^7.7.1",
 		"@typescript-eslint/eslint-plugin": "^8.45.0",
 		"@typescript-eslint/parser": "^8.45.0",
 		"cross-env": "^10.1.0",
-		"electron": "38.2.0",
+		"electron": "38.2.1",
 		"eslint": "^9.36.0",
 		"terser": "^5.44.0",
-		"typescript": "^5.9.2",
-		"vite": "^7.1.7"
+		"typescript": "^5.9.3",
+		"vite": "^7.1.9"
 	}
 }
