@@ -3,9 +3,9 @@ import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { mdiUpdate } from '@mdi/js';
 import { isValidHttpUrl } from 'shared';
-import { useRef, useEffect } from 'react';
 import { TextInput } from '~/components/input';
 import { Spinner } from '~/components/SpinnerV2';
+import { useRef, Activity, useEffect } from 'react';
 import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
 import { useIpc, useTitle, useKeyCombo, useNativeTextMenu } from '~/hooks';
@@ -133,12 +133,12 @@ export const HomePage = () => {
 					<>
 						<AppMasthead/>
 						<div className="p-3 h-full flex flex-col space-y-4 overflow-hidden">
-							{updateAvailable && (
+							<Activity mode={updateAvailable ? 'visible' : 'hidden'}>
 								<a className="py-1.5 px-2 flex flex-row items-center space-x-2 text-sky-100 bg-sky-950/50 border border-sky-900 hover:text-white hover:bg-sky-900 hover:border-sky-600 rounded cursor-pointer transition" onClick={() => window.ipc.invoke('updater<-show-window')}>
 									<Icon path={mdiUpdate} className="size-4"/>
 									<p className="text-sm">A new version of yay is available.</p>
 								</a>
-							)}
+							</Activity>
 							<TextInput
 								ref={mediaUrlEl}
 								onChange={onInputChange}
