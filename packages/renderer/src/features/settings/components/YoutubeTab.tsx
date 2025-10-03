@@ -19,10 +19,7 @@ export const YoutubeTab = () => {
 					{cookiesFilePath && <Anchor onClick={() => window.ipc.invoke('yt-dlp<-remove-cookies-file')} className="text-xs cursor-pointer">Remove</Anchor>}
 				</div>
 			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Don't download playlists</p>
-				<Switch checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
-			</div>
+			<Switch label="Don't download playlists" checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
 		</div>
 	);
 };

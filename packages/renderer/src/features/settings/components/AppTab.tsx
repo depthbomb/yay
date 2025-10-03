@@ -25,22 +25,10 @@ export const AppTab = () => {
 
 	return (
 		<div className="flex flex-col items space-y-6">
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Start on login</p>
-				<Switch checked={autoStartEnabled} defaultChecked={autoStartEnabled} onCheckedChange={setAutoStartEnabled}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Update yt-dlp on startup</p>
-				<Switch checked={enableYtdlpUpdateOnStartup} defaultChecked={enableYtdlpUpdateOnStartup} onCheckedChange={setEnableYtdlpUpdateOnStartup}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Hide setup window on startup</p>
-				<Switch checked={hideSetupWindow} defaultChecked={hideSetupWindow} onCheckedChange={setHideSetupWindow}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Notify when an update is available</p>
-				<Switch checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
-			</div>
+			<Switch label="Start on login" checked={autoStartEnabled} defaultChecked={autoStartEnabled} onCheckedChange={setAutoStartEnabled}/>
+			<Switch label="Update yt-dlp on startup" checked={enableYtdlpUpdateOnStartup} defaultChecked={enableYtdlpUpdateOnStartup} onCheckedChange={setEnableYtdlpUpdateOnStartup}/>
+			<Switch label="Hide setup window on startup" checked={hideSetupWindow} defaultChecked={hideSetupWindow} onCheckedChange={setHideSetupWindow}/>
+			<Switch label="Notify when an update is available" checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
 			<div className="space-x-2 flex items-center">
 				<Button variant="brand" onClick={checkForUpdates} disabled={updateAvailable}>Check for updates</Button>
 				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>

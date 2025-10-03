@@ -43,13 +43,11 @@ export const AdvancedTab = () => {
 	return (
 		<div className="flex flex-col items-start space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Hardware acceleration</p>
-				<Switch checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
+				<Switch label="Hardware acceleration" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
 				<p className="text-xs">Requires an app restart</p>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Actions</p>
-
 				<PushButton onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
 					<Icon path={mdiDownload} className="size-3"/>
 					<span>Recheck required binaries</span>

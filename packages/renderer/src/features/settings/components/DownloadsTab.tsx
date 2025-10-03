@@ -35,14 +35,8 @@ export const DownloadsTab = () => {
 					<option value="audio">Download audio</option>
 				</Select>
 			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Use video thumbnail as audio cover art</p>
-				<Switch checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
-			</div>
-			<div className="flex flex-col items-start space-y-1.5">
-				<p>Completion toast notification</p>
-				<Switch checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
-			</div>
+			<Switch label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
+			<Switch label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
 		</div>
 	);
 };
