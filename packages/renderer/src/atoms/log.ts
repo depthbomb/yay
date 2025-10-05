@@ -10,6 +10,11 @@ export const shiftLogAtom = atom(null, (get, set) => {
 
 export const pushToLogAtom = atom<null, [newItem: string], void>(null, (get, set, newItem) => {
 	const current = get(logAtom);
+	const next    = [...current, newItem];
+	if (next.length > 250) {
+		next.shift();
+	}
+
 	set(logAtom, [...current, newItem]);
 });
 
