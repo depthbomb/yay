@@ -8,8 +8,8 @@ import { Spinner } from '~/components/SpinnerV2';
 import { useRef, Activity, useEffect } from 'react';
 import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
+import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { useIpc, useTitle, useKeyCombo, useNativeTextMenu } from '~/hooks';
-import { logAtom, shiftLogAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -19,8 +19,8 @@ const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 	const css = clsx(
 		'py-1 px-2 flex flex-row items-center text-[10px] font-mono wrap-anywhere even:bg-gray-900',
 		{
-			'text-sky-500': line.includes('[info]'),
-			'text-yellow-500': line.includes('[download]'),
+			'text-sky-400': line.includes('[info]'),
+			'text-lime-400': line.includes('[download]'),
 			'text-red-500 font-bold': line.startsWith('ERROR'),
 			'text-brand-600': line.startsWith('OPERATION '),
 		}
@@ -42,7 +42,6 @@ export const HomePage = () => {
 	const [updateAvailable, setUpdateAvailable] = useAtom(updateAvailableAtom);
 	const [isValidUrl]                          = useAtom(isUrlValidAtom);
 	const [logs]                                = useAtom(logAtom);
-	const [,shiftLog]                           = useAtom(shiftLogAtom);
 
 	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
 	const [onDownloadOutput]      = useIpc('yt-dlp->stdout');
@@ -110,10 +109,6 @@ export const HomePage = () => {
 	}, []);
 
 	useEffect(() => {
-		if (logs.length > 250) {
-			shiftLog();
-		}
-
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
 	}, [logs]);
 
