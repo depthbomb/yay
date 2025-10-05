@@ -5,7 +5,7 @@ import type { SVGAttributes } from 'react';
 
 type SpinnerProps = SVGAttributes<SVGElement>;
 
-export const Spinner = forwardRef<SVGElement, SpinnerProps>(({ className, ...props }, _) => {
+export const Spinner = forwardRef<SVGElement, SpinnerProps>(({ className, ...props }) => {
 	return (
 		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none" className={clsx(css.spinner, className)} {...props}>
 			<path d="M18 10C17.4696 10 16.9609 9.78929 16.5858 9.41421C16.2107 9.03914 16 8.53043 16 8V3H20V8C20 8.53043 19.7893 9.03914 19.4142 9.41421C19.0391 9.78929 18.5304 10 18 10Z" fill="currentColor"/>

@@ -1,3 +1,8 @@
+# 1.28.4
+
+- Fixed the UI breaking when downloading from some sources or particularly lengthy media
+- Adjusted some colors in the log list
+
 # 1.28.3
 
 - Adjusted switch UI elements' accompanying labels
