@@ -1,6 +1,7 @@
 import { DEV_PORT } from 'shared';
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
+import babel from 'vite-plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
 import { URL, fileURLToPath } from 'node:url';
@@ -36,6 +37,11 @@ export default defineConfig(({ mode }) => {
 		},
 		plugins: [
 			react(),
+			babel({
+				babelConfig: {
+					plugins: ['babel-plugin-react-compiler'],
+				},
+			}),
 			tailwindcss(),
 			ViteMinifyPlugin()
 		],
