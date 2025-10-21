@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsdown';
 import { execSync } from 'node:child_process';
 
 let gitHash = 'INDEV';

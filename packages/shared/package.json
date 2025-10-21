@@ -8,14 +8,14 @@
 		"dist"
 	],
 	"scripts": {
-		"build:d": "yarn gen:ipc && tsup",
-		"build:p": "yarn gen:ipc && tsup",
+		"build:d": "yarn gen:ipc && tsdown",
+		"build:p": "yarn gen:ipc && tsdown",
 		"gen:ipc": "ts-node scripts/generate-ipc-helper.ts"
 	},
 	"devDependencies": {
 		"@swc/core": "1.13.20",
+		"tsdown": "^0.15.9",
 		"tslib": "^2.8.1",
-		"tsup": "^8.5.0",
 		"typescript": "^5.9.3"
 	}
 }
