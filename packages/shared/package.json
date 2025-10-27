@@ -13,8 +13,8 @@
 		"gen:ipc": "ts-node scripts/generate-ipc-helper.ts"
 	},
 	"devDependencies": {
-		"@swc/core": "1.13.20",
-		"tsdown": "^0.15.9",
+		"@swc/core": "1.13.21",
+		"tsdown": "^0.15.10",
 		"tslib": "^2.8.1",
 		"typescript": "^5.9.3"
 	}
