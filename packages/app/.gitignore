@@ -1,4 +1,6 @@
 dist/
+# rust-analyzer keeps creating this directory
+target/
 
 node_modules/
 

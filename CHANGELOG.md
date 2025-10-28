@@ -1,3 +1,7 @@
+# 1.28.5
+
+- Upgraded to [Electron 39.0.0](https://releases.electronjs.org/release/v39.0.0)
+
 # 1.28.4
 
 - Fixed the UI breaking when downloading from some sources or particularly lengthy media
