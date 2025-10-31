@@ -15,14 +15,12 @@ const seasonalLogos = [
 	{
 		condition: (date: Date) => date.getMonth() === 5,
 		options: [
-			// { probability: 25, src: bkLogo, className: baseCss },
 			{ probability: 100, src: logo, className: `${baseCss} animate-hue-rotate` }
 		]
 	},
 	{
-		condition: (date: Date) => date.getMonth() === 9 && date.getDay() === 31,
+		condition: (date: Date) => (date.getMonth() === 9 && date.getDate() === 31) || (date.getMonth() === 10 && date.getDate() === 1),
 		options: [
-			// { probability: 25, src: bkLogo, className: baseCss },
 			{ probability: 100, src: skele, className: baseCss }
 		]
 	}

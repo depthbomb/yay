@@ -19,7 +19,7 @@
 		"cockatiel": "^3.2.1",
 		"mitt": "^3.0.1",
 		"nativelib": "workspace:*",
-		"octokit": "^5.0.4",
+		"octokit": "^5.0.5",
 		"semver": "^7.7.3",
 		"shared": "workspace:*",
 		"smol-toml": "1.4.2",
@@ -31,7 +31,7 @@
 	"devDependencies": {
 		"@swc-node/sourcemap-support": "^0.6.1",
 		"@types/eslint": "^9.6.1",
-		"@types/node": "^22.18.12",
+		"@types/node": "^22.18.13",
 		"@types/semver": "^7.7.1",
 		"@typescript-eslint/eslint-plugin": "^8.46.2",
 		"@typescript-eslint/parser": "^8.46.2",
