@@ -1,3 +1,7 @@
+# 1.28.6
+
+- No notable changes are in this release
+
 # 1.28.5
 
 - Upgraded to [Electron 39.0.0](https://releases.electronjs.org/release/v39.0.0)
