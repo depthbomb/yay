@@ -29,7 +29,7 @@
 		"packages/nativelib"
 	],
 	"devDependencies": {
-		"@octokit/rest": "^22.0.0",
+		"@octokit/rest": "^22.0.1",
 		"@octokit/types": "^16.0.0",
 		"@types/node": "^22.18.13",
 		"asar-trim": "^1.2.2",
