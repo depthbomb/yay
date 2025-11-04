@@ -59,7 +59,7 @@ export const UpdaterPage = () => {
 	}, []);
 
 	useEffect(() => {
-		window.ipc.invoke('updater<-get-latest-changelog').then(changelog => setChangelog(changelog ?? 'No changelog available'));
+		window.ipc.invoke('updater<-get-latest-changelog').then(changelog => setChangelog(changelog ?? ''));
 	}, []);
 
 	useEffect(() => {
@@ -75,9 +75,14 @@ export const UpdaterPage = () => {
 				<TabButton value="changelog">Changelog</TabButton>
 				<TabButton value="commits">Commits since your version</TabButton>
 			</Tabs.List>
-			<div className="w-full overflow-y-auto rounded-lg">
+			<div className="w-full overflow-y-auto">
+				<aside role="alert" className="py-1 px-2 text-sm text-yellow-50 bg-yellow-900/33 rounded border border-yellow-500">
+					<p>Releases include new features, bug fixes, and security updates, and should be installed as soon as you receive them.</p>
+				</aside>
 				<Tabs.Content value="changelog">
-					<HTML html={changelog}/>
+					{changelog !== '' ? (<HTML html={changelog}/>) : (
+						<p className="text-2xl font-light">No changelog available.</p>
+					)}
 				</Tabs.Content>
 				<Tabs.Content value="commits">
 					<div className="flex flex-col">
