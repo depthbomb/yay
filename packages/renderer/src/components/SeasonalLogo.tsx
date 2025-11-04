@@ -1,5 +1,3 @@
-import { useAtom } from 'jotai';
-import { windowPinnedAtom } from '~/atoms/app';
 import { useIpc, useFeatureFlags } from '~/hooks';
 import { useMemo, useState, useEffect, forwardRef } from 'react';
 import type { ImgHTMLAttributes } from 'react';
@@ -29,19 +27,14 @@ const seasonalLogos = [
 export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
 	const currentDate               = useMemo(() => new Date(), []);
 	const [isBlurred, setIsBlurred] = useState(true);
-	const [windowPinned]            = useAtom(windowPinnedAtom);
 	const [isFeatureEnabled]        = useFeatureFlags();
 	const [onWindowBlurred]         = useIpc('window->is-blurred');
 	const [onWindowFocused]         = useIpc('window->is-focused');
 
 	useEffect(() => {
-		onWindowBlurred(() => {
-			if (!windowPinned) {
-				setIsBlurred(true);
-			}
-		});
+		onWindowBlurred(() => setIsBlurred(true));
 		onWindowFocused(() => setIsBlurred(false));
-	}, [windowPinned]);
+	}, []);
 
 	const [logoSrc, className] = useMemo(() => {
 		const matchingSeason = seasonalLogos.find(season => season.condition(currentDate));

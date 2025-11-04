@@ -20,7 +20,6 @@ import type { IBootstrappable } from '~/common';
 @injectable()
 export class MainWindowService implements IBootstrappable {
 	private mainWindow: Maybe<BrowserWindow>;
-	private windowPinned = import.meta.env.DEV;
 
 	public constructor(
 		private readonly logger         = inject(LoggingService),
@@ -61,10 +60,7 @@ export class MainWindowService implements IBootstrappable {
 			}
 		});
 		this.mainWindow.on('blur', () => {
-			if (!this.windowPinned) {
-				this.mainWindow!.hide();
-			}
-
+			this.mainWindow!.hide();
 			this.window.emitMain('window->is-blurred');
 		});
 		this.mainWindow.on('focus', () => {
@@ -80,7 +76,6 @@ export class MainWindowService implements IBootstrappable {
 		//#endregion
 
 		//#region IPC
-		this.ipc.registerHandler('main<-toggle-window-pinned', () => this.windowPinned = !this.windowPinned);
 		this.ipc.registerHandler('main<-open-download-dir', async () => {
 			this.logger.info('Opening download directory');
 

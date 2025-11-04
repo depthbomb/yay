@@ -36,10 +36,6 @@ export interface IIpcContract {
 		args: [];
 		return: Nullable<string>;
 	}
-	'main<-toggle-window-pinned': {
-		args: [];
-		return: boolean;
-	}
 	'main<-open-app-data': {
 		args: [];
 		return: void;
