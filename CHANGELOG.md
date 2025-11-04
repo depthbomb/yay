@@ -1,3 +1,7 @@
+# 1.29.0
+
+- Removed the menu pinning functionality
+
 # 1.28.6
 
 - No notable changes are in this release

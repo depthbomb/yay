@@ -3,7 +3,6 @@ import { useMemo, useState, useEffect, forwardRef } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
 import logo from '~/assets/img/logo.webp';
-import skele from '~/assets/img/seasonal-logos/skeleton.gif';
 
 type SeasonalLogoProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>;
 
@@ -15,24 +14,22 @@ const seasonalLogos = [
 		options: [
 			{ probability: 100, src: logo, className: `${baseCss} animate-hue-rotate` }
 		]
-	},
-	{
-		condition: (date: Date) => (date.getMonth() === 9 && date.getDate() === 31) || (date.getMonth() === 10 && date.getDate() === 1),
-		options: [
-			{ probability: 100, src: skele, className: baseCss }
-		]
 	}
 ];
 
 export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
-	const currentDate               = useMemo(() => new Date(), []);
-	const [isBlurred, setIsBlurred] = useState(true);
-	const [isFeatureEnabled]        = useFeatureFlags();
-	const [onWindowBlurred]         = useIpc('window->is-blurred');
-	const [onWindowFocused]         = useIpc('window->is-focused');
+	const currentDate                   = useMemo(() => new Date(), []);
+	const [isBlurred, setIsBlurred]     = useState(true);
+	const [randomValue, setRandomValue] = useState(() => Math.random() * 100);
+	const [isFeatureEnabled]            = useFeatureFlags();
+	const [onWindowBlurred]             = useIpc('window->is-blurred');
+	const [onWindowFocused]             = useIpc('window->is-focused');
 
 	useEffect(() => {
-		onWindowBlurred(() => setIsBlurred(true));
+		onWindowBlurred(() => {
+			setRandomValue(Math.random() * 100);
+			setIsBlurred(true);
+		});
 		onWindowFocused(() => setIsBlurred(false));
 	}, []);
 
@@ -40,8 +37,6 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 		const matchingSeason = seasonalLogos.find(season => season.condition(currentDate));
 		if (matchingSeason) {
 			let cumulativeProbability = 0;
-			const randomValue = Math.random() * 100;
-
 			for (const option of matchingSeason.options) {
 				cumulativeProbability += option.probability;
 				if (randomValue <= cumulativeProbability) {
@@ -51,7 +46,7 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((pro
 		}
 
 		return [logo, baseCss] as const;
-	}, [currentDate, isBlurred]);
+	}, [currentDate, randomValue, isBlurred]);
 
 	return (
 		<div className="space-x-3 w-full flex items-center">
