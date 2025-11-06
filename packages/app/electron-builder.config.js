@@ -24,7 +24,7 @@ const config = {
 	appId: appUserModelId,
 	executableName: applicationName,
 	productName: nameLong,
-	copyright: `Copyright © 2024-2025 ${author}`,
+	copyright: `Copyright © 2024-${new Date().getFullYear()} ${author}`,
 	asar: true,
 	buildDependenciesFromSource: true,
 	compression: 'maximum',

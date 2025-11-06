@@ -23,7 +23,7 @@
 		"semver": "^7.7.3",
 		"shared": "workspace:*",
 		"smol-toml": "1.4.2",
-		"type-flag": "^4.0.0",
+		"type-flag": "^4.0.2",
 		"ufo": "^1.6.1",
 		"winston": "^3.18.3",
 		"winston-daily-rotate-file": "^5.0.0"
@@ -36,10 +36,10 @@
 		"@typescript-eslint/eslint-plugin": "^8.46.3",
 		"@typescript-eslint/parser": "^8.46.3",
 		"cross-env": "^10.1.0",
-		"electron": "39.0.0",
+		"electron": "39.1.0",
 		"eslint": "^9.39.1",
-		"terser": "^5.44.0",
+		"terser": "^5.44.1",
 		"typescript": "^5.9.3",
-		"vite": "^7.1.12"
+		"vite": "^7.2.1"
 	}
 }
