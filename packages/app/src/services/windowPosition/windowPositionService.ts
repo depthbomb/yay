@@ -19,9 +19,13 @@ type PositionOptions = {
 
 @injectable()
 export class WindowPositionService {
+	private readonly windowPositions: Map<BrowserWindow, [number, number]>;
+
 	public constructor(
 		private readonly logger = inject(LoggingService),
-	) {}
+	) {
+		this.windowPositions = new Map();
+	}
 
 	public setWindowPosition(window: BrowserWindow, position: EWindowPosition, options: PositionOptions = {}) {
 		const { usePrimaryDisplay = true, padding = 0 } = options;
@@ -43,6 +47,11 @@ export class WindowPositionService {
 	}
 
 	public setWindowPositionAtTray(window: BrowserWindow, tray: Tray, padding: number = 0) {
+		const [curX, curY] = window.getPosition();
+		if (!this.windowPositions.has(window)) {
+			this.windowPositions.set(window, [curX, curY]);
+		}
+
 		const windowBounds = window.getBounds();
 		const trayBounds = tray.getBounds();
 
@@ -121,9 +130,15 @@ export class WindowPositionService {
 		x = Math.max(workArea.x, Math.min(x, workArea.x + workArea.width - windowBounds.width));
 		y = Math.max(workArea.y, Math.min(y, workArea.y + workArea.height - windowBounds.height));
 
+		if (x === curX && y === curY) {
+			return;
+		}
+
 		this.logger.debug('Setting window position', { window: window.getTitle(), before: [...window.getPosition()], after: [x, y] });
 
 		window.setPosition(x, y);
+
+		this.windowPositions.set(window, [x, y]);
 	}
 
 	private getTargetDisplay(usePrimaryDisplay: boolean) {

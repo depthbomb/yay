@@ -1,3 +1,8 @@
+# 1.29.1
+
+- The main window will now only be move to its tray position if it its last position differs, this also reduces the amount of lines logged to the app's log file
+- Upgraded to [Electron 39.1.0](https://releases.electronjs.org/release/v39.1.0)
+
 # 1.29.0
 
 - Removed the menu pinning functionality
