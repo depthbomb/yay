@@ -1,9 +1,9 @@
 {
 	"private": true,
 	"name": "shared",
-	"main": "./dist/index.js",
+	"main": "./dist/index.cjs",
 	"module": "./dist/index.mjs",
-	"types": "./dist/index.d.ts",
+	"types": "./dist/index.d.cts",
 	"files": [
 		"dist"
 	],
