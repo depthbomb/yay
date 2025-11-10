@@ -22,12 +22,12 @@ type SnowfallProps = {
 };
 
 const Snowfall: FC<SnowfallProps> = ({
-	snowflakeCount = 100,
-	fallSpeed = 50,
-	maxSize = 6,
-	minSize = 2,
-	opacity = 1,
-	trailLength = 5,
+	snowflakeCount = 50,
+	fallSpeed = 25,
+	maxSize = 3,
+	minSize = 1,
+	opacity = 0.25,
+	trailLength = 1,
 }) => {
 	const canvasRef = useRef<Nullable<HTMLCanvasElement>>(null);
 
@@ -107,7 +107,7 @@ const Snowfall: FC<SnowfallProps> = ({
 		};
 	}, [snowflakeCount, fallSpeed, maxSize, minSize, opacity, trailLength]);
 
-	return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-[99999]" />;
+	return <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-99999"/>;
 };
 
 export default Snowfall;

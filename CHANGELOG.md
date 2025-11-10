@@ -1,3 +1,9 @@
+# 1.30.0
+
+- Fixed the tooltips of the icon buttons in the main window persisting when the window is shown again
+- Adjusted the color of tab buttons
+- Upgraded to [Electron 39.1.1](https://releases.electronjs.org/release/v39.1.1)
+
 # 1.29.1
 
 - The main window will now only be moved to its tray position if it its last position differs, this also reduces the amount of lines logged to the app's log file

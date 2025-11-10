@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import Icon from '@mdi/react';
-import { Tooltip } from './Tooltip';
+import { TooltipV2 } from './TooltipV2';
 import { memo, forwardRef } from 'react';
 import type { ButtonHTMLAttributes } from 'react';
-import type { Tooltip as RTooltip } from 'radix-ui';
+import type { TooltipSide } from './TooltipV2';
 
 type IconButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
 	icon: string;
-	tooltipSide?: RTooltip.TooltipContentProps['side'];
+	tooltipSide?: TooltipSide;
 };
 
 const baseCss = 'p-1 flex items-center rounded-full transition-all' as const;
@@ -23,7 +23,7 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
 	);
 
 	return (
-		<Tooltip content={title!} side={tooltipSide}>
+		<TooltipV2 content={title!} side={tooltipSide} showArrow={false}>
 			<button
 				ref={ref}
 				className={css}
@@ -32,6 +32,6 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IconButtonProps>(({
 			>
 				<Icon path={icon} className="size-4"/>
 			</button>
-		</Tooltip>
+		</TooltipV2>
 	);
 }));

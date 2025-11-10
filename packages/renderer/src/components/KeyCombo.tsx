@@ -1,6 +1,6 @@
 import Icon from '@mdi/react';
 import { Fragment } from 'react';
-import { Tooltip } from './Tooltip';
+import { TooltipV2 } from './TooltipV2';
 import type { FC } from 'react';
 
 type KeyComboProps = {
@@ -23,7 +23,7 @@ export const KeyCombo: FC<KeyComboProps> = ({ keys }) => {
 	};
 
 	return (
-		<Tooltip content={keys.map(k => typeof k === 'string' ? k : k.name).join('+').toUpperCase()}>
+		<TooltipV2 content={keys.map(k => typeof k === 'string' ? k : k.name).join('+').toUpperCase()}>
 			<kbd className="relative inline-flex py-0.5 px-1.5 min-w-4 min-h-4 text-gray-100 text-xs text-center font-mono uppercase bg-gray-600 popup-gray-800 rounded-sm cursor-default translate-y-2px active:text-gray-300 active:popup-depressed-gray-800 active:translate-y-0.5 transition-all duration-100">
 				{keys.map((key, index) => (
 					<Fragment key={index}>
@@ -38,6 +38,6 @@ export const KeyCombo: FC<KeyComboProps> = ({ keys }) => {
 					</Fragment>
 				))}
 			</kbd>
-		</Tooltip>
+		</TooltipV2>
 	);
 };

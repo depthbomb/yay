@@ -1,7 +1,7 @@
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
-import { Switch } from '~/components/Switch';
 import { Anchor } from '~/components/Anchor';
+import { SwitchV2 } from '~/components/SwitchV2';
 import { KeyCombo } from '~/components/KeyCombo';
 import { Select, TextInput } from '~/components/input';
 import type { ChangeEvent } from 'react';
@@ -35,8 +35,8 @@ export const DownloadsTab = () => {
 					<option value="audio">Download audio</option>
 				</Select>
 			</div>
-			<Switch label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
-			<Switch label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
+			<SwitchV2 label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
+			<SwitchV2 label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
 		</div>
 	);
 };

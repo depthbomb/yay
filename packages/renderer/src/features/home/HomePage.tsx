@@ -115,7 +115,7 @@ export const HomePage = () => {
 	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => setUrl(event.target.value.trim());
 
 	return (
-		<div className="relative p-[1px] w-screen h-screen overflow-hidden">
+		<div className="relative p-px w-screen h-screen overflow-hidden">
 			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-black">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">
