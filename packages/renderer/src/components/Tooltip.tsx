@@ -12,7 +12,7 @@ export const Tooltip: FC<TooltipProps> = ({ children, content, ...props }) => {
 				{children}
 			</RTooltip.Trigger>
 			<RTooltip.Portal>
-				<RTooltip.Content className="px-2 py-1 text-xs whitespace-nowrap bg-gray-900 rounded-sm pointer-events-none z-[9001]" {...props}>
+				<RTooltip.Content className="px-2 py-1 text-xs whitespace-nowrap bg-gray-900 rounded-sm pointer-events-none z-9001" {...props}>
 					{content}
 				</RTooltip.Content>
 			</RTooltip.Portal>

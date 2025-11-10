@@ -24,7 +24,7 @@ export const KeyCombo: FC<KeyComboProps> = ({ keys }) => {
 
 	return (
 		<Tooltip content={keys.map(k => typeof k === 'string' ? k : k.name).join('+').toUpperCase()}>
-			<kbd className="relative inline-flex py-0.5 px-1.5 min-w-[1rem] min-h-[1rem] text-gray-100 text-xs text-center font-mono uppercase bg-gray-600 popup-gray-800 rounded-sm cursor-default translate-y-2px active:text-gray-300 active:popup-depressed-gray-800 active:translate-y-[2px] transition-all duration-100">
+			<kbd className="relative inline-flex py-0.5 px-1.5 min-w-4 min-h-4 text-gray-100 text-xs text-center font-mono uppercase bg-gray-600 popup-gray-800 rounded-sm cursor-default translate-y-2px active:text-gray-300 active:popup-depressed-gray-800 active:translate-y-0.5 transition-all duration-100">
 				{keys.map((key, index) => (
 					<Fragment key={index}>
 						{index > 0 && <span className="mx-1">+</span>}
@@ -32,7 +32,7 @@ export const KeyCombo: FC<KeyComboProps> = ({ keys }) => {
 							{typeof key === 'string' ? (
 								transformKey(key)
 							) : (
-								<Icon path={key.iconPath} className="inline size-4 -translate-y-[1px]"/>
+								<Icon path={key.iconPath} className="inline size-4 -translate-y-px"/>
 							)}
 						</span>
 					</Fragment>
