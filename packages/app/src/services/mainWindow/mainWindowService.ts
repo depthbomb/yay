@@ -68,7 +68,7 @@ export class MainWindowService implements IBootstrappable {
 			this.window.emitMain('window->is-focused');
 		});
 		this.mainWindow.on('close', e => {
-			if (!this.lifecycle.shutdownRequested) {
+			if (!this.lifecycle.shutdownInProgress) {
 				e.preventDefault();
 				this.mainWindow!.hide();
 			}

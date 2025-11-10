@@ -40,7 +40,7 @@ export class SettingsWindowService implements IBootstrappable {
 		});
 
 		this.settingsWindow.on('close', e => {
-			if (!this.lifecycle.shutdownRequested) {
+			if (!this.lifecycle.shutdownInProgress) {
 				e.preventDefault();
 				this.settingsWindow!.hide();
 			}
@@ -50,7 +50,7 @@ export class SettingsWindowService implements IBootstrappable {
 	public async bootstrap() {
 		this.ipc.registerHandler('settings<-show-ui', () => this.show());
 
-		this.lifecycle.events.on('shutdown', () => this.settingsWindow.close());
+		this.lifecycle.events.on('shutdownRequested', () => this.settingsWindow.close());
 	}
 
 	public show() {

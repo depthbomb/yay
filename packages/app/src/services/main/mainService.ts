@@ -110,7 +110,7 @@ export class MainService {
 
 		this.ipc.registerHandler('main<-open-external-url', async (_e, url) => shell.openExternal(url));
 
-		if (!this.lifecycle.shutdownRequested) {
+		if (!this.lifecycle.shutdownInProgress) {
 			this.lifecycle.phase = ELifecyclePhase.Ready;
 
 			await this.deepLinks.handleDeepLinks(this.cli.args._);
