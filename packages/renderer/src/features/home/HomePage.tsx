@@ -6,10 +6,11 @@ import { isValidHttpUrl } from 'shared';
 import { TextInput } from '~/components/input';
 import { Spinner } from '~/components/SpinnerV2';
 import { useRef, Activity, useEffect } from 'react';
+import Snowfall from '~/components/effects/Snowfall';
 import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
-import { useIpc, useTitle, useKeyCombo, useNativeTextMenu } from '~/hooks';
+import { useIpc, useTitle, useKeyCombo, useNativeTextMenu, useFeatureFlags } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -30,6 +31,13 @@ const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 			<span>{line}</span>
 		</p>
 	);
+};
+
+const isSnowfall = () => {
+	const date  = new Date();
+	const month = date.getMonth();
+
+	return month === 11 || month === 0;
 };
 
 export const HomePage = () => {
@@ -53,6 +61,8 @@ export const HomePage = () => {
 
 	const mediaUrlEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
+
+	const [isEnabled] = useFeatureFlags();
 
 	const accentCss = clsx(
 		'absolute -z-10',
@@ -116,6 +126,7 @@ export const HomePage = () => {
 
 	return (
 		<div className="relative p-px w-screen h-screen overflow-hidden">
+			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
 			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-black">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">

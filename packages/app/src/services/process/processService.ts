@@ -1,13 +1,13 @@
 import { join } from 'node:path';
+import * as nativelib from 'nativelib';
 import { getExtraResourcePath } from '~/common';
 import { MONOREPO_ROOT_PATH } from '~/constants';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import * as nativelib from 'nativelib';
 
 @injectable()
 export class ProcessService {
-	private readonly native;
+	private readonly native: typeof nativelib;
 
 	public constructor(
 		private readonly logger = inject(LoggingService)
@@ -23,8 +23,8 @@ export class ProcessService {
 		}
 	}
 
-	public getProcessTree(pid: number): ReturnType<typeof nativelib.getProcessTree> {
-		return this.native.getProcessTree(pid)
+	public getProcessTree(pid: number) {
+		return this.native.getProcessTree(pid);
 	}
 
 	public async killProcessTree(pid: number) {
