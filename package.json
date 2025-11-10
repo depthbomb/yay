@@ -41,5 +41,5 @@
 		"ts-node-maintained": "^10.9.6",
 		"typescript": "^5.9.3"
 	},
-	"packageManager": "yarn@4.10.3"
+	"packageManager": "yarn@4.11.0"
 }
