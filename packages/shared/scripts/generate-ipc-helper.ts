@@ -4,12 +4,12 @@ import { writeFileSync } from 'node:fs';
 
 function toEnumKey(channel: string, isEvent = false): string {
 	const parts = channel
-		.replace(/<-|->/g, "_") // arrows → underscores
+		.replace(/<-|->/g, '_') // arrows → underscores
 		.split(/[^a-zA-Z0-9]+/)
 		.filter(Boolean)
 		.map((part) => part.charAt(0).toUpperCase() + part.slice(1));
 
-	let base = parts.join("_");
+	let base = parts.join('_');
 
 	if (isEvent) {
 		base = `${base}_Event`; // add suffix only for events
@@ -37,9 +37,9 @@ function generateFromInterface(
 		`import type { ${interfaceName} } from './ipc';`,
 		``,
 		`export type ${typeName} = keyof ${interfaceName};`,
-		`export const ${arrayName} = ${JSON.stringify(keys.map(k => k.replace(/'/g, '')))} as ${typeName}[];`,
+		`export const ${arrayName} = ${JSON.stringify(keys.map(k => k.replace(/'/g, ''))).replace(/"/g, '\'')} as ${typeName}[];`,
 		``,
-		`export enum ${enumName} {`,
+		`export const enum ${enumName} {`,
 		...keys.map((k) => `\t${toEnumKey(k, isEvent)} = ${k},`),
 		`}`,
 	];

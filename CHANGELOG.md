@@ -1,3 +1,8 @@
+# 1.31.0
+
+- Removed manual update checking and increased the frequency of update checks
+- Upgraded to [Electron 39.2.0](https://releases.electronjs.org/release/v39.2.0)
+
 # 1.30.0
 
 - Fixed the tooltips of the icon buttons in the main window persisting when the window is shown again

@@ -51,25 +51,21 @@ export class UpdaterService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 180_000);
+		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 60_000);
 
 		this.ipc.registerHandler('updater<-show-window',                  () => this.showUpdaterWindow());
 		this.ipc.registerHandler('updater<-get-latest-release',           () => this.getLatestRelease());
 		this.ipc.registerHandler('updater<-get-latest-changelog',         () => this.latestChangelog);
 		this.ipc.registerHandler('updater<-get-commits-since-build',      () => this.commits);
-		this.ipc.registerHandler('updater<-check-for-updates',      async () => {
-			await this.checkForUpdates(true);
-			return this.hasNewRelease;
-		});
-		this.ipc.registerHandler('updater<-update',  async () => await this.startUpdate());
-		this.ipc.registerHandler('updater<-cancel-update', () => this.cancelUpdate());
+		this.ipc.registerHandler('updater<-update',                 async () => await this.startUpdate());
+		this.ipc.registerHandler('updater<-cancel-update',                () => this.cancelUpdate());
 
 		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
 		this.lifecycle.events.on('shutdown',         () => clearInterval(this.checkInterval));
 	}
 
-	public async checkForUpdates(manual: boolean = false) {
-		this.logger.info('Checking for updates', { manual });
+	public async checkForUpdates() {
+		this.logger.info('Checking for updates');
 
 		this.window.emitAll('updater->checking-for-updates');
 
@@ -85,9 +81,7 @@ export class UpdaterService implements IBootstrappable {
 
 				this.window.emitAll('updater->outdated', { latestRelease: (release as Release) });
 
-				if (manual) {
-					this.showUpdaterWindow();
-				} else if (
+				if (
 					this.settings.get(ESettingsKey.EnableNewReleaseToast, true) &&
 					!this.isNotified
 				) {

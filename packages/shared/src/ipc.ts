@@ -129,10 +129,6 @@ export interface IIpcContract {
 		args: [];
 		return: Nullable<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>;
 	}
-	'updater<-check-for-updates': {
-		args: [];
-		return: boolean;
-	}
 	'updater<-show-window': {
 		args: [];
 		return: void;
