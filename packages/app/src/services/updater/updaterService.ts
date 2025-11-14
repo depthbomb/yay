@@ -1,7 +1,6 @@
 import semver from 'semver';
 import { app } from 'electron';
 import { join } from 'node:path';
-import { cache } from '~/common';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
 import { HttpService } from '~/services/http';
@@ -12,6 +11,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
+import { cache } from '@depthbomb/node-common/decorators';
 import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';

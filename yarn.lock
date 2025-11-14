@@ -238,10 +238,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depthbomb/node-common@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@depthbomb/node-common@npm:1.0.0"
-  checksum: 10/661885f062195d49b82148fe49b3ad6f7a3a272f69f56156aa604b64c4fec89a8a0cc3b0f11b337e24855746cc0618c697d4212fb1c5d5b58bc076d747f87976
+"@depthbomb/node-common@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@depthbomb/node-common@npm:1.1.0"
+  checksum: 10/b909927b6276eb3e0727ca9931dd77c103491a5f09046389b97ee84a502f993439b4c4d8544dad8a5a9eee0f9de78c6c98cd7d529f2bc5457bafce501bf407da
   languageName: node
   linkType: hard
 
@@ -9796,7 +9796,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yay@workspace:packages/app"
   dependencies:
-    "@depthbomb/node-common": "npm:1.0.0"
+    "@depthbomb/node-common": "npm:1.1.0"
     "@formatjs/fast-memoize": "npm:^2.2.7"
     "@needle-di/core": "npm:1.1.0"
     "@swc-node/sourcemap-support": "npm:^0.6.1"
