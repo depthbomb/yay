@@ -35,11 +35,11 @@
 		"asar-trim": "^1.2.2",
 		"cross-env": "^10.1.0",
 		"dotenv": "^17.2.3",
-		"electron-builder": "26.3.0",
+		"electron-builder": "26.3.1",
 		"node-gyp": "^12.1.0",
 		"ts-morph": "27.0.2",
 		"ts-node-maintained": "^10.9.6",
 		"typescript": "^5.9.3"
 	},
-	"packageManager": "yarn@4.11.0"
+	"packageManager": "yarn@4.12.0"
 }
