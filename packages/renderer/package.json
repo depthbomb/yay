@@ -31,7 +31,7 @@
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react-swc": "^4.2.2",
 		"babel-plugin-react-compiler": "^1.0.0",
-		"electron": "39.2.3",
+		"electron": "39.2.4",
 		"eslint": "^9.39.1",
 		"eslint-plugin-react-hooks": "^7.0.1",
 		"eslint-plugin-react-refresh": "^0.4.24",

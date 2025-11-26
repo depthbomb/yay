@@ -5155,16 +5155,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:39.2.3":
-  version: 39.2.3
-  resolution: "electron@npm:39.2.3"
+"electron@npm:39.2.4":
+  version: 39.2.4
+  resolution: "electron@npm:39.2.4"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^22.7.7"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/52e3af56a2a1796bbb681f532c6c2a62ccea3464550fd85caaa001abbc69a70d28e1e2760a17865a71e7840e91f3589694e01fe4420014d390c7424c69136189
+  checksum: 10/0acefebd1a26b1824e2fde0c80a6a603666fa0023e6e9e2130b226ce538fdf34e5f00cd89e5e4fc9fabdab0bb0eb7b7018532b4942bd0e2369390b1217a7a764
   languageName: node
   linkType: hard
 
@@ -7332,22 +7332,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"obug@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "obug@npm:2.0.0"
-  peerDependencies:
-    ms: ^2.0.0
-  peerDependenciesMeta:
-    ms:
-      optional: true
-  checksum: 10/6abd015db5221ef0c88a17cfbfffe7e43bda5723346d75e12f96972aa4ea6aaafea4f2d54dc64dc7923e43e7807bf835743f269920e1e60cf5867dde0cffa80f
-  languageName: node
-  linkType: hard
-
-"obug@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "obug@npm:2.1.0"
-  checksum: 10/26366ff8e31c8cf74e03ff73fcbb1fe94decd620c2f3c643e0d134c4451eb5bf4d073b1519bbb90269605e70cdba4cd1a49fc1169043da2e253c86fa02a17eea
+"obug@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "obug@npm:2.1.1"
+  checksum: 10/bdcf9213361786688019345f3452b95a1dc73710e4b403c82a1994b98bad6abc31b26cb72a482128c5fd53ea9daf6fbb7d0e0e7b2b7e9c8be6d779deeccee07f
   languageName: node
   linkType: hard
 
@@ -7852,7 +7840,7 @@ __metadata:
     babel-plugin-react-compiler: "npm:^1.0.0"
     clsx: "npm:^2.1.1"
     dompurify: "npm:3.3.0"
-    electron: "npm:39.2.3"
+    electron: "npm:39.2.4"
     eslint: "npm:^9.39.1"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.24"
@@ -7969,9 +7957,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rolldown-plugin-dts@npm:^0.18.0":
-  version: 0.18.0
-  resolution: "rolldown-plugin-dts@npm:0.18.0"
+"rolldown-plugin-dts@npm:^0.18.1":
+  version: 0.18.1
+  resolution: "rolldown-plugin-dts@npm:0.18.1"
   dependencies:
     "@babel/generator": "npm:^7.28.5"
     "@babel/parser": "npm:^7.28.5"
@@ -7981,7 +7969,7 @@ __metadata:
     dts-resolver: "npm:^2.1.3"
     get-tsconfig: "npm:^4.13.0"
     magic-string: "npm:^0.30.21"
-    obug: "npm:^2.0.0"
+    obug: "npm:^2.1.1"
   peerDependencies:
     "@ts-macro/tsc": ^0.3.6
     "@typescript/native-preview": ">=7.0.0-dev.20250601.1"
@@ -7997,7 +7985,7 @@ __metadata:
       optional: true
     vue-tsc:
       optional: true
-  checksum: 10/aafbfcc825030549ffb717addf9b8811661878df81921612f76a8439167741acaa96fa52c36aaa4705abc46723196a0d7359f00840b4be1c21e86e179e908b8e
+  checksum: 10/7fab15d8c09d50a137f2b2468ba578c2125839946467371ae13caba6e30d093ff74807d73359b36f1223f9a8aaa90492f90c56fadb623aa897921b9b1f9be6c0
   languageName: node
   linkType: hard
 
@@ -8486,7 +8474,7 @@ __metadata:
   resolution: "shared@workspace:packages/shared"
   dependencies:
     "@swc/core": "npm:1.15.3"
-    tsdown: "npm:^0.16.6"
+    tsdown: "npm:^0.16.7"
     tslib: "npm:^2.8.1"
     typescript: "npm:^5.9.3"
   languageName: unknown
@@ -8992,9 +8980,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsdown@npm:^0.16.6":
-  version: 0.16.6
-  resolution: "tsdown@npm:0.16.6"
+"tsdown@npm:^0.16.7":
+  version: 0.16.7
+  resolution: "tsdown@npm:0.16.7"
   dependencies:
     ansis: "npm:^4.2.0"
     cac: "npm:^6.7.14"
@@ -9002,9 +8990,9 @@ __metadata:
     diff: "npm:^8.0.2"
     empathic: "npm:^2.0.0"
     hookable: "npm:^5.5.3"
-    obug: "npm:^2.1.0"
+    obug: "npm:^2.1.1"
     rolldown: "npm:1.0.0-beta.51"
-    rolldown-plugin-dts: "npm:^0.18.0"
+    rolldown-plugin-dts: "npm:^0.18.1"
     semver: "npm:^7.7.3"
     tinyexec: "npm:^1.0.2"
     tinyglobby: "npm:^0.2.15"
@@ -9013,7 +9001,7 @@ __metadata:
     unrun: "npm:^0.2.11"
   peerDependencies:
     "@arethetypeswrong/core": ^0.18.1
-    "@vitejs/devtools": ^0.0.0-alpha.17
+    "@vitejs/devtools": ^0.0.0-alpha.18
     publint: ^0.3.0
     typescript: ^5.0.0
     unplugin-lightningcss: ^0.4.0
@@ -9033,7 +9021,7 @@ __metadata:
       optional: true
   bin:
     tsdown: dist/run.mjs
-  checksum: 10/e513c1002c1667e13d9d88101b69797bbc084183665c5b7519066353fb30bd8363a06e0f71d6e4c93d3ce2f4483f20d2fe0344d6814d44e626c86368c073311e
+  checksum: 10/8614f3835b8f90652c0a5863c942029e6ac2f7913ebfd7934c81b2475926a5e0080c4fb07bb66170af05758fb583dff5e3c3140d9463eb65024008d03dae5970
   languageName: node
   linkType: hard
 
@@ -9597,7 +9585,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.48.0"
     cockatiel: "npm:^3.2.1"
     cross-env: "npm:^10.1.0"
-    electron: "npm:39.2.3"
+    electron: "npm:39.2.4"
     eslint: "npm:^9.39.1"
     mitt: "npm:^3.0.1"
     nativelib: "workspace:*"

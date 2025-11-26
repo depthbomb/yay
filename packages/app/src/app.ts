@@ -36,12 +36,10 @@ export class App {
 
 		await app.whenReady();
 
-		if (__WIN32__) {
-			app.setAppUserModelId(product.appUserModelId);
+		app.setAppUserModelId(product.appUserModelId);
 
-			if (import.meta.env.DEV) {
-				await this.createDevelopmentShortcut();
-			}
+		if (import.meta.env.DEV) {
+			await this.createDevelopmentShortcut();
 		}
 
 		await this.container.get(MainService).boot();
