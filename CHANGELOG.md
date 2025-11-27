@@ -1,3 +1,10 @@
+# 1.32.0
+
+- Overhauled the global menu to now use a web-based UI
+  - Menu now disappears when clicking outside of it, eliminating the need for a dedicated close action
+- Slightly increased the time between update checks
+- Upgraded to [Electron 39.2.4](https://releases.electronjs.org/release/v39.2.4)
+
 # 1.31.0
 
 - Removed manual update checking and increased the frequency of update checks

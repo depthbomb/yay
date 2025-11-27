@@ -3,6 +3,11 @@ import { forwardRef } from 'react';
 import type { VariantProps } from 'cva';
 import type { ButtonHTMLAttributes } from 'react';
 
+export interface IGlobalMenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof globalMenuItem> {
+	text: string;
+	icon: string;
+}
+
 const globalMenuItem = cva({
 	base: 'py-1 px-2 space-x-2 flex items-center text-gray-300 rounded transition',
 	variants: {
@@ -15,11 +20,6 @@ const globalMenuItem = cva({
 		disabled: false,
 	}
 });
-
-export interface IGlobalMenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof globalMenuItem> {
-	text: string;
-	icon: string;
-}
 
 export const GlobalMenuItem = forwardRef<HTMLButtonElement, IGlobalMenuItemProps>(({ text, icon, onClick, disabled }, ref) => {
 	return (

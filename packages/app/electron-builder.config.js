@@ -64,7 +64,6 @@ const config = {
 		enableCookieEncryption: isProduction,
 		enableNodeCliInspectArguments: !isProduction,
 		enableNodeOptionsEnvironmentVariable: !isProduction,
-		// enableEmbeddedAsarIntegrityValidation: isProduction,
 	}
 };
 

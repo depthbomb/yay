@@ -3,11 +3,11 @@ import { Fragment } from 'react';
 import { TooltipV2 } from './TooltipV2';
 import type { FC } from 'react';
 
-type KeyComboProps = {
+export interface IKeyComboProps {
 	keys: Array<string | { iconPath: string; name: string; }>;
 };
 
-export const KeyCombo: FC<KeyComboProps> = ({ keys }) => {
+export const KeyCombo: FC<IKeyComboProps> = ({ keys }) => {
 	const transformKey = (key: string) => {
 		key = key.toLocaleLowerCase();
 		key = key.replace('ctrl', '^');

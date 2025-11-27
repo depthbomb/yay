@@ -1,11 +1,11 @@
 import DOMPurify from 'dompurify';
 import type { FC } from 'react';
 
-type HtmlProps = {
+export interface IHTMLProps {
 	html: string;
 };
 
-export const HTML: FC<HtmlProps> = ({ html }) => {
+export const HTML: FC<IHTMLProps> = ({ html }) => {
 	return (
 		<div
 			className="

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import type { FC } from 'react';
 import type { IButtonProps } from './Button';
 
-interface IRouteButtonProps extends  Omit<IButtonProps, 'onClick'> {
+export interface IRouteButtonProps extends  Omit<IButtonProps, 'onClick'> {
 	to: string;
 };
 
