@@ -202,7 +202,7 @@ export class YtdlpService implements IBootstrappable {
 
 		proc.stdout!.on('data', data => {
 			const line = data.toString().trim() as string;;
-			this.logger.silly(`yt-dlp -U: ${line}`);
+			this.logger.trace(`yt-dlp -U: ${line}`);
 
 			wasUpdated = !line.includes('is up to date');
 

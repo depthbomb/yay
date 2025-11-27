@@ -1,7 +1,9 @@
 import { cva } from 'cva';
-import { memo, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import type { VariantProps } from 'cva';
 import type { ButtonHTMLAttributes } from 'react';
+
+export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
 
 const button = cva({
 	base: 'flex items-center justify-center shrink-0 transition-colors',
@@ -31,9 +33,7 @@ const button = cva({
 	}
 });
 
-export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
-
-export const Button = memo(forwardRef<HTMLButtonElement, IButtonProps>(({ type, size, className, disabled, ...props }, ref) => {
+export const Button = forwardRef<HTMLButtonElement, IButtonProps>(({ type, size, className, disabled, ...props }, ref) => {
 	return (
 		<button
 			ref={ref}
@@ -43,4 +43,4 @@ export const Button = memo(forwardRef<HTMLButtonElement, IButtonProps>(({ type, 
 			type="button"
 		>{props.children}</button>
 	);
-}));
+});

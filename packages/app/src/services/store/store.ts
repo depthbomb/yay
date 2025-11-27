@@ -25,7 +25,7 @@ export class Store<S extends Record<string, any>> {
 	public async set<T>(key: string, value: T) {
 		(this.store as Record<string, any>)[key] = value;
 
-		this.logger.silly('Set store value', { key, value });
+		this.logger.trace('Set store value', { key, value });
 
 		await this.save();
 	}

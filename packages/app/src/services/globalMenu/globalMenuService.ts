@@ -86,7 +86,7 @@ export class GlobalMenuService implements IBootstrappable {
 		}
 
 		this.menuShown = true;
-		this.logger.silly('Showing global menu');
+		this.logger.trace('Showing global menu');
 
 		const { x, y } = screen.getCursorScreenPoint();
 
@@ -100,7 +100,7 @@ export class GlobalMenuService implements IBootstrappable {
 		}
 
 		this.menuShown = false;
-		this.logger.silly('Hiding global menu');
+		this.logger.trace('Hiding global menu');
 		this.globalMenuWindow.hide();
 	}
 

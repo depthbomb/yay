@@ -1,82 +1,67 @@
-import 'winston-daily-rotate-file';
 import { app } from 'electron';
 import { join } from 'node:path';
 import { injectable } from '@needle-di/core';
-import { format, transports, createLogger } from 'winston';
-import type { Logger } from 'winston';
+import { serializeError } from 'serialize-error';
+import { LogLevel, LogLayer, ConsoleTransport } from 'loglayer';
+import { LogFileRotationTransport } from '@loglayer/transport-log-file-rotation';
+import type { LogLayerMetadata } from 'loglayer';
 
 @injectable()
 export class LoggingService {
-	private readonly logger: Logger;
+	private readonly logger: LogLayer;
 
 	public constructor() {
-		this.logger = createLogger({
-			transports: [
-				new transports.Console({
-					level: import.meta.env.DEV ? 'silly' : 'http',
-					format: format.combine(
-						format.colorize(),
-						format.timestamp(),
-						format.padLevels(),
-						format.printf(({ level, message, timestamp, ...meta }) => {
-							if (Object.keys(meta).length) {
-								return `${timestamp} [${level}] ${message} ${JSON.stringify(meta)}`;
-							}
-
-							return `${timestamp} [${level}] ${message}`;
-						})
-					)
+		this.logger = new LogLayer({
+			prefix: '[yay]',
+			errorSerializer: serializeError,
+			transport: [
+				new ConsoleTransport({
+					logger: console,
+					appendObjectData:true,
 				}),
-				new transports.DailyRotateFile({
-					level: 'silly',
+				new LogFileRotationTransport({
+					auditFile: join(app.getPath('userData'), 'logs', 'audit.json'),
 					filename: join(app.getPath('userData'), 'logs', 'yay.%DATE%.log'),
-					datePattern: 'YYYYMMDD',
-					maxFiles: '5d',
-					zippedArchive: true,
-					format: format.combine(
-						format.timestamp(),
-						format.printf(({ level, message, timestamp, ...meta }) => {
-							if (Object.keys(meta).length) {
-								return `${timestamp} [${level}] ${message} ${JSON.stringify(meta)}`;
-							}
-
-							return `${timestamp} [${level}] ${message}`;
-						})
-					)
-				})
+					dateFormat: 'YMD',
+					frequency: 'daily',
+					compressOnRotate: true,
+					maxLogs: 5
+				}),
 			]
 		});
 	}
 
-	public error(message: string, ...meta: any[]) {
-		return this.logger.error(message, ...meta);
+	public info(message: string, metadata?: LogLayerMetadata) {
+		return this.log(LogLevel.info, message, metadata);
 	}
 
-	public warn(message: string, ...meta: any[]) {
-		return this.logger.warn(message, ...meta);
+	public warn(message: string, metadata?: LogLayerMetadata) {
+		return this.log(LogLevel.warn, message, metadata);
 	}
 
-	public info(message: string, ...meta: any[]) {
-		return this.logger.info(message, ...meta);
+	public error(message: string, metadata?: LogLayerMetadata) {
+		return this.log(LogLevel.error, message, metadata);
 	}
 
-	public http(message: string, ...meta: any[]) {
-		return this.logger.http(message, ...meta);
+	public fatal(message: string, metadata?: LogLayerMetadata) {
+		return this.log(LogLevel.fatal, message, metadata);
 	}
 
-	public verbose(message: string, ...meta: any[]) {
-		return this.logger.verbose(message, ...meta);
+	public debug(message: string, metadata?: LogLayerMetadata) {
+		return this.log(LogLevel.debug, message, metadata);
 	}
 
-	public debug(message: string, ...meta: any[]) {
-		return this.logger.debug(message, ...meta);
+	public trace(message: string, metadata?: LogLayerMetadata) {
+		return this.log(LogLevel.trace, message, metadata);
 	}
 
-	public silly(message: string, ...meta: any[]) {
-		return this.logger.debug(message, ...meta);
-	}
+	private log(level: LogLevel, message: string, metadata?: LogLayerMetadata) {
+		const logger = metadata
+			? this.logger.withMetadata(metadata)
+			: this.logger;
 
-	public end() {
-		this.logger.end();
+		if (level in logger) {
+			return logger[level](message);
+		}
 	}
 }
