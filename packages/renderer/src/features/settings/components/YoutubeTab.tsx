@@ -1,7 +1,7 @@
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Anchor } from '~/components/Anchor';
-import { TextInput } from '~/components/input';
+import { TextInput } from '~/components/Input';
 import { SwitchV2 } from '~/components/SwitchV2';
 import type { Nullable } from 'shared';
 
@@ -13,7 +13,7 @@ export const YoutubeTab = () => {
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Cookies file</p>
-				<TextInput value={cookiesFilePath ?? 'None'} onClick={() => window.ipc.invoke('main<-pick-cookies-file')} type="text" readOnly className="w-full" size="small"/>
+				<TextInput value={cookiesFilePath ?? 'None'} onClick={() => window.ipc.invoke('main<-pick-cookies-file')} type="text" readOnly className="w-full" size="sm"/>
 				<div className="w-full flex items-center justify-between">
 					<Anchor onClick={() => window.ipc.invoke('main<-pick-cookies-file')} className="text-xs cursor-pointer">Change...</Anchor>
 					{cookiesFilePath && <Anchor onClick={() => window.ipc.invoke('yt-dlp<-remove-cookies-file')} className="text-xs cursor-pointer">Remove</Anchor>}

@@ -5,12 +5,12 @@ import { useWindowFocus } from '~/hooks';
 import { TitlebarButton } from './TitlebarButton';
 import type { FC } from 'react';
 
-type TitlebarProps = {
+export interface ITitlebarProps {
 	title?: string;
 	showIcon?: boolean;
-};
+}
 
-export const Titlebar: FC<TitlebarProps> = ({ title, showIcon = true }) => {
+export const Titlebar: FC<ITitlebarProps> = ({ title, showIcon = true }) => {
 	const [focused, setFocused] = useState(true);
 
 	useWindowFocus(

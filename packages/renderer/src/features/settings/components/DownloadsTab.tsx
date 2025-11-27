@@ -3,7 +3,7 @@ import { ESettingsKey } from 'shared';
 import { Anchor } from '~/components/Anchor';
 import { SwitchV2 } from '~/components/SwitchV2';
 import { KeyCombo } from '~/components/KeyCombo';
-import { Select, TextInput } from '~/components/input';
+import { Select, TextInput } from '~/components/Input';
 import type { ChangeEvent } from 'react';
 
 export const DownloadsTab = () => {
@@ -20,17 +20,17 @@ export const DownloadsTab = () => {
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Download folder</p>
-				<TextInput value={downloadDir} onClick={() => window.ipc.invoke('main<-pick-download-dir')} type="text" readOnly className="w-full" size="small"/>
+				<TextInput value={downloadDir} onClick={() => window.ipc.invoke('main<-pick-download-dir')} type="text" readOnly className="w-full" size="sm"/>
 				<Anchor onClick={() => window.ipc.invoke('main<-pick-download-dir')} className="text-xs cursor-pointer">Change...</Anchor>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Output name template</p>
-				<TextInput value={downloadNameTemplate} onChange={onDownloadNameTemplateFieldChanged} type="text" className="w-full" size="small"/>
+				<TextInput value={downloadNameTemplate} onChange={onDownloadNameTemplateFieldChanged} type="text" className="w-full" size="sm"/>
 				<p className="text-xs">Click <Anchor href="https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#output-template" target="_blank">here</Anchor> to learn more about output name templates</p>
 			</div>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Default <KeyCombo keys={['enter']}/> action</p>
-				<Select value={defaultDownloadAction} onChange={onDefaultDownloadActionSelectionChanged} className="w-full" size="small">
+				<Select value={defaultDownloadAction} onChange={onDefaultDownloadActionSelectionChanged} className="w-full" size="sm">
 					<option value="video">Download video</option>
 					<option value="audio">Download audio</option>
 				</Select>

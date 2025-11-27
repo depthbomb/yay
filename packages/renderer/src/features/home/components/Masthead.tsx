@@ -1,10 +1,10 @@
 import { cx } from 'cva';
-import { IconButton } from './IconButton';
 import { SeasonalLogo } from './SeasonalLogo';
 import { mdiCog, mdiFolderOpen } from '@mdi/js';
+import { IconButton } from '~/components/IconButton';
 import { useThrottle, useModifierKey } from '~/hooks';
 
-export const AppMasthead = () => {
+export const Masthead = () => {
 	const openDownloadDir = useThrottle(() => window.ipc.invoke('main<-open-download-dir'), 2_500);
 	const holdingAlt      = useModifierKey('Alt');
 

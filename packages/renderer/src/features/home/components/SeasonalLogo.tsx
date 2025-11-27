@@ -4,8 +4,6 @@ import type { ImgHTMLAttributes } from 'react';
 
 import logo from '~/assets/img/logo.webp';
 
-type SeasonalLogoProps = Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>;
-
 const baseCss = 'mr-2 size-7 shrink-0 z-10' as const;
 
 const seasonalLogos = [
@@ -17,7 +15,7 @@ const seasonalLogos = [
 	}
 ];
 
-export const SeasonalLogo = forwardRef<HTMLImageElement, SeasonalLogoProps>((props, ref) => {
+export const SeasonalLogo = forwardRef<HTMLImageElement, Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'draggable' | 'className'>>((props, ref) => {
 	const currentDate                   = useMemo(() => new Date(), []);
 	const [isBlurred, setIsBlurred]     = useState(true);
 	const [randomValue, setRandomValue] = useState(() => Math.random() * 100);

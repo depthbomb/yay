@@ -3,11 +3,11 @@ import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { mdiUpdate } from '@mdi/js';
 import { isValidHttpUrl } from 'shared';
-import { TextInput } from '~/components/input';
+import { TextInput } from '~/components/Input';
+import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
 import { useRef, Activity, useEffect } from 'react';
 import Snowfall from '~/components/effects/Snowfall';
-import { AppMasthead } from '~/components/AppMasthead';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { useIpc, useTitle, useKeyCombo, useNativeTextMenu, useFeatureFlags } from '~/hooks';
@@ -137,7 +137,7 @@ export const HomePage = () => {
 					</div>
 				) : (
 					<>
-						<AppMasthead/>
+						<Masthead/>
 						<div className="p-3 h-full flex flex-col space-y-4 overflow-hidden">
 							<Activity mode={updateAvailable ? 'visible' : 'hidden'}>
 								<a className="py-1.5 px-2 flex flex-row items-center space-x-2 text-sky-100 bg-sky-950/50 border border-sky-900 hover:text-white hover:bg-sky-900 hover:border-sky-600 rounded cursor-pointer transition" onClick={() => window.ipc.invoke('updater<-show-window')}>

@@ -1,22 +1,27 @@
-import { cx } from 'cva';
+import { cva } from 'cva';
 import type { FC } from 'react';
+import type { VariantProps } from 'cva';
 
-type TitlebarButtonProps = {
-	type: 'close' | 'minimize';
+export interface ITitlebarButtonProps extends VariantProps<typeof titlebarButton> {
 	onClick: () => void;
-};
+}
 
-export const TitlebarButton: FC<TitlebarButtonProps> = ({ type, onClick }) => {
-	const css = cx(
-		'text-center leading-8 shrink-0 w-[46px] h-8 text-gray-200 hover:text-white transition',
-		{
-			'hover:bg-white/25': type !== 'close',
-			'hover:bg-[#e81123]': type === 'close'
+const titlebarButton = cva({
+	base: 'text-center leading-8 shrink-0 w-[46px] h-8 text-gray-200 hover:text-white transition',
+	variants: {
+		type: {
+			minimize: 'hover:bg-white/25',
+			close: 'hover:bg-[#e81123]'
 		}
-	);
+	},
+	defaultVariants: {
+		type: 'minimize'
+	}
+});
 
+export const TitlebarButton: FC<ITitlebarButtonProps> = ({ type, onClick }) => {
 	return (
-		<button className={css} onClick={onClick} type="button">
+		<button className={titlebarButton({ type })} onClick={onClick} type="button">
 			{type === 'minimize' ? (
 				<svg className="inline-block size-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M14 8v1H3V8h11z"/></svg>
 			) : (
