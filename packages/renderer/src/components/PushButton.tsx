@@ -1,9 +1,10 @@
 import { Button } from './Button';
 import type { FC } from 'react';
-import type { ButtonProps } from './Button';
+import type { IButtonProps } from './Button';
 
-type PushButtonProps = Omit<ButtonProps, 'to'>;
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+interface IPushButtonProps extends Omit<IButtonProps, 'to'> {}
 
-export const PushButton: FC<PushButtonProps> = ({ ...props }) => {
+export const PushButton: FC<IPushButtonProps> = ({ ...props }) => {
 	return <Button {...props}>{props.children}</Button>;
 };

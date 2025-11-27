@@ -1,13 +1,13 @@
 import { Button } from './Button';
 import { useNavigate } from 'react-router';
 import type { FC } from 'react';
-import type { ButtonProps } from './Button';
+import type { IButtonProps } from './Button';
 
-type RouteButtonProps = Omit<ButtonProps, 'onClick'> & {
+interface IRouteButtonProps extends  Omit<IButtonProps, 'onClick'> {
 	to: string;
 };
 
-export const RouteButton: FC<RouteButtonProps> = ({ ...props }) => {
+export const RouteButton: FC<IRouteButtonProps> = ({ ...props }) => {
 	const navigate = useNavigate();
 
 	return <Button onClick={() => navigate(props.to)} {...props}>{props.children}</Button>;

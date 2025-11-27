@@ -4862,6 +4862,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cva@npm:^1.0.0-beta.4":
+  version: 1.0.0-beta.4
+  resolution: "cva@npm:1.0.0-beta.4"
+  dependencies:
+    clsx: "npm:^2.1.1"
+  peerDependencies:
+    typescript: ">= 4.5.5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10/8028c27f0c746193f8ac17d82a474c0c8456294c048e13db9263e8b86c159da292858770e3561217a19a77575c8667190e8bb897faa33462381e54f82056e130
+  languageName: node
+  linkType: hard
+
 "debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
   version: 4.4.0
   resolution: "debug@npm:4.4.0"
@@ -7838,7 +7852,7 @@ __metadata:
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react-swc": "npm:^4.2.2"
     babel-plugin-react-compiler: "npm:^1.0.0"
-    clsx: "npm:^2.1.1"
+    cva: "npm:^1.0.0-beta.4"
     dompurify: "npm:3.3.0"
     electron: "npm:39.2.4"
     eslint: "npm:^9.39.1"

@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cx } from 'cva';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { useEffect} from 'react';
@@ -24,7 +24,7 @@ const TabButton: FC<TabButtonProps> = ({ title, icon, value }) => {
 		<TabsV2.Trigger
 			value={value}
 			className={(isActive) =>
-				clsx(
+				cx(
 					'flex items-center space-x-2 py-1 px-3 text-sm transition-all',
 					isActive ? 'bg-brand-600 text-white rounded' : 'text-gray-300 hover:text-white'
 				)

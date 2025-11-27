@@ -67,8 +67,8 @@ export const HomePage = () => {
 	const accentCss = clsx(
 		'absolute -z-10',
 		{
-			'inset-0 [background-image:linear-gradient(90deg,_#FF0033_0%,_#FF2790_100%)]': !isWorking,
-			'inset-[-550px] [background-image:linear-gradient(90deg,_#000_0%,_#FF2790_100%)] animate-[spin_1s_linear_infinite]': isWorking
+			'inset-0 bg-[linear-gradient(90deg,#FF0033_0%,#FF2790_100%)]': !isWorking,
+			'inset-[-550px] bg-[linear-gradient(90deg,#000_0%,#FF2790_100%)] animate-spin': isWorking
 		}
 	);
 

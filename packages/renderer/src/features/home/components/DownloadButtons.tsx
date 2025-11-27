@@ -22,15 +22,15 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 }) => {
 	const containerCss = clsx(
 		'relative',
-		'p-[1px] w-full h-8',
+		'p-px w-full h-8',
 		'flex flex-row items-stretch justify-stretch shrink-0',
 		{
-			'bg-gradient-to-r from-[#FF0033] to-[#FF2790]': !disabled,
+			'bg-linear-to-r from-[#FF0033] to-[#FF2790]': !disabled,
 			'bg-gray-600': disabled,
 		},
 		'rounded',
 		{
-			'after:absolute after:w-full after:h-8 after:bg-gradient-to-r after:from-[#FF0033] after:to-[#FF2790] after:blur after:-z-10': !disabled
+			'after:absolute after:w-full after:h-8 after:bg-linear-to-r after:from-[#FF0033] after:to-[#FF2790] after:blur after:-z-10': !disabled
 		}
 	);
 	const buttonCss = clsx(
@@ -50,14 +50,14 @@ export const DownloadButtons: FC<DownloadButtonsProps> = ({
 				<Icon path={mdiVideo} className="size-5"/>
 				<span>Download Video</span>
 			</button>
-			<span className="w-[1px] h-full shrink-0 bg-transparent"></span>
+			<span className="w-px h-full shrink-0 bg-transparent"></span>
 			<button onClick={onDownloadAudioClick} className={`${buttonCss} rounded-r`} disabled={disabled} type="button">
 				<Icon path={mdiMusicNote} className="size-5"/>
 				<span>Download Audio</span>
 			</button>
 		</div>
 	) : (
-		<Button onClick={onCancelDownloadClick} variant="danger" size="lg">
+		<Button onClick={onCancelDownloadClick} type="danger" size="lg">
 			<Icon path={mdiCancel} className="size-4"/>
 			<span>Cancel</span>
 		</Button>

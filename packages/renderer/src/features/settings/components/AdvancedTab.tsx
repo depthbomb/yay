@@ -56,7 +56,7 @@ export const AdvancedTab = () => {
 					<Icon path={mdiUpdate} className="size-3"/>
 					<span>Update yt-dlp</span>
 				</PushButton>
-				<PushButton variant="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking || isUpdating}>
+				<PushButton type="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking || isUpdating}>
 					<Icon path={mdiRestore} className="size-4"/>
 					<span>Reset settings</span>
 				</PushButton>

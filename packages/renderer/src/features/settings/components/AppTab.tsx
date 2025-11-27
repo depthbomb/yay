@@ -20,8 +20,8 @@ export const AppTab = () => {
 			<SwitchV2 label="Notify when an update is available" checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
 			<SwitchV2 label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
 			<div className="space-x-2 flex items-center">
-				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
-				<Button variant="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>Report a bug</Button>
+				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
+				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>Report a bug</Button>
 			</div>
 		</div>
 	);

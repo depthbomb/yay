@@ -1,26 +1,26 @@
-import clsx from 'clsx';
-import type { FC } from 'react';
+import { cva } from 'cva';
+import type { VariantProps } from 'cva';
+import type { FC, HTMLAttributes } from 'react';
 
-type BadgeProps = {
+export interface IBadgeProps extends HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badge> {
 	label: string;
-	type: 'success' | 'warning' | 'danger' | 'info';
-};
+}
 
-const baseCss = 'inline-flex items-center justify-center py-0.25 px-1.5 text-[10px] font-mono border rounded-full' as const;
-
-export const Badge: FC<BadgeProps> = ({ label, type }) => {
-	const css = clsx(
-		baseCss,
-		{
-			'text-green-400 bg-green-950 border-green-400': type === 'success',
-			'text-yellow-400 bg-yellow-950 border-yellow-400': type === 'warning',
-			'text-red-400 bg-red-950 border-red-400': type === 'danger',
-			'text-sky-400 bg-sky-950 border-sky-400': type === 'info',
+const badge = cva({
+	base: 'inline-flex items-center justify-center py-px px-1.5 text-[10px] font-mono border rounded-full',
+	variants: {
+		type: {
+			success: 'text-green-400 bg-green-950 border-green-400',
+			warning: 'text-yellow-400 bg-yellow-950 border-yellow-400',
+			danger: 'text-red-400 bg-red-950 border-red-400',
+			info: 'text-sky-400 bg-sky-950 border-sky-400'
 		}
-	);
+	}
+});
 
+export const Badge: FC<IBadgeProps> = ({ type, label, className, ...props }) => {
 	return (
-		<span className={css}>
+		<span className={badge({ type, className })} {...props}>
 			{label}
 		</span>
 	);

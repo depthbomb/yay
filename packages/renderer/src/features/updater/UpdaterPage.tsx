@@ -102,10 +102,10 @@ export const UpdaterPage = () => {
 							<Spinner className="size-6"/>
 							<p>{status}</p>
 						</div>
-						<PushButton onClick={onCancelButtonClicked} variant="danger" size="lg">Cancel</PushButton>
+						<PushButton onClick={onCancelButtonClicked} type="danger" size="lg">Cancel</PushButton>
 					</>
 				) : (
-					<PushButton onClick={onDownloadButtonClicked} variant='brand' size="lg" className="ml-auto">
+					<PushButton onClick={onDownloadButtonClicked} type='brand' size="lg" className="ml-auto">
 						<Icon path={mdiDownload} className="size-5"/>
 						<span>Download &amp; install</span>
 					</PushButton>
