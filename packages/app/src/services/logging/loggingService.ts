@@ -2,7 +2,7 @@ import { app } from 'electron';
 import { join } from 'node:path';
 import { injectable } from '@needle-di/core';
 import { serializeError } from 'serialize-error';
-import { LogLevel, LogLayer, ConsoleTransport } from 'loglayer';
+import { LogLevel, LogLayer, BlankTransport } from 'loglayer';
 import { LogFileRotationTransport } from '@loglayer/transport-log-file-rotation';
 import type { LogLayerMetadata } from 'loglayer';
 
@@ -15,9 +15,17 @@ export class LoggingService {
 			prefix: '[yay]',
 			errorSerializer: serializeError,
 			transport: [
-				new ConsoleTransport({
-					logger: console,
-					appendObjectData:true,
+				new BlankTransport({
+					shipToLogger: ({ logLevel, messages, data, hasData })  => {
+						console.log(
+							`[${new Date().toISOString()}]`,
+							`[${logLevel.toUpperCase()}]\t`,
+							...messages,
+							hasData ? data : ''
+						)
+
+						return messages;
+					}
 				}),
 				new LogFileRotationTransport({
 					auditFile: join(app.getPath('userData'), 'logs', 'audit.json'),
