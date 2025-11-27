@@ -51,7 +51,7 @@ export class UpdaterService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 60_000);
+		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 90_000);
 
 		this.ipc.registerHandler('updater<-show-window',                  () => this.showUpdaterWindow());
 		this.ipc.registerHandler('updater<-get-latest-release',           () => this.getLatestRelease());
