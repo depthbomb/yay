@@ -3,8 +3,6 @@ import { memo, forwardRef } from 'react';
 import type { VariantProps } from 'cva';
 import type { ButtonHTMLAttributes } from 'react';
 
-export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
-
 const button = cva({
 	base: 'flex items-center justify-center shrink-0 transition-colors',
 	variants: {
@@ -32,6 +30,8 @@ const button = cva({
 		size: 'default'
 	}
 });
+
+export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
 
 export const Button = memo(forwardRef<HTMLButtonElement, IButtonProps>(({ type, size, className, disabled, ...props }, ref) => {
 	return (

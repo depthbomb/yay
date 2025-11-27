@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cx } from 'cva';
 import { createContext, useContext, useState, useMemo } from 'react';
 import type { FC, ReactNode, HTMLAttributes } from 'react';
 
@@ -42,7 +42,7 @@ const Root: FC<TabsRootProps> = ({
 	return (
 		<TabsContext.Provider value={ctx}>
 			<div
-				className={clsx('flex', orientation === 'vertical' ? 'flex-row' : 'flex-col', className)}
+				className={cx('flex', orientation === 'vertical' ? 'flex-row' : 'flex-col', className)}
 				{...rest}
 			>
 				{children}
@@ -61,7 +61,7 @@ const List: FC<TabsListProps> = ({ children, className, ...rest }) => {
 
 	return (
 		<div
-			className={clsx('inline-flex', ctx.orientation === 'vertical' ? 'flex-col' : 'flex-row', className)}
+			className={cx('inline-flex', ctx.orientation === 'vertical' ? 'flex-col' : 'flex-row', className)}
 			{...rest}
 			role="tablist"
 		>
@@ -115,7 +115,7 @@ const Content: FC<TabsContentProps> = ({ value, children, className, ...rest }) 
 	}
 
 	return (
-		<div className={clsx(className)} {...rest} role="tabpanel">
+		<div className={cx(className)} {...rest} role="tabpanel">
 			{children}
 		</div>
 	);

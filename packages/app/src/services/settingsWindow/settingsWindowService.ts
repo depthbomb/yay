@@ -42,7 +42,7 @@ export class SettingsWindowService implements IBootstrappable {
 		this.settingsWindow.on('close', e => {
 			if (!this.lifecycle.shutdownInProgress) {
 				e.preventDefault();
-				this.settingsWindow!.hide();
+				this.settingsWindow.hide();
 			}
 		});
 	}

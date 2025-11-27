@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cx } from 'cva';
 import Icon from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { HTML } from '~/components/HTML';
@@ -17,7 +17,7 @@ type TabButtonProps = TabsTriggerProps;
 const TabButton: FC<TabButtonProps> = ({ value, ...props }) => {
 	return (
 		<TabsV2.Trigger value={value} className={
-			isActive => clsx(
+			isActive => cx(
 				'py-px px-3',
 				'text-sm text-gray-300 hover:text-white',
 				'border-2 border-transparent',

@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cx } from 'cva';
 import type { FC } from 'react';
 
 type TitlebarButtonProps = {
@@ -7,7 +7,7 @@ type TitlebarButtonProps = {
 };
 
 export const TitlebarButton: FC<TitlebarButtonProps> = ({ type, onClick }) => {
-	const css = clsx(
+	const css = cx(
 		'text-center leading-8 shrink-0 w-[46px] h-8 text-gray-200 hover:text-white transition',
 		{
 			'hover:bg-white/25': type !== 'close',

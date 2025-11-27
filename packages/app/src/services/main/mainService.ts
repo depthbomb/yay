@@ -101,7 +101,7 @@ export class MainService {
 		});
 
 		this.ipc.registerHandler('main<-open-app-data', async () => {
-			const path = app.getPath('userData')
+			const path = app.getPath('userData');
 
 			this.logger.debug('Opening application data folder', { path });
 

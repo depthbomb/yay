@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cx } from 'cva';
 import { IconButton } from './IconButton';
 import { SeasonalLogo } from './SeasonalLogo';
 import { mdiCog, mdiFolderOpen } from '@mdi/js';
@@ -8,7 +8,7 @@ export const AppMasthead = () => {
 	const openDownloadDir = useThrottle(() => window.ipc.invoke('main<-open-download-dir'), 2_500);
 	const holdingAlt      = useModifierKey('Alt');
 
-	const headerCss = clsx(
+	const headerCss = cx(
 		'pt-3 px-3 w-full flex items-center shrink-0',
 		{
 			'draggable': holdingAlt

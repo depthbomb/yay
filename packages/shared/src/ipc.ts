@@ -104,17 +104,13 @@ export interface IIpcContract {
 		return: boolean;
 	}
 	//
-	'global-menu<-enable': {
-		args: [];
+	'global-menu<-download-from-clipboard': {
+		args: [audio: boolean];
 		return: void;
 	}
-	'global-menu<-disable': {
+	'global-menu<-open-download-dir': {
 		args: [];
 		return: void;
-	}
-	'global-menu<-toggle': {
-		args: [];
-		return: boolean;
 	}
 	//
 	'updater<-get-latest-release': {
