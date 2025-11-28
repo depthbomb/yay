@@ -43,10 +43,7 @@ export const AdvancedTab = () => {
 
 	return (
 		<div className="flex flex-col space-y-6">
-			<div className="flex flex-col space-y-1.5">
-				<Switch label="Hardware acceleration" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
-				<p className="text-xs">Requires an app restart</p>
-			</div>
+			<Switch label="Hardware acceleration" subtitle="Requires an app restart" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
 			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Actions</p>

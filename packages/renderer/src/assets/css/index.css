@@ -55,7 +55,7 @@
 	* Fonts
 	*/
 	--font-display: 'Momo Trust Display', sans-serif;
-	--font-os: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--font-os: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
 	--default-font-family: 'Momo Trust Sans', sans-serif;
 	--default-mono-font-family: 'Monaspace Neon', monospace;
 
