@@ -79,7 +79,7 @@ export class UpdaterService implements IBootstrappable {
 				this.latestChangelog = release.body_html!;
 				this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
-				this.window.emitAll('updater->outdated', { latestRelease: (release as Release) });
+				this.window.emitAll('updater->outdated', { latestRelease: release });
 
 				if (
 					this.settings.get(ESettingsKey.EnableNewReleaseToast, true) &&
@@ -130,7 +130,7 @@ export class UpdaterService implements IBootstrappable {
 			return;
 		}
 
-		const onProgress = async (progress: number) => {
+		const onProgress = (progress: number) => {
 			this.window.emit('updater', 'updater->update-step', { message: `Downloading installer... (${progress}%)` });
 		}
 

@@ -104,7 +104,7 @@ export class YtdlpService implements IBootstrappable {
 
 		const cookiesFilePath = this.settings.get<Nullable<string>>(ESettingsKey.CookiesFilePath, null);
 		if (cookiesFilePath) {
-			ytdlpArgs.push('--cookies', cookiesFilePath!);
+			ytdlpArgs.push('--cookies', cookiesFilePath);
 		}
 
 		if (this.settings.get(ESettingsKey.SkipYoutubePlaylists)) {
@@ -121,8 +121,8 @@ export class YtdlpService implements IBootstrappable {
 		this.logger.debug('Spawning yt-dlp process', { args: ytdlpArgs });
 
 		this.proc = spawn(ytDlpPath, ytdlpArgs);
-		this.proc.stdout!.on('data', data => {
-			const line = data.toString().trim() as string;
+		this.proc.stdout!.on('data', (data: Buffer) => {
+			const line = data.toString().trim();
 			emitLog(line);
 
 			const percentMatch = line.match(percentPattern);
@@ -134,8 +134,8 @@ export class YtdlpService implements IBootstrappable {
 				}
 			}
 		});
-		this.proc.stderr!.on('data', data => {
-			const line = data.toString().trim() as string;
+		this.proc.stderr!.on('data', (data: Buffer) => {
+			const line = data.toString().trim();
 			emitLog(line);
 		});
 		this.proc.once('close', async code => {
@@ -200,8 +200,8 @@ export class YtdlpService implements IBootstrappable {
 		let wasUpdated    = false;
 		let latestVersion = '';
 
-		proc.stdout!.on('data', data => {
-			const line = data.toString().trim() as string;;
+		proc.stdout.on('data', (data: Buffer) => {
+			const line = data.toString().trim();
 			this.logger.trace(`yt-dlp -U: ${line}`);
 
 			wasUpdated = !line.includes('is up to date');

@@ -31,7 +31,7 @@ export class RestService implements IBootstrappable {
 
 		this.hono = new Hono();
 		this.hono.get('/ping', c => c.text('PONG'));
-		this.hono.post('/download', async c => {
+		this.hono.post('/download', c => {
 			const url = c.req.query('url');
 			if (!url) {
 				return c.text('Missing `url` search parameter', 400);

@@ -103,7 +103,7 @@ export class SetupService implements IBootstrappable {
 					preload: PRELOAD_PATH,
 				}
 			},
-			onReadyToShow: async () => {
+			onReadyToShow: () => {
 				const hideSetupWindow =  this.settings.get<boolean>(ESettingsKey.HideSetupWindow);
 				if (!hideSetupWindow || this.cli.flags.updateBinaries) {
 					this.setupWindow!.show();
@@ -338,7 +338,7 @@ export class SetupService implements IBootstrappable {
 
 		let output = '';
 		const proc = spawn(name, args);
-		proc.stdout.on('data', data => output += data.toString());
+		proc.stdout.on('data', (data: Buffer) => output += data.toString());
 		proc.once('error', err => {
 			this.logger.error('Error spawning process for binary test', { err });
 			resolve(false);

@@ -11,7 +11,7 @@ export class StoreReader {
 			const json = JSON.parse(data);
 
 			return json;
-		} catch (err: unknown) {
+		} catch {
 			return {} as T;
 		}
 	}
@@ -22,7 +22,7 @@ export class StoreReader {
 			const json = parse(data);
 
 			return json as T;
-		} catch (err: unknown) {
+		} catch {
 			return {} as T;
 		}
 	}
