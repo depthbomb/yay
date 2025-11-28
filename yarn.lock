@@ -709,17 +709,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/noto-sans-mono@npm:^5.2.10":
-  version: 5.2.10
-  resolution: "@fontsource-variable/noto-sans-mono@npm:5.2.10"
-  checksum: 10/40e7bbb5cde38fad2238ab21d9547b2e070ed588de43d20ba277eefd2c122118c4ecc30c9c5bba07f93aba9d71884ea3d78b9f2019eed6a9ce3143a31fc76d26
+"@fontsource/momo-trust-display@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "@fontsource/momo-trust-display@npm:5.2.1"
+  checksum: 10/a49270cc1ecdc8928f1342a4b97dde8176bbde50d3c86a1eefe4a5db70fbccf1bda95d08894c9d3ccbd7a102f603bc9b606e9d8e4cae019179c6492f5eeccf9d
   languageName: node
   linkType: hard
 
-"@fontsource-variable/noto-sans@npm:^5.2.10":
-  version: 5.2.10
-  resolution: "@fontsource-variable/noto-sans@npm:5.2.10"
-  checksum: 10/67369e6d05c4420a7887251e569276487958e66150c1ea6d8c7a5df88c8470cc9ee56394fd959e9b4b5c02d6dbab642a6958cbf4a1682825623dbd3d45b7c11a
+"@fontsource/momo-trust-sans@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "@fontsource/momo-trust-sans@npm:5.2.2"
+  checksum: 10/089e5a9cb326009f3d8f9a3a35268a6695e005f5e7a81696122fe8f2a817f3c85c744453ab00a2ac78dbdf6afc1800647d76d220f8d43cc9d278d4ed7e5e596f
+  languageName: node
+  linkType: hard
+
+"@fontsource/monaspace-neon@npm:^5.2.5":
+  version: 5.2.5
+  resolution: "@fontsource/monaspace-neon@npm:5.2.5"
+  checksum: 10/bec9fa5367a353b80cae93193981d71d6fc87b9faf50527151413c772641f82d61ee40979e7bd48c6bc8fe762a2bd3ab906fbe00fd694834b677bb2ae5aa37f6
   languageName: node
   linkType: hard
 
@@ -7780,8 +7787,9 @@ __metadata:
   resolution: "renderer@workspace:packages/renderer"
   dependencies:
     "@eslint/js": "npm:^9.39.1"
-    "@fontsource-variable/noto-sans": "npm:^5.2.10"
-    "@fontsource-variable/noto-sans-mono": "npm:^5.2.10"
+    "@fontsource/momo-trust-display": "npm:^5.2.1"
+    "@fontsource/momo-trust-sans": "npm:^5.2.2"
+    "@fontsource/monaspace-neon": "npm:^5.2.5"
     "@mdi/js": "npm:^7.4.47"
     "@mdi/react": "npm:^1.6.1"
     "@tailwindcss/typography": "npm:^0.5.19"

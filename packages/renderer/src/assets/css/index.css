@@ -1,5 +1,12 @@
-@import '@fontsource-variable/noto-sans';
-@import '@fontsource-variable/noto-sans-mono';
+@import '@fontsource/momo-trust-display';
+@import '@fontsource/momo-trust-sans/200.css';
+@import '@fontsource/momo-trust-sans/300.css';
+@import '@fontsource/momo-trust-sans/400.css';
+@import '@fontsource/momo-trust-sans/500.css';
+@import '@fontsource/momo-trust-sans/600.css';
+@import '@fontsource/momo-trust-sans/700.css';
+@import '@fontsource/momo-trust-sans/800.css';
+@import '@fontsource/monaspace-neon';
 @import 'tailwindcss';
 
 @plugin '@tailwindcss/typography';
@@ -47,8 +54,10 @@
 	/**
 	* Fonts
 	*/
-	--default-font-family: 'Noto Sans Variable';
-	--default-mono-font-family: 'Noto Sans Mono Variable';
+	--font-display: 'Momo Trust Display', sans-serif;
+	--font-os: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+	--default-font-family: 'Momo Trust Sans', sans-serif;
+	--default-mono-font-family: 'Monaspace Neon', monospace;
 
 	/**
 	* Animations

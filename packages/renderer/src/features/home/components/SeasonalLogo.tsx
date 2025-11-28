@@ -53,7 +53,7 @@ export const SeasonalLogo = forwardRef<HTMLImageElement, Omit<ImgHTMLAttributes<
 			) : (
 				<img ref={ref} src={logoSrc} className={className} draggable="false" width="28" height="28" {...props}/>
 			)}
-			<span className="font-light text-sm">Yet Another YouTube Downloader</span>
+			<span className="font-display text-sm">Yet Another YouTube Downloader</span>
 		</div>
 	)
 });
