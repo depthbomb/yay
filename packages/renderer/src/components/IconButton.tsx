@@ -16,8 +16,11 @@ const iconButton = cva({
 	variants: {
 		disabled: {
 			false: 'text-gray-300 hover:text-white hover:bg-gray-600 active:bg-gray-700',
-			true: 'text-gray-500 cursor-not-allowed!'
+			true: 'text-gray-500 cursor-not-allowed'
 		}
+	},
+	defaultVariants: {
+		disabled: false
 	}
 });
 
