@@ -1,5 +1,7 @@
-import type { Nullable } from '@depthbomb/node-common';
 import type { IIpcEvents, IIpcContract, IpcChannel } from '.';
+import type { Maybe, Nullable, Awaitable } from '@depthbomb/node-common';
+
+export { Maybe, Nullable, Awaitable };
 
 export type VersionsApi = typeof process.versions;
 

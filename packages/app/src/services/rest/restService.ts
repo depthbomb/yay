@@ -6,8 +6,8 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
 import { FeatureFlagsService } from '~/services/featureFlags';
+import type { Maybe } from 'shared';
 import type { IBootstrappable } from '~/common';
-import type { Maybe } from '@depthbomb/node-common';
 import type { ServerType } from '@hono/node-server';
 
 @injectable()
