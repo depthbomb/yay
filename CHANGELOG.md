@@ -1,8 +1,11 @@
 # 1.34.0
 
-- Added an experimental local REST server to allow interacting with the application via web requests
+- Added an experimental local REST server to allow interacting with the application via HTTP requests
   - This feature is enabled by default and can be disabled via turning the feature flag off and restarting the application
 - Fixed some bold fonts being a little blurry
+- Fixed an apparent longstanding issue where monospaced fonts weren't using the correct font
+- Fixed the styling of icon buttons
+- Removed functionality related to legacy settings files and deprecated settings
 
 # 1.33.0
 

@@ -49,8 +49,6 @@ export class SetupService implements IBootstrappable {
 	private async performSetupActions() {
 		await this.showWindow();
 		await this.setDefaultSettings();
-		await this.settings.migrateLegacySettings();
-		await this.settings.removeDeprecatedSettings();
 		await this.checkIfOnline();
 
 		const ok = await this.checkForBinaries();
@@ -130,7 +128,7 @@ export class SetupService implements IBootstrappable {
 				this.setupWindow!.close();
 				clearInterval(interval);
 			}
-		}, 250);
+		}, 100);
 
 		return promise;
 	}

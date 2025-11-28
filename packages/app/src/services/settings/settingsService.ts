@@ -6,10 +6,7 @@ import { safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';
-import { LoggingService } from '~/services/logging';
-import { unlink, readFile } from 'node:fs/promises';
 import { inject, injectable } from '@needle-di/core';
-import { fileExists } from '@depthbomb/node-common/fs';
 import type { Maybe } from 'shared';
 import type { Settings } from './types';
 import type { Store } from '~/services/store';
@@ -26,19 +23,14 @@ export class SettingsService implements IBootstrappable {
 
 	private readonly internalStore: Store<Settings>;
 	private readonly settingsFilePath: string;
-	private readonly legacySettingsFilePath: string;
-	private readonly deprecatedSettings: string[];
 
 	public constructor(
-		private readonly logger = inject(LoggingService),
 		private readonly ipc    = inject(IpcService),
 		private readonly window = inject(WindowService),
 		private readonly store  = inject(StoreService),
 	) {
-		this.settingsFilePath       = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
-		this.legacySettingsFilePath = join(app.getPath('userData'), `settings.${import.meta.env.MODE}.json`);
-		this.internalStore          = this.store.createStore<Settings>(this.settingsFilePath);
-		this.deprecatedSettings     = ['show-window-frame', 'show-hint-footer'];
+		this.settingsFilePath = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
+		this.internalStore    = this.store.createStore<Settings>(this.settingsFilePath);
 	}
 
 	public async bootstrap() {
@@ -107,35 +99,6 @@ export class SettingsService implements IBootstrappable {
 
 	public async reset() {
 		return this.internalStore.reset();
-	}
-
-	public async migrateLegacySettings() {
-		const hasLegacySettings = await fileExists(this.legacySettingsFilePath);
-		if (hasLegacySettings) {
-			this.logger.info('Found legacy settings file, migrating', { legacySettingsFilePath: this.legacySettingsFilePath });
-
-			const json = await readFile(this.legacySettingsFilePath, 'utf8');
-			const data = JSON.parse(json);
-			await this.internalStore.apply(data);
-			await unlink(this.legacySettingsFilePath);
-		}
-	}
-
-	public async removeDeprecatedSettings() {
-		let shouldSave = false;
-		for (const key of this.deprecatedSettings) {
-			if (key in this.internalStore.store) {
-				this.logger.info('Deleting deprecated settings value', { key });
-
-				delete this.internalStore.store[key as ESettingsKey];
-
-				shouldSave = true;
-			}
-		}
-
-		if (shouldSave) {
-			await this.internalStore.save();
-		}
 	}
 
 	private encryptValue(data: unknown) {
