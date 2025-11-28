@@ -87,7 +87,6 @@ const Trigger: FC<TabsTriggerProps> = ({ value, children, className, ...rest }) 
 
 	return (
 		<button
-			aria-selected={isActive}
 			onClick={() => ctx.setValue(value)}
 			className={computedClassName}
 			{...rest}

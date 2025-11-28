@@ -25,7 +25,7 @@ const TabButton: FC<TabButtonProps> = ({ title, icon, value }) => {
 			value={value}
 			className={(isActive) =>
 				cx(
-					'flex items-center space-x-2 py-1 px-3 text-sm transition-all',
+					'flex items-center space-x-2 py-1 px-3 font-display text-sm transition-all',
 					isActive ? 'bg-brand-600 text-white rounded' : 'text-gray-300 hover:text-white'
 				)
 			}

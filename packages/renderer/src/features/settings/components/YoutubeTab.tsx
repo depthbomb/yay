@@ -3,6 +3,7 @@ import { ESettingsKey } from 'shared';
 import { Anchor } from '~/components/Anchor';
 import { TextInput } from '~/components/Input';
 import { SwitchV2 } from '~/components/SwitchV2';
+import { SectionSeparator } from './SectionSeparator';
 import type { Nullable } from 'shared';
 
 export const YoutubeTab = () => {
@@ -19,6 +20,7 @@ export const YoutubeTab = () => {
 					{cookiesFilePath && <Anchor onClick={() => window.ipc.invoke('yt-dlp<-remove-cookies-file')} className="text-xs cursor-pointer">Remove</Anchor>}
 				</div>
 			</div>
+			<SectionSeparator/>
 			<SwitchV2 label="Don't download playlists" checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
 		</div>
 	);

@@ -3,6 +3,7 @@ import { ESettingsKey } from 'shared';
 import { Anchor } from '~/components/Anchor';
 import { SwitchV2 } from '~/components/SwitchV2';
 import { KeyCombo } from '~/components/KeyCombo';
+import { SectionSeparator } from './SectionSeparator';
 import { Select, TextInput } from '~/components/Input';
 import type { ChangeEvent } from 'react';
 
@@ -23,11 +24,13 @@ export const DownloadsTab = () => {
 				<TextInput value={downloadDir} onClick={() => window.ipc.invoke('main<-pick-download-dir')} type="text" readOnly className="w-full" size="sm"/>
 				<Anchor onClick={() => window.ipc.invoke('main<-pick-download-dir')} className="text-xs cursor-pointer">Change...</Anchor>
 			</div>
+			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Output name template</p>
 				<TextInput value={downloadNameTemplate} onChange={onDownloadNameTemplateFieldChanged} type="text" className="w-full" size="sm"/>
 				<p className="text-xs">Click <Anchor href="https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#output-template" target="_blank">here</Anchor> to learn more about output name templates</p>
 			</div>
+			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Default <KeyCombo keys={['enter']}/> action</p>
 				<Select value={defaultDownloadAction} onChange={onDefaultDownloadActionSelectionChanged} className="w-full" size="sm">
@@ -35,6 +38,7 @@ export const DownloadsTab = () => {
 					<option value="audio">Download audio</option>
 				</Select>
 			</div>
+			<SectionSeparator/>
 			<SwitchV2 label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
 			<SwitchV2 label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
 		</div>

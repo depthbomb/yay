@@ -4,6 +4,7 @@ import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { SwitchV2 } from '~/components/SwitchV2';
 import { PushButton } from '~/components/PushButton';
+import { SectionSeparator } from './SectionSeparator';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
@@ -41,11 +42,12 @@ export const AdvancedTab = () => {
 	const [disableHardwareAcceleration, setDisableHardwareAcceleration] = useSetting<boolean>(ESettingsKey.DisableHardwareAcceleration, { reactive: false });
 
 	return (
-		<div className="flex flex-col items-start space-y-6">
-			<div className="flex flex-col items-start space-y-1.5">
+		<div className="flex flex-col space-y-6">
+			<div className="flex flex-col space-y-1.5">
 				<SwitchV2 label="Hardware acceleration" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
 				<p className="text-xs">Requires an app restart</p>
 			</div>
+			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Actions</p>
 				<PushButton onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
