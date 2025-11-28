@@ -1,8 +1,8 @@
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Anchor } from '~/components/Anchor';
+import { Switch } from '~/components/Switch';
 import { TextInput } from '~/components/Input';
-import { SwitchV2 } from '~/components/SwitchV2';
 import { SectionSeparator } from './SectionSeparator';
 import type { Nullable } from 'shared';
 
@@ -21,7 +21,7 @@ export const YoutubeTab = () => {
 				</div>
 			</div>
 			<SectionSeparator/>
-			<SwitchV2 label="Don't download playlists" checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
+			<Switch label="Don't download playlists" checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
 		</div>
 	);
 };

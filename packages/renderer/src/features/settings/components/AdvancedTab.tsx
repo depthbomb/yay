@@ -2,7 +2,7 @@ import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
-import { SwitchV2 } from '~/components/SwitchV2';
+import { Switch } from '~/components/Switch';
 import { PushButton } from '~/components/PushButton';
 import { SectionSeparator } from './SectionSeparator';
 import { workingAtom, updatingAtom } from '~/atoms/app';
@@ -44,7 +44,7 @@ export const AdvancedTab = () => {
 	return (
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col space-y-1.5">
-				<SwitchV2 label="Hardware acceleration" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
+				<Switch label="Hardware acceleration" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
 				<p className="text-xs">Requires an app restart</p>
 			</div>
 			<SectionSeparator/>

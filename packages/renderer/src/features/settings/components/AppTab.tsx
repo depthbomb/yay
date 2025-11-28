@@ -1,8 +1,8 @@
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Button } from '~/components/Button';
+import { Switch } from '~/components/Switch';
 import { mdiMicrosoftWindows } from '@mdi/js';
-import { SwitchV2 } from '~/components/SwitchV2';
 import { KeyCombo } from '~/components/KeyCombo';
 import { SectionSeparator } from './SectionSeparator';
 
@@ -15,11 +15,11 @@ export const AppTab = () => {
 
 	return (
 		<div className="flex flex-col items space-y-6">
-			<SwitchV2 label="Launch on startup" checked={autoStartEnabled} defaultChecked={autoStartEnabled} onCheckedChange={setAutoStartEnabled}/>
-			<SwitchV2 label="Update yt-dlp on startup" checked={enableYtdlpUpdateOnStartup} defaultChecked={enableYtdlpUpdateOnStartup} onCheckedChange={setEnableYtdlpUpdateOnStartup}/>
-			<SwitchV2 label="Hide setup window on startup" checked={hideSetupWindow} defaultChecked={hideSetupWindow} onCheckedChange={setHideSetupWindow}/>
-			<SwitchV2 label="Notify when an update is available" checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
-			<SwitchV2 label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
+			<Switch label="Launch on startup" checked={autoStartEnabled} defaultChecked={autoStartEnabled} onCheckedChange={setAutoStartEnabled}/>
+			<Switch label="Update yt-dlp on startup" checked={enableYtdlpUpdateOnStartup} defaultChecked={enableYtdlpUpdateOnStartup} onCheckedChange={setEnableYtdlpUpdateOnStartup}/>
+			<Switch label="Hide setup window on startup" checked={hideSetupWindow} defaultChecked={hideSetupWindow} onCheckedChange={setHideSetupWindow}/>
+			<Switch label="Notify when an update is available" checked={enableUpdateNotifications} defaultChecked={enableUpdateNotifications} onCheckedChange={setEnableUpdateNotifications}/>
+			<Switch label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
 			<SectionSeparator/>
 			<div className="space-x-2 flex items-center">
 				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>

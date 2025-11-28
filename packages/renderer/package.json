@@ -16,6 +16,8 @@
 		"@fontsource/monaspace-neon": "^5.2.5",
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
+		"@radix-ui/react-switch": "^1.2.6",
+		"@radix-ui/react-tabs": "^1.1.13",
 		"cva": "^1.0.0-beta.4",
 		"dompurify": "3.3.0",
 		"jotai": "^2.15.1",

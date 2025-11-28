@@ -1,7 +1,7 @@
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Anchor } from '~/components/Anchor';
-import { SwitchV2 } from '~/components/SwitchV2';
+import { Switch } from '~/components/Switch';
 import { KeyCombo } from '~/components/KeyCombo';
 import { SectionSeparator } from './SectionSeparator';
 import { Select, TextInput } from '~/components/Input';
@@ -39,8 +39,8 @@ export const DownloadsTab = () => {
 				</Select>
 			</div>
 			<SectionSeparator/>
-			<SwitchV2 label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
-			<SwitchV2 label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
+			<Switch label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
+			<Switch label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
 		</div>
 	);
 };

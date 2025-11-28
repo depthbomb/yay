@@ -4,29 +4,26 @@ import { mdiDownload } from '@mdi/js';
 import { HTML } from '~/components/HTML';
 import { useIpc, useTitle } from '~/hooks';
 import { useState, useEffect } from 'react';
-import { TabsV2 } from '~/components/TabsV2';
 import { Spinner } from '~/components/SpinnerV2';
 import { PushButton } from '~/components/PushButton';
+import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
 import type { FC } from 'react';
 import type { Nullable } from 'shared';
 import type { Endpoints } from '@octokit/types';
-import type { TabsTriggerProps } from '~/components/TabsV2';
+import type { TabsTriggerProps } from '@radix-ui/react-tabs';
 
 type TabButtonProps = TabsTriggerProps;
 
-const TabButton: FC<TabButtonProps> = ({ value, ...props }) => {
+const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 	return (
-		<TabsV2.Trigger value={value} className={
-			isActive => cx(
-				'py-px px-3',
-				'text-sm text-gray-300 hover:text-white',
-				'border-2 border-transparent',
-				'transition-all',
-				isActive ? 'text-white! bg-brand-600 rounded' : 'bg-transparent hover:border-b-brand-600'
-			)
-		}>
+		<Trigger value={value} className={cx(
+			'py-px px-3 font-display text-sm border-2 border-transparent transition-all',
+			'data-[state=inactive]:text-gray-300 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-b-brand-600',
+			'data-[state=active]:text-white data-[state=active]:bg-brand-600 data-[state=active]:rounded',
+			className,
+		)}>
 			{props.children}
-		</TabsV2.Trigger>
+		</Trigger>
 	);
 };
 
@@ -68,22 +65,22 @@ export const UpdaterPage = () => {
 	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? 'Updating...')), []);
 
 	return (release ? (
-		<TabsV2.Root defaultValue="changelog" className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">
-			<h1 className="text-2xl">yay version <span className="font-mono">{release.tag_name}</span> is available</h1>
-			<TabsV2.List className="space-x-1.5 flex shrink-0">
+		<Root defaultValue="changelog" className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">
+			<h1 className="font-display text-2xl">yay version <span className="font-mono">{release.tag_name}</span> is available</h1>
+			<List className="space-x-1.5 flex shrink-0">
 				<TabButton value="changelog">Changelog</TabButton>
 				<TabButton value="commits">Commits since your version</TabButton>
-			</TabsV2.List>
+			</List>
 			<div className="w-full overflow-y-auto">
 				<aside role="alert" className="py-1 px-2 text-sm text-yellow-50 bg-yellow-900/33 rounded border border-yellow-500">
 					<p>Releases include new features, bug fixes, and security updates, and should be installed as soon as you receive them.</p>
 				</aside>
-				<TabsV2.Content value="changelog">
+				<Content value="changelog">
 					{changelog !== '' ? (<HTML html={changelog}/>) : (
 						<p className="py-3 text-2xl font-light">No changelog available.</p>
 					)}
-				</TabsV2.Content>
-				<TabsV2.Content value="commits">
+				</Content>
+				<Content value="commits">
 					<div className="flex flex-col">
 						{commits.map(c => (
 							<a key={c.sha} href={c.html_url} target="_blank" className="p-3 space-x-2 flex items-center bg-gray-800 odd:bg-gray-900 hover:bg-gray-700 active:bg-gray-950 transition-colors">
@@ -93,7 +90,7 @@ export const UpdaterPage = () => {
 							</a>
 						))}
 					</div>
-				</TabsV2.Content>
+				</Content>
 			</div>
 			<div className="mt-auto flex items-center justify-between">
 				{updating ? (
@@ -111,7 +108,7 @@ export const UpdaterPage = () => {
 					</PushButton>
 				)}
 			</div>
-		</TabsV2.Root>
+		</Root>
 	) : (
 		<div className="space-y-3 h-screen flex flex-col items-center justify-center">
 			<Spinner className="size-18"/>
