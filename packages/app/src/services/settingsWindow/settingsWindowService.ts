@@ -20,10 +20,10 @@ export class SettingsWindowService implements IBootstrappable {
 			externalUrlRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
-				minWidth: 600,
-				width: 600,
-				minHeight: 500,
-				height: 500,
+				minWidth: 610,
+				width: 610,
+				minHeight: 520,
+				height: 520,
 				backgroundColor: '#09090b',
 				roundedCorners: true,
 				webPreferences: {
