@@ -1,3 +1,11 @@
+# 1.33.0
+
+- Updated fonts
+- Updated settings window
+  - Added horizontal rules between subsections
+  - Slightly increased window size
+- Releases henceforth will no longer include non-US English locales which weren't used anyways, saving more than 40MB of space
+
 # 1.32.0
 
 - Overhauled the global menu to now use a web-based UI
