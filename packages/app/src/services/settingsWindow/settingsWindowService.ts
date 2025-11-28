@@ -50,7 +50,7 @@ export class SettingsWindowService implements IBootstrappable {
 	public async bootstrap() {
 		this.ipc.registerHandler('settings<-show-ui', () => this.show());
 
-		this.lifecycle.events.on('shutdownRequested', () => this.settingsWindow.close());
+		this.lifecycle.events.on('shutdown', () => this.settingsWindow.close());
 	}
 
 	public show() {

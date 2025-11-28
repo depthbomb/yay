@@ -52,6 +52,6 @@ export class RestService implements IBootstrappable {
 			port: REST_SERVER_PORT
 		});
 
-		this.lifecycle.events.on('shutdownRequested', () => this.server?.close());
+		this.lifecycle.events.on('shutdown', () => this.server?.close());
 	}
 }
