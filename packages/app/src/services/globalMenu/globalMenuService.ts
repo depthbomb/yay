@@ -33,6 +33,7 @@ export class GlobalMenuService implements IBootstrappable {
 				width: 210,
 				height: 117,
 				resizable: false,
+				closable: false,
 				frame: false,
 				skipTaskbar: !import.meta.env.DEV,
 				alwaysOnTop: true,
@@ -45,14 +46,6 @@ export class GlobalMenuService implements IBootstrappable {
 				}
 			}
 		});
-
-		this.globalMenuWindow.on('blur', () => this.hideMenu());
-		this.globalMenuWindow.on('close', e => {
-			if (!this.lifecycle.shutdownInProgress) {
-				e.preventDefault();
-				this.globalMenuWindow.hide();
-			}
-		});
 	}
 
 	public async bootstrap() {
@@ -61,6 +54,14 @@ export class GlobalMenuService implements IBootstrappable {
 		});
 		this.ipc.registerHandler('global-menu<-download-from-clipboard', async (_, audio) => {
 			await this.tryDownloadFromClipboard(audio);
+		});
+
+		this.globalMenuWindow.on('blur', () => this.hideMenu());
+		this.globalMenuWindow.on('close', e => {
+			if (!this.lifecycle.shutdownInProgress) {
+				e.preventDefault();
+				this.globalMenuWindow.hide();
+			}
 		});
 
 		const callback = () => this.showMenu();
@@ -76,6 +77,11 @@ export class GlobalMenuService implements IBootstrappable {
 					globalShortcut.unregister(accelerator);
 				}
 			}
+		});
+
+		this.lifecycle.events.on('shutdown', () => {
+			this.globalMenuWindow.closable = true;
+			this.globalMenuWindow.close();
 		});
 	}
 
