@@ -19,7 +19,7 @@ export class LoggingService {
 					shipToLogger: ({ logLevel, messages, data, hasData })  => {
 						console.log(
 							`[${new Date().toISOString()}]`,
-							`[${logLevel.toUpperCase()}]\t`,
+							`[${logLevel.toUpperCase()}]`,
 							...messages,
 							hasData ? data : ''
 						)
