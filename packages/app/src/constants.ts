@@ -26,3 +26,5 @@ export const EXTERNAL_URL_RULES = [
 	(url: URL) => url.host === 'github.com',
 	(url: URL) => url.host.endsWith('electronjs.org'),
 ];
+
+export const REST_SERVER_PORT = 9876 as const;

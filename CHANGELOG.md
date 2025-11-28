@@ -1,3 +1,9 @@
+# 1.34.0
+
+- Added an experimental local REST server to allow interacting with the application via web requests
+  - This feature is enabled by default and can be disabled via turning the feature flag off and restarting the application
+- Fixed some bold fonts being a little blurry
+
 # 1.33.0
 
 - Updated fonts

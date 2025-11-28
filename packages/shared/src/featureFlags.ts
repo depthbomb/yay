@@ -8,4 +8,9 @@ export const FeatureFlags = {
 		description: 'Enable seasonal effects',
 		default: true,
 	},
+	RESTServer: {
+		uuid: 'f167c95c-7d2d-4674-8dbd-564e57467faa',
+		description: 'Enable local REST server',
+		default: true,
+	},
 } as const;

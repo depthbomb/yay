@@ -739,6 +739,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hono/node-server@npm:^1.19.6":
+  version: 1.19.6
+  resolution: "@hono/node-server@npm:1.19.6"
+  peerDependencies:
+    hono: ^4
+  checksum: 10/038955759eeacc7b13649d4f513ff80ac6edd3baf2d8d8b68b054fa36b346ba04f3adc0ce4262754923e3c2a03c0a18ef0161d93e5fff0453b19a4be302fc382
+  languageName: node
+  linkType: hard
+
 "@humanfs/core@npm:^0.19.1":
   version: 0.19.1
   resolution: "@humanfs/core@npm:0.19.1"
@@ -6355,6 +6364,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hono@npm:^4.10.7":
+  version: 4.10.7
+  resolution: "hono@npm:4.10.7"
+  checksum: 10/564be57c7e037ad1237b5451cee52b3d39d89fb7cefa00976ccb4650e1c4eeb37b928e87b85255b1595eb28f18e80ea5effdb1998b8464b742b434bee3e1dda7
+  languageName: node
+  linkType: hard
+
 "hookable@npm:^5.5.3":
   version: 5.5.3
   resolution: "hookable@npm:5.5.3"
@@ -8737,6 +8753,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "shared@workspace:packages/shared"
   dependencies:
+    "@depthbomb/node-common": "npm:1.2.0"
     "@swc/core": "npm:1.15.3"
     tsdown: "npm:^0.16.8"
     tslib: "npm:^2.8.1"
@@ -9782,6 +9799,7 @@ __metadata:
   dependencies:
     "@depthbomb/node-common": "npm:1.2.0"
     "@formatjs/fast-memoize": "npm:^2.2.7"
+    "@hono/node-server": "npm:^1.19.6"
     "@loglayer/transport-log-file-rotation": "npm:^2.1.13"
     "@needle-di/core": "npm:1.1.0"
     "@swc-node/sourcemap-support": "npm:^0.6.1"
@@ -9794,6 +9812,7 @@ __metadata:
     cross-env: "npm:^10.1.0"
     electron: "npm:39.2.4"
     eslint: "npm:^9.39.1"
+    hono: "npm:^4.10.7"
     loglayer: "npm:^8.1.0"
     mitt: "npm:^3.0.1"
     nativelib: "workspace:*"

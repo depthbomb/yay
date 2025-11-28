@@ -15,9 +15,11 @@
 	"dependencies": {
 		"@depthbomb/node-common": "1.2.0",
 		"@formatjs/fast-memoize": "^2.2.7",
+		"@hono/node-server": "^1.19.6",
 		"@loglayer/transport-log-file-rotation": "^2.1.13",
 		"@needle-di/core": "1.1.0",
 		"cockatiel": "^3.2.1",
+		"hono": "^4.10.7",
 		"loglayer": "^8.1.0",
 		"mitt": "^3.0.1",
 		"nativelib": "workspace:*",

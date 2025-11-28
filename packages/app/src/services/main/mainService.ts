@@ -1,6 +1,7 @@
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
+import { RestService } from '~/services/rest';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
@@ -37,6 +38,7 @@ export class MainService {
 		private readonly deepLinks      = inject(DeepLinksService),
 		private readonly mainWindow     = inject(MainWindowService),
 		private readonly settingsWindow = inject(SettingsWindowService),
+		private readonly rest           = inject(RestService),
 	) {}
 
 	public async boot() {
@@ -56,6 +58,7 @@ export class MainService {
 			this.settingsWindow.bootstrap(),
 			this.setup.bootstrap(),
 			this.updater.bootstrap(),
+			this.rest.bootstrap(),
 		]);
 
 		this.ipc.registerHandler('main<-show-message-box', async (e, options) => {

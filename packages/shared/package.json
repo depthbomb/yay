@@ -13,6 +13,9 @@
 		"build:p": "yarn gen:ipc && tsdown",
 		"gen:ipc": "ts-node scripts/generate-ipc-helper.ts"
 	},
+	"dependencies": {
+		"@depthbomb/node-common": "1.2.0"
+	},
 	"devDependencies": {
 		"@swc/core": "1.15.3",
 		"tsdown": "^0.16.8",
