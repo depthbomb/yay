@@ -11,9 +11,9 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@fontsource-variable/jetbrains-mono": "^5.2.8",
 		"@fontsource/momo-trust-display": "^5.2.1",
 		"@fontsource/momo-trust-sans": "^5.2.2",
-		"@fontsource/monaspace-neon": "^5.2.5",
 		"@mdi/js": "^7.4.47",
 		"@mdi/react": "^1.6.1",
 		"@radix-ui/react-switch": "^1.2.6",

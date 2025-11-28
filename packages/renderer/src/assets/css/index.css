@@ -1,7 +1,7 @@
 @import '@fontsource/momo-trust-display';
 @import '@fontsource/momo-trust-sans/400.css';
 @import '@fontsource/momo-trust-sans/600.css';
-@import '@fontsource/monaspace-neon';
+@import '@fontsource-variable/jetbrains-mono';
 @import 'tailwindcss';
 
 @plugin '@tailwindcss/typography';
@@ -51,8 +51,8 @@
 	*/
 	--font-display: 'Momo Trust Display', sans-serif;
 	--font-os: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-	--default-font-family: 'Momo Trust Sans', sans-serif;
-	--default-mono-font-family: 'Monaspace Neon', monospace;
+	--font-mono: 'JetBrains Mono Variable', monospace;
+	--font-sans: 'Momo Trust Sans', sans-serif;
 
 	/**
 	* Animations

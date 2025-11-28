@@ -709,6 +709,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource-variable/jetbrains-mono@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@fontsource-variable/jetbrains-mono@npm:5.2.8"
+  checksum: 10/c18676abf332e9d6ed2558a7c96756cad1af777054fdf66a7192e6f7dc52bcbdce51dfc6160ad79a21664d53d26787cbdaad180c193c42366a82efbd870c6dd7
+  languageName: node
+  linkType: hard
+
 "@fontsource/momo-trust-display@npm:^5.2.1":
   version: 5.2.1
   resolution: "@fontsource/momo-trust-display@npm:5.2.1"
@@ -720,13 +727,6 @@ __metadata:
   version: 5.2.2
   resolution: "@fontsource/momo-trust-sans@npm:5.2.2"
   checksum: 10/089e5a9cb326009f3d8f9a3a35268a6695e005f5e7a81696122fe8f2a817f3c85c744453ab00a2ac78dbdf6afc1800647d76d220f8d43cc9d278d4ed7e5e596f
-  languageName: node
-  linkType: hard
-
-"@fontsource/monaspace-neon@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource/monaspace-neon@npm:5.2.5"
-  checksum: 10/bec9fa5367a353b80cae93193981d71d6fc87b9faf50527151413c772641f82d61ee40979e7bd48c6bc8fe762a2bd3ab906fbe00fd694834b677bb2ae5aa37f6
   languageName: node
   linkType: hard
 
@@ -8103,9 +8103,9 @@ __metadata:
   resolution: "renderer@workspace:packages/renderer"
   dependencies:
     "@eslint/js": "npm:^9.39.1"
+    "@fontsource-variable/jetbrains-mono": "npm:^5.2.8"
     "@fontsource/momo-trust-display": "npm:^5.2.1"
     "@fontsource/momo-trust-sans": "npm:^5.2.2"
-    "@fontsource/monaspace-neon": "npm:^5.2.5"
     "@mdi/js": "npm:^7.4.47"
     "@mdi/react": "npm:^1.6.1"
     "@radix-ui/react-switch": "npm:^1.2.6"
