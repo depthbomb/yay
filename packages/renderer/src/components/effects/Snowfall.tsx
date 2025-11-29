@@ -12,16 +12,16 @@ type Snowflake = {
 	trail: { x: number; y: number }[];
 };
 
-type SnowfallProps = {
+export interface ISnowfallProps {
 	snowflakeCount?: number;
 	fallSpeed?: number;
 	maxSize?: number;
 	minSize?: number;
 	opacity?: number;
 	trailLength?: number;
-};
+}
 
-const Snowfall: FC<SnowfallProps> = ({
+const Snowfall: FC<ISnowfallProps> = ({
 	snowflakeCount = 50,
 	fallSpeed = 25,
 	maxSize = 3,
