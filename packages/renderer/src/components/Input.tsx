@@ -1,5 +1,5 @@
-import { cva, compose } from 'cva';
 import { forwardRef } from 'react';
+import { cva, compose } from 'cva';
 import type { VariantProps } from 'cva';
 import type { InputHTMLAttributes, SelectHTMLAttributes } from 'react';
 

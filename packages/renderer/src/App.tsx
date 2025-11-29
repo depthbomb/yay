@@ -5,7 +5,7 @@ import { useWindowsAccent } from './hooks';
 import { HomePage } from './features/home/HomePage';
 import { SetupPage } from './features/setup/SetupPage';
 import { Route, Routes, HashRouter } from 'react-router';
-import type { ColorPalette } from './hooks/useWindowsAccent';
+import type { ColorPalette } from './hooks/use-windows-accent';
 
 const SettingsPage   = lazy(() => import('./features/settings/SettingsPage'));
 const UpdaterPage    = lazy(() => import('./features/updater/UpdaterPage'));
