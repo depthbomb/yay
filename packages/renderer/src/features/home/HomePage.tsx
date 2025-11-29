@@ -10,7 +10,7 @@ import { useRef, Activity, useEffect } from 'react';
 import Snowfall from '~/components/effects/Snowfall';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
-import { useIpc, useTitle, useKeyCombo, useNativeTextMenu, useFeatureFlags } from '~/hooks';
+import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isUrlValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -93,9 +93,9 @@ export const HomePage = () => {
 	useTitle('yay');
 	useNativeTextMenu();
 
-	useKeyCombo({ key: 'enter' }, trySubmitting);
-	useKeyCombo({ key: 'v', ctrl: true }, tryPasting);
-	useKeyCombo({ key: 'a', ctrl: true }, trySelectingInput);
+	useKeyPress({ key: 'Enter', onKeyPress: trySubmitting });
+	useKeyPress({ key: 'v', modifiers: { ctrl: true }, onKeyPress: tryPasting });
+	useKeyPress({ key: 'a', modifiers: { ctrl: true }, onKeyPress: trySelectingInput });
 
 	useEffect(() => {
 		onDownloadStarted(({ url }) => {
