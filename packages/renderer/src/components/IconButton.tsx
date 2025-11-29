@@ -1,7 +1,7 @@
 import { cva } from 'cva';
 import Icon from '@mdi/react';
+import { forwardRef } from 'react';
 import { TooltipV2 } from './TooltipV2';
-import { memo, forwardRef } from 'react';
 import type { VariantProps } from 'cva';
 import type { TooltipSide } from './TooltipV2';
 import type { ButtonHTMLAttributes } from 'react';
@@ -24,7 +24,7 @@ const iconButton = cva({
 	}
 });
 
-export const IconButton = memo(forwardRef<HTMLButtonElement, IIconButtonProps>(({ title, icon, tooltipSide, disabled, className, ...props }, ref) => {
+export const IconButton = forwardRef<HTMLButtonElement, IIconButtonProps>(({ title, icon, tooltipSide, disabled, className, ...props }, ref) => {
 	return (
 		<TooltipV2 content={title!} side={tooltipSide} showArrow={false}>
 			<button
@@ -38,4 +38,4 @@ export const IconButton = memo(forwardRef<HTMLButtonElement, IIconButtonProps>((
 			</button>
 		</TooltipV2>
 	);
-}));
+});
