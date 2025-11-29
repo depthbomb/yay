@@ -5287,13 +5287,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"diff@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "diff@npm:8.0.2"
-  checksum: 10/82a2120d3418f97822e17a6044ccd4b99a91e26e145e8698353673d7146bd2d092bbebb79c112aae7badc7b9c526f9098cbe342f96174feb6beabdd2587b3c42
-  languageName: node
-  linkType: hard
-
 "dir-compare@npm:^4.2.0":
   version: 4.2.0
   resolution: "dir-compare@npm:4.2.0"
@@ -8729,7 +8722,7 @@ __metadata:
   dependencies:
     "@depthbomb/node-common": "npm:1.2.0"
     "@swc/core": "npm:1.15.3"
-    tsdown: "npm:^0.17.0-beta.1"
+    tsdown: "npm:^0.17.0-beta.3"
     tslib: "npm:^2.8.1"
     typescript: "npm:^5.9.3"
   languageName: unknown
@@ -9214,13 +9207,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsdown@npm:^0.17.0-beta.1":
-  version: 0.17.0-beta.1
-  resolution: "tsdown@npm:0.17.0-beta.1"
+"tsdown@npm:^0.17.0-beta.3":
+  version: 0.17.0-beta.3
+  resolution: "tsdown@npm:0.17.0-beta.3"
   dependencies:
     ansis: "npm:^4.2.0"
     cac: "npm:^6.7.14"
-    diff: "npm:^8.0.2"
     empathic: "npm:^2.0.0"
     hookable: "npm:^5.5.3"
     obug: "npm:^2.1.1"
@@ -9254,7 +9246,7 @@ __metadata:
       optional: true
   bin:
     tsdown: dist/run.mjs
-  checksum: 10/bb629397375965dd73a9c686342ef6f2e5e162d49d3f571579c1c3bfd467fd6d63840f53c70d19a8138ef58dfbaf732bb4b7a7eb4c9658104efce259ca2c1514
+  checksum: 10/06fbf5a0dfd82f5cde149efb4e3ff931eed9518d6d00dae4fbe6d77c72dead7e493e2cd300f0136c6d6ccdd886ab23ae8592c64fac5b6a46d84bf859f6fa73f3
   languageName: node
   linkType: hard
 
