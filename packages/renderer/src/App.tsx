@@ -2,11 +2,11 @@ import './assets/css/index.css';
 import { typedEntries } from 'shared';
 import { lazy, useEffect } from 'react';
 import { useWindowsAccent } from './hooks';
+import { HomePage } from './features/home/HomePage';
 import { SetupPage } from './features/setup/SetupPage';
 import { Route, Routes, HashRouter } from 'react-router';
 import type { ColorPalette } from './hooks/useWindowsAccent';
 
-const HomePage       = lazy(() => import('./features/home/HomePage'));
 const SettingsPage   = lazy(() => import('./features/settings/SettingsPage'));
 const UpdaterPage    = lazy(() => import('./features/updater/UpdaterPage'));
 const GlobalMenuPage = lazy(() => import('./features/global-menu/GlobalMenuPage'));
