@@ -1,7 +1,7 @@
 import { cx } from 'cva';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
-import { useEffect} from 'react';
+import { lazy, useEffect} from 'react';
 import { useIpc, useTitle } from '~/hooks';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
@@ -10,7 +10,7 @@ import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { DownloadsTab } from './components/DownloadsTab';
 import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
-import { mdiCogs, mdiYoutube, mdiDownload, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
+import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
 import type { TabsTriggerProps } from '@radix-ui/react-tabs';
 
@@ -19,6 +19,8 @@ export interface ITabButtonProps extends TabsTriggerProps {
 	title: string;
 	icon: string;
 }
+
+const DebugTab = lazy(() => import('./components/DebugTab'));
 
 const TabButton: FC<ITabButtonProps> = ({ title, icon, value, className }) => {
 	return (
@@ -57,11 +59,12 @@ export const SettingsPage = () => {
 	return (
 		<Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
 			<List className="p-3 space-y-1.5 w-38 flex flex-col shrink-0 bg-gray-900">
-				<TabButton value="app" title="Application" icon={mdiApplicationCog} />
-				<TabButton value="downloads" title="Downloads" icon={mdiDownload} />
-				<TabButton value="youtube" title="YouTube" icon={mdiYoutube} />
-				<TabButton value="advanced" title="Advanced" icon={mdiCogs} />
-				<TabButton value="dev" title="Developer" icon={mdiCodeBraces} />
+				<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
+				<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
+				<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
+				<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
+				<TabButton value="dev" title="Developer" icon={mdiCodeBraces}/>
+				{import.meta.env.DEV && <TabButton value="debug" title="Debug" icon={mdiTools}/>}
 			</List>
 
 			<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
@@ -80,6 +83,11 @@ export const SettingsPage = () => {
 				<Content value="dev">
 					<DevTab />
 				</Content>
+				{import.meta.env.DEV && (
+					<Content value="debug">
+						<DebugTab/>
+					</Content>
+				)}
 			</div>
 		</Root>
 	);

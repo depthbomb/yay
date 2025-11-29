@@ -1,8 +1,5 @@
-import Icon from '@mdi/react';
-import { mdiGithub } from '@mdi/js';
 import { useFeatureFlags } from '~/hooks';
 import { Anchor } from '~/components/Anchor';
-import { SectionSeparator } from './SectionSeparator';
 import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
 
@@ -35,7 +32,13 @@ export const DevTab = () => {
 			<InfoSection title="Application" values={[
 				['Product version', product.version],
 				['Commit', <Anchor href={`https://github.com/depthbomb/yay/commit/${GIT_HASH}`} target="_blank">{GIT_HASH_SHORT}</Anchor>],
-				['Build date', window.buildDate.toLocaleString()]
+				['Build date', window.buildDate.toLocaleString()],
+				[
+					'Repository',
+					<Anchor href={product.repoURL} target="_blank" className="text-sm">
+						<span>{product.repoURL}</span>
+					</Anchor>
+				]
 			]}/>
 			<InfoSection title="Framework" values={[
 				['Electron version', window.versions.electron],
@@ -49,16 +52,6 @@ export const DevTab = () => {
 				['Architecture', window.system.arch()],
 			]}/>
 			<InfoSection title="Feature Flags" values={featureFlags.map(ff => [ff.description, ff.enabled.toString()])}/>
-			<SectionSeparator/>
-			<div className="space-x-3 flex items-center">
-				<Anchor href="https://github.com/depthbomb/yay" target="_blank" className="text-sm">
-					<Icon path={mdiGithub} className="size-4"/>
-					<span>GitHub</span>
-				</Anchor>
-				{import.meta.env.DEV && (
-					<Anchor className="text-sm" onClick={() => window.ipc.invoke('updater<-show-window')}>(DEV) Show updater window</Anchor>
-				)}
-			</div>
 		</div>
 	);
 };
