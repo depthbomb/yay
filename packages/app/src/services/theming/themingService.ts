@@ -12,10 +12,7 @@ export class ThemingService implements IBootstrappable {
 	) {}
 
 	public async bootstrap() {
-		this.ipc.registerHandler('theming<-get-accent-color', () => {
-			console.log(systemPreferences.getAccentColor());
-			return systemPreferences.getAccentColor();
-		});
+		this.ipc.registerHandler('theming<-get-accent-color', () => systemPreferences.getAccentColor());
 
 		nativeTheme.on('updated', () => {
 			this.window.emitAll('theming->accent-color-changed', {
