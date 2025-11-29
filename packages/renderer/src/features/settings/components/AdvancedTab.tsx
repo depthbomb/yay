@@ -2,8 +2,8 @@ import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
+import { Button } from '~/components/Button';
 import { Switch } from '~/components/Switch';
-import { PushButton } from '~/components/PushButton';
 import { SectionSeparator } from './SectionSeparator';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
@@ -47,18 +47,18 @@ export const AdvancedTab = () => {
 			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Actions</p>
-				<PushButton onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
-					<Icon path={mdiDownload} className="size-3"/>
+				<Button onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
+					<Icon path={mdiDownload} className="size-4"/>
 					<span>Recheck required binaries</span>
-				</PushButton>
-				<PushButton onClick={() => window.ipc.invoke('yt-dlp<-update-binary')} disabled={isWorking || isUpdating}>
-					<Icon path={mdiUpdate} className="size-3"/>
+				</Button>
+				<Button onClick={() => window.ipc.invoke('yt-dlp<-update-binary')} disabled={isWorking || isUpdating}>
+					<Icon path={mdiUpdate} className="size-4"/>
 					<span>Update yt-dlp</span>
-				</PushButton>
-				<PushButton type="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking || isUpdating}>
+				</Button>
+				<Button type="danger" onClick={onResetSettingsButtonClicked} disabled={isWorking || isUpdating}>
 					<Icon path={mdiRestore} className="size-4"/>
 					<span>Reset settings</span>
-				</PushButton>
+				</Button>
 			</div>
 		</div>
 	);

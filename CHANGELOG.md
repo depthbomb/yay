@@ -1,3 +1,12 @@
+# 1.35.0
+
+- Updated the enabled and disabled style of the download buttons
+- Added a button under the Application settings section to open the application's folder
+- Added a button under the YouTube settings section to clear the video thumbnail cache
+- Added icons to action buttons in the settings window
+- Updated the Developer settings section
+  - Moved the link to the project repository
+
 # 1.34.0
 
 - Added an experimental local REST server to allow interacting with the application via HTTP requests

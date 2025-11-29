@@ -1,6 +1,9 @@
+import { Icon } from '@mdi/react';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
+import { mdiTrashCan } from '@mdi/js';
 import { Anchor } from '~/components/Anchor';
+import { Button } from '~/components/Button';
 import { Switch } from '~/components/Switch';
 import { TextInput } from '~/components/Input';
 import { SectionSeparator } from './SectionSeparator';
@@ -11,7 +14,7 @@ export const YoutubeTab = () => {
 	const [skipYoutubePlaylists, setSkipYoutubePlaylists] = useSetting(ESettingsKey.SkipYoutubePlaylists, { defaultValue: true, reactive: false });
 
 	return (
-		<div className="flex flex-col space-y-6">
+		<div className="flex flex-col items space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
 				<p>Cookies file</p>
 				<TextInput value={cookiesFilePath ?? 'None'} onClick={() => window.ipc.invoke('main<-pick-cookies-file')} type="text" readOnly className="w-full" size="sm"/>
@@ -22,6 +25,13 @@ export const YoutubeTab = () => {
 			</div>
 			<SectionSeparator/>
 			<Switch label="Don't download playlists" checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
+			<SectionSeparator/>
+			<div className="flex">
+				<Button type="danger" onClick={() => window.ipc.invoke('thumbnail<-clear-cache')}>
+					<Icon path={mdiTrashCan} className="size-4"/>
+					<span>Clear thumbnail cache</span>
+				</Button>
+			</div>
 		</div>
 	);
 };

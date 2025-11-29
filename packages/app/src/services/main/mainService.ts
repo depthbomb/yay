@@ -13,6 +13,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { DeepLinksService } from '~/services/deepLinks';
 import { AutoStartService } from '~/services/autoStart';
+import { ThumbnailService } from '~/services/thumbnail';
 import { MainWindowService } from '~/services/mainWindow';
 import { GlobalMenuService } from '~/services/globalMenu';
 import { FeatureFlagsService } from '~/services/featureFlags';
@@ -41,6 +42,7 @@ export class MainService {
 		private readonly mainWindow     = inject(MainWindowService),
 		private readonly settingsWindow = inject(SettingsWindowService),
 		private readonly rest           = inject(RestService),
+		private readonly thumbnail      = inject(ThumbnailService),
 		private readonly theming        = inject(ThemingService),
 	) {}
 
@@ -62,6 +64,7 @@ export class MainService {
 			this.setup.bootstrap(),
 			this.updater.bootstrap(),
 			this.rest.bootstrap(),
+			this.thumbnail.bootstrap(),
 			this.theming.bootstrap(),
 		]);
 

@@ -4,8 +4,8 @@ import { mdiDownload } from '@mdi/js';
 import { HTML } from '~/components/HTML';
 import { useIpc, useTitle } from '~/hooks';
 import { useState, useEffect } from 'react';
+import { Button } from '~/components/Button';
 import { Spinner } from '~/components/SpinnerV2';
-import { PushButton } from '~/components/PushButton';
 import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
 import type { FC } from 'react';
 import type { Nullable } from 'shared';
@@ -99,13 +99,13 @@ export const UpdaterPage = () => {
 							<Spinner className="size-6"/>
 							<p>{status}</p>
 						</div>
-						<PushButton onClick={onCancelButtonClicked} type="danger" size="lg">Cancel</PushButton>
+						<Button onClick={onCancelButtonClicked} type="danger" size="lg">Cancel</Button>
 					</>
 				) : (
-					<PushButton onClick={onDownloadButtonClicked} type='brand' size="lg" className="ml-auto">
+					<Button onClick={onDownloadButtonClicked} type='brand' size="lg" className="ml-auto">
 						<Icon path={mdiDownload} className="size-5"/>
 						<span>Download &amp; install</span>
-					</PushButton>
+					</Button>
 				)}
 			</div>
 		</Root>

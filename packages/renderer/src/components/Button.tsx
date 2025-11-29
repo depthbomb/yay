@@ -6,7 +6,7 @@ import type { ButtonHTMLAttributes } from 'react';
 export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
 
 const button = cva({
-	base: 'flex items-center justify-center shrink-0 transition-colors',
+	base: 'inline-flex items-center justify-center shrink-0 transition-colors',
 	variants: {
 		type: {
 			default: 'text-black bg-white hover:bg-gray-300 active:bg-gray-400',

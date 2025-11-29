@@ -155,6 +155,11 @@ export interface IIpcContract {
 		args: [];
 		return: string;
 	}
+	//
+	'thumbnail<-clear-cache': {
+		args: [];
+		return: void;
+	}
 }
 
 export interface IIpcEvents {
