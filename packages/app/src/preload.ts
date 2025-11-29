@@ -76,7 +76,9 @@ const ipcApi = {
 			return;
 		}
 
-		ipcRenderer.removeListener(channel, listener as any);
+		const wrapped = (_: Electron.IpcRendererEvent, payload: IIpcEvents[K]) => listener(payload);
+
+		ipcRenderer.removeListener(channel, wrapped);
 	},
 	removeAllListeners (channel: IpcChannel) {
 		if (!IpcChannels.includes(channel)) {
