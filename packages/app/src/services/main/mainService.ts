@@ -1,3 +1,4 @@
+import { dirname } from 'node:path';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
@@ -104,6 +105,14 @@ export class MainService {
 			}
 
 			Menu.buildFromTemplate(menuItems).popup();
+		});
+
+		this.ipc.registerHandler('main<-open-app-dir', async () => {
+			const path = dirname(app.getPath('exe'));
+
+			this.logger.debug('Opening application folder', { path });
+
+			await shell.openPath(path);
 		});
 
 		this.ipc.registerHandler('main<-open-app-data', async () => {

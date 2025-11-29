@@ -36,6 +36,10 @@ export interface IIpcContract {
 		args: [];
 		return: Nullable<string>;
 	}
+	'main<-open-app-dir': {
+		args: [];
+		return: void;
+	}
 	'main<-open-app-data': {
 		args: [];
 		return: void;

@@ -10,6 +10,7 @@ const button = cva({
 	variants: {
 		type: {
 			default: 'text-black bg-white hover:bg-gray-300 active:bg-gray-400',
+			accent: 'text-accent-500-contrast bg-accent-500 hover:bg-accent-600 active:bg-accent-700',
 			brand: 'text-white bg-brand-500 hover:bg-brand-600 active:bg-brand-700',
 			success: 'text-black bg-lime-500 hover:bg-lime-600 active:bg-lime-700',
 			warning: 'text-white bg-orange-500 hover:bg-orange-600 active:bg-orange-700',

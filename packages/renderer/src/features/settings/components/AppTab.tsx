@@ -22,6 +22,7 @@ export const AppTab = () => {
 			<Switch label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
 			<SectionSeparator/>
 			<div className="space-x-2 flex items-center">
+				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-dir')}>Open app folder</Button>
 				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
 				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>Report a bug</Button>
 			</div>
