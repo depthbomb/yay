@@ -13,13 +13,12 @@ import { fileExists } from '@depthbomb/node-common/fs';
 import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
-import type { Maybe } from 'shared';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class MainWindowService implements IBootstrappable {
-	private mainWindow: Maybe<BrowserWindow>;
+	private readonly mainWindow: BrowserWindow;
 
 	public constructor(
 		private readonly logger         = inject(LoggingService),
@@ -31,10 +30,7 @@ export class MainWindowService implements IBootstrappable {
 		// @ts-expect-error circular type inference
 		private readonly tray           = inject(TrayService, { lazy: true }),
 		private readonly ytdlp          = inject(YtdlpService),
-	) {}
-
-	public async bootstrap() {
-		//#region Window creation
+	) {
 		this.mainWindow = this.window.createMainWindow({
 			url: this.window.useRendererRouter(),
 			externalUrlRules: EXTERNAL_URL_RULES,
@@ -60,21 +56,22 @@ export class MainWindowService implements IBootstrappable {
 			}
 		});
 		this.mainWindow.on('blur', () => {
-			this.mainWindow!.hide();
+			this.mainWindow.hide();
 			this.window.emitMain('window->is-blurred');
 		});
 		this.mainWindow.on('focus', () => {
-			this.mainWindow!.flashFrame(false);
+			this.mainWindow.flashFrame(false);
 			this.window.emitMain('window->is-focused');
 		});
 		this.mainWindow.on('close', e => {
 			if (!this.lifecycle.shutdownInProgress) {
 				e.preventDefault();
-				this.mainWindow!.hide();
+				this.mainWindow.hide();
 			}
 		});
-		//#endregion
+	}
 
+	public async bootstrap() {
 		//#region IPC
 		this.ipc.registerHandler('main<-open-download-dir', async () => {
 			this.logger.info('Opening download directory');
@@ -149,11 +146,11 @@ export class MainWindowService implements IBootstrappable {
 		//#endregion
 
 		//#region Events
-		this.ytdlp.events.on('downloadStarted',  () => this.mainWindow!.setProgressBar(1, { mode: 'indeterminate' }));
-		this.ytdlp.events.on('downloadProgress', p => this.mainWindow!.setProgressBar(p, { mode: 'normal' }));
+		this.ytdlp.events.on('downloadStarted',  () => this.mainWindow.setProgressBar(1, { mode: 'indeterminate' }));
+		this.ytdlp.events.on('downloadProgress', p => this.mainWindow.setProgressBar(p, { mode: 'normal' }));
 		this.ytdlp.events.on('downloadFinished', () => {
-			this.mainWindow!.setProgressBar(0, { mode: 'none' });
-			this.mainWindow!.flashFrame(true);
+			this.mainWindow.setProgressBar(0, { mode: 'none' });
+			this.mainWindow.flashFrame(true);
 		});
 		//#endregion
 
@@ -167,7 +164,7 @@ export class MainWindowService implements IBootstrappable {
 
 	public showMainWindow() {
 		const { tray }   = this.tray();
-		const mainWindow = this.mainWindow!;
+		const mainWindow = this.mainWindow;
 
 		this.windowPosition.setWindowPositionAtTray(mainWindow, tray!);
 

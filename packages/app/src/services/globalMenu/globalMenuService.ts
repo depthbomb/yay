@@ -46,6 +46,14 @@ export class GlobalMenuService implements IBootstrappable {
 				}
 			}
 		});
+
+		this.globalMenuWindow.on('blur', () => this.hideMenu());
+		this.globalMenuWindow.on('close', e => {
+			if (!this.lifecycle.shutdownInProgress) {
+				e.preventDefault();
+				this.globalMenuWindow.hide();
+			}
+		});
 	}
 
 	public async bootstrap() {
@@ -54,14 +62,6 @@ export class GlobalMenuService implements IBootstrappable {
 		});
 		this.ipc.registerHandler('global-menu<-download-from-clipboard', async (_, audio) => {
 			await this.tryDownloadFromClipboard(audio);
-		});
-
-		this.globalMenuWindow.on('blur', () => this.hideMenu());
-		this.globalMenuWindow.on('close', e => {
-			if (!this.lifecycle.shutdownInProgress) {
-				e.preventDefault();
-				this.globalMenuWindow.hide();
-			}
 		});
 
 		const callback = () => this.showMenu();

@@ -19,6 +19,10 @@ export interface IIpcContract {
 		return: void;
 	}
 	//
+	'setup<-show-window': {
+		args: [];
+		return: void;
+	}
 	'setup<-cancel': {
 		args: [];
 		return: void;

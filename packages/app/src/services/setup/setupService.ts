@@ -33,11 +33,18 @@ export class SetupService implements IBootstrappable {
 		private readonly downloader    = inject(BinaryDownloader),
 		private readonly onlineChecker = inject(OnlineChecker),
 		private readonly ytdlp         = inject(YtdlpService),
-	) {
-		this.ipc.registerHandler('setup<-cancel', () => this.cancel());
-	}
+	) {}
 
 	public async bootstrap() {
+		this.ipc.registerHandler('setup<-show-window', () => {
+			// This handler is ever only called in dev mode so we set `finished` to false so the
+			// window doesn't immediately close.
+
+			this.finished = false;
+			this.showWindow();
+		});
+		this.ipc.registerHandler('setup<-cancel', () => this.cancel());
+
 		await this.performSetupActions();
 	}
 
@@ -104,7 +111,7 @@ export class SetupService implements IBootstrappable {
 				}
 			},
 			onReadyToShow: () => {
-				const hideSetupWindow =  this.settings.get<boolean>(ESettingsKey.HideSetupWindow);
+				const hideSetupWindow = this.settings.get<boolean>(ESettingsKey.HideSetupWindow);
 				if (!hideSetupWindow || this.cli.flags.updateBinaries) {
 					this.setupWindow!.show();
 				}
@@ -124,7 +131,6 @@ export class SetupService implements IBootstrappable {
 				app.quit();
 				clearInterval(interval);
 			} else if (this.finished) {
-				this.setupWindow!.closable = true;
 				this.setupWindow!.close();
 				clearInterval(interval);
 			}
