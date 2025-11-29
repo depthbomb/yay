@@ -1,10 +1,11 @@
+import Icon from '@mdi/react';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Button } from '~/components/Button';
 import { Switch } from '~/components/Switch';
-import { mdiMicrosoftWindows } from '@mdi/js';
 import { KeyCombo } from '~/components/KeyCombo';
 import { SectionSeparator } from './SectionSeparator';
+import { mdiBug, mdiFolderOpen, mdiMicrosoftWindows } from '@mdi/js';
 
 export const AppTab = () => {
 	const [autoStartEnabled, setAutoStartEnabled]                     = useSetting<boolean>(ESettingsKey.AutoStart, { reactive: false });
@@ -22,9 +23,18 @@ export const AppTab = () => {
 			<Switch label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
 			<SectionSeparator/>
 			<div className="space-x-2 flex items-center">
-				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-dir')}>Open app folder</Button>
-				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>Open data folder</Button>
-				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>Report a bug</Button>
+				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-dir')}>
+					<Icon path={mdiFolderOpen} className="size-4"/>
+					<span>Open app folder</span>
+				</Button>
+				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>
+					<Icon path={mdiFolderOpen} className="size-4"/>
+					<span>Open data folder</span>
+				</Button>
+				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>
+					<Icon path={mdiBug} className="size-4"/>
+					<span>Report a bug</span>
+				</Button>
 			</div>
 		</div>
 	);
