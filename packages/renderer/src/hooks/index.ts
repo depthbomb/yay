@@ -8,3 +8,4 @@ export * from './useProbability';
 export * from './useThrottle';
 export * from './useTitle';
 export * from './useWindowFocus';
+export * from './useWindowsAccent';

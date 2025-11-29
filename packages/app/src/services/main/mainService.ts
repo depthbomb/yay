@@ -7,6 +7,7 @@ import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
+import { ThemingService } from '~/services/theming';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { DeepLinksService } from '~/services/deepLinks';
@@ -39,6 +40,7 @@ export class MainService {
 		private readonly mainWindow     = inject(MainWindowService),
 		private readonly settingsWindow = inject(SettingsWindowService),
 		private readonly rest           = inject(RestService),
+		private readonly theming        = inject(ThemingService),
 	) {}
 
 	public async boot() {
@@ -59,6 +61,7 @@ export class MainService {
 			this.setup.bootstrap(),
 			this.updater.bootstrap(),
 			this.rest.bootstrap(),
+			this.theming.bootstrap(),
 		]);
 
 		this.ipc.registerHandler('main<-show-message-box', async (e, options) => {

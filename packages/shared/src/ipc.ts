@@ -142,6 +142,11 @@ export interface IIpcContract {
 		args: [];
 		return: FeatureFlag[];
 	}
+	//
+	'theming<-get-accent-color': {
+		args: [];
+		return: string;
+	}
 }
 
 export interface IIpcEvents {
@@ -165,4 +170,6 @@ export interface IIpcEvents {
 	'updater->checking-for-updates': void;
 	'updater->update-step': { message: string; };
 	'updater->update-complete': void;
+	// Theming Events
+	'theming->accent-color-changed': { accentColor: string; };
 }

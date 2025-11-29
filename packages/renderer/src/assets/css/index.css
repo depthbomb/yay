@@ -46,6 +46,30 @@
 	--color-brand-red-900: #33000a;
 	--color-brand-red-950: #190005;
 
+	--color-accent-50: var(--accent-50);
+	--color-accent-100: var(--accent-100);
+	--color-accent-200: var(--accent-200);
+	--color-accent-300: var(--accent-300);
+	--color-accent-400: var(--accent-400);
+	--color-accent-500: var(--accent-500);
+	--color-accent-600: var(--accent-600);
+	--color-accent-700: var(--accent-700);
+	--color-accent-800: var(--accent-800);
+	--color-accent-900: var(--accent-900);
+	--color-accent-950: var(--accent-950);
+
+	--color-accent-50-contrast: var(--accent-50-contrast);
+	--color-accent-100-contrast: var(--accent-100-contrast);
+	--color-accent-200-contrast: var(--accent-200-contrast);
+	--color-accent-300-contrast: var(--accent-300-contrast);
+	--color-accent-400-contrast: var(--accent-400-contrast);
+	--color-accent-500-contrast: var(--accent-500-contrast);
+	--color-accent-600-contrast: var(--accent-600-contrast);
+	--color-accent-700-contrast: var(--accent-700-contrast);
+	--color-accent-800-contrast: var(--accent-800-contrast);
+	--color-accent-900-contrast: var(--accent-900-contrast);
+	--color-accent-950-contrast: var(--accent-950-contrast);
+
 	/**
 	* Fonts
 	*/
