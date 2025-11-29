@@ -1,51 +1,54 @@
-import { clsx } from 'clsx';
+import { cva } from 'cva';
 import Icon from '@mdi/react';
 import { mdiCancel } from '@mdi/js';
 import { Button } from '~/components/Button';
 import { mdiVideo, mdiMusicNote } from '@mdi/js';
 import type { FC } from 'react';
 
-type DownloadButtonsProps = {
+export interface IDownloadButtonsProps {
 	disabled: boolean;
 	working: boolean;
 	onDownloadVideoClick: () => void;
 	onDownloadAudioClick: () => void;
 	onCancelDownloadClick: () => void;
-};
+}
 
-export const DownloadButtons: FC<DownloadButtonsProps> = ({
+const container = cva({
+	base: 'relative p-px w-full h-8 flex flex-row items-stretch justify-stretch shrink-0 rounded',
+	variants: {
+		disabled: {
+			false: 'bg-linear-to-r from-[#FF0033] to-[#FF2790] after:absolute after:w-full after:h-8 after:bg-linear-to-r after:from-[#FF0033] after:to-[#FF2790] after:blur after:-z-10 animate-pulse-glow',
+			true: 'bg-gray-600',
+		}
+	},
+	defaultVariants: {
+		disabled: false
+	}
+});
+
+const button = cva({
+	base: 'flex flex-row items-center justify-center space-x-1 w-1/2 text-sm text-gray-200 font-semibold transition-all',
+	variants: {
+		disabled: {
+			false: 'bg-black hover:text-white hover:bg-transparent active:text-white active:bg-black/25',
+			true: 'cursor-not-allowed! text-gray-400 bg-gray-900'
+		}
+	},
+	defaultVariants: {
+		disabled: false
+	}
+});
+
+export const DownloadButtons: FC<IDownloadButtonsProps> = ({
 	disabled,
 	working,
 	onDownloadVideoClick,
 	onDownloadAudioClick,
 	onCancelDownloadClick
 }) => {
-	const containerCss = clsx(
-		'relative',
-		'p-px w-full h-8',
-		'flex flex-row items-stretch justify-stretch shrink-0',
-		{
-			'bg-linear-to-r from-[#FF0033] to-[#FF2790]': !disabled,
-			'bg-gray-600': disabled,
-		},
-		'rounded',
-		{
-			'after:absolute after:w-full after:h-8 after:bg-linear-to-r after:from-[#FF0033] after:to-[#FF2790] after:blur after:-z-10': !disabled
-		}
-	);
-	const buttonCss = clsx(
-		'flex flex-row items-center justify-center',
-		'space-x-1 w-1/2',
-		'text-sm text-gray-200 font-semibold',
-		{
-			'cursor-not-allowed! text-gray-400 bg-gray-950': disabled,
-			'bg-black hover:text-white hover:bg-transparent active:text-white active:bg-black/25': !disabled
-		},
-		'transition-all'
-	);
-
+	const buttonCss = button({ disabled });
 	return (!working ? (
-		<div className={containerCss}>
+		<div className={container({ disabled })}>
 			<button onClick={onDownloadVideoClick} className={`${buttonCss} rounded-l`} disabled={disabled} type="button">
 				<Icon path={mdiVideo} className="size-5"/>
 				<span>Download Video</span>

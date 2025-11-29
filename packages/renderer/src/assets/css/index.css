@@ -91,6 +91,34 @@
 			filter: hue-rotate(359deg);
 		}
 	}
+
+	--animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+
+	@keyframes pulse-glow {
+		from {
+			box-shadow:
+				-5px 0 10px rgba(255, 0, 51, 0.3),
+				-10px 0 15px rgba(255, 0, 51, 0.15),
+				5px 0 10px rgba(255, 39, 144, 0.3),
+				10px 0 15px rgba(255, 39, 144, 0.15);
+		}
+
+		50% {
+			box-shadow:
+				-7px 0 12px rgba(255, 0, 51, 0.5),
+				-12px 0 20px rgba(255, 0, 51, 0.25),
+				7px 0 12px rgba(255, 39, 144, 0.5),
+				12px 0 20px rgba(255, 39, 144, 0.25);
+		}
+
+		to {
+			box-shadow:
+				-5px 0 10px rgba(255, 0, 51, 0.3),
+				-10px 0 15px rgba(255, 0, 51, 0.15),
+				5px 0 10px rgba(255, 39, 144, 0.3),
+				10px 0 15px rgba(255, 39, 144, 0.15);
+		}
+	}
 }
 
 @utility popup-* {
