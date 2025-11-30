@@ -14,7 +14,7 @@ function convertToMarkdown(): string {
 			lines.push(entry.description, '');
 		}
 
-		lines.push(...formatChanges(entry.changes, -1));
+		lines.push(...formatChanges(entry.changes));
 		lines.push('');
 
 		if (index < changelog.length - 1) {
@@ -25,8 +25,8 @@ function convertToMarkdown(): string {
 	}).join('\n');
 }
 
-function formatChanges(changes: ChangeItem[], depth: number): string[] {
-	const lines: string[] = [];
+function formatChanges(changes: ChangeItem[], depth: number = 0): string[] {
+	const lines  = [] as string[];
 	const indent = depth > 0 ? '  '.repeat(depth) : '';
 
 	for (const change of changes) {
