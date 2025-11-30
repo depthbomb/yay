@@ -6472,6 +6472,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"import-without-cache@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "import-without-cache@npm:0.1.3"
+  checksum: 10/8cecc04969d278a2859fef4133dc8957bc687245e0e8d609fd45d5ee400c82f82cb008e4f9c3d4c7ad0a7fcb01974b9433cbd1d7539ef883ec21b5144aefd55b
+  languageName: node
+  linkType: hard
+
 "imurmurhash@npm:^0.1.4":
   version: 0.1.4
   resolution: "imurmurhash@npm:0.1.4"
@@ -8722,7 +8729,7 @@ __metadata:
   dependencies:
     "@depthbomb/node-common": "npm:1.2.0"
     "@swc/core": "npm:1.15.3"
-    tsdown: "npm:^0.17.0-beta.3"
+    tsdown: "npm:^0.17.0-beta.4"
     tslib: "npm:^2.8.1"
     typescript: "npm:^5.9.3"
   languageName: unknown
@@ -9207,14 +9214,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsdown@npm:^0.17.0-beta.3":
-  version: 0.17.0-beta.3
-  resolution: "tsdown@npm:0.17.0-beta.3"
+"tsdown@npm:^0.17.0-beta.4":
+  version: 0.17.0-beta.4
+  resolution: "tsdown@npm:0.17.0-beta.4"
   dependencies:
     ansis: "npm:^4.2.0"
     cac: "npm:^6.7.14"
     empathic: "npm:^2.0.0"
     hookable: "npm:^5.5.3"
+    import-without-cache: "npm:^0.1.3"
     obug: "npm:^2.1.1"
     rolldown: "npm:1.0.0-beta.52"
     rolldown-plugin-dts: "npm:^0.18.1"
@@ -9246,7 +9254,7 @@ __metadata:
       optional: true
   bin:
     tsdown: dist/run.mjs
-  checksum: 10/06fbf5a0dfd82f5cde149efb4e3ff931eed9518d6d00dae4fbe6d77c72dead7e493e2cd300f0136c6d6ccdd886ab23ae8592c64fac5b6a46d84bf859f6fa73f3
+  checksum: 10/1ceb780dffc13bb21e5e495c1eb1c107d50be54ac3140dc75ba73bcc73a89748a26d8ea2adb60cf51de1329e332f35830887bde58f0e6536b3f7e7365a70d68c
   languageName: node
   linkType: hard
 
