@@ -18,7 +18,7 @@ export class ProcessService {
 			);
 		} else {
 			this.native = require(
-				getExtraResourcePath('native/nativelib.win32-x64-msvc.node')
+				getExtraResourcePath('native', 'nativelib.win32-x64-msvc.node')
 			);
 		}
 	}

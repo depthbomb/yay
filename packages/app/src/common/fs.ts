@@ -7,15 +7,15 @@ import { EXE_DIR, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
  *
  * This function does not validate the existence of the file.
  *
- * @param path The path to the extra resource file relative to the `<app>/resources` (production) OR
- * `<root>/static/extra` (development) directory.
+ * @param paths The path to the extra resource file relative to the `<app>/resources` (production)
+ * OR `<root>/static/extra` (development) directory.
  */
-export function getExtraResourcePath(path: string) {
+export function getExtraResourcePath(...paths: string[]) {
 	let extraFilePath: string;
 	if (import.meta.env.DEV) {
-		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', path);
+		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
 	} else {
-		extraFilePath = join(RESOURCES_PATH, path);
+		extraFilePath = join(RESOURCES_PATH, ...paths);
 	}
 
 	return extraFilePath;
@@ -26,11 +26,11 @@ export function getExtraResourcePath(path: string) {
  *
  * This function does not validate the existence of the file.
  *
- * @param path The path to the extra resource file relative to the `<app>` (production) OR
+ * @param paths The path to the extra resource file relative to the `<app>` (production) OR
  * `<root>/static/extra` (development) directory.
  */
-export function getExtraFilePath(path: string) {
-	return join(getExtraFileDir(), path);
+export function getExtraFilePath(...paths: string[]) {
+	return join(getExtraFileDir(), ...paths);
 }
 
 export function getExtraFileDir() {
@@ -44,11 +44,12 @@ export function getExtraFileDir() {
 	return extraFileDir;
 }
 
-function _getFilePathFromAsar(path: string) {
+function _getFilePathFromAsar(...paths: string[]) {
 	let extraFilePath: string;
 	if (import.meta.env.DEV) {
-		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', path);
+		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
 	} else {
+		const path     = join(...paths);
 		const parts    = path.split('/');
 		const asarName = parts[0];
 		const restPath = parts.slice(1).join('/');
@@ -66,6 +67,6 @@ function _getFilePathFromAsar(path: string) {
  * `assets/myfile.png`, this function will return `<resources>/assets.asar/myfile.png`. In
  * development, it will instead return `<root>/static/extra/<path>`.
  *
- * @param path The path to the file located inside of an asar archive.
+ * @param paths The path to the file located inside of an asar archive.
  */
-export const getFilePathFromAsar = <(path: string) => string>memoize(_getFilePathFromAsar);
+export const getFilePathFromAsar = <(...paths: string[]) => string>memoize(_getFilePathFromAsar);
