@@ -1,4 +1,4 @@
-export class IdGenerator {
+export class IDGenerator {
 	private lastId: number;
 
 	private readonly prefix: string;
@@ -13,4 +13,4 @@ export class IdGenerator {
 	}
 }
 
-export const defaultGenerator = new IdGenerator('id#');
+export const defaultGenerator = new IDGenerator('id#');

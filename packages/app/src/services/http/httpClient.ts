@@ -1,5 +1,5 @@
 import { Readable } from 'node:stream';
-import { IdGenerator } from '~/common';
+import { IDGenerator } from '~/common';
 import { joinURL, withQuery } from 'ufo';
 import { createWriteStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
@@ -14,7 +14,7 @@ export class HttpClient {
 	private readonly userAgent: string;
 	private readonly retry: boolean;
 	private readonly retryPolicy: RetryPolicy;
-	private readonly idGenerator: IdGenerator;
+	private readonly idGenerator: IDGenerator;
 	private readonly logger: LoggingService;
 
 	public constructor(options: HttpClientOptions, logger: LoggingService) {
@@ -26,7 +26,7 @@ export class HttpClient {
 			maxAttempts: 10,
 			backoff: new ConstantBackoff(1_000)
 		});
-		this.idGenerator = new IdGenerator(`${this.name}#`);
+		this.idGenerator = new IDGenerator(`${this.name}#`);
 		this.logger      = logger;
 	}
 

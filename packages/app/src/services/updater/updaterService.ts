@@ -11,7 +11,6 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
-import { cache } from '@depthbomb/node-common/decorators';
 import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
@@ -21,7 +20,6 @@ import type { Endpoints } from '@octokit/types';
 import type { IBootstrappable } from '~/common';
 import type { HttpClient } from '~/services/http';
 
-type Release = Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number];
 type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
 
 @injectable()
@@ -151,7 +149,6 @@ export class UpdaterService implements IBootstrappable {
 		proc.unref();
 	}
 
-	@cache(60 * 60 * 2)
 	public async getLatestRelease() {
 		return this.github.getLatestRepositoryRelease(REPO_OWNER, REPO_NAME);
 	}
