@@ -27,6 +27,7 @@ const config = {
 	copyright: `Copyright © 2024-${new Date().getFullYear()} ${author}`,
 	asar: true,
 	buildDependenciesFromSource: true,
+	downloadAlternateFFmpeg: true,
 	compression: 'maximum',
 	directories: {
 		output: '../../build'
