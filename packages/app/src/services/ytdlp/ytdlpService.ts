@@ -86,7 +86,7 @@ export class YtdlpService implements IBootstrappable {
 		this.events.emit('downloadStarted', url);
 		this.logger.info('Starting media download', { url, audioOnly });
 
-		let notificationImage          = getFilePathFromAsar('notifications/logo.png');
+		let notificationImage          = getFilePathFromAsar('notifications', 'logo.png');
 		let notificationImagePlacement = 'appLogoOverride';
 
 		const youtubeMatch = url.match(this.youtubeUrlPattern);

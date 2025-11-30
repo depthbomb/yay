@@ -1,5 +1,6 @@
 import { join } from 'node:path';
 import { memoize } from '@formatjs/fast-memoize';
+import { join as posixJoin } from 'node:path/posix';
 import { EXE_DIR, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
 
 /**
@@ -49,7 +50,7 @@ function _getFilePathFromAsar(...paths: string[]) {
 	if (import.meta.env.DEV) {
 		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
 	} else {
-		const path     = join(...paths);
+		const path     = posixJoin(...paths);
 		const parts    = path.split('/');
 		const asarName = parts[0];
 		const restPath = parts.slice(1).join('/');

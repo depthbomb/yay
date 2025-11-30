@@ -33,12 +33,12 @@ export class TrayService implements IBootstrappable {
 		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.trayTooltip         = product.description;
-		this.logoIcon            = getFilePathFromAsar('tray/action-icons/logo-16.png');
-		this.showIcon            = getFilePathFromAsar('tray/action-icons/open-in-new.png');
-		this.settingsIcon        = getFilePathFromAsar('tray/action-icons/cog.png');
-		this.quitIcon            = getFilePathFromAsar('tray/action-icons/close.png');
-		this.trayIcon            = getFilePathFromAsar('tray/tray.ico');
-		this.trayDownloadingIcon = getFilePathFromAsar('tray/tray-downloading.ico');
+		this.logoIcon            = getFilePathFromAsar('tray', 'action-icons', 'logo-16.png');
+		this.showIcon            = getFilePathFromAsar('tray', 'action-icons', 'open-in-new.png');
+		this.settingsIcon        = getFilePathFromAsar('tray', 'action-icons', 'cog.png');
+		this.quitIcon            = getFilePathFromAsar('tray', 'action-icons', 'close.png');
+		this.trayIcon            = getFilePathFromAsar('tray', 'tray.ico');
+		this.trayDownloadingIcon = getFilePathFromAsar('tray', 'tray-downloading.ico');
 	}
 
 	public async bootstrap() {
@@ -126,7 +126,7 @@ export class TrayService implements IBootstrappable {
 			{
 				label: 'Quit',
 				icon: this.quitIcon,
-				click: () => app.quit()
+				click: () => this.lifecycle.requestShutdown()
 			}
 		);
 

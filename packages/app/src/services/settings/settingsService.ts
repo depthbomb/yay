@@ -1,8 +1,7 @@
 import mitt from 'mitt';
-import { app } from 'electron';
 import { join } from 'node:path';
 import { ESettingsKey } from 'shared';
-import { safeStorage } from 'electron';
+import { app, safeStorage } from 'electron';
 import { IpcService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';

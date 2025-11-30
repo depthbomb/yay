@@ -141,7 +141,7 @@ export class MainWindowService implements IBootstrappable {
 
 			app.relaunch({ args: ['--updateBinaries'] });
 
-			app.quit();
+			this.lifecycle.requestShutdown();
 		});
 		//#endregion
 
