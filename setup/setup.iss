@@ -23,8 +23,7 @@ LZMAUseSeparateProcess=yes
 SolidCompression=yes
 ArchitecturesAllowed=x64compatible
 MinVersion=10.0
-WizardStyle=modern
-WizardResizable=no
+WizardStyle=modern dark
 ShowTasksTreeLines=yes
 UninstallDisplayIcon={app}\{#ExeBasename}.exe
 UninstallDisplayName={#Description}
@@ -37,7 +36,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "https://github.com/depthbomb/yay/releases/latest/download/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: 269000000; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
+Source: "https://github.com/depthbomb/yay/releases/latest/download/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: 268000000; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; AppUserModelID: "{#AppUserModelId}"; AppUserModelToastActivatorCLSID: "{#AppUserModelToastActivatorClsid}"; Comment: "yay start menu shortcut"; Parameters: "--from-shortcut"
