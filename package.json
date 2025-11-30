@@ -12,7 +12,8 @@
 		"create-asars": "ts-node scripts/create-asars.ts",
 		"create-installer": "yarn create-online-files-archive && ts-node scripts/create-installer.ts",
 		"create-online-files-archive": "ts-node scripts/create-online-files-archive.ts",
-		"create-release": "ts-node scripts/create-release.ts"
+		"create-release": "ts-node scripts/create-release.ts",
+		"generate-changelog": "ts-node scripts/generate-changelog.ts"
 	},
 	"repository": {
 		"type": "git",

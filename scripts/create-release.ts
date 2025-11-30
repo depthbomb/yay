@@ -1,32 +1,52 @@
 import { config } from 'dotenv';
 import { readFileSync } from 'node:fs';
 import { Octokit } from '@octokit/rest';
+import changelog from '../static/changelog.json';
 
 config();
 
-const owner        = 'depthbomb';
-const repo         = 'yay';
-const token        = process.env.GITHUB_TOKEN;
-const setupExePath = 'build/release/yay-setup.exe';
-const archivePath  = 'build/release/yay-online-files.7z';
-const changelog    = readFileSync('./CHANGELOG.md', 'utf8').replace(/\r\n/g, '\n');
-const match        = changelog.match(/^# (\d+\.\d+\.\d+)\s*\n+([\s\S]*?)(?:\n# |\n*$)/);
-if (!match) {
-	throw new Error('Could not find latest version in CHANGELOG.md');
+type ChangeItem = string | ChangeItem[];
+
+function formatChanges(changes: ChangeItem[], depth = 0) {
+	const lines  = [] as string[];
+	const indent = depth > 0 ? '  '.repeat(depth) : '';
+
+	for (const change of changes) {
+		if (typeof change === 'string') {
+			lines.push(`${indent}- ${change}`);
+		} else if (Array.isArray(change)) {
+			lines.push(...formatChanges(change, depth + 1));
+		}
+	}
+
+	return lines;
 }
 
-const version     = match[1];
-const body        = match[2].trim();
-const tag         = version;
-const releaseName = tag;
-const octokit     = new Octokit({ auth: token });
+const owner         = 'depthbomb';
+const repo          = 'yay';
+const token         = process.env.GITHUB_TOKEN;
+const setupExePath  = 'build/release/yay-setup.exe';
+const archivePath   = 'build/release/yay-online-files.7z';
+const latestChanges = changelog[0];
+
+const version   = latestChanges.version;
+const bodyLines = [] as string[];
+
+if (latestChanges.description) {
+	bodyLines.push(latestChanges.description, '');
+}
+
+bodyLines.push(...formatChanges(latestChanges.changes));
+
+const body    = bodyLines.join('\n');
+const octokit = new Octokit({ auth: token });
 
 (async () => {
 	const release = await octokit.repos.createRelease({
 		owner,
 		repo,
-		tag_name: tag,
-		name: releaseName,
+		tag_name: version,
+		name: version,
 		body,
 		draft: false,
 		prerelease: false,
