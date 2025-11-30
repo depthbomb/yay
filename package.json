@@ -8,12 +8,12 @@
 		"package": "yarn create-asars && cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:dist && yarn postpackage",
 		"postpackage": "asar-trim ./build/win-unpacked/resources",
 		"build:p": "yarn clean-dist && cross-env ENV=PRODUCTION yarn workspaces foreach -Apti run build:p",
-		"clean-dist": "ts-node scripts/clean-dist.ts",
-		"create-asars": "ts-node scripts/create-asars.ts",
-		"create-installer": "yarn create-online-files-archive && ts-node scripts/create-installer.ts",
-		"create-online-files-archive": "ts-node scripts/create-online-files-archive.ts",
-		"create-release": "ts-node scripts/create-release.ts",
-		"generate-changelog": "ts-node scripts/generate-changelog.ts"
+		"clean-dist": "tsx scripts/clean-dist.ts",
+		"create-asars": "tsx scripts/create-asars.ts",
+		"create-installer": "yarn create-online-files-archive && tsx scripts/create-installer.ts",
+		"create-online-files-archive": "tsx scripts/create-online-files-archive.ts",
+		"create-release": "tsx scripts/create-release.ts",
+		"generate-changelog": "tsx scripts/generate-changelog.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -39,7 +39,7 @@
 		"electron-builder": "26.3.2",
 		"node-gyp": "^12.1.0",
 		"ts-morph": "27.0.2",
-		"ts-node-maintained": "^10.9.6",
+		"tsx": "^4.21.0",
 		"typescript": "^5.9.3"
 	},
 	"packageManager": "yarn@4.12.0"
