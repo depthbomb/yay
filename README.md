@@ -11,16 +11,6 @@ yay can be installed by downloading and running the latest setup from the [relea
 On first run, yay will automatically download the latest version of yt-dlp if it isn't found in your system's PATH. It will also download and use [yt-dlp's builds of FFmpeg and FFprobe](https://github.com/yt-dlp/FFmpeg-Builds).
 
 
-## Planned Features
-
-- [ ] Allow customizing yt-dlp options when downloading
-  - [x] Allow customizing output name
-  - [ ] Allow supplying raw options
-- [x] Improved download completion notifications
-- [x] Application update checking
-- [x] Improved settings UI
-
-
 ## Screenshots
 
 ![The main window of yay](art/ss1.png "The main window of yay")
