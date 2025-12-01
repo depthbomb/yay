@@ -29,7 +29,7 @@ const TabButton: FC<ITabButtonProps> = ({ title, icon, value, className }) => {
 			className={cx(
 				'flex items-center space-x-2 py-1 px-3 font-display text-sm transition-all',
 				'data-[state=inactive]:text-gray-300 data-[state=inactive]:hover:text-white',
-				'data-[state=active]:bg-brand-600 data-[state=active]:text-white data-[state=active]:rounded',
+				'data-[state=active]:bg-accent-600 data-[state=active]:text-accent-600-contrast data-[state=active]:rounded-xs',
 				className,
 			)}
 		>
@@ -57,8 +57,8 @@ export const SettingsPage = () => {
 	}, []);
 
 	return (
-		<Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-950">
-			<List className="p-3 space-y-1.5 w-38 flex flex-col shrink-0 bg-gray-900">
+		<Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-900">
+			<List className="p-3 space-y-1.5 w-38 flex flex-col shrink-0 bg-gray-950">
 				<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
 				<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
 				<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>

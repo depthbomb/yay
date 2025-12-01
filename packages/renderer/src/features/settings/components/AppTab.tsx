@@ -23,15 +23,15 @@ export const AppTab = () => {
 			<Switch label={<>Global menu (<KeyCombo keys={[{ iconPath: mdiMicrosoftWindows, name: 'win' }, 'y']}/>)</>} checked={globalMenuEnabled} defaultChecked={globalMenuEnabled} onCheckedChange={setGlobalMenuEnabled}/>
 			<SectionSeparator/>
 			<div className="space-x-2 flex items-center">
-				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-dir')}>
+				<Button onClick={() => window.ipc.invoke('main<-open-app-dir')}>
 					<Icon path={mdiFolderOpen} className="size-4"/>
 					<span>Open app folder</span>
 				</Button>
-				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-app-data')}>
+				<Button onClick={() => window.ipc.invoke('main<-open-app-data')}>
 					<Icon path={mdiFolderOpen} className="size-4"/>
 					<span>Open data folder</span>
 				</Button>
-				<Button type="brand" onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>
+				<Button onClick={() => window.ipc.invoke('main<-open-external-url', 'https://github.com/depthbomb/yay/issues/new?template=bug_report.md')}>
 					<Icon path={mdiBug} className="size-4"/>
 					<span>Report a bug</span>
 				</Button>

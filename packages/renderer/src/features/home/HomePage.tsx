@@ -6,8 +6,7 @@ import { isValidURL } from 'shared';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
-import { useRef, Activity, useEffect } from 'react';
-import Snowfall from '~/components/effects/Snowfall';
+import { lazy, useRef, Activity, useEffect } from 'react';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags } from '~/hooks';
@@ -15,6 +14,8 @@ import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, 
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };
+
+const Snowfall = lazy(() => import('~/components/effects/Snowfall'));
 
 const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 	const css = clsx(
@@ -67,8 +68,8 @@ export const HomePage = () => {
 	const accentCss = clsx(
 		'absolute -z-10',
 		{
-			'inset-0 bg-[linear-gradient(90deg,#FF0033_0%,#FF2790_100%)]': !isWorking,
-			'inset-[-550px] bg-[linear-gradient(90deg,#000_0%,#FF2790_100%)] animate-spin': isWorking
+			'inset-0 bg-accent-500': !isWorking,
+			'inset-[-550px] bg-[linear-gradient(90deg,transparent_0%,var(--accent-500)_100%)] animate-spin': isWorking
 		}
 	);
 
@@ -127,7 +128,7 @@ export const HomePage = () => {
 	return (
 		<div className="relative p-px w-screen h-screen overflow-hidden">
 			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
-			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-black">
+			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-gray-900">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">
 						<div className="space-x-2 flex items-center">
@@ -160,7 +161,7 @@ export const HomePage = () => {
 								working={isWorking}
 								disabled={!urlIsValid || isUpdating}
 							/>
-							<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
+							<div className="grow bg-gray-950 border border-gray-800 rounded-xs shadow overflow-hidden">
 								<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
 									{logs.map((line, i) => (
 										<LogLine key={i} line={line}/>

@@ -67,6 +67,7 @@ export class SetupService implements IBootstrappable {
 		await this.updateYtdlp();
 
 		this.emitStep('Done!');
+		this.window.emit('setup', 'setup->done');
 		this.setupWindow!.setProgressBar(1, { mode: 'none' });
 		this.finished = true;
 	}
@@ -134,7 +135,7 @@ export class SetupService implements IBootstrappable {
 				this.setupWindow!.close();
 				clearInterval(interval);
 			}
-		}, 100);
+		}, 250);
 
 		return promise;
 	}
@@ -196,7 +197,7 @@ export class SetupService implements IBootstrappable {
 					ytdlpPath,
 					signal,
 					progress => {
-						this.emitStep(`Downloading yt-dlp... (${progress}%)`);
+						this.emitStep(`Downloading yt-dlp... (${progress}%)`, progress);
 						this.setupWindow!.setProgressBar(progress / 100, { mode: 'normal' });
 					}
 				);
@@ -229,7 +230,7 @@ export class SetupService implements IBootstrappable {
 				await this.downloader.downloadDenoBinary(
 					signal,
 					progress => {
-						this.emitStep(`Downloading Deno... (${progress}%)`);
+						this.emitStep(`Downloading Deno... (${progress}%)`, progress);
 						this.setupWindow!.setProgressBar(progress / 100, { mode: 'normal' });
 					},
 					() => {
@@ -261,7 +262,7 @@ export class SetupService implements IBootstrappable {
 				await this.downloader.downloadFfmpegBinary(
 					signal,
 					progress => {
-						this.emitStep(`Downloading FFmpeg... (${progress}%)`);
+						this.emitStep(`Downloading FFmpeg... (${progress}%)`, progress);
 						this.setupWindow!.setProgressBar(progress / 100, { mode: 'normal' });
 					},
 					() => {
@@ -390,7 +391,7 @@ export class SetupService implements IBootstrappable {
 		}
 	}
 
-	private emitStep(message: string) {
-		this.window.emit('setup', 'setup->step', { message });
+	private emitStep(message: string, progress = -1) {
+		this.window.emit('setup', 'setup->step', { message, progress });
 	}
 }

@@ -141,11 +141,11 @@ export const TooltipV2: FC<TooltipProps> = ({
 							top: `${position.y}px`,
 						}}
 					>
-						<div className="relative bg-gray-900 text-white text-xs px-2 py-1 rounded max-w-xs">
+						<div className="relative bg-gray-950 text-white text-xs px-2 py-1 rounded max-w-xs">
 							{content}
 							{showArrow && (
 								<div
-									className={`absolute w-2 h-2 bg-gray-900 ${arrowClasses[side]}`}
+									className={`absolute w-2 h-2 bg-gray-950 ${arrowClasses[side]}`}
 								/>
 							)}
 						</div>

@@ -19,7 +19,7 @@ export const Titlebar: FC<ITitlebarProps> = ({ title, showIcon = true }) => {
 	);
 
 	return (
-		<div className="w-full h-8 flex items-center bg-linear-to-b from-black/50 to-transparent">
+		<div className="w-full h-8 flex items-center">
 			{showIcon && (
 				<div className="size-8 flex items-center justify-center shrink-0 draggable">
 					<img src={logo} className="size-4" width="16" height="16" draggable="false"/>

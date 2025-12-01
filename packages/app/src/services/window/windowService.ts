@@ -45,10 +45,22 @@ export class WindowService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerHandler('window<-minimize', (e) => {
-			const window = BrowserWindow.fromWebContents(e.sender);
-			if (window?.minimizable) {
+		this.ipc.registerHandler('window<-minimize', (_, windowName) => {
+			const window = this.windows.get(windowName);
+			if (window?.isMinimizable()) {
 				window?.minimize();
+				this.emit(windowName, 'window->is-minimized');
+			}
+		});
+
+		this.ipc.registerHandler('window<-maximize', (_, windowName) => {
+			const window = this.windows.get(windowName);
+			if (window?.isMaximized()) {
+				window?.unmaximize();
+				this.emit(windowName, 'window->is-unmaximized');
+			} else {
+				window?.maximize();
+				this.emit(windowName, 'window->is-maximized');
 			}
 		});
 	}

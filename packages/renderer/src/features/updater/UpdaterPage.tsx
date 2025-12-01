@@ -18,8 +18,8 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 	return (
 		<Trigger value={value} className={cx(
 			'py-px px-3 font-display text-sm border-2 border-transparent transition-all',
-			'data-[state=inactive]:text-gray-300 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-b-brand-600',
-			'data-[state=active]:text-white data-[state=active]:bg-brand-600 data-[state=active]:rounded',
+			'data-[state=inactive]:text-gray-300 data-[state=inactive]:hover:text-white data-[state=inactive]:hover:border-b-accent-600',
+			'data-[state=active]:text-accent-600-contrast data-[state=active]:bg-accent-600 data-[state=active]:rounded-xs',
 			className,
 		)}>
 			{props.children}
@@ -65,16 +65,13 @@ export const UpdaterPage = () => {
 	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? 'Updating...')), []);
 
 	return (release ? (
-		<Root defaultValue="changelog" className="p-4 space-y-4 w-screen h-screen flex flex-col bg-black">
+		<Root defaultValue="changelog" className="p-4 space-y-4 w-screen h-screen flex flex-col bg-gray-900">
 			<h1 className="font-display text-2xl">yay version <span className="font-mono">{release.tag_name}</span> is available</h1>
 			<List className="space-x-1.5 flex shrink-0">
 				<TabButton value="changelog">Changelog</TabButton>
 				<TabButton value="commits">Commits since your version</TabButton>
 			</List>
 			<div className="w-full overflow-y-auto">
-				<aside role="alert" className="py-1 px-2 text-sm text-yellow-50 bg-yellow-900/33 rounded border border-yellow-500">
-					<p>Releases include new features, bug fixes, and security updates, and should be installed as soon as you receive them.</p>
-				</aside>
 				<Content value="changelog">
 					{changelog !== '' ? (<HTML html={changelog}/>) : (
 						<p className="py-3 text-2xl font-light">No changelog available.</p>
@@ -102,7 +99,7 @@ export const UpdaterPage = () => {
 						<Button onClick={onCancelButtonClicked} type="danger" size="lg">Cancel</Button>
 					</>
 				) : (
-					<Button onClick={onDownloadButtonClicked} type='brand' size="lg" className="ml-auto">
+					<Button onClick={onDownloadButtonClicked} className="ml-auto">
 						<Icon path={mdiDownload} className="size-5"/>
 						<span>Download &amp; install</span>
 					</Button>
