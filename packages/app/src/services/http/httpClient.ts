@@ -18,7 +18,7 @@ export class HttpClient {
 	private readonly logger: LoggingService;
 
 	public constructor(options: HttpClientOptions, logger: LoggingService) {
-		this.name        = options?.name;
+		this.name        = options.name;
 		this.baseURL     = options?.baseURL;
 		this.userAgent   = options.userAgent;
 		this.retry       = !!options?.retry;
@@ -58,23 +58,28 @@ export class HttpClient {
 			requestURL = withQuery(requestURL, options.query);
 		}
 
-		const requestId = this.idGenerator.nextId();
+		const requestID = this.idGenerator.nextID();
 
-		this.logger.debug('Making HTTP request', { requestId, method: options?.method, url: requestURL, retry: this.retry });
+		this.logger.debug('Making HTTP request', { requestID, method: options?.method, requestURL, retry: this.retry });
 
-		let res: Response;
-		if (this.retry) {
-			res = await this.retryPolicy.execute(() => fetch(requestURL, requestInit));
-		} else {
-			res = await fetch(requestURL, requestInit);
+		try {
+			let res: Response;
+			if (this.retry) {
+				res = await this.retryPolicy.execute(() => fetch(requestURL, requestInit));
+			} else {
+				res = await fetch(requestURL, requestInit);
+			}
+
+			this.logger.debug('Finished HTTP request', {
+				requestID,
+				status: `${res.status} - ${res.statusText}`
+			});
+
+			return res;
+		} catch (err) {
+			this.logger.error('HTTP request failed', { requestID, requestURL, err });
+			throw err;
 		}
-
-		this.logger.debug('Finished HTTP request', {
-			requestId,
-			status: `${res.status} - ${res.statusText}`
-		});
-
-		return res;
 	}
 
 	public async downloadWithProgress(res: Response, outputPath: string, options: DownloadOptions) {

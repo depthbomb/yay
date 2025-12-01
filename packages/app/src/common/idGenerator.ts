@@ -1,15 +1,15 @@
 export class IDGenerator {
-	private lastId: number;
+	private lastID: number;
 
 	private readonly prefix: string;
 
 	public constructor(prefix: string) {
 		this.prefix = prefix;
-		this.lastId = 0;
+		this.lastID = 0;
 	}
 
-	public nextId(): string {
-		return this.prefix + (++this.lastId);
+	public nextID(): string {
+		return this.prefix + (++this.lastID);
 	}
 }
 
