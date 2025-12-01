@@ -1,7 +1,6 @@
 export function isValidURL(url: string): boolean {
-	let inputURL: URL;
 	try {
-		inputURL = new URL(url);
+		new URL(url);
 	} catch {
 		return false;
 	}
