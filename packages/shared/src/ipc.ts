@@ -50,6 +50,10 @@ export interface IIpcContract {
 		args: [window: string];
 		return: void;
 	}
+	'window<-close': {
+		args: [window: string];
+		return: void;
+	}
 	//
 	'setup<-show-window': {
 		args: [];
@@ -181,6 +185,7 @@ export interface IIpcEvents {
 	'window->is-unmaximized': void;
 	'window->is-blurred': void;
 	'window->is-focused': void;
+	'window->is-closed': { windowName: string; };
 	// Setup Events
 	'setup->step': { message: string; progress: number; };
 	'setup->done': void;

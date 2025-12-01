@@ -36,7 +36,7 @@ export const SetupPage = () => {
 	const progressState            = done ? 'done' : progress > -1 ? 'active' : 'indeterminate';
 
 	return (
-		<div className="relative flex flex-col justify-center h-screen w-screen bg-gray-900 border border-accent-500 overflow-hidden">
+		<div className="relative flex flex-col justify-center h-screen w-screen bg-gray-950 border border-accent-500 overflow-hidden">
 			<Titlebar windowName="setup" maximizeButton={false}/>
 			<div className="space-y-3 h-full flex flex-col items-center justify-center draggable">
 				<Logo type="lockup" className="w-56 h-auto"/>

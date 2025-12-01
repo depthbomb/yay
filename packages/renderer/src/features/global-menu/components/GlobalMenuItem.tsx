@@ -9,7 +9,7 @@ export interface IGlobalMenuItemProps extends ButtonHTMLAttributes<HTMLButtonEle
 }
 
 const globalMenuItem = cva({
-	base: 'py-1 px-2 space-x-2 flex items-center text-gray-300 rounded transition',
+	base: 'py-2 px-3 space-x-2 flex items-center text-gray-300 transition',
 	variants: {
 		disabled: {
 			false: 'hover:text-white hover:bg-white/10',

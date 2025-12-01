@@ -20,19 +20,19 @@ export const DownloadsTab = () => {
 	return (
 		<div className="flex flex-col space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Download folder</p>
+				<h2 className="font-display">Download folder</h2>
 				<TextInput value={downloadDir} onClick={() => window.ipc.invoke('main<-pick-download-dir')} type="text" readOnly className="w-full" size="sm"/>
 				<Anchor onClick={() => window.ipc.invoke('main<-pick-download-dir')} className="text-xs cursor-pointer">Change...</Anchor>
 			</div>
 			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Output name template</p>
+				<h2 className="font-display">Output name template</h2>
 				<TextInput value={downloadNameTemplate} onChange={onDownloadNameTemplateFieldChanged} type="text" className="w-full" size="sm"/>
 				<p className="text-xs">Click <Anchor href="https://github.com/yt-dlp/yt-dlp?tab=readme-ov-file#output-template" target="_blank">here</Anchor> to learn more about output name templates</p>
 			</div>
 			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Default <KeyCombo keys={['enter']}/> action</p>
+				<h2 className="font-display">Default <KeyCombo keys={['enter']}/> action</h2>
 				<Select value={defaultDownloadAction} onChange={onDefaultDownloadActionSelectionChanged} className="w-full" size="sm">
 					<option value="video">Download video</option>
 					<option value="audio">Download audio</option>

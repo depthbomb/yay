@@ -63,6 +63,14 @@ export class WindowService implements IBootstrappable {
 				this.emit(windowName, 'window->is-maximized');
 			}
 		});
+
+		this.ipc.registerHandler('window<-close', (_, windowName) => {
+			const window = this.windows.get(windowName);
+			if (window) {
+				window.close();
+				this.emitAll('window->is-closed', { windowName });
+			}
+		});
 	}
 
 	public createMainWindow(options: CreateMainWindowOptions) {
@@ -95,6 +103,10 @@ export class WindowService implements IBootstrappable {
 				return { action: 'deny' };
 			});
 		}
+
+		window.on('minimize', () => this.emit(name, 'window->is-minimized'));
+		window.on('maximize', () => this.emit(name, 'window->is-maximized'));
+		window.on('unmaximize', () => this.emit(name, 'window->is-unmaximized'));
 
 		window.once('closed', () => {
 			this.windows.delete(name);

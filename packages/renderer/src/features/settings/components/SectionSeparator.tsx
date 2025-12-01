@@ -1,5 +1,5 @@
 export const SectionSeparator = () => {
 	return (
-		<div className="-mx-3 h-0.5 shrink-0 bg-gray-900"/>
+		<div className="-mx-3 h-px bg-black/50"/>
 	);
 };

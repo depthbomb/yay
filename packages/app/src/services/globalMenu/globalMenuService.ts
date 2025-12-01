@@ -31,7 +31,7 @@ export class GlobalMenuService implements IBootstrappable {
 			browserWindowOptions: {
 				show: false,
 				width: 210,
-				height: 117,
+				height: 110,
 				resizable: false,
 				closable: false,
 				frame: false,

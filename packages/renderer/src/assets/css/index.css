@@ -107,6 +107,7 @@
 
 body {
 	@apply select-none;
+	@apply overflow-hidden;
 }
 
 a,

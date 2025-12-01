@@ -40,7 +40,7 @@ export const Titlebar: FC<ITitlebarProps> = ({ windowName, title, minimizeButton
 			<span className="size-full draggable"/>
 			{minimizeButton && <TitlebarButton onClick={() => window.ipc.invoke('window<-minimize', windowName)} type="minimize"/>}
 			{maximizeButton && <TitlebarButton onClick={() => window.ipc.invoke('window<-maximize', windowName)} type={isMaximized ? 'restore' : 'maximize'}/>}
-			<TitlebarButton onClick={() => window.ipc.invoke('setup<-cancel')} type="close"/>
+			<TitlebarButton onClick={() => window.ipc.invoke('window<-close', windowName)} type="close"/>
 		</div>
 	);
 };

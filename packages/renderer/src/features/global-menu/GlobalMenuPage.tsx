@@ -19,7 +19,7 @@ export const GlobalMenuPage = () => {
 
 	return (
 		<div className="relative p-px w-screen h-screen">
-			<div className="p-1.5 space-y-1.5 w-[calc(100vw-2px)] h-[calc(100vh-2px)] flex flex-col items-stretch bg-black">
+			<div className="w-[calc(100vw-2px)] h-[calc(100vh-2px)] flex flex-col items-stretch bg-gray-950">
 				<GlobalMenuItem
 					icon={videoIcon}
 					text="Video from clipboard"
@@ -39,7 +39,7 @@ export const GlobalMenuPage = () => {
 					onClick={() => window.ipc.invoke('global-menu<-open-download-dir')}
 				/>
 			</div>
-			<div className="absolute inset-0 bg-[linear-gradient(90deg,#FF0033_0%,#FF2790_100%)] -z-10"/>
+			<div className="absolute inset-0 bg-accent-500 -z-10"/>
 		</div>
 	);
 };

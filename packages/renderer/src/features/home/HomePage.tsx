@@ -128,7 +128,7 @@ export const HomePage = () => {
 	return (
 		<div className="relative p-px w-screen h-screen overflow-hidden">
 			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
-			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-gray-900">
+			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-gray-950">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">
 						<div className="space-x-2 flex items-center">
@@ -161,7 +161,7 @@ export const HomePage = () => {
 								working={isWorking}
 								disabled={!urlIsValid || isUpdating}
 							/>
-							<div className="grow bg-gray-950 border border-gray-800 rounded-xs shadow overflow-hidden">
+							<div className="grow bg-black/50 border border-gray-900 rounded-xs shadow overflow-hidden">
 								<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
 									{logs.map((line, i) => (
 										<LogLine key={i} line={line}/>

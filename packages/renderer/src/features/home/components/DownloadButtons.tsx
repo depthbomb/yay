@@ -14,11 +14,11 @@ export interface IDownloadButtonsProps {
 }
 
 const container = cva({
-	base: 'relative p-px w-full h-8 flex flex-row items-stretch justify-stretch shrink-0 rounded shadow',
+	base: 'relative p-px w-full h-8 flex flex-row items-stretch justify-stretch shrink-0 rounded',
 	variants: {
 		disabled: {
-			false: 'bg-linear-to-r from-accent-400 to-accent-600 after:absolute after:w-full after:h-8 after:bg-linear-to-r after:from-accent-400 after:to-accent-600 after:blur after:-z-10 animate-pulse-glow',
-			true: 'bg-gray-950',
+			false: 'bg-linear-to-r from-accent-400 to-accent-600 after:absolute after:w-full after:h-8 after:bg-linear-to-r after:from-accent-400 after:to-accent-600 after:blur after:-z-10',
+			true: 'bg-gray-800',
 		}
 	},
 	defaultVariants: {
@@ -27,11 +27,11 @@ const container = cva({
 });
 
 const button = cva({
-	base: 'flex flex-row items-center justify-center space-x-1 w-1/2 text-sm font-semibold transition-all',
+	base: 'flex flex-row items-center justify-center space-x-1 w-1/2 text-sm font-display',
 	variants: {
 		disabled: {
-			false: 'text-accent-500-contrast hover:text-white hover:bg-transparent active:text-white active:bg-black/25',
-			true: 'cursor-not-allowed! text-gray-400 bg-gray-950'
+			false: 'bg-black text-accent-500-contrast hover:text-white hover:bg-transparent active:text-white active:bg-black/50',
+			true: 'cursor-not-allowed! text-gray-500 bg-black'
 		}
 	},
 	defaultVariants: {

@@ -13,6 +13,7 @@ import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
 import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
 import type { TabsTriggerProps } from '@radix-ui/react-tabs';
+import { Titlebar } from '~/components/Titlebar';
 
 export interface ITabButtonProps extends TabsTriggerProps {
 	value: string;
@@ -27,13 +28,13 @@ const TabButton: FC<ITabButtonProps> = ({ title, icon, value, className }) => {
 		<Trigger
 			value={value}
 			className={cx(
-				'flex items-center space-x-2 py-1 px-3 font-display text-sm transition-all',
+				'flex items-center py-2 px-3 font-display text-sm transition-all',
 				'data-[state=inactive]:text-gray-300 data-[state=inactive]:hover:text-white',
-				'data-[state=active]:bg-accent-600 data-[state=active]:text-accent-600-contrast data-[state=active]:rounded-xs',
+				'data-[state=active]:bg-accent-600 data-[state=active]:text-accent-600-contrast',
 				className,
 			)}
 		>
-			<Icon className="size-4" path={icon} />
+			<Icon className="mr-auto size-5" path={icon}/>
 			<span>{title}</span>
 		</Trigger>
 	);
@@ -57,39 +58,42 @@ export const SettingsPage = () => {
 	}, []);
 
 	return (
-		<Root defaultValue="app" orientation="vertical" className="h-screen flex items-stretch bg-gray-900">
-			<List className="p-3 space-y-1.5 w-38 flex flex-col shrink-0 bg-gray-950">
-				<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
-				<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
-				<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
-				<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
-				<TabButton value="dev" title="Developer" icon={mdiCodeBraces}/>
-				{import.meta.env.DEV && <TabButton value="debug" title="Debug" icon={mdiTools}/>}
-			</List>
+		<div className="size-full flex flex-col border border-accent-500">
+			<Titlebar windowName="settings"/>
+			<Root defaultValue="app" orientation="vertical" className="h-[calc(100vh-34px)] flex items-stretch bg-gray-950 overflow-y-auto">
+				<List className="py-3 w-36 flex flex-col shrink-0 bg-black/50">
+					<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
+					<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
+					<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
+					<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
+					<TabButton value="dev" title="Developer" icon={mdiCodeBraces}/>
+					{import.meta.env.DEV && <TabButton value="debug" title="Debug" icon={mdiTools}/>}
+				</List>
 
-			<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
-				<Content value="app">
-					<AppTab />
-				</Content>
-				<Content value="downloads">
-					<DownloadsTab />
-				</Content>
-				<Content value="youtube">
-					<YoutubeTab />
-				</Content>
-				<Content value="advanced">
-					<AdvancedTab />
-				</Content>
-				<Content value="dev">
-					<DevTab />
-				</Content>
-				{import.meta.env.DEV && (
-					<Content value="debug">
-						<DebugTab/>
+				<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
+					<Content value="app">
+						<AppTab />
 					</Content>
-				)}
-			</div>
-		</Root>
+					<Content value="downloads">
+						<DownloadsTab />
+					</Content>
+					<Content value="youtube">
+						<YoutubeTab />
+					</Content>
+					<Content value="advanced">
+						<AdvancedTab />
+					</Content>
+					<Content value="dev">
+						<DevTab />
+					</Content>
+					{import.meta.env.DEV && (
+						<Content value="debug">
+							<DebugTab/>
+						</Content>
+					)}
+				</div>
+			</Root>
+		</div>
 	);
 };
 
