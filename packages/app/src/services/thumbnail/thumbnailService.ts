@@ -1,6 +1,6 @@
+import { app } from 'electron';
 import { join } from 'node:path';
 import { Readable } from 'node:stream';
-import { app, dialog } from 'electron';
 import { USER_AGENT } from '~/constants';
 import { IpcService } from '~/services/ipc';
 import { createWriteStream } from 'node:fs';
@@ -68,10 +68,6 @@ export class ThumbnailService implements IBootstrappable {
 	private async clearCache() {
 		const files = await readdir(this.cacheDir);
 		if (!files.length) {
-			await dialog.showMessageBox({
-				title: 'Clear thumbnail cache',
-				message: 'No thumbnails to clear.'
-			});
 			return;
 		}
 
@@ -80,10 +76,5 @@ export class ThumbnailService implements IBootstrappable {
 				join(this.cacheDir, file)
 			);
 		}
-
-		await dialog.showMessageBox({
-			title: 'Clear thumbnail cache',
-			message: `Deleted ${files.length} thumbnail(s).`
-		});
 	}
 }
