@@ -48,7 +48,7 @@ export const HomePage = () => {
 	const [isWorking, setIsWorking]             = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating]           = useAtom(updatingAtom);
 	const [updateAvailable, setUpdateAvailable] = useAtom(updateAvailableAtom);
-	const [isValidURL]                          = useAtom(isURLValidAtom);
+	const [urlIsValid]                          = useAtom(isURLValidAtom);
 	const [logs]                                = useAtom(logAtom);
 
 	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
@@ -158,7 +158,7 @@ export const HomePage = () => {
 								onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
 								onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
 								working={isWorking}
-								disabled={!isValidURL || isUpdating}
+								disabled={!urlIsValid || isUpdating}
 							/>
 							<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
 								<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">

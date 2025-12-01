@@ -2,7 +2,7 @@ import { useIpc, useFeatureFlags } from '~/hooks';
 import { useMemo, useState, useEffect, forwardRef } from 'react';
 import type { ImgHTMLAttributes } from 'react';
 
-import logo from '~/assets/img/logo.webp';
+import logo from '~/assets/img/logo.svg';
 
 const baseCss = 'mr-2 size-7 shrink-0 z-10' as const;
 
