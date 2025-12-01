@@ -33,7 +33,7 @@ export class LifecycleService implements IBootstrappable {
 	private _shutdownInProgress                    = false;
 	private _shutdownVetoes: ShutdownVetoRequest[] = [];
 	private _readyResolve?: () => void;
-	private _readyPromise: Promise<void>;
+	private readonly _readyPromise: Promise<void>;
 
 	public constructor(
 		private readonly logger = inject(LoggingService),

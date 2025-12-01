@@ -47,7 +47,8 @@ export class HttpClient {
 			...options,
 			headers: {
 				'user-agent': this.userAgent,
-				'accept': 'application/json'
+				'accept': 'application/json',
+				...(options?.headers ?? {})
 			},
 		};
 
