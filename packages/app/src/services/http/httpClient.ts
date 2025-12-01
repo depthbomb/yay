@@ -22,8 +22,8 @@ export class HttpClient {
 		this.baseURL     = options?.baseURL;
 		this.userAgent   = options.userAgent;
 		this.retry       = !!options?.retry;
-		this.retryPolicy = retry(handleResultType(Response, (res) => res.status > 399), {
-			maxAttempts: 10,
+		this.retryPolicy = retry(handleResultType(Response, res => res.status >= 500 || res.status === 429), {
+			maxAttempts: 5,
 			backoff: new ConstantBackoff(1_000)
 		});
 		this.idGenerator = new IDGenerator(`${this.name}#`);
@@ -83,7 +83,7 @@ export class HttpClient {
 		}
 
 		const contentLength = parseInt(res.headers.get('content-length') ?? '0');
-		const stream = createWriteStream(outputPath);
+		const stream        = createWriteStream(outputPath);
 
 		let downloadedBytes = 0;
 		const reader = res.body!.getReader();
