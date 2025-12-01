@@ -17,7 +17,7 @@ export class SettingsWindowService implements IBootstrappable {
 	) {
 		this.settingsWindow = this.window.createWindow('settings', {
 			url: this.window.useRendererRouter('settings'),
-			externalUrlRules: EXTERNAL_URL_RULES,
+			externalURLRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
 				minWidth: 610,

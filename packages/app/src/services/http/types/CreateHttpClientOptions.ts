@@ -1,3 +1,3 @@
-import type { HttpClientOptions } from './HttpClientOptions';
+import type { HTTPClientOptions } from './HTTPClientOptions';
 
-export type CreateHttpClientOptions = Omit<HttpClientOptions, 'name'>;
+export type CreateHTTPClientOptions = Omit<HTTPClientOptions, 'name'>;

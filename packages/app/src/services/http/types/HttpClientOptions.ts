@@ -1,4 +1,4 @@
-export type HttpClientOptions = {
+export type HTTPClientOptions = {
 	/**
 	 * The name of this HTTP client.
 	 */

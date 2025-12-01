@@ -41,7 +41,7 @@ const Snowfall: FC<ISnowfallProps> = ({
 			return;
 		}
 
-		let animationFrameId: number;
+		let animationFrameID: number;
 		canvas.width  = window.innerWidth;
 		canvas.height = window.innerHeight;
 
@@ -97,13 +97,13 @@ const Snowfall: FC<ISnowfallProps> = ({
 				}
 			}
 
-			animationFrameId = requestAnimationFrame(render);
+			animationFrameID = requestAnimationFrame(render);
 		};
 
 		render();
 
 		return () => {
-			cancelAnimationFrame(animationFrameId);
+			cancelAnimationFrame(animationFrameID);
 		};
 	}, [snowflakeCount, fallSpeed, maxSize, minSize, opacity, trailLength]);
 

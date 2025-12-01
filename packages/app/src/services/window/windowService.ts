@@ -22,7 +22,7 @@ type CreateWindowOptions = {
 	/**
 	 * Rules to determine if a URL should be opened externally (in the user's default browser).
 	 */
-	externalUrlRules?: Array<(url: URL) => boolean>;
+	externalURLRules?: Array<(url: URL) => boolean>;
 	/**
 	 * The function to call when the window is ready to be shown.
 	 */
@@ -65,7 +65,7 @@ export class WindowService implements IBootstrappable {
 	}
 
 	public createWindow(name: string, options: CreateWindowOptions) {
-		const { url, browserWindowOptions, externalUrlRules, onReadyToShow } = options;
+		const { url, browserWindowOptions, externalURLRules, onReadyToShow } = options;
 		if (this.windows.has(name)) {
 			this.windows.get(name)?.destroy();
 			this.windows.delete(name);
@@ -73,10 +73,10 @@ export class WindowService implements IBootstrappable {
 
 		const window = new BrowserWindow(browserWindowOptions);
 
-		if (externalUrlRules) {
+		if (externalURLRules) {
 			window.webContents.setWindowOpenHandler(({ url }) => {
-				const requestedUrl = new URL(url);
-				if (externalUrlRules.some(r => r(requestedUrl))) {
+				const requestedURL = new URL(url);
+				if (externalURLRules.some(r => r(requestedURL))) {
 					shell.openExternal(url);
 				}
 

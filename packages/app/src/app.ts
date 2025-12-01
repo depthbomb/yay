@@ -36,7 +36,7 @@ export class App {
 
 		await app.whenReady();
 
-		app.setAppUserModelId(product.appUserModelId);
+		app.setAppUserModelId(product.appUserModelID);
 
 		if (import.meta.env.DEV) {
 			await this.createDevelopmentShortcut();
@@ -81,7 +81,7 @@ export class App {
 			shell.writeShortcutLink(shortcutPath, {
 				target: EXE_PATH,
 				args: `${join(MONOREPO_ROOT_PATH, 'packages', 'app')}`,
-				appUserModelId: product.appUserModelId,
+				appUserModelId: product.appUserModelID,
 				toastActivatorClsid: product.clsid
 			});
 		}

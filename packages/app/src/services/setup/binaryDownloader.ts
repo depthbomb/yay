@@ -3,28 +3,28 @@ import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { USER_AGENT } from '~/constants';
 import { spawn } from 'node:child_process';
-import { HttpService } from '~/services/http';
+import { HTTPService } from '~/services/http';
 import { GithubService } from '~/services/github';
 import { unlink, rename } from 'node:fs/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { getExtraFileDir, getExtraFilePath } from '~/common';
-import type { HttpClient } from '~/services/http';
+import type { HTTPClient } from '~/services/http';
 
 @injectable()
 export class BinaryDownloader {
-	private readonly httpClient: HttpClient;
+	private readonly httpClient: HTTPClient;
 
 	public constructor(
 		private readonly logger = inject(LoggingService),
-		private readonly http   = inject(HttpService),
+		private readonly http   = inject(HTTPService),
 		private readonly github = inject(GithubService),
 	) {
 		this.httpClient = this.http.getClient('BinaryDownloader', { userAgent: USER_AGENT });
 	}
 
 	public async downloadYtdlpBinary(path: string, signal: AbortSignal, onProgress?: (progress: number) => void) {
-		const url = await this.resolveYtdlpDownloadUrl();
+		const url = await this.resolveYtdlpDownloadURL();
 		if (!url) {
 			return;
 		}
@@ -47,7 +47,7 @@ export class BinaryDownloader {
 		onExtracting?: () => void,
 		onCleaningUp?: () => void,
 	) {
-		const url = await this.resolveDenoDownloadUrl();
+		const url = await this.resolveDenoDownloadURL();
 		if (!url) {
 			throw new Error('Could not resolve Deno release download URL');
 		}
@@ -69,7 +69,7 @@ export class BinaryDownloader {
 		onExtracting?: () => void,
 		onCleaningUp?: () => void,
 	) {
-		const url = await this.resolveFfmpegDownloadUrl();
+		const url = await this.resolveFfmpegDownloadURL();
 		if (!url) {
 			throw new Error('Could not resolve FFmpeg release download URL');
 		}
@@ -85,7 +85,7 @@ export class BinaryDownloader {
 		);
 	}
 
-	private async resolveYtdlpDownloadUrl() {
+	private async resolveYtdlpDownloadURL() {
 		const release = await this.github.getLatestRepositoryRelease('yt-dlp', 'yt-dlp');
 		if (!release) {
 			return;
@@ -96,7 +96,7 @@ export class BinaryDownloader {
 		return asset?.browser_download_url;
 	}
 
-	private async resolveDenoDownloadUrl() {
+	private async resolveDenoDownloadURL() {
 		const release = await this.github.getLatestRepositoryRelease('denoland', 'deno');
 		if (!release) {
 			return;
@@ -107,7 +107,7 @@ export class BinaryDownloader {
 		return asset?.browser_download_url;
 	}
 
-	private async resolveFfmpegDownloadUrl() {
+	private async resolveFfmpegDownloadURL() {
 		const release = await this.github.getLatestRepositoryRelease('yt-dlp', 'FFmpeg-Builds');
 		if (!release) {
 			this.logger.error('Could not retrieve latest release for yt-dlp/FFmpeg-Builds');

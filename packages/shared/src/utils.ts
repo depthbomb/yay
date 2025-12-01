@@ -1,7 +1,7 @@
-export function isValidHttpUrl(url: string): boolean {
-	let inputUrl: URL;
+export function isValidURL(url: string): boolean {
+	let inputURL: URL;
 	try {
-		inputUrl = new URL(url);
+		inputURL = new URL(url);
 	} catch {
 		return false;
 	}

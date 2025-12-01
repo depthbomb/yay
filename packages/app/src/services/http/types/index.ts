@@ -1,5 +1,5 @@
-export * from './CreateHttpClientOptions';
+export * from './CreateHTTPClientOptions';
 export * from './DownloadOptions';
 export * from './GETOptions';
-export * from './HttpClientOptions';
+export * from './HTTPClientOptions';
 export * from './RequestOptions';

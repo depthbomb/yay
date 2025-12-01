@@ -5,9 +5,9 @@
 	"applicationName": "yay",
 	"description": "Yet Another YouTube Downloader",
 	"dirName": "yay",
-	"appId": "{{B1626C8A-95AF-4CB6-A6A2-6902B3E8FD3E}",
+	"appID": "{{B1626C8A-95AF-4CB6-A6A2-6902B3E8FD3E}",
 	"clsid": "A1C754B6-B342-44D5-AD12-B67208AC34A9",
-	"appUserModelId": "CaprineLogic.yay",
+	"appUserModelID": "CaprineLogic.yay",
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay"
 }

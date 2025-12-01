@@ -24,7 +24,7 @@ export class YtdlpService implements IBootstrappable {
 
 	private proc: Nullable<ChildProcess> = null;
 
-	private readonly youtubeUrlPattern: RegExp;
+	private readonly youtubeURLPattern: RegExp;
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
@@ -36,7 +36,7 @@ export class YtdlpService implements IBootstrappable {
 		private readonly thumbnail     = inject(ThumbnailService),
 		private readonly process       = inject(ProcessService)
 	) {
-		this.youtubeUrlPattern = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+		this.youtubeURLPattern = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
 	}
 
 	public get isBusy() {
@@ -89,7 +89,7 @@ export class YtdlpService implements IBootstrappable {
 		let notificationImage          = getFilePathFromAsar('notifications', 'logo.png');
 		let notificationImagePlacement = 'appLogoOverride';
 
-		const youtubeMatch = url.match(this.youtubeUrlPattern);
+		const youtubeMatch = url.match(this.youtubeURLPattern);
 		const ytdlpArgs    = [] as string[];
 
 		if (audioOnly) {
@@ -135,8 +135,9 @@ export class YtdlpService implements IBootstrappable {
 			}
 		});
 		this.proc.stderr!.on('data', (data: Buffer) => {
-			const line = data.toString().trim();
-			emitLog(line);
+			emitLog(
+				data.toString().trim()
+			);
 		});
 		this.proc.once('close', async code => {
 			this.logger.info('yt-dlp process exited', { code });
@@ -238,12 +239,14 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	private cleanupProcess() {
-		if (this.proc) {
-			this.proc.stdout?.removeAllListeners('data');
-			this.proc.removeAllListeners('close');
-			this.proc.removeAllListeners('error');
-			this.proc = null;
+		if (!this.proc) {
+			return;
 		}
+
+		this.proc.stdout?.removeAllListeners('data');
+		this.proc.removeAllListeners('close');
+		this.proc.removeAllListeners('error');
+		this.proc = null;
 	}
 
 	private showCompletionNotification(downloadDir: string, image: string, imagePlacement = 'appLogoOverride') {

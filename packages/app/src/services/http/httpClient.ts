@@ -6,9 +6,9 @@ import { finished } from 'node:stream/promises';
 import { retry, ConstantBackoff, handleResultType } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
 import type { LoggingService } from '~/services/logging';
-import type { GETOptions, RequestOptions, HttpClientOptions, DownloadOptions } from './types';
+import type { GETOptions, RequestOptions, HTTPClientOptions, DownloadOptions } from './types';
 
-export class HttpClient {
+export class HTTPClient {
 	private readonly name: string;
 	private readonly baseURL?: string;
 	private readonly userAgent: string;
@@ -17,7 +17,7 @@ export class HttpClient {
 	private readonly idGenerator: IDGenerator;
 	private readonly logger: LoggingService;
 
-	public constructor(options: HttpClientOptions, logger: LoggingService) {
+	public constructor(options: HTTPClientOptions, logger: LoggingService) {
 		this.name        = options.name;
 		this.baseURL     = options?.baseURL;
 		this.userAgent   = options.userAgent;

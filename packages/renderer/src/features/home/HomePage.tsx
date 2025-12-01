@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { mdiUpdate } from '@mdi/js';
-import { isValidHttpUrl } from 'shared';
+import { isValidURL } from 'shared';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
@@ -11,7 +11,7 @@ import Snowfall from '~/components/effects/Snowfall';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags } from '~/hooks';
-import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isUrlValidAtom } from '~/atoms/app';
+import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };
@@ -44,11 +44,11 @@ export const HomePage = () => {
 	const [,clearLog]                           = useAtom(clearLogAtom);
 	const [,pushToLog]                          = useAtom(pushToLogAtom);
 	const [,resetApp]                           = useAtom(resetAppAtom);
-	const [url, setUrl]                         = useAtom(urlAtom);
+	const [url, setURL]                         = useAtom(urlAtom);
 	const [isWorking, setIsWorking]             = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating]           = useAtom(updatingAtom);
 	const [updateAvailable, setUpdateAvailable] = useAtom(updateAvailableAtom);
-	const [isValidUrl]                          = useAtom(isUrlValidAtom);
+	const [isValidURL]                          = useAtom(isURLValidAtom);
 	const [logs]                                = useAtom(logAtom);
 
 	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
@@ -59,7 +59,7 @@ export const HomePage = () => {
 	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
 	const [onUpdateAvailable]     = useIpc('updater->outdated');
 
-	const mediaUrlEl  = useRef<HTMLInputElement>(null);
+	const mediaURLEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
 
 	const [isEnabled] = useFeatureFlags();
@@ -74,16 +74,16 @@ export const HomePage = () => {
 
 	const tryPasting = async () => {
 		const text = await navigator.clipboard.readText();
-		if (isValidHttpUrl(text)) {
-			setUrl(text);
+		if (isValidURL(text)) {
+			setURL(text);
 		}
 	};
 	const trySelectingInput = () => {
-		mediaUrlEl.current?.focus();
-		mediaUrlEl.current?.select();
+		mediaURLEl.current?.focus();
+		mediaURLEl.current?.select();
 	};
 	const trySubmitting = async () => {
-		if (!isValidUrl) {
+		if (!isValidURL) {
 			return;
 		}
 
@@ -99,7 +99,7 @@ export const HomePage = () => {
 
 	useEffect(() => {
 		onDownloadStarted(({ url }) => {
-			setUrl(url);
+			setURL(url);
 			setIsWorking(true);
 			clearLog();
 			pushToLog('OPERATION STARTED');
@@ -122,7 +122,7 @@ export const HomePage = () => {
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
 	}, [logs]);
 
-	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => setUrl(event.target.value.trim());
+	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => setURL(event.target.value.trim());
 
 	return (
 		<div className="relative p-px w-screen h-screen overflow-hidden">
@@ -146,7 +146,7 @@ export const HomePage = () => {
 								</a>
 							</Activity>
 							<TextInput
-								ref={mediaUrlEl}
+								ref={mediaURLEl}
 								onChange={onInputChange}
 								value={url}
 								placeholder="Media URL"
@@ -158,7 +158,7 @@ export const HomePage = () => {
 								onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
 								onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
 								working={isWorking}
-								disabled={!isValidUrl || isUpdating}
+								disabled={!isValidURL || isUpdating}
 							/>
 							<div className="grow bg-black border border-gray-600 rounded overflow-hidden">
 								<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">

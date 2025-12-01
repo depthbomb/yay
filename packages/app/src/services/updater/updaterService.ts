@@ -3,7 +3,7 @@ import { app } from 'electron';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
-import { HttpService } from '~/services/http';
+import { HTTPService } from '~/services/http';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
 import { LoggingService } from '~/services/logging';
@@ -18,7 +18,7 @@ import type { BrowserWindow } from 'electron';
 import type { Maybe, Nullable } from 'shared';
 import type { Endpoints } from '@octokit/types';
 import type { IBootstrappable } from '~/common';
-import type { HttpClient } from '~/services/http';
+import type { HTTPClient } from '~/services/http';
 
 type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
 
@@ -33,7 +33,7 @@ export class UpdaterService implements IBootstrappable {
 	private checkInterval: Maybe<NodeJS.Timeout>;
 	private updaterWindow: Maybe<BrowserWindow>;
 
-	private readonly httpClient: HttpClient;
+	private readonly httpClient: HTTPClient;
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
@@ -41,7 +41,7 @@ export class UpdaterService implements IBootstrappable {
 		private readonly ipc           = inject(IpcService),
 		private readonly window        = inject(WindowService),
 		private readonly settings      = inject(SettingsService),
-		private readonly http          = inject(HttpService),
+		private readonly http          = inject(HTTPService),
 		private readonly github        = inject(GithubService),
 		private readonly notifications = inject(NotificationsService),
 	) {
@@ -119,11 +119,11 @@ export class UpdaterService implements IBootstrappable {
 
 		const token       = this.cts.token;
 		const signal      = token.toAbortSignal();
-		const downloadUrl = release.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
+		const downloadURL = release.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
 
-		this.logger.info('Downloading latest release', { downloadUrl });
+		this.logger.info('Downloading latest release', { downloadURL });
 
-		const res = await this.httpClient.get(downloadUrl, { signal });
+		const res = await this.httpClient.get(downloadURL, { signal });
 		if (!res.ok) {
 			return;
 		}
@@ -167,7 +167,7 @@ export class UpdaterService implements IBootstrappable {
 
 		this.updaterWindow = this.window.createWindow('updater', {
 			url: this.window.useRendererRouter('updater'),
-			externalUrlRules: EXTERNAL_URL_RULES,
+			externalURLRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
 				width: 800,

@@ -5,7 +5,7 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import { ESettingsKey, isValidHttpUrl } from 'shared';
+import { ESettingsKey, isValidURL } from 'shared';
 import { LifecycleService } from '~/services/lifecycle';
 import { shell, screen, clipboard, globalShortcut } from 'electron';
 import type { BrowserWindow } from 'electron';
@@ -119,7 +119,7 @@ export class GlobalMenuService implements IBootstrappable {
 		}
 
 		const text = clipboard.readText('clipboard');
-		if (!isValidHttpUrl(text)) {
+		if (!isValidURL(text)) {
 			this.logger.debug('Invalid URL in clipboard, ignoring');
 			return;
 		}

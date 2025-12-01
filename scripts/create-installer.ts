@@ -10,8 +10,8 @@ const definitions: { [key: string]: string } = {
 	Version: product.version,
 	RawVersion: product.version.replace(/-\w+$/, ''),
 	ExeBasename: product.applicationName,
-	AppId: product.appId,
-	AppUserModelId: product.appUserModelId,
+	AppID: product.appID,
+	AppUserModelID: product.appUserModelID,
 	AppUserModelToastActivatorClsid: product.clsid,
 	RepoURL: product.repoURL,
 };
