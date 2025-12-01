@@ -29,3 +29,7 @@ export type SettingsApi = {
 export type FeatureFlagsApi = {
 	getFeatureFlags(...args: IIpcContract['feature-flag<-get-feature-flags']['args']): IIpcContract['feature-flag<-get-feature-flags']['return'];
 };
+
+export function cast<T>(value: unknown) {
+	return value as T;
+}

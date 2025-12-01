@@ -1,6 +1,6 @@
-import { ESettingsKey } from 'shared';
 import { IpcService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
+import { Flag, ESettingsKey } from 'shared';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
 import { unlink, copyFile } from 'fs/promises';
@@ -18,6 +18,7 @@ import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class MainWindowService implements IBootstrappable {
+	private readonly pinned: Flag;
 	private readonly mainWindow: BrowserWindow;
 
 	public constructor(
@@ -31,6 +32,7 @@ export class MainWindowService implements IBootstrappable {
 		private readonly tray           = inject(TrayService, { lazy: true }),
 		private readonly ytdlp          = inject(YtdlpService),
 	) {
+		this.pinned = new Flag(false);
 		this.mainWindow = this.window.createMainWindow({
 			url: this.window.useRendererRouter(),
 			externalURLRules: EXTERNAL_URL_RULES,
@@ -56,7 +58,10 @@ export class MainWindowService implements IBootstrappable {
 			}
 		});
 		this.mainWindow.on('blur', () => {
-			this.mainWindow.hide();
+			if (this.pinned.isFalse) {
+				this.mainWindow.hide();
+			}
+
 			this.window.emitMain('window->is-blurred');
 		});
 		this.mainWindow.on('focus', () => {
@@ -120,6 +125,10 @@ export class MainWindowService implements IBootstrappable {
 			}
 
 			return null;
+		});
+		this.ipc.registerHandler('main-window<-toggle-pinned', () => {
+			this.pinned.toggle();
+			return this.pinned.value;
 		});
 		this.ipc.registerHandler('yt-dlp<-recheck-binaries', async () => {
 			this.logger.info('Rechecking binaries');

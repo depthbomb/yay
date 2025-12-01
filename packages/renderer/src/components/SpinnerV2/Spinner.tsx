@@ -1,14 +1,14 @@
 import { cx } from 'cva';
 import { forwardRef } from 'react';
 import css from './spinner.module.css';
-import type { SVGAttributes } from 'react';
+import type { Maybe } from 'shared';
+import type { Ref, SVGAttributes } from 'react';
 
 type SpinnerProps = SVGAttributes<SVGElement>;
 
 export const Spinner = forwardRef<SVGElement, SpinnerProps>(({ className, ...props }, ref) => {
 	return (
-		// https://github.com/tanem/react-svg/issues/2753#issue-2100751453
-		<svg ref={ref as any} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none" className={cx(css.spinner, className)} {...props}>
+		<svg ref={ref as Maybe<Ref<SVGSVGElement>>} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" fill="none" className={cx(css.spinner, className)} {...props}>
 			<path d="M18 10C17.4696 10 16.9609 9.78929 16.5858 9.41421C16.2107 9.03914 16 8.53043 16 8V3H20V8C20 8.53043 19.7893 9.03914 19.4142 9.41421C19.0391 9.78929 18.5304 10 18 10Z" fill="currentColor"/>
 			<path d="M23.66 12.34C23.2875 11.9653 23.0784 11.4584 23.0784 10.93C23.0784 10.4016 23.2875 9.89473 23.66 9.52L27.19 6L30 8.81L26.47 12.34C26.0957 12.7095 25.5909 12.9166 25.065 12.9166C24.5391 12.9166 24.0343 12.7095 23.66 12.34Z" fill="currentColor"/>
 			<path d="M33 20H28C27.4696 20 26.9609 19.7893 26.5858 19.4142C26.2107 19.0391 26 18.5304 26 18C26 17.4696 26.2107 16.9609 26.5858 16.5858C26.9609 16.2107 27.4696 16 28 16H33V20Z" fill="currentColor"/>

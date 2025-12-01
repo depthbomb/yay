@@ -13,21 +13,6 @@ export interface IIpcContract {
 		args: [type: 'input' | 'input-selection' | 'text-selection'];
 		return: void;
 	}
-	//
-	'window<-minimize': {
-		args: [];
-		return: void;
-	}
-	//
-	'setup<-show-window': {
-		args: [];
-		return: void;
-	}
-	'setup<-cancel': {
-		args: [];
-		return: void;
-	}
-	//
 	'main<-pick-download-dir': {
 		args: [];
 		return: Nullable<string>;
@@ -51,6 +36,25 @@ export interface IIpcContract {
 	'main<-open-external-url': {
 		args: [url: string];
 		return: void;
+	}
+	//
+	'window<-minimize': {
+		args: [];
+		return: void;
+	}
+	//
+	'setup<-show-window': {
+		args: [];
+		return: void;
+	}
+	'setup<-cancel': {
+		args: [];
+		return: void;
+	}
+	//
+	'main-window<-toggle-pinned': {
+		args: [];
+		return: boolean;
 	}
 	//
 	'settings<-set': {

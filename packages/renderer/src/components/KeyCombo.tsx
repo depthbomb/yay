@@ -5,7 +5,7 @@ import type { FC } from 'react';
 
 export interface IKeyComboProps {
 	keys: Array<string | { iconPath: string; name: string; }>;
-};
+}
 
 export const KeyCombo: FC<IKeyComboProps> = ({ keys }) => {
 	const transformKey = (key: string) => {
