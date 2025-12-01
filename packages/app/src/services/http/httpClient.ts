@@ -82,58 +82,19 @@ export class HttpClient {
 			throw new Error(`HTTP ${res.status}: ${res.statusText}`);
 		}
 
-		const contentLength = parseInt(res.headers.get('content-length') ?? '0');
-		const stream        = createWriteStream(outputPath);
+		const contentLength = Number(res.headers.get('content-length') ?? 0);
+		const nodeStream    = Readable.fromWeb(res.body!);
+		const file          = createWriteStream(outputPath);
 
 		let downloadedBytes = 0;
-		const reader = res.body!.getReader();
 
-		if (options.signal.aborted) {
-			reader.cancel();
-			stream.destroy();
-			return;
-		}
+		nodeStream.on('data', (chunk: Buffer) => {
+			downloadedBytes += chunk.length;
+			if (contentLength && options.onProgress) {
+				options.onProgress(Math.round((downloadedBytes / contentLength) * 100));
+			}
+		});
 
-		const abortHandler = () => {
-			reader.cancel();
-			stream.destroy();
-		};
-		options.signal.addEventListener('abort', abortHandler);
-
-		try {
-			const readable = new Readable({
-				async read() {
-					try {
-						const { done, value } = await reader.read();
-						if (done) {
-							this.push(null);
-							return;
-						}
-
-						downloadedBytes += value.length;
-						if (contentLength && options.onProgress) {
-							const progress = (downloadedBytes / contentLength) * 100;
-							options.onProgress(Math.round(progress));
-						}
-
-						this.push(value);
-					} catch (err) {
-						if (options.signal.aborted) {
-							this.push(null);
-						} else {
-							this.destroy(err as Error);
-						}
-					}
-				}
-			});
-
-			await finished(readable.pipe(stream)).catch(err => {
-				if (!options.signal.aborted) {
-					throw err;
-				}
-			});
-		} finally {
-			options.signal.removeEventListener('abort', abortHandler);
-		}
+		return finished(nodeStream.pipe(file), { signal: options.signal })
 	}
 }
