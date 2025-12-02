@@ -46,7 +46,7 @@ export const AdvancedTab = () => {
 			<Switch label="Hardware acceleration" subtitle="Requires an app restart" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
 			<SectionSeparator/>
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Actions</p>
+				<h2 className="font-display">Actions</h2>
 				<Button onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
 					<Icon path={mdiDownload} className="size-4"/>
 					<span>Recheck required binaries</span>

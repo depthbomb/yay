@@ -11,7 +11,7 @@ const textInputBase = cva({
 });
 
 const base = cva({
-	base: 'py-1 px-3 text-lg bg-gray-800 border border-gray-700 rounded-xs shadow outline-none hover:bg-gray-700 hover:border-gray-600 focus:bg-gray-800 focus:border-accent-600',
+	base: 'py-1 px-3 text-lg bg-gray-900 border border-gray-800 rounded-xs shadow outline-none hover:bg-gray-800 hover:border-gray-700 focus:bg-gray-800 focus:border-accent-600',
 	variants: {
 		size: {
 			sm: 'px-2 text-sm',

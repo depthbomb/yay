@@ -25,9 +25,14 @@ export const Titlebar: FC<ITitlebarProps> = ({ windowName, title, minimizeButton
 	);
 
 	useEffect(() => {
-		onWindowMaximized(() => setIsMaximized(true));
-		onWindowRestored(()  => setIsMaximized(false));
-	});
+		const offMaximized = onWindowMaximized(() => setIsMaximized(true));
+		const offRestored  = onWindowRestored(()  => setIsMaximized(false));
+
+		return () => {
+			offMaximized();
+			offRestored();
+		};
+	}, []);
 
 	return (
 		<div className="w-full h-8 flex items-center">

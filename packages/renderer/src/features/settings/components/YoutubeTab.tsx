@@ -30,7 +30,7 @@ export const YoutubeTab = () => {
 	return (
 		<div className="flex flex-col items space-y-6">
 			<div className="flex flex-col items-start space-y-1.5">
-				<p>Cookies file</p>
+				<h2 className="font-display">Cookies file</h2>
 				<TextInput value={cookiesFilePath ?? 'None'} onClick={() => window.ipc.invoke('main<-pick-cookies-file')} type="text" readOnly className="w-full" size="sm"/>
 				<div className="w-full flex items-center justify-between">
 					<Anchor onClick={() => window.ipc.invoke('main<-pick-cookies-file')} className="text-xs cursor-pointer">Change...</Anchor>

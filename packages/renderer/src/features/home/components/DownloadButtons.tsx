@@ -31,7 +31,7 @@ const button = cva({
 	variants: {
 		disabled: {
 			false: 'bg-black text-accent-500-contrast hover:text-white hover:bg-transparent active:text-white active:bg-black/50',
-			true: 'cursor-not-allowed! text-gray-500 bg-black'
+			true: 'cursor-not-allowed! text-gray-500 bg-gray-900'
 		}
 	},
 	defaultVariants: {

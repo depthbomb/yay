@@ -42,11 +42,9 @@
 			"christian-kohler.npm-intellisense",
 			"dbaeumer.vscode-eslint",
 			"tamasfe.even-better-toml",
-			"stylelint.vscode-stylelint",
 			"yoavbls.pretty-ts-errors",
 			"bradlc.vscode-tailwindcss",
 			"chouzz.vscode-innosetup",
-			"mikestead.dotenv",
 			"mrmlnc.vscode-json5",
 			"rust-lang.rust-analyzer"
 		]
