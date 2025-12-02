@@ -1,5 +1,5 @@
 import { cx } from 'cva';
-import logo from '~/assets/img/logo.svg';
+import { Logo } from './Logo';
 import { useState, useEffect } from 'react';
 import { useIpc, useWindowFocus } from '~/hooks';
 import { TitlebarButton } from './TitlebarButton';
@@ -38,7 +38,7 @@ export const Titlebar: FC<ITitlebarProps> = ({ windowName, title, minimizeButton
 		<div className="w-full h-8 flex items-center">
 			{showIcon && (
 				<div className="size-8 flex items-center justify-center shrink-0 draggable">
-					<img src={logo} className="size-4" width="16" height="16" draggable="false"/>
+					<Logo type="icon" className="size-4"/>
 				</div>
 			)}
 			{title && <p className={cx('min-w-max h-8 leading-8 font-os text-xs draggable', focused ? 'opacity-100' : 'opacity-70')}>{title}</p>}

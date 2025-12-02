@@ -9,7 +9,7 @@ export interface IProgressBarProps {
 
 export const ProgressBar: FC<IProgressBarProps> = ({ state, value, className }) => {
 	return (
-		<div className={cx('relative h-2 bg-gray-800 rounded-full overflow-hidden', className)}>
+		<div className={cx('relative h-2.5 bg-gray-800 rounded-full overflow-hidden', className)}>
 			<div className={cx(
 				'absolute inset-0 rounded-r-full',
 				{

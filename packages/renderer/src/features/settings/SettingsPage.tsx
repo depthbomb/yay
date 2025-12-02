@@ -1,15 +1,15 @@
 import { cx } from 'cva';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
+import { useIpc } from '~/hooks';
+import { lazy, useEffect} from 'react';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';
-import { Titlebar } from '~/components/Titlebar';
-import { lazy, useEffect, useState} from 'react';
 import { YoutubeTab } from './components/YoutubeTab';
+import { WindowShell } from '~/components/WindowShell';
 import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { DownloadsTab } from './components/DownloadsTab';
-import { useIpc, useTitle, useWindowFocus } from '~/hooks';
 import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
 import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
@@ -41,15 +41,12 @@ const TabButton: FC<ITabButtonProps> = ({ title, icon, value, className }) => {
 };
 
 export const SettingsPage = () => {
-	const [,setIsWorking]           = useAtom(workingAtom);
-	const [,setIsUpdating]          = useAtom(updatingAtom);
-	const [isFocused, setIsFocused] = useState(true);
-	const [onDownloadStarted]       = useIpc('yt-dlp->download-started');
-	const [onDownloadFinished]      = useIpc('yt-dlp->download-finished');
-	const [onUpdatingYtdlpBinary]   = useIpc('yt-dlp->updating-binary');
-	const [onUpdatedYtdlpBinary]    = useIpc('yt-dlp->updated-binary');
-
-	useTitle('Settings');
+	const [,setIsWorking]         = useAtom(workingAtom);
+	const [,setIsUpdating]        = useAtom(updatingAtom);
+	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
+	const [onDownloadFinished]    = useIpc('yt-dlp->download-finished');
+	const [onUpdatingYtdlpBinary] = useIpc('yt-dlp->updating-binary');
+	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
 
 	useEffect(() => {
 		onUpdatingYtdlpBinary(() => setIsUpdating(true));
@@ -58,17 +55,9 @@ export const SettingsPage = () => {
 		onDownloadFinished(() => setIsWorking(false));
 	}, []);
 
-	useWindowFocus(
-		() => setIsFocused(true),
-		() => setIsFocused(false),
-	);
 
 	return (
-		<div className={cx('size-full flex flex-col border', {
-			'border-accent-500': isFocused,
-			'border-gray-900': !isFocused,
-		})}>
-			<Titlebar title="Settings" windowName="settings"/>
+		<WindowShell windowName="settings" title="Settings">
 			<Root defaultValue="app" orientation="vertical" className="h-[calc(100vh-34px)] flex items-stretch bg-gray-950 overflow-y-auto">
 				<List className="py-3 w-36 flex flex-col shrink-0 bg-black/50">
 					<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
@@ -101,7 +90,7 @@ export const SettingsPage = () => {
 					)}
 				</div>
 			</Root>
-		</div>
+		</WindowShell>
 	);
 };
 
