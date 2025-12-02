@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import { cx } from 'cva';
 import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { mdiUpdate } from '@mdi/js';
@@ -18,7 +18,7 @@ type LogLineProps = { line: string; };
 const Snowfall = lazy(() => import('~/components/effects/Snowfall'));
 
 const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
-	const css = clsx(
+	const css = cx(
 		'py-1 px-2 flex flex-row items-center text-[10px] font-mono wrap-anywhere even:bg-gray-900',
 		{
 			'text-sky-400': line.includes('[info]'),
@@ -65,7 +65,7 @@ export const HomePage = () => {
 
 	const [isEnabled] = useFeatureFlags();
 
-	const accentCss = clsx(
+	const accentCss = cx(
 		'absolute -z-10',
 		{
 			'inset-0 bg-accent-500': !isWorking,

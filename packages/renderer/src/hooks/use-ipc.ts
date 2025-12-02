@@ -1,36 +1,38 @@
-import { useRef, useEffect } from 'react';
-import type { Nullable, IIpcEvents } from 'shared';
+import { useRef, useEffect, useCallback } from 'react';
+import type { IIpcEvents } from 'shared';
 
 type Listener<K extends keyof IIpcEvents> = (payload: IIpcEvents[K]) => void;
-type ListenerRemover                      = Nullable<() => void>;
 
 export const useIpc = <K extends keyof IIpcEvents>(channel: K) => {
-	const listenerRemovers = useRef<ListenerRemover[]>([]);
+	const listenerRemovers = useRef<Set<() => void>>(new Set());
 
-	const on = (listener: Listener<K>) => {
-		const removeListener = window.ipc.on(channel, listener);
+	const on = useCallback((listener: Listener<K>) => {
+		const remove = window.ipc.on(channel, listener);
+		listenerRemovers.current.add(remove);
 
-		listenerRemovers.current.push(removeListener);
+		return () => {
+			remove();
+			listenerRemovers.current.delete(remove);
+		};
+	}, [channel]);
 
-		return removeListener;
-	};
-
-	const once = (listener: Listener<K>) => {
+	const once = useCallback((listener: Listener<K>) => {
 		return window.ipc.once(channel, listener);
-	};
+	}, [channel]);
 
-	const off = (listener: Listener<K>) => {
+	const off = useCallback((listener: Listener<K>) => {
 		return window.ipc.off(channel, listener);
-	};
+	}, [channel]);
 
 	useEffect(() => {
+		const removers = listenerRemovers.current;
 		return () => {
-			for (const removeListener of listenerRemovers.current) {
-				removeListener?.();
+			for (const remove of removers) {
+				remove();
 			}
 
-			listenerRemovers.current = [];
-		}
+			removers.clear();
+		};
 	}, []);
 
 	return [on, once, off] as const;
