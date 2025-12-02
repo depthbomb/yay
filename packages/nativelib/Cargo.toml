@@ -7,8 +7,8 @@ name = "nativelib"
 crate-type = ["cdylib"]
 
 [dependencies]
-napi = { version = "3.5.2", features = ["async"] }
-napi-derive = "3.3.3"
+napi = { version = "3.6.1", features = ["async"] }
+napi-derive = "3.4.0"
 
 [dependencies.windows]
 version = "0.62.2"

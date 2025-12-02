@@ -77,7 +77,6 @@ export class MainWindowService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		//#region IPC
 		this.ipc.registerHandler('main<-open-download-dir', async () => {
 			this.logger.info('Opening download directory');
 
@@ -152,16 +151,13 @@ export class MainWindowService implements IBootstrappable {
 
 			this.lifecycle.requestShutdown();
 		});
-		//#endregion
 
-		//#region Events
 		this.ytdlp.events.on('downloadStarted',  () => this.mainWindow.setProgressBar(1, { mode: 'indeterminate' }));
 		this.ytdlp.events.on('downloadProgress', p => this.mainWindow.setProgressBar(p, { mode: 'normal' }));
 		this.ytdlp.events.on('downloadFinished', () => {
 			this.mainWindow.setProgressBar(0, { mode: 'none' });
 			this.mainWindow.flashFrame(true);
 		});
-		//#endregion
 
 		this.lifecycle.events.on('shutdown', () => {
 			if (this.mainWindow) {

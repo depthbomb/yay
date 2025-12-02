@@ -2,10 +2,10 @@ import { IpcService } from '~/services/ipc';
 import { PRELOAD_PATH, } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
+import { isValidURL, ESettingsKey } from 'shared';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import { ESettingsKey, isValidURL } from 'shared';
 import { LifecycleService } from '~/services/lifecycle';
 import { shell, screen, clipboard, globalShortcut } from 'electron';
 import type { BrowserWindow } from 'electron';
@@ -114,7 +114,6 @@ export class GlobalMenuService implements IBootstrappable {
 		this.hideMenu();
 
 		if (this.ytdlp.isBusy) {
-			this.logger.warn('Tried to download from clipboard when we are busy?');
 			return;
 		}
 
