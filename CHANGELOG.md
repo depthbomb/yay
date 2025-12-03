@@ -1,3 +1,14 @@
+# 1.36.0
+
+- Overhauled UI and various elements
+  - The system's accent color is now used to style many components
+  - The settings and updater window now use a custom titlebar and frame
+  - Redesigned settings window sidebar
+  - Updated titlebar control button icons
+- Various minor optimizations
+
+---
+
 # 1.35.0
 
 - Updated the enabled and disabled style of the download buttons
