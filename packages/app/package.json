@@ -37,7 +37,7 @@
 		"@types/node": "^24.10.1",
 		"@types/semver": "^7.7.1",
 		"cross-env": "^10.1.0",
-		"electron": "39.2.4",
+		"electron": "39.2.5",
 		"eslint": "^9.39.1",
 		"globals": "^16.5.0",
 		"jiti": "^2.6.1",
