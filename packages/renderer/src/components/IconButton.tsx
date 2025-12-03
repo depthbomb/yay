@@ -12,10 +12,10 @@ export interface IIconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonEl
 };
 
 const iconButton = cva({
-	base: 'p-1 flex items-center rounded-full transition-all',
+	base: 'p-1 flex items-center rounded transition-[color,background-color]',
 	variants: {
 		disabled: {
-			false: 'text-gray-300 hover:text-white hover:bg-gray-600 active:bg-gray-700',
+			false: 'text-gray-300 outline-offset-2 outline-accent-500/50 hover:text-white hover:bg-gray-800 active:bg-gray-900 focus:outline-2',
 			true: 'text-gray-500 cursor-not-allowed'
 		}
 	},

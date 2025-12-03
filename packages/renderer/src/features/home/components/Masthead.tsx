@@ -1,5 +1,5 @@
 import { cx } from 'cva';
-import { SeasonalLogo } from './SeasonalLogo';
+import { Logo } from '~/components/Logo';
 import { mdiCog, mdiFolderOpen } from '@mdi/js';
 import { IconButton } from '~/components/IconButton';
 import { useThrottle, useModifierKey } from '~/hooks';
@@ -17,7 +17,7 @@ export const Masthead = () => {
 	};
 
 	const headerCss = cx(
-		'pt-3 px-3 w-full flex items-center shrink-0',
+		'pt-3 px-3 w-full flex items-center justify-between shrink-0',
 		{
 			'draggable': holdingAlt
 		}
@@ -25,7 +25,7 @@ export const Masthead = () => {
 
 	return (
 		<header className={headerCss} onClick={() => togglePinned()}>
-			<SeasonalLogo/>
+			<Logo type="lockup" className="w-15"/>
 			<div className="flex space-x-0.5 shrink-0 z-10">
 				<IconButton icon={mdiFolderOpen} title="Open download folder" tooltipSide="bottom" onClick={() => openDownloadDir()}/>
 				<IconButton icon={mdiCog} title="Settings" tooltipSide="bottom" onClick={() => window.ipc.invoke('settings<-show-ui')}/>

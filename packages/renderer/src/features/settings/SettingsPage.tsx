@@ -53,7 +53,14 @@ export const SettingsPage = () => {
 		onUpdatedYtdlpBinary(() => setIsUpdating(false));
 		onDownloadStarted(() => setIsWorking(true));
 		onDownloadFinished(() => setIsWorking(false));
-	}, []);
+	}, [
+		onUpdatingYtdlpBinary,
+		onUpdatedYtdlpBinary,
+		onDownloadStarted,
+		onDownloadFinished,
+		setIsUpdating,
+		setIsWorking,
+	]);
 
 
 	return (

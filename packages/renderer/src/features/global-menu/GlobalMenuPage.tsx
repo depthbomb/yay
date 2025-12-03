@@ -15,7 +15,7 @@ export const GlobalMenuPage = () => {
 	useEffect(() => {
 		onDownloadStarted(()  => setIsDownloadsDisabled(true));
 		onDownloadFinished(() => setIsDownloadsDisabled(false));
-	}, []);
+	}, [onDownloadStarted, onDownloadFinished]);
 
 	return (
 		<div className="relative p-px w-screen h-screen">
