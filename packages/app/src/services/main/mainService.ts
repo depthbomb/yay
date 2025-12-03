@@ -5,6 +5,7 @@ import { TrayService } from '~/services/tray';
 import { RestService } from '~/services/rest';
 import { SetupService } from '~/services/setup';
 import { YtdlpService } from '~/services/ytdlp';
+import { TimerService } from '~/services/timer';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
@@ -29,6 +30,7 @@ export class MainService {
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
 		private readonly ipc            = inject(IpcService),
+		private readonly timer          = inject(TimerService),
 		private readonly window         = inject(WindowService),
 		private readonly autoStart      = inject(AutoStartService),
 		private readonly settings       = inject(SettingsService),
@@ -54,6 +56,7 @@ export class MainService {
 			this.settings.bootstrap(),
 			this.featureFlags.bootstrap(),
 			this.autoStart.bootstrap(),
+			this.timer.bootstrap(),
 			this.window.bootstrap(),
 			this.ytdlp.bootstrap(),
 			this.globalMenu.bootstrap(),

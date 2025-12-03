@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { spawn } from 'node:child_process';
 import { IpcService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
+import { TimerService } from '~/services/timer';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
 import { LoggingService } from '~/services/logging';
@@ -30,26 +31,28 @@ export class UpdaterService implements IBootstrappable {
 
 	private cts            = new CancellationTokenSource();
 	private isNotified     = false;
-	private checkInterval: Maybe<NodeJS.Timeout>;
 	private updaterWindow: Maybe<BrowserWindow>;
 
 	private readonly httpClient: HTTPClient;
+	private readonly checkInterval: NodeJS.Timeout;
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
 		private readonly lifecycle     = inject(LifecycleService),
 		private readonly ipc           = inject(IpcService),
+		private readonly timer         = inject(TimerService),
 		private readonly window        = inject(WindowService),
 		private readonly settings      = inject(SettingsService),
 		private readonly http          = inject(HTTPService),
 		private readonly github        = inject(GithubService),
 		private readonly notifications = inject(NotificationsService),
 	) {
-		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
+		this.httpClient    = this.http.getClient('Updater', { userAgent: USER_AGENT });
+		this.checkInterval = this.timer.setInterval(async () => await this.checkForUpdates(), 90_000);
 	}
 
 	public async bootstrap() {
-		this.checkInterval = setInterval(async () => await this.checkForUpdates(), 90_000);
+
 
 		this.ipc.registerHandler('updater<-show-window',                  () => this.showUpdaterWindow());
 		this.ipc.registerHandler('updater<-get-latest-release',           () => this.getLatestRelease());
@@ -59,7 +62,7 @@ export class UpdaterService implements IBootstrappable {
 		this.ipc.registerHandler('updater<-cancel-update',                () => this.cancelUpdate());
 
 		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
-		this.lifecycle.events.on('shutdown',         () => clearInterval(this.checkInterval));
+		this.lifecycle.events.on('shutdown',         () => this.timer.clearInterval(this.checkInterval));
 	}
 
 	public async checkForUpdates() {

@@ -4,6 +4,7 @@ import { PRELOAD_PATH } from '~/constants';
 import { CliService } from '~/services/cli';
 import { IpcService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
+import { TimerService } from '~/services/timer';
 import { YtdlpService } from '~/services/ytdlp';
 import { OnlineChecker } from './onlineChecker';
 import { WindowService } from '~/services/window';
@@ -29,6 +30,7 @@ export class SetupService implements IBootstrappable {
 		private readonly cli           = inject(CliService),
 		private readonly ipc           = inject(IpcService),
 		private readonly window        = inject(WindowService),
+		private readonly timer         = inject(TimerService),
 		private readonly settings      = inject(SettingsService),
 		private readonly downloader    = inject(BinaryDownloader),
 		private readonly onlineChecker = inject(OnlineChecker),
@@ -127,13 +129,13 @@ export class SetupService implements IBootstrappable {
 			}
 		});
 
-		const interval = setInterval(() => {
+		const interval = this.timer.setInterval(() => {
 			if (this.cts.isCancellationRequested) {
 				app.quit();
-				clearInterval(interval);
+				this.timer.clearInterval(interval);
 			} else if (this.finished) {
 				this.setupWindow!.close();
-				clearInterval(interval);
+				this.timer.clearInterval(interval);
 			}
 		}, 250);
 
