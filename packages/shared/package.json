@@ -18,7 +18,7 @@
 	},
 	"devDependencies": {
 		"@swc/core": "1.15.3",
-		"tsdown": "^0.17.0-beta.6",
+		"tsdown": "^0.17.0",
 		"tslib": "^2.8.1",
 		"typescript": "^5.9.3"
 	}

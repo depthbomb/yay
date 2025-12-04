@@ -1,12 +1,10 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./",
 		"rootDir": ".",
 		"paths": {
+			"*": ["./*"],
 			"~/*": ["./src/*"],
 		},
-
-		"ignoreDeprecations": "5.0",
 
 		// Type Checking
 		"allowUnreachableCode": false,
