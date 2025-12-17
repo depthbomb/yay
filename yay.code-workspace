@@ -34,7 +34,7 @@
 			"dist": true,
 			"node_modules": true
 		},
-		"typescript.experimental.useTsgo": true,
+		"typescript.experimental.useTsgo": false,
 		"typescript.tsdk": "Root\\node_modules\\typescript\\lib",
 		"markdown.validate.enabled": true,
 	},
