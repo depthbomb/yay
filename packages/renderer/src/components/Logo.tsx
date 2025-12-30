@@ -11,11 +11,11 @@ export interface ILogoProps {
 export const Logo: FC<ILogoProps> = ({ type, whiteFill = 'fill-white', className, ...props }) => {
 	if (type === 'icon') {
 		return (
-			<svg id="uuid-6016ea35-41de-4adf-adec-48db91ea957d" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 358.4" className={className} {...props}>
+			<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 358.4" className={className} {...props}>
 				<defs>
 					<linearGradient id="uuid-c0e922b2-65cb-4fe0-a74d-2e152ff313fc" x1="0" y1="840.45" x2="512" y2="840.45" gradientTransform="translate(0 -661.25)" gradientUnits="userSpaceOnUse">
-						<stop offset="0" stop-color="#f03"/>
-						<stop offset="1" stop-color="#ff2790"/>
+						<stop offset="0" stopColor="#f03"/>
+						<stop offset="1" stopColor="#ff2790"/>
 					</linearGradient>
 				</defs>
 				<path d="M501.3,56c-5.9-22-23.2-39.4-45.3-45.3C416.1,0,256,0,256,0c0,0-160.1,0-200,10.7-22,5.9-39.4,23.2-45.3,45.3C0,95.9,0,179.2,0,179.2c0,0,0,83.3,10.7,123.2,5.9,22,23.2,39.4,45.3,45.3,39.9,10.7,200,10.7,200,10.7,0,0,160.1,0,200-10.7,22-5.9,39.4-23.2,45.3-45.3,10.7-39.8,10.7-123.2,10.7-123.2,0,0,0-83.3-10.7-123.2Z" style={{ fill: 'url(#uuid-c0e922b2-65cb-4fe0-a74d-2e152ff313fc)' }}/>
@@ -24,7 +24,7 @@ export const Logo: FC<ILogoProps> = ({ type, whiteFill = 'fill-white', className
 		);
 	} else if (type === 'wordmark') {
 		return (
-			<svg id="uuid-54d8b118-941d-4ff9-ba81-3e6bc19a66fe" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 934.52 413.81" className={className} {...props}>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 934.52 413.81" className={className} {...props}>
 				<path d="M67.37,413.81l47.27-119.54L0,8.11h92.37l68.46,170.93L228.74,8.11h91.82l-161.37,405.7h-91.82Z" className={whiteFill}/>
 				<path d="M441.73,324.56c-27.53,0-51.89-7.03-73.08-21.1-21.19-14.06-37.76-33.54-49.71-58.42s-17.93-53.37-17.93-85.47,5.79-59.05,17.39-83.03c11.59-23.98,27.52-42.73,47.81-56.26C386.48,6.76,409.85,0,436.29,0c20.28,0,38.3,3.88,54.06,11.63,15.76,7.76,28.52,18.48,38.3,32.19l4.89-35.7h72.81v308.33h-72.81l-4.89-40.57c-9.42,15.15-21.73,27.05-36.95,35.7-15.21,8.65-31.88,12.98-49.99,12.98ZM457.48,247.75c20.28,0,36.4-7.93,48.36-23.8,11.95-15.86,17.93-37.32,17.93-64.37s-5.98-48.41-17.93-64.1c-11.95-15.69-28.08-23.53-48.36-23.53s-36.95,7.84-48.9,23.53c-11.95,15.69-17.93,37.05-17.93,64.1s5.98,48.51,17.93,64.37c11.95,15.87,28.25,23.8,48.9,23.8Z" className={whiteFill}/>
 				<path d="M681.33,413.81l47.27-119.54L613.96,8.11h92.37l68.46,170.93L842.7,8.11h91.82l-161.37,405.7h-91.82Z" className={whiteFill}/>
@@ -33,11 +33,11 @@ export const Logo: FC<ILogoProps> = ({ type, whiteFill = 'fill-white', className
 	}
 
 	return (
-		<svg id="uuid-bae4b07d-7132-4d89-a516-21696de93b66" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1473.48 413.81" className={className} {...props}>
+		<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 1473.48 413.81" className={className} {...props}>
 			<defs>
 				<linearGradient id="uuid-c8d9f973-567b-4f62-b020-bab67925697e" x1="0" y1="848.73" x2="512" y2="848.73" gradientTransform="translate(0 -661.25)" gradientUnits="userSpaceOnUse">
-					<stop offset="0" stop-color="#f03"/>
-					<stop offset="1" stop-color="#ff2790"/>
+					<stop offset="0" stopColor="#f03"/>
+					<stop offset="1" stopColor="#ff2790"/>
 				</linearGradient>
 			</defs>
 			<path d="M501.3,64.28c-5.9-22-23.2-39.4-45.3-45.3-39.9-10.7-200-10.7-200-10.7,0,0-160.1,0-200,10.7-22,5.9-39.4,23.2-45.3,45.3C0,104.18,0,187.48,0,187.48c0,0,0,83.3,10.7,123.2,5.9,22,23.2,39.4,45.3,45.3,39.9,10.7,200,10.7,200,10.7,0,0,160.1,0,200-10.7,22-5.9,39.4-23.2,45.3-45.3,10.7-39.8,10.7-123.2,10.7-123.2,0,0,0-83.3-10.7-123.2Z" style={{ fill: 'url(#uuid-c8d9f973-567b-4f62-b020-bab67925697e)' }}/>

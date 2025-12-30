@@ -1,5 +1,5 @@
 import { cva } from 'cva';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiCancel } from '@mdi/js';
 import { Button } from '~/components/Button';
 import { mdiVideo, mdiMusicNote } from '@mdi/js';

@@ -1,5 +1,5 @@
-import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
+import { Icon } from '@mdi/react';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Button } from '~/components/Button';

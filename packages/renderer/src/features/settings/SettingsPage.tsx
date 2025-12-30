@@ -1,7 +1,7 @@
 import { cx } from 'cva';
-import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
 import { useIpc } from '~/hooks';
+import { Icon } from '@mdi/react';
 import { lazy, useEffect} from 'react';
 import { AppTab } from './components/AppTab';
 import { DevTab } from './components/DevTab';

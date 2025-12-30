@@ -1,6 +1,6 @@
 import { cx } from 'cva';
-import Icon from '@mdi/react';
 import { useIpc } from '~/hooks';
+import { Icon } from '@mdi/react';
 import { mdiDownload } from '@mdi/js';
 import { HTML } from '~/components/HTML';
 import { useState, useEffect } from 'react';

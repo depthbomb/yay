@@ -1,5 +1,5 @@
-import Icon from '@mdi/react';
 import { Fragment } from 'react';
+import { Icon } from '@mdi/react';
 import { TooltipV2 } from './TooltipV2';
 import type { FC } from 'react';
 

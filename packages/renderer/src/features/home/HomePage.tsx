@@ -1,6 +1,6 @@
 import { cx } from 'cva';
-import Icon from '@mdi/react';
 import { useAtom } from 'jotai';
+import { Icon } from '@mdi/react';
 import { mdiUpdate } from '@mdi/js';
 import { isValidURL } from 'shared';
 import { TextInput } from '~/components/Input';
