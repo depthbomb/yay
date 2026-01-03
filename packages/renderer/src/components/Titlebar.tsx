@@ -32,7 +32,7 @@ export const Titlebar: FC<ITitlebarProps> = ({ windowName, title, minimizeButton
 			offMaximized();
 			offRestored();
 		};
-	}, []);
+	}, [onWindowMaximized, onWindowRestored]);
 
 	return (
 		<div className="w-full h-8 flex items-center">

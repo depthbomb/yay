@@ -49,7 +49,7 @@ export const WindowShell: FC<IWindowShellProps> = ({
 			'border-gray-900': !isFocused
 		})} {...props}>
 			<Titlebar title={title} windowName={windowName} minimizeButton={minimizeButton} maximizeButton={maximizeButton}/>
-			<main className="h-full">{children}</main>
+			<main className="h-full overflow-hidden">{children}</main>
 		</div>
 	);
 };

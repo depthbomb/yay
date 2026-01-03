@@ -28,11 +28,11 @@ const TabButton: FC<TabButtonProps> = ({ value, className, ...props }) => {
 	);
 };
 
-const defaultStatus = 'Updating...';
+const defaultStatus = 'Updating...' as const;
 
 export const UpdaterPage = () => {
 	const [updating, setUpdating]   = useState(false);
-	const [status, setStatus]       = useState(defaultStatus);
+	const [status, setStatus]       = useState<string>(defaultStatus);
 	const [release, setRelease]     = useState<Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>>(null);
 	const [changelog, setChangelog] = useState('');
 	const [commits, setCommits]     = useState<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>([]);
@@ -61,7 +61,7 @@ export const UpdaterPage = () => {
 		window.ipc.invoke('updater<-get-commits-since-build').then(commits => setCommits(commits ?? []));
 	}, []);
 
-	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? 'Updating...')), []);
+	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? defaultStatus)), [onUpdateStep]);
 
 	return (
 		<WindowShell windowName="updater" title="Updater">
@@ -72,23 +72,21 @@ export const UpdaterPage = () => {
 					<TabButton value="changelog">Changelog</TabButton>
 					<TabButton value="commits">Commits since your version</TabButton>
 				</List>
-				<div className="size-full flex overflow-y-auto">
-					<Content value="changelog" className="p-1.5 size-full bg-gray-900 border border-gray-800 rounded-xs shadow">
-						{changelog !== '' ? (<HTML html={changelog}/>) : (
-							<p className="py-3 text-2xl font-light">No changelog available.</p>
-						)}
-					</Content>
-					<Content value="commits" className="flex flex-col rounded overflow-auto">
-						{commits.map(c => (
-							<a key={c.sha} href={c.html_url} target="_blank" className="p-3 space-x-2.5 flex items-center bg-gray-900 odd:bg-black/25 hover:bg-gray-700 active:bg-gray-950 transition-colors">
-								<img src={c.author?.avatar_url} className="w-8 rounded-full" loading="lazy" draggable="false"/>
-								<span className="font-display">{c.author?.login}</span>
-								<span className="font-mono">{c.commit.message}</span>
-								<p className="ml-auto text-sm font-mono text-gray-300">{c.sha.slice(0, 7)}</p>
-							</a>
-						))}
-					</Content>
-				</div>
+				<Content value="changelog" className="p-1.5 size-full bg-gray-900 rounded-xs border border-gray-800 shadow">
+					{changelog !== '' ? (<HTML html={changelog}/>) : (
+						<p className="py-3 text-2xl font-light">No changelog available.</p>
+					)}
+				</Content>
+				<Content value="commits" className="w-full flex flex-col rounded-xs border border-gray-800 shadow overflow-y-auto">
+					{commits.map(c => (
+						<a key={c.sha} href={c.html_url} target="_blank" className="p-3 space-x-2.5 flex items-center bg-gray-900 odd:bg-black/25 hover:bg-gray-700 active:bg-gray-950 transition-colors">
+							<img src={c.author?.avatar_url} className="w-8 rounded-full" loading="lazy" draggable="false"/>
+							<span className="font-display">{c.author?.login}</span>
+							<span className="font-mono">{c.commit.message}</span>
+							<p className="ml-auto text-sm font-mono text-gray-300">{c.sha.slice(0, 7)}</p>
+						</a>
+					))}
+				</Content>
 				<div className="mt-auto flex items-center justify-between">
 					{updating ? (
 						<>
@@ -96,7 +94,7 @@ export const UpdaterPage = () => {
 								<Spinner className="size-6"/>
 								<p>{status}</p>
 							</div>
-							<Button onClick={onCancelButtonClicked} type="danger">Cancel</Button>
+							<Button onClick={onCancelButtonClicked} size="lg" type="danger">Cancel</Button>
 						</>
 					) : (
 						<Button onClick={onDownloadButtonClicked} className="ml-auto" size="lg">
@@ -107,7 +105,7 @@ export const UpdaterPage = () => {
 				</div>
 			</Root>
 		) : (
-			<div className="space-y-3 h-screen flex flex-col items-center justify-center">
+			<div className="space-y-3 h-full flex flex-col items-center justify-center">
 				<Spinner className="size-18"/>
 				<p>Checking for new releases&hellip;</p>
 			</div>
