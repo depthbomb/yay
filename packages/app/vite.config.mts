@@ -28,6 +28,7 @@ export default defineConfig(({ mode }) => {
 			},
 			rollupOptions: {
 				output: {
+					hashCharacters: 'hex',
 					entryFileNames: '[name].js',
 					assetFileNames: '[hash].[ext]',
 					chunkFileNames: '[hash].js',
