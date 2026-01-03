@@ -38,7 +38,7 @@ export const SetupPage = () => {
 			<div className="space-y-3 h-full flex flex-col items-center justify-center draggable">
 				<Logo type="lockup" className="w-56 h-auto"/>
 				<div className="p-2 space-x-2 flex flex-row items-center draggable">
-					{!done && <Spinner className="size-6"/>}
+					{!done && <Spinner className="size-5"/>}
 					<p className="font-mono text-sm">{step}</p>
 				</div>
 				<ProgressBar

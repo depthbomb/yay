@@ -5,9 +5,7 @@ import type { VariantProps } from 'cva';
 import type { TooltipSide } from './TooltipV2';
 import type { ButtonHTMLAttributes } from 'react';
 
-export interface IIconButtonProps
-	extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>,
-		VariantProps<typeof iconButton> {
+export interface IIconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof iconButton> {
 	icon: string;
 	tooltipSide?: TooltipSide;
 }

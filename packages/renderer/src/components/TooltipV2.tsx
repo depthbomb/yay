@@ -5,7 +5,7 @@ import type { FC, ReactNode } from 'react';
 
 export type TooltipSide = 'top' | 'bottom' | 'left' | 'right';
 
-type TooltipProps = {
+interface ITooltipProps {
 	children: ReactNode;
 	content: ReactNode;
 	side?: TooltipSide;
@@ -20,7 +20,7 @@ type Position = {
 	y: number;
 };
 
-export const TooltipV2: FC<TooltipProps> = ({
+export const TooltipV2: FC<ITooltipProps> = ({
 	children,
 	content,
 	side = 'top',
@@ -29,13 +29,13 @@ export const TooltipV2: FC<TooltipProps> = ({
 	className = '',
 	showArrow = true,
 }) => {
-	const triggerRef = useRef<HTMLDivElement>(null);
-	const tooltipRef = useRef<HTMLDivElement>(null);
-	const timeoutRef = useRef<Nullable<NodeJS.Timeout>>(null);
-	const rafRef = useRef<Nullable<number>>(null);
+	const triggerRef                = useRef<HTMLDivElement>(null);
+	const tooltipRef                = useRef<HTMLDivElement>(null);
+	const timeoutRef                = useRef<Nullable<NodeJS.Timeout>>(null);
+	const rafRef                    = useRef<Nullable<number>>(null);
 	const [isVisible, setIsVisible] = useState(false);
-	const [isReady, setIsReady] = useState(false);
-	const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
+	const [isReady, setIsReady]     = useState(false);
+	const [position, setPosition]   = useState<Position>({ x: 0, y: 0 });
 
 	useEffect(() => {
 		const handleBlur = () => {

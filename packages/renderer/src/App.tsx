@@ -11,7 +11,7 @@ const UpdaterPage    = lazy(() => import('./features/updater/UpdaterPage'));
 const GlobalMenuPage = lazy(() => import('./features/global-menu/GlobalMenuPage'));
 
 export const App = () => {
-	const { palette, getCssColor, getContrastColor } = useWindowsAccent();
+	const { palette, getCSSColor, getContrastColor } = useWindowsAccent();
 
 	useEffect(() => {
 		const root = document.documentElement;
@@ -20,10 +20,10 @@ export const App = () => {
 		}
 
 		for (const [shade] of typedEntries<ColorPalette>(palette!)) {
-			root.style.setProperty(`--accent-${shade}`, getCssColor(shade));
+			root.style.setProperty(`--accent-${shade}`, getCSSColor(shade));
 			root.style.setProperty(`--accent-${shade}-contrast`, getContrastColor(shade));
 		}
-	}, [palette, getCssColor, getContrastColor]);
+	}, [palette, getCSSColor, getContrastColor]);
 
 	return (
 		<HashRouter>

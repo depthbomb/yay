@@ -7,7 +7,7 @@ export interface ITitlebarButtonProps extends VariantProps<typeof titlebarButton
 }
 
 const titlebarButton = cva({
-	base: 'inline-flex items-center justify-center shrink-0 w-[46px] h-8 text-gray-200 hover:text-white transition',
+	base: 'inline-flex items-center justify-center shrink-0 w-11.5 h-8 text-gray-200 hover:text-white transition',
 	variants: {
 		type: {
 			minimize: 'hover:bg-white/15',

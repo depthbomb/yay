@@ -113,7 +113,7 @@ export function useWindowsAccent() {
 		}
 	}, []);
 
-	const getCssColor = (shade: PaletteShade = 500) => {
+	const getCSSColor = (shade: PaletteShade = 500) => {
 		if (!palette) {
 			return null;
 		}
@@ -134,7 +134,7 @@ export function useWindowsAccent() {
 		accentColor,
 		palette,
 		contrastColors,
-		getCssColor,
+		getCSSColor,
 		getContrastColor: getContrastColorForShade
 	} as const;
 }
