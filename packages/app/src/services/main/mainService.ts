@@ -10,6 +10,7 @@ import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
 import { ThemingService } from '~/services/theming';
+import { TwitterService } from '~/services/twitter';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { DeepLinksService } from '~/services/deepLinks';
@@ -46,6 +47,7 @@ export class MainService {
 		private readonly rest           = inject(RestService),
 		private readonly thumbnail      = inject(ThumbnailService),
 		private readonly theming        = inject(ThemingService),
+		private readonly twitter        = inject(TwitterService),
 	) {}
 
 	public async boot() {
@@ -69,6 +71,7 @@ export class MainService {
 			this.rest.bootstrap(),
 			this.thumbnail.bootstrap(),
 			this.theming.bootstrap(),
+			this.twitter.bootstrap(),
 		]);
 
 		this.ipc.registerHandler('main<-show-message-box', async (e, options) => {

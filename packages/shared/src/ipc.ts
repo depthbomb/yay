@@ -1,3 +1,4 @@
+import type { ITweetMedia } from './twitter';
 import type { ESettingsKey } from './settings';
 import type { Maybe, Nullable } from './types';
 import type { Endpoints } from '@octokit/types';
@@ -112,6 +113,15 @@ export interface IIpcContract {
 	}
 	'yt-dlp<-update-binary': {
 		args: [];
+		return: void;
+	}
+	//
+	'twitter<-get-tweet-media-info': {
+		args: [url: string];
+		return: ITweetMedia;
+	}
+	'twitter<-download-media-url': {
+		args: [url: string];
 		return: void;
 	}
 	//

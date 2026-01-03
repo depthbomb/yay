@@ -1,0 +1,67 @@
+import { join } from 'node:path';
+import { IpcService } from '~/services/ipc';
+import { HTTPService } from '~/services/http';
+import { BROWSER_USER_AGENT } from '~/constants';
+import { inject, injectable } from '@needle-di/core';
+import { SettingsService } from '~/services/settings';
+import { ESettingsKey, tweetURLPattern } from 'shared';
+import { CancellationTokenSource } from '@depthbomb/node-common';
+import type { ITweetMedia } from 'shared';
+import type { IBootstrappable } from '~/common';
+import type { HTTPClient } from '~/services/http';
+
+@injectable()
+export class TwitterService implements IBootstrappable {
+	private readonly client: HTTPClient;
+	private readonly tweetMediaInfoCache = new Map<string, ITweetMedia>();
+	private readonly cts                 = new CancellationTokenSource();
+
+	public constructor(
+		private readonly ipc      = inject(IpcService),
+		private readonly settings = inject(SettingsService),
+		private readonly http     = inject(HTTPService),
+	) {
+		this.client = this.http.getClient(TwitterService.name, { userAgent: BROWSER_USER_AGENT });
+	}
+
+	public async bootstrap() {
+		this.ipc.registerHandler('twitter<-get-tweet-media-info', (_, url) => this.getMediaDetails(url));
+		this.ipc.registerHandler('twitter<-download-media-url', (_, url) => this.download(url));
+	}
+
+	private async download(url: string) {
+		const res = await this.client.get(url);
+		if (!res.ok) {
+			throw new Error(res.statusText);
+		}
+
+		const filename   = new URL(url).pathname.split('/').pop()!;
+		const outputPath = join(this.settings.get(ESettingsKey.DownloadDir), filename);
+
+		await this.client.downloadWithProgress(res, outputPath, {
+			// TODO: implement cancellation
+			signal: this.cts.token.toAbortSignal()
+		});
+	}
+
+	private async getMediaDetails(input: string) {
+		let tweetID = input;
+
+		const match = tweetURLPattern.exec(input);
+		if (match) {
+			tweetID = match[2];
+		}
+
+		if (this.tweetMediaInfoCache.has(tweetID)) {
+			return this.tweetMediaInfoCache.get(tweetID)!;
+		}
+
+		const url  = `https://cdn.syndication.twimg.com/tweet-result?id=${tweetID}&token=!`;
+		const res  = await this.client.get(url);
+		const data = await res.json() as ITweetMedia;
+
+		this.tweetMediaInfoCache.set(tweetID, data);
+
+		return data;
+	}
+}

@@ -2,16 +2,17 @@ import { cx } from 'cva';
 import { useAtom } from 'jotai';
 import { Icon } from '@mdi/react';
 import { mdiUpdate } from '@mdi/js';
-import { isValidURL } from 'shared';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
-import { lazy, useRef, Activity, useEffect } from 'react';
+import { isValidURL, tweetURLPattern } from 'shared';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
+import { lazy, useRef, Activity, useState, useEffect } from 'react';
 import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
+import { TwitterMedia } from './components/TwitterMedia';
 
 type LogLineProps = { line: string; };
 
@@ -42,6 +43,7 @@ const isSnowfall = () => {
 };
 
 export const HomePage = () => {
+	const [isTweetURL, setIsTweetURL]           = useState(false);
 	const [,clearLog]                           = useAtom(clearLogAtom);
 	const [,pushToLog]                          = useAtom(pushToLogAtom);
 	const [,resetApp]                           = useAtom(resetAppAtom);
@@ -69,12 +71,15 @@ export const HomePage = () => {
 		'absolute -z-10',
 		{
 			'inset-0 bg-accent-500': !isWorking,
-			'inset-[-550px] bg-[linear-gradient(90deg,transparent_0%,var(--accent-500)_100%)] animate-spin': isWorking
+			'-inset-137.5 bg-[linear-gradient(90deg,transparent_0%,var(--accent-500)_100%)] animate-spin': isWorking
 		}
 	);
 
 	const tryPasting = async () => {
 		const text = await navigator.clipboard.readText();
+
+		setIsTweetURL(tweetURLPattern.test(text));
+
 		if (isValidURL(text)) {
 			setURL(text);
 		}
@@ -123,7 +128,12 @@ export const HomePage = () => {
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
 	}, [logs]);
 
-	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => setURL(event.target.value.trim());
+	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const url = event.target.value.trim();
+
+		setIsTweetURL(tweetURLPattern.test(url));
+		setURL(url);
+	};
 
 	return (
 		<div className="relative p-px w-screen h-screen overflow-hidden">
@@ -154,20 +164,26 @@ export const HomePage = () => {
 								disabled={isWorking || isUpdating}
 								readOnly={isWorking || isUpdating}
 							/>
-							<DownloadButtons
-								onDownloadVideoClick={() => window.ipc.invoke('yt-dlp<-download-video', url)}
-								onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
-								onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
-								working={isWorking}
-								disabled={!urlIsValid || isUpdating}
-							/>
-							<div className="grow bg-black/50 border border-gray-900 rounded-xs shadow overflow-hidden">
-								<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
-									{logs.map((line, i) => (
-										<LogLine key={i} line={line}/>
-									))}
-								</div>
-							</div>
+							{isTweetURL ? (
+								<TwitterMedia tweetURL={url}/>
+							) : (
+								<>
+									<DownloadButtons
+										onDownloadVideoClick={() => window.ipc.invoke('yt-dlp<-download-video', url)}
+										onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
+										onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
+										working={isWorking}
+										disabled={!urlIsValid || isUpdating}
+									/>
+									<div className="grow bg-black/50 border border-gray-900 rounded-xs shadow overflow-hidden">
+										<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
+											{logs.map((line, i) => (
+												<LogLine key={i} line={line}/>
+											))}
+										</div>
+									</div>
+								</>
+							)}
 						</div>
 					</>
 				)}

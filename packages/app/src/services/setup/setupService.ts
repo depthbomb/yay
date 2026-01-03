@@ -66,7 +66,9 @@ export class SetupService implements IBootstrappable {
 			return;
 		}
 
-		await this.updateYtdlp();
+		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true) && !this.downloadedYtdlpBinary) {
+			await this.updateYtdlp();
+		}
 
 		this.emitStep('Done!');
 		this.window.emit('setup', 'setup->done');
@@ -385,12 +387,10 @@ export class SetupService implements IBootstrappable {
 	}
 
 	private async updateYtdlp() {
-		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true) && !this.downloadedYtdlpBinary) {
-			this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
-			this.emitStep('Checking for yt-dlp updates...');
+		this.setupWindow!.setProgressBar(1, { mode: 'indeterminate' });
+		this.emitStep('Checking for yt-dlp updates...');
 
-			await this.ytdlp.updateBinary(true);
-		}
+		await this.ytdlp.updateBinary(true);
 	}
 
 	private emitStep(message: string, progress = -1) {

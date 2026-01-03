@@ -13,7 +13,8 @@ const button = cva({
 			success: 'text-black bg-lime-500 outline-lime-500/50 hover:bg-lime-600 active:bg-lime-700',
 			warning: 'text-white bg-orange-500 outline-orange-500/50 hover:bg-orange-600 active:bg-orange-700',
 			danger: 'text-white bg-red-500 outline-red-500/50 hover:bg-red-600 active:bg-red-700',
-			info: 'text-black bg-cyan-500 outline-cyan-500/50 hover:bg-cyan-600 active:bg-cyan-700'
+			info: 'text-black bg-cyan-500 outline-cyan-500/50 hover:bg-cyan-600 active:bg-cyan-700',
+			twitter: 'text-white bg-[#55acee] outline-[#55acee]/50 hover:bg-[#1b88dc] active:bg-[#0d5597]'
 		},
 		size: {
 			sm: 'px-1.75 space-x-0.5 h-5 text-[10px] rounded-[3px]',
