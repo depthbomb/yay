@@ -5,7 +5,7 @@ import { Container } from '@needle-di/core';
 import { MainService } from '~/services/main';
 import { product, ESettingsKey } from 'shared';
 import { existsSync, readFileSync } from 'node:fs';
-import { fileExists } from '@depthbomb/node-common/fs';
+import { fileExists } from '@depthbomb/node-common';
 import { mkdir, unlink, readFile } from 'node:fs/promises';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 

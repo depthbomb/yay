@@ -2,7 +2,7 @@ import { typeFlag } from 'type-flag';
 import { injectable } from '@needle-di/core';
 
 @injectable()
-export class CliService {
+export class CLIService {
 	public readonly args;
 	public readonly flags;
 

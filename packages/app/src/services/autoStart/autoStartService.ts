@@ -1,6 +1,6 @@
 import { app } from 'electron';
-import { CliService } from '~/services/cli';
-import { IpcService } from '~/services/ipc';
+import { CLIService } from '~/services/cli';
+import { IPCService } from '~/services/ipc';
 import { product, ESettingsKey } from 'shared';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -9,8 +9,8 @@ import type { IBootstrappable } from '~/common';
 @injectable()
 export class AutoStartService implements IBootstrappable {
 	public constructor(
-		private readonly cli      = inject(CliService),
-		private readonly ipc      = inject(IpcService),
+		private readonly cli      = inject(CLIService),
+		private readonly ipc      = inject(IPCService),
 		private readonly settings = inject(SettingsService),
 	) {}
 

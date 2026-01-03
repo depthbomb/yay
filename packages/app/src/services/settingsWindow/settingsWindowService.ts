@@ -1,4 +1,4 @@
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { LifecycleService } from '~/services/lifecycle';
@@ -12,7 +12,7 @@ export class SettingsWindowService implements IBootstrappable {
 
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
-		private readonly ipc       = inject(IpcService),
+		private readonly ipc       = inject(IPCService),
 		private readonly window    = inject(WindowService),
 	) {
 		this.settingsWindow = this.window.createWindow('settings', {

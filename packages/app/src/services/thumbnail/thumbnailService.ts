@@ -2,14 +2,14 @@ import { app } from 'electron';
 import { join } from 'node:path';
 import { Readable } from 'node:stream';
 import { USER_AGENT } from '~/constants';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { createWriteStream } from 'node:fs';
 import { HTTPService } from '~/services/http';
 import { finished } from 'node:stream/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { mkdir, unlink, readdir } from 'node:fs/promises';
-import { dirExists, fileExists } from '@depthbomb/node-common/fs';
+import { dirExists, fileExists } from '@depthbomb/node-common';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
 
@@ -19,7 +19,7 @@ export class ThumbnailService implements IBootstrappable {
 	private readonly cacheDir: string;
 
 	public constructor(
-		private readonly ipc    = inject(IpcService),
+		private readonly ipc    = inject(IPCService),
 		private readonly logger = inject(LoggingService),
 		private readonly http   = inject(HTTPService),
 	) {

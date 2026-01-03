@@ -1,5 +1,5 @@
 import { join } from 'node:path';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
 import { BROWSER_USER_AGENT } from '~/constants';
 import { inject, injectable } from '@needle-di/core';
@@ -17,7 +17,7 @@ export class TwitterService implements IBootstrappable {
 	private readonly cts                 = new CancellationTokenSource();
 
 	public constructor(
-		private readonly ipc      = inject(IpcService),
+		private readonly ipc      = inject(IPCService),
 		private readonly settings = inject(SettingsService),
 		private readonly http     = inject(HTTPService),
 	) {

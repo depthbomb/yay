@@ -1,16 +1,16 @@
 import { ipcRenderer, contextBridge } from 'electron';
-import { IpcEvents, IpcChannel, IpcChannels } from 'shared';
+import { IPCEvents, IPCChannel, IPCChannels } from 'shared';
 import { arch, type, release, platform, hostname } from 'node:os';
-import type { IpcApi, IIpcEvents, IIpcContract, SystemApi, VersionsApi, SettingsApi, FeatureFlagsApi } from 'shared';
+import type { IpcApi, IIPCEvents, IIPCContract, SystemApi, VersionsApi, SettingsApi, FeatureFlagsApi } from 'shared';
 
-type IpcArgs<K extends keyof IIpcContract> = IIpcContract[K]['args'];
-type IpcReturn<K extends keyof IIpcContract> = IIpcContract[K]['return'];
+type IpcArgs<K extends keyof IIPCContract> = IIPCContract[K]['args'];
+type IpcReturn<K extends keyof IIPCContract> = IIPCContract[K]['return'];
 
 const versionsApi = process.versions satisfies VersionsApi;
 
 const ipcApi = {
-	invoke<K extends keyof IIpcContract>(channel: K, ...args: IpcArgs<K>){
-		if (!IpcChannels.includes(channel)) {
+	invoke<K extends keyof IIPCContract>(channel: K, ...args: IpcArgs<K>){
+		if (!IPCChannels.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to invoke invalid channel: ${channel}`);
 			}
@@ -22,8 +22,8 @@ const ipcApi = {
 
 		return ipcRenderer.invoke(channel, ...args) as Promise<IpcReturn<K>>;
 	},
-	sendSync<K extends keyof IIpcContract>(channel: K, ...args: IpcArgs<K>){
-		if (!IpcChannels.includes(channel)) {
+	sendSync<K extends keyof IIPCContract>(channel: K, ...args: IpcArgs<K>){
+		if (!IPCChannels.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to invoke invalid channel: ${channel}`);
 			}
@@ -35,8 +35,8 @@ const ipcApi = {
 
 		return ipcRenderer.sendSync(channel, ...args) as IpcReturn<K>;
 	},
-	on<K extends keyof IIpcEvents>(channel: K, listener: (payload: IIpcEvents[K]) => void) {
-		if (!IpcEvents.includes(channel)) {
+	on<K extends keyof IIPCEvents>(channel: K, listener: (payload: IIPCEvents[K]) => void) {
+		if (!IPCEvents.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to listen to invalid channel: ${channel}`);
 			}
@@ -46,14 +46,14 @@ const ipcApi = {
 			return () => {};
 		}
 
-		const wrapped = (_: Electron.IpcRendererEvent, payload: IIpcEvents[K]) => listener(payload);
+		const wrapped = (_: Electron.IpcRendererEvent, payload: IIPCEvents[K]) => listener(payload);
 
 		ipcRenderer.on(channel, wrapped);
 
 		return () => ipcRenderer.removeListener(channel, wrapped);
 	},
-	once<K extends keyof IIpcEvents>(channel: K, listener: (payload: IIpcEvents[K]) => void) {
-		if (!IpcEvents.includes(channel)) {
+	once<K extends keyof IIPCEvents>(channel: K, listener: (payload: IIPCEvents[K]) => void) {
+		if (!IPCEvents.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to listen to invalid channel: ${channel}`);
 			}
@@ -62,12 +62,12 @@ const ipcApi = {
 			return;
 		}
 
-		const wrapped = (_: Electron.IpcRendererEvent, payload: IIpcEvents[K]) => listener(payload);
+		const wrapped = (_: Electron.IpcRendererEvent, payload: IIPCEvents[K]) => listener(payload);
 
 		ipcRenderer.once(channel, wrapped);
 	},
-	off<K extends keyof IIpcEvents>(channel: K, listener: (payload: IIpcEvents[K]) => void) {
-		if (!IpcEvents.includes(channel)) {
+	off<K extends keyof IIPCEvents>(channel: K, listener: (payload: IIPCEvents[K]) => void) {
+		if (!IPCEvents.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to remove listener from invalid channel: ${channel}`);
 			}
@@ -76,12 +76,12 @@ const ipcApi = {
 			return;
 		}
 
-		const wrapped = (_: Electron.IpcRendererEvent, payload: IIpcEvents[K]) => listener(payload);
+		const wrapped = (_: Electron.IpcRendererEvent, payload: IIPCEvents[K]) => listener(payload);
 
 		ipcRenderer.removeListener(channel, wrapped);
 	},
-	removeAllListeners (channel: IpcChannel) {
-		if (!IpcChannels.includes(channel)) {
+	removeAllListeners (channel: IPCChannel) {
+		if (!IPCChannels.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to remove listeners from invalid channel: ${channel}`);
 			}

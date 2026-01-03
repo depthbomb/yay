@@ -2,7 +2,7 @@ import semver from 'semver';
 import { app } from 'electron';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
 import { TimerService } from '~/services/timer';
 import { WindowService } from '~/services/window';
@@ -12,7 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
-import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
+import { CancellationTokenSource } from '@depthbomb/node-common';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
@@ -39,7 +39,7 @@ export class UpdaterService implements IBootstrappable {
 	public constructor(
 		private readonly logger        = inject(LoggingService),
 		private readonly lifecycle     = inject(LifecycleService),
-		private readonly ipc           = inject(IpcService),
+		private readonly ipc           = inject(IPCService),
 		private readonly timer         = inject(TimerService),
 		private readonly window        = inject(WindowService),
 		private readonly settings      = inject(SettingsService),

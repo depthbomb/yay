@@ -1,5 +1,5 @@
-import { injectable } from '@needle-di/core';
 import { app } from 'electron';
+import { injectable } from '@needle-di/core';
 import type { IBootstrappable } from '~/common';
 
 type SetTimeoutReturnType  = ReturnType<typeof setTimeout>;

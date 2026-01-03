@@ -1,4 +1,4 @@
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { PRELOAD_PATH, } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
@@ -21,7 +21,7 @@ export class GlobalMenuService implements IBootstrappable {
 	public constructor(
 		private readonly logger    = inject(LoggingService),
 		private readonly lifecycle = inject(LifecycleService),
-		private readonly ipc       = inject(IpcService),
+		private readonly ipc       = inject(IPCService),
 		private readonly window    = inject(WindowService),
 		private readonly settings  = inject(SettingsService),
 		private readonly ytdlp     = inject(YtdlpService),

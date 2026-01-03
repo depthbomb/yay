@@ -1,10 +1,10 @@
 import { app } from 'electron';
 import { join } from 'node:path';
 import { FeatureFlags } from 'shared';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { parse, stringify } from 'smol-toml';
+import { fileExists } from '@depthbomb/node-common';
 import { inject, injectable } from '@needle-di/core';
-import { fileExists } from '@depthbomb/node-common/fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import type { IBootstrappable } from '~/common';
 import type { FeatureFlag, FeatureFlagKey, FeatureFlagUuid } from 'shared';
@@ -22,7 +22,7 @@ export class FeatureFlagsService implements IBootstrappable {
 	private readonly featureFlagsConfigPath: string;
 
 	public constructor(
-		private readonly ipc = inject(IpcService),
+		private readonly ipc = inject(IPCService),
 	) {
 		this.featureFlagsConfigPath = join(app.getPath('userData'), 'features.toml');
 	}

@@ -5,7 +5,7 @@ import type { Endpoints } from '@octokit/types';
 import type { FeatureFlag } from './featureFlags';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
-export interface IIpcContract {
+export interface IIPCContract {
 	'main<-show-message-box': {
 		args: [options: MessageBoxOptions];
 		return: MessageBoxReturnValue;
@@ -184,7 +184,7 @@ export interface IIpcContract {
 	}
 }
 
-export interface IIpcEvents {
+export interface IIPCEvents {
 	// Window Events
 	'window->is-minimized': void;
 	'window->is-maximized': void;

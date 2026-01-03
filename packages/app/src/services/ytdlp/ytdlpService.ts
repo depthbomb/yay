@@ -3,7 +3,7 @@ import { dialog } from 'electron';
 import { ESettingsKey } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
@@ -29,7 +29,7 @@ export class YtdlpService implements IBootstrappable {
 	public constructor(
 		private readonly logger        = inject(LoggingService),
 		private readonly lifecycle     = inject(LifecycleService),
-		private readonly ipc           = inject(IpcService),
+		private readonly ipc           = inject(IPCService),
 		private readonly settings      = inject(SettingsService),
 		private readonly window        = inject(WindowService),
 		private readonly notifications = inject(NotificationsService),

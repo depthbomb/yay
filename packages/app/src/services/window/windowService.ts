@@ -2,12 +2,12 @@ import mitt from 'mitt';
 import { join } from 'node:path';
 import { DEV_PORT } from 'shared';
 import { ROOT_PATH } from '~/constants';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Menu, shell, BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
-import type { Awaitable, IIpcEvents } from 'shared';
+import type { Awaitable, IIPCEvents } from 'shared';
 import type { MenuItemConstructorOptions, BrowserWindowConstructorOptions } from 'electron';
 
 type CreateWindowOptions = {
@@ -43,7 +43,7 @@ export class WindowService implements IBootstrappable {
 
 	public constructor(
 		private readonly logger = inject(LoggingService),
-		private readonly ipc    = inject(IpcService),
+		private readonly ipc    = inject(IPCService),
 	) {
 		this.windows = new Map();
 	}
@@ -210,16 +210,16 @@ export class WindowService implements IBootstrappable {
 		}
 	}
 
-	public emitMain<K extends keyof IIpcEvents>(channel: K, ...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]) {
+	public emitMain<K extends keyof IIPCEvents>(channel: K, ...args: IIPCEvents[K] extends undefined ? [] : [payload: IIPCEvents[K]]) {
 		this.emit(this.mainWindowName, channel, ...args);
 	}
 
-	public emit<K extends keyof IIpcEvents>(windowName: string, channel: K, ...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]) {
+	public emit<K extends keyof IIPCEvents>(windowName: string, channel: K, ...args: IIPCEvents[K] extends undefined ? [] : [payload: IIPCEvents[K]]) {
 		const window = this.getWindow(windowName);
 		window?.webContents.send(channel, ...args);
 	}
 
-	public emitAll<K extends keyof IIpcEvents>(channel: K, ...args: IIpcEvents[K] extends undefined ? [] : [payload: IIpcEvents[K]]) {
+	public emitAll<K extends keyof IIPCEvents>(channel: K, ...args: IIPCEvents[K] extends undefined ? [] : [payload: IIPCEvents[K]]) {
 		for (const window of this.windows.values()) {
 			window?.webContents.send(channel, ...args);
 		}

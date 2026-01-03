@@ -1,4 +1,4 @@
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
 import { Flag, ESettingsKey } from 'shared';
 import { TrayService } from '~/services/tray';
@@ -6,10 +6,10 @@ import { app, shell, dialog } from 'electron';
 import { unlink, copyFile } from 'fs/promises';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
+import { fileExists } from '@depthbomb/node-common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import { fileExists } from '@depthbomb/node-common/fs';
 import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
@@ -24,7 +24,7 @@ export class MainWindowService implements IBootstrappable {
 	public constructor(
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
-		private readonly ipc            = inject(IpcService),
+		private readonly ipc            = inject(IPCService),
 		private readonly settings       = inject(SettingsService),
 		private readonly window         = inject(WindowService),
 		private readonly windowPosition = inject(WindowPositionService),

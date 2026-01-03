@@ -1,6 +1,6 @@
 import { dirname } from 'node:path';
-import { CliService } from '~/services/cli';
-import { IpcService } from '~/services/ipc';
+import { CLIService } from '~/services/cli';
+import { IPCService } from '~/services/ipc';
 import { TrayService } from '~/services/tray';
 import { RestService } from '~/services/rest';
 import { SetupService } from '~/services/setup';
@@ -26,10 +26,10 @@ import { ELifecyclePhase, LifecycleService } from '~/services/lifecycle';
 @injectable()
 export class MainService {
 	public constructor(
-		private readonly cli            = inject(CliService),
+		private readonly cli            = inject(CLIService),
 		private readonly logger         = inject(LoggingService),
 		private readonly lifecycle      = inject(LifecycleService),
-		private readonly ipc            = inject(IpcService),
+		private readonly ipc            = inject(IPCService),
 		private readonly timer          = inject(TimerService),
 		private readonly window         = inject(WindowService),
 		private readonly autoStart      = inject(AutoStartService),

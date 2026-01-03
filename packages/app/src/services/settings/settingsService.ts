@@ -2,7 +2,7 @@ import mitt from 'mitt';
 import { join } from 'node:path';
 import { ESettingsKey } from 'shared';
 import { app, safeStorage } from 'electron';
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
@@ -24,7 +24,7 @@ export class SettingsService implements IBootstrappable {
 	private readonly settingsFilePath: string;
 
 	public constructor(
-		private readonly ipc    = inject(IpcService),
+		private readonly ipc    = inject(IPCService),
 		private readonly window = inject(WindowService),
 		private readonly store  = inject(StoreService),
 	) {

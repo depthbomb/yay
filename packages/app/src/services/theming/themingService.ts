@@ -1,4 +1,4 @@
-import { IpcService } from '~/services/ipc';
+import { IPCService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { nativeTheme, systemPreferences } from 'electron';
@@ -7,7 +7,7 @@ import type { IBootstrappable } from '~/common';
 @injectable()
 export class ThemingService implements IBootstrappable {
 	public constructor(
-		private readonly ipc    = inject(IpcService),
+		private readonly ipc    = inject(IPCService),
 		private readonly window = inject(WindowService),
 	) {}
 

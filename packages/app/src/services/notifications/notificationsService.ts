@@ -10,10 +10,10 @@ export class NotificationsService {
 	) {}
 
 	public showNotification(builder: NotificationBuilder) {
-		const toastXml = builder.build();
+		const toastXML = builder.build();
 
-		this.logger.debug('Showing toast notification', { toastXml });
+		this.logger.debug('Showing toast notification', { toastXML });
 
-		new Notification({ toastXml }).show();
+		new Notification({ toastXml: toastXML }).show();
 	}
 }

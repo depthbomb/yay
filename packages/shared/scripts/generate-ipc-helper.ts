@@ -50,20 +50,20 @@ function generateFromInterface(
 
 generateFromInterface(
 	'./src/ipc.ts',
-	'IIpcContract',
-	'IpcChannel',
-	'IpcChannels',
-	'EIpcChannel',
+	'IIPCContract',
+	'IPCChannel',
+	'IPCChannels',
+	'EIPCChannel',
 	'./src/ipc-channels.generated.ts',
 	false
 );
 
 generateFromInterface(
 	'./src/ipc.ts',
-	'IIpcEvents',
-	'IpcEvent',
-	'IpcEvents',
-	'EIpcEvent',
+	'IIPCEvents',
+	'IPCEvent',
+	'IPCEvents',
+	'EIPCEvent',
 	'./src/ipc-events.generated.ts',
 	true
 );

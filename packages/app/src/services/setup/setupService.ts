@@ -1,20 +1,20 @@
 import { ESettingsKey } from 'shared';
 import { spawn } from 'node:child_process';
 import { PRELOAD_PATH } from '~/constants';
-import { CliService } from '~/services/cli';
-import { IpcService } from '~/services/ipc';
+import { CLIService } from '~/services/cli';
+import { IPCService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
 import { TimerService } from '~/services/timer';
 import { YtdlpService } from '~/services/ytdlp';
 import { OnlineChecker } from './onlineChecker';
 import { WindowService } from '~/services/window';
+import { fileExists } from '@depthbomb/node-common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
-import { fileExists } from '@depthbomb/node-common/fs';
 import { app, shell, dialog, BrowserWindow } from 'electron';
-import { CancellationTokenSource, OperationCancelledError } from '@depthbomb/node-common/cancellation';
+import { CancellationTokenSource, OperationCancelledError } from '@depthbomb/node-common';
 import type { Maybe } from 'shared';
 import type { IBootstrappable } from '~/common';
 
@@ -27,8 +27,8 @@ export class SetupService implements IBootstrappable {
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
-		private readonly cli           = inject(CliService),
-		private readonly ipc           = inject(IpcService),
+		private readonly cli           = inject(CLIService),
+		private readonly ipc           = inject(IPCService),
 		private readonly window        = inject(WindowService),
 		private readonly timer         = inject(TimerService),
 		private readonly settings      = inject(SettingsService),
