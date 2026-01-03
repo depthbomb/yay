@@ -3,7 +3,6 @@ export * from './use-ipc';
 export * from './use-key-press';
 export * from './use-modifier-key';
 export * from './use-setting';
-export * from './use-native-text-menu';
 export * from './use-throttle';
 export * from './use-title';
 export * from './use-window-focus';

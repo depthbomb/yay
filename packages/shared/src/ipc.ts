@@ -10,10 +10,6 @@ export interface IIpcContract {
 		args: [options: MessageBoxOptions];
 		return: MessageBoxReturnValue;
 	}
-	'main<-show-text-selection-menu': {
-		args: [type: 'input' | 'input-selection' | 'text-selection'];
-		return: void;
-	}
 	'main<-pick-download-dir': {
 		args: [];
 		return: Nullable<string>;

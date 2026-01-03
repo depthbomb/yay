@@ -3,9 +3,7 @@ import { FeatureFlags } from 'shared';
 import type { FeatureFlag, FeatureFlagKey } from 'shared';
 
 export const useFeatureFlags = () => {
-	const flags = useMemo<FeatureFlag[]>(() => {
-		return window.featureFlags.getFeatureFlags();
-	}, []);
+	const flags = useMemo<FeatureFlag[]>(() => window.featureFlags.getFeatureFlags(), []);
 
 	const isEnabled = (key: FeatureFlagKey): boolean => {
 		const def  = FeatureFlags[key];

@@ -10,7 +10,7 @@ import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
 import { lazy, useRef, Activity, useState, useEffect } from 'react';
-import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags, useSetting } from '~/hooks';
+import { useIpc, useTitle, useKeyPress, useFeatureFlags, useSetting } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -98,7 +98,6 @@ export const HomePage = () => {
 	};
 
 	useTitle('yay');
-	useNativeTextMenu();
 
 	useKeyPress({ key: 'Enter', onKeyPress: trySubmitting });
 	useKeyPress({ key: 'v', modifiers: { ctrl: true }, onKeyPress: tryPasting });

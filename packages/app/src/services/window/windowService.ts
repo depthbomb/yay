@@ -3,12 +3,12 @@ import { join } from 'node:path';
 import { DEV_PORT } from 'shared';
 import { ROOT_PATH } from '~/constants';
 import { IpcService } from '~/services/ipc';
-import { shell, BrowserWindow } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Menu, shell, BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
 import type { Awaitable, IIpcEvents } from 'shared';
-import type { BrowserWindowConstructorOptions } from 'electron';
+import type { MenuItemConstructorOptions, BrowserWindowConstructorOptions } from 'electron';
 
 type CreateWindowOptions = {
 	/**
@@ -23,6 +23,10 @@ type CreateWindowOptions = {
 	 * Rules to determine if a URL should be opened externally (in the user's default browser).
 	 */
 	externalURLRules?: Array<(url: URL) => boolean>;
+	/**
+	 * Whether the window should handle the `context-menu` event with an appropriate menu.
+	 */
+	handleContextMenu?: boolean;
 	/**
 	 * The function to call when the window is ready to be shown.
 	 */
@@ -78,8 +82,7 @@ export class WindowService implements IBootstrappable {
 			throw new Error('Main window has already been created');
 		}
 
-		const { url, browserWindowOptions, onReadyToShow } = options;
-		const mainWindow = this.createWindow(this.mainWindowName, { url, browserWindowOptions, onReadyToShow });
+		const mainWindow = this.createWindow(this.mainWindowName, options);
 
 		return mainWindow;
 	}
@@ -107,6 +110,38 @@ export class WindowService implements IBootstrappable {
 		window.on('minimize', () => this.emit(name, 'window->is-minimized'));
 		window.on('maximize', () => this.emit(name, 'window->is-maximized'));
 		window.on('unmaximize', () => this.emit(name, 'window->is-unmaximized'));
+
+		if (options.handleContextMenu === true) {
+			window.webContents.on('context-menu', (_, params) => {
+				console.log(params);
+				const template = [] as MenuItemConstructorOptions[];
+
+				if (params.isEditable) {
+					if (params.selectionText) {
+						template.push(
+							{ role: 'cut' },
+							{ role: 'copy' },
+							{ role: 'paste' },
+							{ type: 'separator' },
+							{ role: 'selectAll' },
+						);
+					} else {
+						template.push({ role: 'paste' });
+					}
+				} else if (params.selectionText) {
+					template.push(
+						{ role: 'copy' },
+						{ role: 'selectAll' },
+					);
+				} else {
+					template.push({ role: 'selectAll' });
+				}
+
+				if (template.length) {
+					Menu.buildFromTemplate(template).popup({ window });
+				}
+			});
+		}
 
 		window.once('closed', () => {
 			this.windows.delete(name);

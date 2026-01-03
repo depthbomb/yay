@@ -36,6 +36,7 @@ export class MainWindowService implements IBootstrappable {
 		this.mainWindow = this.window.createMainWindow({
 			url: this.window.useRendererRouter(),
 			externalURLRules: EXTERNAL_URL_RULES,
+			handleContextMenu: true,
 			browserWindowOptions: {
 				show: false,
 				width: 380,

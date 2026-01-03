@@ -18,11 +18,10 @@ import { AutoStartService } from '~/services/autoStart';
 import { ThumbnailService } from '~/services/thumbnail';
 import { MainWindowService } from '~/services/mainWindow';
 import { GlobalMenuService } from '~/services/globalMenu';
+import { app, shell, dialog, BrowserWindow } from 'electron';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
-import { app, Menu, shell, dialog, BrowserWindow } from 'electron';
 import { ELifecyclePhase, LifecycleService } from '~/services/lifecycle';
-import type { MenuItemConstructorOptions } from 'electron';
 
 @injectable()
 export class MainService {
@@ -84,36 +83,6 @@ export class MainService {
 			} else {
 				return dialog.showMessageBox(options);
 			}
-		});
-
-		this.ipc.registerHandler('main<-show-text-selection-menu', async (_e, type) => {
-			this.logger.debug('Showing text selection menu', { type });
-
-			const menuItems = [] as MenuItemConstructorOptions[];
-
-			switch (type) {
-				case 'input':
-					menuItems.push(
-						{ role: 'paste' },
-					);
-					break;
-				case 'input-selection':
-					menuItems.push(
-						{ role: 'cut' },
-						{ role: 'copy' },
-						{ role: 'paste' },
-						{ role: 'selectAll' },
-					);
-					break;
-				case 'text-selection':
-					menuItems.push(
-						{ role: 'copy' },
-						{ role: 'selectAll' },
-					);
-					break;
-			}
-
-			Menu.buildFromTemplate(menuItems).popup();
 		});
 
 		this.ipc.registerHandler('main<-open-app-dir', async () => {
