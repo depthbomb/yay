@@ -51,6 +51,7 @@
 	},
 	"include": [
 		"./src/**/*.ts",
+		"./vite.config.mts",
 		"./eslint.config.mts",
 		"./electron-builder.config.js"
 	]
