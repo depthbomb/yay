@@ -1,5 +1,11 @@
 [
 	{
+		"version": "1.36.1",
+		"changes": [
+			"This is maintenance release to update some dependencies and prepare the application for an upcoming release"
+		]
+	},
+	{
 		"version": "1.36.0",
 		"changes": [
 			"Overhauled UI and various elements",

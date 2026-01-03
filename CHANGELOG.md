@@ -2,6 +2,8 @@
 
 - This is maintenance release to update some dependencies and prepare the application for an upcoming release
 
+---
+
 # 1.36.0
 
 - Overhauled UI and various elements
