@@ -1,4 +1,3 @@
-import './assets/css/index.css';
 import { typedEntries } from 'shared';
 import { lazy, useEffect } from 'react';
 import { useWindowsAccent } from './hooks';

@@ -1,49 +1,34 @@
-const { Configuration } = require('electron-builder');
 const { version, author, nameLong, description, appUserModelId, applicationName } = require('../../product.json');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-/**
- * Whether or not to entirely skip adding node_modules to the app's asar.
- *
- * Setting this to `true` is useful in cases where third-party package code is completely bundled
- * into your compiled app code.
- */
-const EXCLUDE_ALL_NODE_MODULES = true;
-/**
- * Specific package names to exclude from the app's asar when `EXCLUDE_ALL_NODE_MODULES` is false.
- *
- * If a package has dependencies then you must exclude those as well.
- */
-const EXCLUDED_PACKAGES = [];
-
-/**
- * @type Configuration
- */
-const config = {
+/** @type {import('electron-builder').Configuration} */
+module.exports = {
 	appId: appUserModelId,
 	executableName: applicationName,
 	productName: nameLong,
 	copyright: `Copyright © 2024-${new Date().getFullYear()} ${author}`,
 	asar: true,
-	buildDependenciesFromSource: true,
-	downloadAlternateFFmpeg: true,
 	compression: 'maximum',
+	downloadAlternateFFmpeg: true,
+	npmRebuild: false,
+	buildDependenciesFromSource: false,
 	directories: {
-		output: '../../build'
+		output: '../../build',
 	},
 	files: [
-		'dist/*',
+		'dist/**',
 		'package.json',
+		'!**/node_modules/**',
 	],
 	asarUnpack: [
-		'*.node',
-		'*.dll',
-		'*.exe',
+		'**/*.node',
+		'**/*.dll',
+		'**/*.exe',
 	],
 	extraMetadata: {
 		version,
-		description
+		description,
 	},
 	extraFiles: [
 		{ from: '../../static/extra/7za.exe',             to: '7za.exe' },
@@ -57,7 +42,7 @@ const config = {
 	],
 	win: {
 		icon: '../../static/icon.ico',
-		verifyUpdateCodeSignature: false
+		verifyUpdateCodeSignature: false,
 	},
 	electronFuses: {
 		runAsNode: !isProduction,
@@ -65,15 +50,5 @@ const config = {
 		enableCookieEncryption: isProduction,
 		enableNodeCliInspectArguments: !isProduction,
 		enableNodeOptionsEnvironmentVariable: !isProduction,
-	}
+	},
 };
-
-if (EXCLUDE_ALL_NODE_MODULES) {
-	config.files.push('!node_modules');
-} else {
-	for (const excludedPackage of EXCLUDED_PACKAGES) {
-		config.files.push(`!node_modules/${excludedPackage}`);
-	}
-}
-
-exports.default = config;
