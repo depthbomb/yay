@@ -30,6 +30,10 @@ Run the renderer in watch mode with `yarn watch` and the application in developm
 The following must be installed on your system and added to the PATH:
 
 - [Inno Setup >= 6.6](https://jrsoftware.org/isinfo.php)
-- [7-Zip](https://www.7-zip.org/)
+- [7-Zip](https://7-zip.org)
 
 Run `yarn package` to build the application, and `yarn create-installer` to create both the online files archive and the setup binary.
+
+## Feature Flags
+
+This application uses feature flags to enable or disable certain functionality at runtime. Feature flags are defined in a `features.toml` file in the app's data folder, accessible by clicking the _Open data folder_ button in application settings. The application **must be restarted** after modifying feature flags for changes to take effect.
