@@ -1,3 +1,11 @@
+# 1.37.0
+
+- Twitter/X media is now handled by a new system that bypasses yt-dlp and is much faster
+  - This is enabled by default and can be disabled, opting to use yt-dlp instead, in settings
+- Improved context menu handling
+
+---
+
 # 1.36.1
 
 - This is maintenance release to update some dependencies and prepare the application for an upcoming release
