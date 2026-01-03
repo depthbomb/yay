@@ -14,6 +14,7 @@ export enum ESettingsKey {
 	SkipYoutubePlaylists          = 'skip-youtube-playlists',
 	DisableHardwareAcceleration   = 'disable-hardware-acceleration',
 	UpdateYtdlpOnStartup          = 'update-ytdlp-on-startup',
+	UseNewTwitterVideoDownloader  = 'use-new-twitter-video-downloader'
 }
 
 export const SettingsKeys = Object.values(ESettingsKey);

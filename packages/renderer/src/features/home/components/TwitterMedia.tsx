@@ -57,7 +57,7 @@ export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 	const renderLabel = (state: EVariantDownloadState, resolution: string) => {
 		switch (state) {
 			case EVariantDownloadState.Downloading:
-				return `Downloading...`;
+				return 'Downloading...';
 			case EVariantDownloadState.Downloaded:
 				return 'Downloaded';
 			case EVariantDownloadState.Error:

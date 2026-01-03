@@ -5,14 +5,14 @@ import { mdiUpdate } from '@mdi/js';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
-import { isValidURL, tweetURLPattern } from 'shared';
+import { TwitterMedia } from './components/TwitterMedia';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
+import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
 import { lazy, useRef, Activity, useState, useEffect } from 'react';
-import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags } from '~/hooks';
+import { useIpc, useTitle, useKeyPress, useNativeTextMenu, useFeatureFlags, useSetting } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
-import { TwitterMedia } from './components/TwitterMedia';
 
 type LogLineProps = { line: string; };
 
@@ -44,6 +44,7 @@ const isSnowfall = () => {
 
 export const HomePage = () => {
 	const [isTweetURL, setIsTweetURL]           = useState(false);
+	const [useNewTwitterVideoDownloader]        = useSetting<boolean>(ESettingsKey.UseNewTwitterVideoDownloader);
 	const [,clearLog]                           = useAtom(clearLogAtom);
 	const [,pushToLog]                          = useAtom(pushToLogAtom);
 	const [,resetApp]                           = useAtom(resetAppAtom);
@@ -164,7 +165,7 @@ export const HomePage = () => {
 								disabled={isWorking || isUpdating}
 								readOnly={isWorking || isUpdating}
 							/>
-							{isTweetURL ? (
+							{(isTweetURL && useNewTwitterVideoDownloader) ? (
 								<TwitterMedia tweetURL={url}/>
 							) : (
 								<>

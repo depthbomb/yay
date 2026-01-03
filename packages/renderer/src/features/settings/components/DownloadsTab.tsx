@@ -8,11 +8,12 @@ import { Select, TextInput } from '~/components/Input';
 import type { ChangeEvent } from 'react';
 
 export const DownloadsTab = () => {
-	const [downloadDir]                                     = useSetting<string>(ESettingsKey.DownloadDir);
-	const [downloadNameTemplate, setDownloadNameTemplate]   = useSetting<string>(ESettingsKey.DownloadNameTemplate, { reactive: false });
-	const [defaultDownloadAction, setDefaultDownloadAction] = useSetting<string>(ESettingsKey.DefaultDownloadAction, { reactive: false });
-	const [embedThumbnail, setEmbedThumbnail]               = useSetting<boolean>(ESettingsKey.UseThumbnailForCoverArt, { reactive: false });
-	const [enableNotifications, setEnableNotifications]     = useSetting<boolean>(ESettingsKey.EnableDownloadCompletionToast, { defaultValue: true, reactive: false });
+	const [downloadDir]                                         = useSetting<string>(ESettingsKey.DownloadDir);
+	const [downloadNameTemplate, setDownloadNameTemplate]       = useSetting<string>(ESettingsKey.DownloadNameTemplate, { reactive: false });
+	const [defaultDownloadAction, setDefaultDownloadAction]     = useSetting<string>(ESettingsKey.DefaultDownloadAction, { reactive: false });
+	const [embedThumbnail, setEmbedThumbnail]                   = useSetting<boolean>(ESettingsKey.UseThumbnailForCoverArt, { reactive: false });
+	const [enableNotifications, setEnableNotifications]         = useSetting<boolean>(ESettingsKey.EnableDownloadCompletionToast, { reactive: false });
+	const [useNewTwitterDownloader, setUseNewTwitterDownloader] = useSetting<boolean>(ESettingsKey.UseNewTwitterVideoDownloader, { reactive: false });
 
 	const onDefaultDownloadActionSelectionChanged = (event: ChangeEvent<HTMLSelectElement>) => setDefaultDownloadAction(event.target.value);
 	const onDownloadNameTemplateFieldChanged      = (event: ChangeEvent<HTMLInputElement>) => setDownloadNameTemplate(event.target.value);
@@ -41,6 +42,7 @@ export const DownloadsTab = () => {
 			<SectionSeparator/>
 			<Switch label="Use video thumbnail as audio cover art" checked={embedThumbnail} defaultChecked={embedThumbnail} onCheckedChange={setEmbedThumbnail}/>
 			<Switch label="Completion toast notification" checked={enableNotifications} defaultChecked={enableNotifications} onCheckedChange={setEnableNotifications}/>
+			<Switch label="Use the new Twitter/X video downloader" checked={useNewTwitterDownloader} defaultChecked={useNewTwitterDownloader} onCheckedChange={setUseNewTwitterDownloader}/>
 		</div>
 	);
 };

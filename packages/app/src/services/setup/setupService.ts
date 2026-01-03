@@ -92,6 +92,7 @@ export class SetupService implements IBootstrappable {
 			[ESettingsKey.HideSetupWindow, false],
 			[ESettingsKey.DisableHardwareAcceleration, false],
 			[ESettingsKey.UpdateYtdlpOnStartup, true],
+			[ESettingsKey.UseNewTwitterVideoDownloader, true],
 		]);
 	}
 
