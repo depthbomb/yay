@@ -17,7 +17,7 @@ export const RESOURCES_PATH     = join(EXE_DIR, 'resources');
 export const PRELOAD_PATH       = join(ROOT_PATH, 'preload.js');
 
 export const USER_AGENT = `${product.applicationName}/${product.version}.${GIT_HASH_SHORT} (github:${REPO_OWNER}/${REPO_NAME})` as const;
-export const BROWSER_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36' as const;
+export const BROWSER_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36' as const;
 
 /**
  * An array of functions that take a `URL` and return a `bool`, used as "rules" to determine if a

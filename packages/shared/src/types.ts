@@ -1,4 +1,4 @@
-import type { IIPCEvents, IIPCContract, IPCChannel } from '.';
+import type { IIPCEvents, IPCChannel, IIPCContract } from '.';
 import type { Maybe, Nullable, Awaitable } from '@depthbomb/node-common';
 
 export { Maybe, Nullable, Awaitable };

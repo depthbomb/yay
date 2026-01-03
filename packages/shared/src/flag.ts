@@ -1,18 +1,14 @@
 export class Flag {
-	#value: boolean;
-	readonly #initialValue: boolean;
+	public value: boolean;
+	private readonly initialValue: boolean;
 
 	public constructor(value: boolean = false) {
-		this.#value        = value;
-		this.#initialValue = value;
-	}
-
-	public get value() {
-		return this.#value;
+		this.value        = value;
+		this.initialValue = value;
 	}
 
 	public get isTrue() {
-		return this.#value === true;
+		return this.value === true;
 	}
 
 	public get isFalse() {
@@ -20,30 +16,30 @@ export class Flag {
 	}
 
 	public set(value: boolean) {
-		this.#value = value;
+		this.value = value;
 	}
 
 	public setTrue() {
-		this.#value = true;
+		this.value = true;
 	}
 
 	public setFalse() {
-		this.#value = false;
+		this.value = false;
 	}
 
 	public toggle() {
-		this.#value = !this.#value;
+		this.value = !this.value;
 	}
 
 	public reset() {
-		this.#value = this.#initialValue;
+		this.value = this.initialValue;
 	}
 
 	public valueOf() {
-		return this.#value;
+		return this.value;
 	}
 
 	public toString() {
-		return String(this.#value);
+		return String(this.value);
 	}
 }
