@@ -3,6 +3,7 @@
 - Twitter/X media is now handled by a new system that bypasses yt-dlp and is much faster
   - This is enabled by default and can be disabled, opting to use yt-dlp instead, in settings
 - Improved context menu handling
+- Fixed the layout of the updater window breaking in some cases
 
 ---
 
