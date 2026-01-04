@@ -40,7 +40,6 @@
 		"electron": "39.2.7",
 		"eslint": "^9.39.2",
 		"globals": "^17.0.0",
-		"jiti": "^2.6.1",
 		"terser": "^5.44.1",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.51.0",

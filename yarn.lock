@@ -10099,7 +10099,6 @@ __metadata:
     eslint: "npm:^9.39.2"
     globals: "npm:^17.0.0"
     hono: "npm:^4.11.3"
-    jiti: "npm:^2.6.1"
     loglayer: "npm:^8.4.0"
     mitt: "npm:^3.0.1"
     nativelib: "workspace:*"
