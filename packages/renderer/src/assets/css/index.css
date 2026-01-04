@@ -91,6 +91,23 @@
 			filter: hue-rotate(359deg);
 		}
 	}
+
+	--animate-heartbeat: heartbeat 1.25s ease-in-out infinite;
+
+	@keyframes heartbeat {
+		0%, 100% {
+			transform: scale(1);
+		}
+		20% {
+			transform: scale(1.15);
+		}
+		40% {
+			transform: scale(1);
+		}
+		60% {
+			transform: scale(1.15);
+		}
+	}
 }
 
 @utility popup-* {

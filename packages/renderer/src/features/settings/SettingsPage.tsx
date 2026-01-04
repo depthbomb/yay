@@ -4,14 +4,14 @@ import { useIpc } from '~/hooks';
 import { Icon } from '@mdi/react';
 import { lazy, useEffect} from 'react';
 import { AppTab } from './components/AppTab';
-import { DevTab } from './components/DevTab';
+import { AboutTab } from './components/AboutTab';
 import { YoutubeTab } from './components/YoutubeTab';
 import { WindowShell } from '~/components/WindowShell';
 import { AdvancedTab } from './components/AdvancedTab';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { DownloadsTab } from './components/DownloadsTab';
 import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
-import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiCodeBraces, mdiApplicationCog } from '@mdi/js';
+import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiInformation, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
 import type { TabsTriggerProps } from '@radix-ui/react-tabs';
 
@@ -71,7 +71,7 @@ export const SettingsPage = () => {
 					<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
 					<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
 					<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
-					<TabButton value="dev" title="Developer" icon={mdiCodeBraces}/>
+					<TabButton value="about" title="About" icon={mdiInformation}/>
 					{import.meta.env.DEV && <TabButton value="debug" title="Debug" icon={mdiTools}/>}
 				</List>
 				<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
@@ -87,8 +87,8 @@ export const SettingsPage = () => {
 					<Content value="advanced">
 						<AdvancedTab />
 					</Content>
-					<Content value="dev">
-						<DevTab />
+					<Content value="about">
+						<AboutTab />
 					</Content>
 					{import.meta.env.DEV && (
 						<Content value="debug">
