@@ -8,6 +8,10 @@ import { URL, fileURLToPath } from 'node:url';
 import { ViteMinifyPlugin } from 'vite-plugin-minify';
 import type { UserConfigExport } from 'vite';
 
+let entryID = 0;
+let assetID = 0;
+let chunkID = 0;
+
 export default defineConfig(({ mode }) => {
 	const isProduction = mode === 'production';
 	const config: UserConfigExport = {
@@ -25,17 +29,16 @@ export default defineConfig(({ mode }) => {
 		build: {
 			outDir: isProduction ? resolve('../app/dist') : resolve('./dist'),
 			assetsDir: '.',
-			emptyOutDir: false,
-			sourcemap: mode !== 'production',
+			emptyOutDir: !isProduction,
+			sourcemap: !isProduction,
 			rollupOptions: {
 				input: {
 					renderer: resolve('./src/renderer.html'),
 				},
 				output: {
-					hashCharacters: 'hex',
-					entryFileNames: '[hash].js',
-					assetFileNames: '[hash].[ext]',
-					chunkFileNames: '[hash].js',
+					entryFileNames: () => `${String(entryID++).padStart(2, '0')}.r.e.js`,
+					assetFileNames: () => `${String(assetID++).padStart(2, '0')}.r.a.[ext]`,
+					chunkFileNames: () => `${String(chunkID++).padStart(2, '0')}.r.c.js`,
 				},
 			},
 		},

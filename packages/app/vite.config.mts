@@ -5,6 +5,9 @@ import type { UserConfigExport } from 'vite';
 
 const { platform } = process;
 
+let assetID = 0;
+let chunkID = 0;
+
 export default defineConfig(({ mode }) => {
 	const isProduction = mode === 'production';
 	const env = loadEnv(mode, process.cwd(), '');
@@ -13,7 +16,7 @@ export default defineConfig(({ mode }) => {
 		base: '',
 		assetsInclude: '**/*.node',
 		build: {
-			target: 'node24',
+			target: 'node22',
 			outDir: resolve('./dist'),
 			assetsDir: '.',
 			emptyOutDir: true,
@@ -28,10 +31,9 @@ export default defineConfig(({ mode }) => {
 			},
 			rollupOptions: {
 				output: {
-					hashCharacters: 'hex',
-					entryFileNames: '[name].js',
-					assetFileNames: '[hash].[ext]',
-					chunkFileNames: '[hash].js',
+					entryFileNames: () => '[name].js',
+					assetFileNames: () => `${String(assetID++).padStart(2, '0')}.a.a.[ext]`,
+					chunkFileNames: () => `${String(chunkID++).padStart(2, '0')}.a.c.js`,
 				},
 				external: [
 					'electron',

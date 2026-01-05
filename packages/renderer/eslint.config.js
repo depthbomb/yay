@@ -28,6 +28,7 @@ export default defineConfig(
 				'warn',
 				{ allowConstantExport: true },
 			],
+			'@typescript-eslint/no-empty-object-type': 'warn',
 			'@typescript-eslint/no-explicit-any': 'warn'
 		},
 	},

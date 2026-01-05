@@ -1,6 +1,6 @@
 import { cx } from 'cva';
 import { Titlebar } from './Titlebar';
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useIpc, useTitle, useWindowFocus } from '~/hooks';
 import type { FC, PropsWithChildren } from 'react';
 
@@ -43,7 +43,7 @@ export const WindowShell: FC<IWindowShellProps> = ({
 	);
 
 	return (
-		<div id={useId()} className={cx('relative flex flex-col justify-center h-screen w-screen border overflow-hidden', {
+		<div className={cx('relative flex flex-col justify-center h-screen w-screen border overflow-hidden', {
 			'border-gray-950': isMaximized,
 			'border-accent-500': isFocused,
 			'border-gray-900': !isFocused

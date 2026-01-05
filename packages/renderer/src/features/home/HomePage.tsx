@@ -9,7 +9,7 @@ import { TwitterMedia } from './components/TwitterMedia';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
-import { lazy, useRef, Activity, useState, useEffect } from 'react';
+import { lazy, useRef, Activity, useState, Fragment, useEffect } from 'react';
 import { useIpc, useTitle, useKeyPress, useFeatureFlags, useSetting } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
@@ -96,6 +96,12 @@ export const HomePage = () => {
 
 		await window.ipc.invoke('yt-dlp<-download-default', url);
 	};
+	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const url = event.target.value.trim();
+
+		setIsTweetURL(tweetURLPattern.test(url));
+		setURL(url);
+	};
 
 	useTitle('yay');
 
@@ -128,13 +134,6 @@ export const HomePage = () => {
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
 	}, [logs]);
 
-	const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-		const url = event.target.value.trim();
-
-		setIsTweetURL(tweetURLPattern.test(url));
-		setURL(url);
-	};
-
 	return (
 		<div className="relative p-px w-screen h-screen overflow-hidden">
 			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
@@ -147,7 +146,7 @@ export const HomePage = () => {
 						</div>
 					</div>
 				) : (
-					<>
+					<Fragment>
 						<Masthead/>
 						<div className="p-3 h-full flex flex-col space-y-4 overflow-hidden">
 							<Activity mode={updateAvailable ? 'visible' : 'hidden'}>
@@ -167,7 +166,7 @@ export const HomePage = () => {
 							{(isTweetURL && useNewTwitterVideoDownloader) ? (
 								<TwitterMedia tweetURL={url}/>
 							) : (
-								<>
+								<Fragment>
 									<DownloadButtons
 										onDownloadVideoClick={() => window.ipc.invoke('yt-dlp<-download-video', url)}
 										onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
@@ -182,10 +181,10 @@ export const HomePage = () => {
 											))}
 										</div>
 									</div>
-								</>
+								</Fragment>
 							)}
 						</div>
-					</>
+					</Fragment>
 				)}
 			</div>
 			<div className={accentCss}/>

@@ -38,8 +38,7 @@ export const IconButton = ({
 				className={iconButton({ disabled, className })}
 				disabled={disabled}
 				{...props}
-				type="button"
-			>
+				type="button">
 				<Icon path={icon} className="size-4" />
 			</button>
 		</TooltipV2>
