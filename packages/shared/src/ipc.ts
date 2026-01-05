@@ -185,6 +185,8 @@ export interface IIPCContract {
 }
 
 export interface IIPCEvents {
+	// Main Events
+	'main->heartbeat': number; // Only emitted in development mode
 	// Window Events
 	'window->is-minimized': void;
 	'window->is-maximized': void;

@@ -73,6 +73,11 @@ export class MainService {
 			this.twitter.bootstrap(),
 		]);
 
+		if (import.meta.env.DEV) {
+			let heartbeatCount = 0;
+			this.timer.setInterval(() => this.window.emitAll('main->heartbeat', ++heartbeatCount), 1_000);
+		}
+
 		this.ipc.registerHandler('main<-show-message-box', async (e, options) => {
 			const window = BrowserWindow.fromWebContents(e.sender);
 
