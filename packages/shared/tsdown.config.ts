@@ -11,11 +11,12 @@ export default defineConfig((options) => ({
 	entry: [
 		'src/index.ts',
 	],
+	exports: true,
 	format: ['cjs', 'esm'],
 	dts: true,
 	minify: true,
 	skipNodeModulesBundle: false,
-	splitting: false,
+	splitting: true,
 	sourcemap: false,
 	target: 'esnext',
 	tsconfig: './tsconfig.json',

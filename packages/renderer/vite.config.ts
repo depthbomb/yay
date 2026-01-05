@@ -36,9 +36,10 @@ export default defineConfig(({ mode }) => {
 					renderer: resolve('./src/renderer.html'),
 				},
 				output: {
-					entryFileNames: () => `${String(entryID++).padStart(2, '0')}.r.e.js`,
-					assetFileNames: () => `${String(assetID++).padStart(2, '0')}.r.a.[ext]`,
-					chunkFileNames: () => `${String(chunkID++).padStart(2, '0')}.r.c.js`,
+					hashCharacters: 'hex',
+					entryFileNames: () => `${String(entryID++).padStart(2, '0')}-[hash].js`,
+					assetFileNames: () => `${String(assetID++).padStart(2, '0')}-[hash].[ext]`,
+					chunkFileNames: () => `${String(chunkID++).padStart(2, '0')}-[hash].js`,
 				},
 			},
 		},

@@ -143,6 +143,14 @@ export interface IIPCContract {
 		return: void;
 	}
 	//
+	'updater<-check-manual': {
+		args: [];
+		return: void;
+	}
+	'updater<-get-next-manual-check': {
+		args: [];
+		return: number;
+	}
 	'updater<-get-latest-release': {
 		args: [];
 		return: Maybe<any>;

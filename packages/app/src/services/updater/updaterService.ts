@@ -13,6 +13,7 @@ import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
 import { CancellationTokenSource } from '@depthbomb/node-common';
+import { TransformableNumber } from '~/common/TransformableNumber';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
@@ -29,12 +30,15 @@ export class UpdaterService implements IBootstrappable {
 	public commits: Nullable<Commits>        = null;
 	public latestChangelog: Nullable<string> = null;
 
-	private cts            = new CancellationTokenSource();
-	private isNotified     = false;
+	private cts        = new CancellationTokenSource();
+	private isNotified = false;
+	private checkTimeout: Maybe<NodeJS.Timeout>;
 	private updaterWindow: Maybe<BrowserWindow>;
+	private nextManualCheck = Date.now();
 
 	private readonly httpClient: HTTPClient;
-	private readonly checkInterval: NodeJS.Timeout;
+	private readonly checkInterval       = new TransformableNumber(90_000, x => x + 500);
+	private readonly manualCheckInterval = new TransformableNumber(30_000, x => x + 30_000);
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
@@ -47,28 +51,33 @@ export class UpdaterService implements IBootstrappable {
 		private readonly github        = inject(GithubService),
 		private readonly notifications = inject(NotificationsService),
 	) {
-		this.httpClient    = this.http.getClient('Updater', { userAgent: USER_AGENT });
-		this.checkInterval = this.timer.setInterval(async () => await this.checkForUpdates(), 90_000);
+		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
+		this.checkForUpdates();
+		this.scheduleNextUpdateCheck();
 	}
 
 	public async bootstrap() {
+		this.ipc.registerHandler('updater<-check-manual',            () => this.checkForUpdates(true));
+		this.ipc.registerHandler('updater<-get-next-manual-check',   () => this.nextManualCheck);
+		this.ipc.registerHandler('updater<-show-window',             () => this.showUpdaterWindow());
+		this.ipc.registerHandler('updater<-get-latest-release',      () => this.getLatestRelease());
+		this.ipc.registerHandler('updater<-get-latest-changelog',    () => this.latestChangelog);
+		this.ipc.registerHandler('updater<-get-commits-since-build', () => this.commits);
+		this.ipc.registerHandler('updater<-update',                  () => this.startUpdate());
+		this.ipc.registerHandler('updater<-cancel-update',           () => this.cancelUpdate());
 
-
-		this.ipc.registerHandler('updater<-show-window',                  () => this.showUpdaterWindow());
-		this.ipc.registerHandler('updater<-get-latest-release',           () => this.getLatestRelease());
-		this.ipc.registerHandler('updater<-get-latest-changelog',         () => this.latestChangelog);
-		this.ipc.registerHandler('updater<-get-commits-since-build',      () => this.commits);
-		this.ipc.registerHandler('updater<-update',                 async () => await this.startUpdate());
-		this.ipc.registerHandler('updater<-cancel-update',                () => this.cancelUpdate());
-
-		this.lifecycle.events.on('readyPhase', async () => await this.checkForUpdates());
-		this.lifecycle.events.on('shutdown',         () => this.timer.clearInterval(this.checkInterval));
+		this.lifecycle.events.on('readyPhase', () => this.checkForUpdates());
+		this.lifecycle.events.on('shutdown',   () => this.timer.clearTimeout(this.checkTimeout!));
 	}
 
-	public async checkForUpdates() {
-		this.logger.info('Checking for updates');
+	public async checkForUpdates(manual = false) {
+		this.logger.info('Checking for updates', { manual });
 
 		this.window.emitAll('updater->checking-for-updates');
+
+		if (manual) {
+			this.nextManualCheck = Date.now() + this.manualCheckInterval.value;
+		}
 
 		try {
 			const release = await this.getLatestRelease();
@@ -190,5 +199,12 @@ export class UpdaterService implements IBootstrappable {
 				this.updaterWindow!.show();
 			}
 		});
+	}
+
+	private scheduleNextUpdateCheck() {
+		this.checkTimeout = this.timer.setTimeout(async () => {
+			await this.checkForUpdates();
+			this.scheduleNextUpdateCheck();
+		}, this.checkInterval.value);
 	}
 }

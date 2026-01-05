@@ -31,9 +31,10 @@ export default defineConfig(({ mode }) => {
 			},
 			rollupOptions: {
 				output: {
+					hashCharacters: 'hex',
 					entryFileNames: () => '[name].js',
-					assetFileNames: () => `${String(assetID++).padStart(2, '0')}.a.a.[ext]`,
-					chunkFileNames: () => `${String(chunkID++).padStart(2, '0')}.a.c.js`,
+					assetFileNames: () => `${String(assetID++).padStart(2, '0')}-[hash].[ext]`,
+					chunkFileNames: () => `${String(chunkID++).padStart(2, '0')}-[hash].js`,
 				},
 				external: [
 					'electron',
