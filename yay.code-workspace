@@ -34,7 +34,6 @@
 			"dist": true,
 			"node_modules": true
 		},
-		"typescript.experimental.useTsgo": false,
 		"typescript.tsdk": "Root\\node_modules\\typescript\\lib",
 		"markdown.validate.enabled": true,
 	},
@@ -47,8 +46,7 @@
 			"bradlc.vscode-tailwindcss",
 			"chouzz.vscode-innosetup",
 			"mrmlnc.vscode-json5",
-			"rust-lang.rust-analyzer",
-			"typescriptteam.native-preview"
+			"rust-lang.rust-analyzer"
 		]
 	}
 }
