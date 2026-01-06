@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => {
 			target: 'node22',
 			outDir: resolve('./dist'),
 			assetsDir: '.',
-			emptyOutDir: true,
+			emptyOutDir: !isProduction,
 			sourcemap: !isProduction,
 			minify: isProduction ? 'terser' : false,
 			lib: {

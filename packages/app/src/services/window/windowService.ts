@@ -170,12 +170,17 @@ export class WindowService implements IBootstrappable {
 		return this.windows.get(name);
 	}
 
-	public useRendererRoute(pageHash = '/') {
+	public useRendererRoute(path = '') {
+		// Some frontend routers don't treat a blank string as an index page (/)
+		const normalizedHash = path === '' ? '/' : path;
+
 		if (import.meta.env.DEV) {
-			return `http://localhost:${DEV_PORT}/renderer.html#${pageHash}`;
+			return `http://localhost:${DEV_PORT}/renderer.html#${normalizedHash}`;
 		}
 
-		return this.getHTMLPath(`renderer.html#${pageHash}`);
+		const htmlPath = this.getHTMLPath('renderer.html');
+
+		return `${htmlPath}#${normalizedHash}`;
 	}
 
 	public getHTMLPath(htmlPath: string) {
