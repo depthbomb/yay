@@ -1,3 +1,13 @@
+# 1.37.1
+
+- Updated update checking
+  - Updates can now be manually checked for in settings again
+  - The time between automatic update checks will increase linearly
+- Fixed the Twitter/X media downloader breaking if a media-less Tweet URL is input
+- Adjusted the style of the Twitter/X media downloader
+
+---
+
 # 1.37.0
 
 - Twitter/X media is now handled by a new system that bypasses yt-dlp and is much faster
