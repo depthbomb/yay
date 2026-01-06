@@ -11,7 +11,7 @@ const progressBar = cva({
 	base: 'absolute inset-0 rounded-r-full',
 	variants: {
 		state: {
-			indeterminate: 'w-full! bg-accent-500 animate-pulse',
+			indeterminate: 'w-full! bg-accent-500 animate-[pulse_1s_cubic-bezier(0.4,0,0.6,1)_infinite]',
 			active: 'bg-accent-500',
 			done: 'w-full! bg-lime-500',
 		}
