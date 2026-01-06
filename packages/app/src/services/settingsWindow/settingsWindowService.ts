@@ -16,7 +16,7 @@ export class SettingsWindowService implements IBootstrappable {
 		private readonly window    = inject(WindowService),
 	) {
 		this.settingsWindow = this.window.createWindow('settings', {
-			url: this.window.useRendererRouter('settings'),
+			url: this.window.useRendererRoute('settings'),
 			externalURLRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,

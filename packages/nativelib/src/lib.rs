@@ -87,13 +87,13 @@ fn widestring_to_string(buf: &[u16]) -> String {
 }
 
 #[napi(object)]
-pub struct JsProcessNode {
+pub struct JSProcessNode {
 	pub pid: u32,
 	pub name: String,
-	pub children: Vec<JsProcessNode>,
+	pub children: Vec<JSProcessNode>,
 }
 
-impl From<ProcessNode> for JsProcessNode {
+impl From<ProcessNode> for JSProcessNode {
 	fn from(node: ProcessNode) -> Self {
 		Self {
 			pid: node.pid,
@@ -104,7 +104,7 @@ impl From<ProcessNode> for JsProcessNode {
 }
 
 #[napi]
-pub async fn get_process_tree(pid: u32) -> Option<JsProcessNode> {
+pub async fn get_process_tree(pid: u32) -> Option<JSProcessNode> {
 	let root_name = get_process_name(pid)?;
 	let mut root = ProcessNode::new(pid, root_name);
 

@@ -99,7 +99,7 @@ export class SetupService implements IBootstrappable {
 	private async showWindow() {
 		const { promise, resolve } = Promise.withResolvers<void>();
 		this.setupWindow = this.window.createWindow('setup', {
-			url: this.window.useRendererRouter('setup'),
+			url: this.window.useRendererRoute('setup'),
 			browserWindowOptions: {
 				show: false,
 				width: 500,

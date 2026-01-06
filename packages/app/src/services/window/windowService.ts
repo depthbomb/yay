@@ -171,7 +171,7 @@ export class WindowService implements IBootstrappable {
 		return this.windows.get(name);
 	}
 
-	public useRendererRouter(pageHash = '/') {
+	public useRendererRoute(pageHash = '/') {
 		if (import.meta.env.DEV) {
 			return `http://localhost:${DEV_PORT}/renderer.html#${pageHash}`;
 		}

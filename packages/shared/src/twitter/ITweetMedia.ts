@@ -10,7 +10,7 @@ interface IVideoInfo {
 
 interface IMediaDetails {
 	media_url_https: string;
-	video_info: IVideoInfo;
+	video_info?: IVideoInfo;
 }
 
 export interface ITweetMedia {

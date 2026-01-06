@@ -34,7 +34,7 @@ export class MainWindowService implements IBootstrappable {
 	) {
 		this.pinned = new Flag(false);
 		this.mainWindow = this.window.createMainWindow({
-			url: this.window.useRendererRouter(),
+			url: this.window.useRendererRoute(),
 			externalURLRules: EXTERNAL_URL_RULES,
 			handleContextMenu: true,
 			browserWindowOptions: {

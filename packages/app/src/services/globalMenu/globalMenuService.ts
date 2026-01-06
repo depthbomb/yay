@@ -27,7 +27,7 @@ export class GlobalMenuService implements IBootstrappable {
 		private readonly ytdlp     = inject(YtdlpService),
 	) {
 		this.globalMenuWindow = this.window.createWindow('global-menu', {
-			url: this.window.useRendererRouter('global-menu'),
+			url: this.window.useRendererRoute('global-menu'),
 			browserWindowOptions: {
 				show: false,
 				width: 210,

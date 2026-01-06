@@ -6,14 +6,14 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { ESettingsKey, tweetURLPattern } from 'shared';
 import { CancellationTokenSource } from '@depthbomb/node-common';
-import type { ITweetMedia } from 'shared';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
+import type { Nullable, ITweetMedia } from 'shared';
 
 @injectable()
 export class TwitterService implements IBootstrappable {
 	private readonly client: HTTPClient;
-	private readonly tweetMediaInfoCache = new Map<string, ITweetMedia>();
+	private readonly tweetMediaInfoCache = new Map<string, Nullable<ITweetMedia>>();
 	private readonly cts                 = new CancellationTokenSource();
 
 	public constructor(
@@ -59,6 +59,11 @@ export class TwitterService implements IBootstrappable {
 		const url  = `https://cdn.syndication.twimg.com/tweet-result?id=${tweetID}&token=!`;
 		const res  = await this.client.get(url);
 		const data = await res.json() as ITweetMedia;
+
+		if (!data.mediaDetails.filter(d => d.video_info !== undefined).length) {
+			this.tweetMediaInfoCache.set(tweetID, null);
+			return null;
+		}
 
 		this.tweetMediaInfoCache.set(tweetID, data);
 

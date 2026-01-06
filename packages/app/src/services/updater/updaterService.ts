@@ -178,7 +178,7 @@ export class UpdaterService implements IBootstrappable {
 		this.logger.debug('Creating updater window');
 
 		this.updaterWindow = this.window.createWindow('updater', {
-			url: this.window.useRendererRouter('updater'),
+			url: this.window.useRendererRoute('updater'),
 			externalURLRules: EXTERNAL_URL_RULES,
 			browserWindowOptions: {
 				show: false,
