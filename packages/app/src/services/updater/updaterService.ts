@@ -37,8 +37,8 @@ export class UpdaterService implements IBootstrappable {
 	private nextManualCheck = Date.now();
 
 	private readonly httpClient: HTTPClient;
-	private readonly checkInterval       = new TransformableNumber(90_000, x => x + 500);
-	private readonly manualCheckInterval = new TransformableNumber(30_000, x => x + 30_000);
+	private readonly checkInterval       = new TransformableNumber(30_000, x => x + 15_000);
+	private readonly manualCheckInterval = new TransformableNumber(5_000, x => x + 5_000);
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),

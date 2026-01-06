@@ -12,7 +12,11 @@ export class TimerService implements IBootstrappable {
 	private readonly timeouts  = new Set<SetTimeoutReturnType>();
 	private readonly intervals = new Set<SetIntervalReturnType>();
 
-	public constructor() {}
+	public async bootstrap() {
+		app.once('quit', () => this.clearAll());
+
+		return Promise.resolve();
+	}
 
 	public setTimeout(...args: SetTimeoutParameters): SetTimeoutReturnType {
 		const id = setTimeout(args[0], args[1]);
@@ -51,11 +55,5 @@ export class TimerService implements IBootstrappable {
 
 		this.timeouts.clear();
 		this.intervals.clear();
-	}
-
-	public async bootstrap() {
-		app.once('quit', () => this.clearAll());
-
-		return Promise.resolve();
 	}
 }
