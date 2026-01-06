@@ -113,7 +113,6 @@ export class WindowService implements IBootstrappable {
 
 		if (options.handleContextMenu === true) {
 			window.webContents.on('context-menu', (_, params) => {
-				console.log(params);
 				const template = [] as MenuItemConstructorOptions[];
 
 				if (params.isEditable) {
