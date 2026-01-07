@@ -1,7 +1,6 @@
 import { cva } from 'cva';
-import { forwardRef } from 'react';
 import type { VariantProps } from 'cva';
-import type { ButtonHTMLAttributes } from 'react';
+import type { FC, ButtonHTMLAttributes } from 'react';
 
 export interface IGlobalMenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof globalMenuItem> {
 	text: string;
@@ -21,11 +20,11 @@ const globalMenuItem = cva({
 	}
 });
 
-export const GlobalMenuItem = forwardRef<HTMLButtonElement, IGlobalMenuItemProps>(({ text, icon, onClick, disabled }, ref) => {
+export const GlobalMenuItem: FC<IGlobalMenuItemProps> = ({ text, icon, onClick, disabled }) => {
 	return (
-		<button ref={ref} className={globalMenuItem({ disabled })} onClick={onClick} disabled={disabled} type="button">
+		<button className={globalMenuItem({ disabled })} onClick={onClick} disabled={disabled} type="button">
 			<img src={icon} className="size-4" width="16" height="16"/>
 			<span className="text-sm">{text}</span>
 		</button>
 	);
-});
+};

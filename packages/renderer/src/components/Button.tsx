@@ -1,7 +1,6 @@
 import { cva } from 'cva';
-import { forwardRef } from 'react';
 import type { VariantProps } from 'cva';
-import type { ButtonHTMLAttributes } from 'react';
+import type { FC, ButtonHTMLAttributes } from 'react';
 
 export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
 
@@ -33,14 +32,13 @@ const button = cva({
 	}
 });
 
-export const Button = forwardRef<HTMLButtonElement, IButtonProps>(({ type, size, className, disabled, ...props }, ref) => {
+export const Button: FC<IButtonProps> = ({ type, size, className, disabled, ...props }) => {
 	return (
 		<button
-			ref={ref}
 			className={button({ type, size, disabled, className })}
 			disabled={disabled}
 			{...props}
 			type="button"
 		>{props.children}</button>
 	);
-});
+};
