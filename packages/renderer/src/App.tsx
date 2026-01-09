@@ -1,6 +1,6 @@
 import { typedEntries } from 'shared';
 import { lazy, useEffect } from 'react';
-import { useWindowsAccent } from './hooks';
+import { useIpc, useWindowsAccent } from './hooks';
 import { HomePage } from './features/home/HomePage';
 import { SetupPage } from './features/setup/SetupPage';
 import { Route, Routes, HashRouter } from 'react-router';
@@ -11,7 +11,12 @@ const UpdaterPage    = lazy(() => import('./features/updater/UpdaterPage'));
 const GlobalMenuPage = lazy(() => import('./features/global-menu/GlobalMenuPage'));
 
 export const App = () => {
+	const [,onceShouldReload] = useIpc('window->should-reload');
 	const { palette, getCSSColor, getContrastColor } = useWindowsAccent();
+
+	useEffect(() => {
+		onceShouldReload(() => window.location.reload());
+	}, [onceShouldReload]);
 
 	useEffect(() => {
 		const root = document.documentElement;

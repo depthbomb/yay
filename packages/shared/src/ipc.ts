@@ -5,6 +5,9 @@ import type { Endpoints } from '@octokit/types';
 import type { FeatureFlag } from './featureFlags';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
+export type IPCResult<T, E> = { isOk: true; isErr: false; data: T; } | { isOk: false; isErr: true; error: E; };
+export type Unit            = { readonly __unit: unique symbol; };
+
 export interface IIPCContract {
 	'main<-show-message-box': {
 		args: [options: MessageBoxOptions];
@@ -77,6 +80,14 @@ export interface IIPCContract {
 	'settings<-reset': {
 		args: [];
 		return: void;
+	}
+	'settings<-import': {
+		args: [];
+		return: IPCResult<Unit, string>;
+	}
+	'settings<-export': {
+		args: [];
+		return: IPCResult<string, string>;
 	}
 	'settings<-show-ui': {
 		args: [];
@@ -202,11 +213,13 @@ export interface IIPCEvents {
 	'window->is-blurred': void;
 	'window->is-focused': void;
 	'window->is-closed': { windowName: string; };
+	'window->should-reload': void;
 	// Setup Events
 	'setup->step': { message: string; progress: number; };
 	'setup->done': void;
 	// Settings Events
 	'settings->changed': { key: ESettingsKey; value: any };
+	'settings->imported': Unit;
 	// yt-dlp Events
 	'yt-dlp->download-started': { url: string; };
 	'yt-dlp->download-canceled': void;
@@ -222,4 +235,16 @@ export interface IIPCEvents {
 	'updater->update-complete': void;
 	// Theming Events
 	'theming->accent-color-changed': { accentColor: string; };
+}
+
+export const unit = {} as Unit;
+
+export function ok(): IPCResult<Unit, never>;
+export function ok<T>(data: T): IPCResult<T, never>;
+export function ok<T>(data?: T): IPCResult<T | Unit, never> {
+	return { isOk: true, isErr: false, data: data ?? (unit as Unit) };
+}
+
+export function err<E>(error: E): IPCResult<never, E> {
+	return { isOk: false, isErr: true, error };
 }

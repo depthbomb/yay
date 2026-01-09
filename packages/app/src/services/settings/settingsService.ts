@@ -1,11 +1,13 @@
 import mitt from 'mitt';
 import { join } from 'node:path';
-import { ESettingsKey } from 'shared';
-import { app, safeStorage } from 'electron';
 import { IPCService } from '~/services/ipc';
+import { app, safeStorage } from 'electron';
+import { product, ESettingsKey } from 'shared';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
+import { readFile, writeFile } from 'node:fs/promises';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import type { Maybe } from 'shared';
 import type { Settings } from './types';
 import type { Store } from '~/services/store';
@@ -15,6 +17,12 @@ type SettingsManagerGetOptions = {
 	secure?: boolean;
 };
 type SettingsManagerSetOptions = SettingsManagerGetOptions;
+type ExportedSettings = {
+	date: Date;
+	appVersion: string;
+	checksum: string;
+	data: string;
+}
 
 @injectable()
 export class SettingsService implements IBootstrappable {
@@ -43,7 +51,7 @@ export class SettingsService implements IBootstrappable {
 		);
 		this.ipc.registerHandler(
 			'settings<-set',
-			async (_, key, value, secure) => await this.set(key, value, { secure })
+			(_, key, value, secure) => this.set(key, value, { secure })
 		);
 		this.ipc.registerHandler(
 			'settings<-reset',
@@ -92,12 +100,55 @@ export class SettingsService implements IBootstrappable {
 		}
 	}
 
+	public async apply(data: object) {
+		return this.internalStore.apply(data);
+	}
+
 	public async reload() {
 		return this.internalStore.reload();
 	}
 
 	public async reset() {
 		return this.internalStore.reset();
+	}
+
+	public async importFromFile(filepath: string) {
+		const json = await readFile(filepath, 'utf8');
+
+		let parsed: ExportedSettings;
+		try {
+			parsed = JSON.parse(json) as ExportedSettings;
+		} catch {
+			throw new Error('Invalid exported settings file: malformed JSON');
+		}
+
+		if (typeof parsed.data !== 'string' || typeof parsed.checksum !== 'string') {
+			throw new Error('Invalid exported settings file: missing or invalid fields.');
+		}
+
+		const expected = createHash('sha512').update(parsed.data).digest();
+		const actual   = Buffer.from(parsed.checksum, 'base64');
+		if (expected.length !== actual.length) {
+			throw new Error('Settings data may be corrupted or tampered with.');
+		}
+
+		if (!timingSafeEqual(expected, actual)) {
+			throw new Error('Settings data may be corrupted or tampered with.');
+		}
+
+		await this.apply(JSON.parse(parsed.data));
+	}
+
+	public async exportToFile(filepath: string) {
+		const date = new Date();
+		const data = JSON.stringify(this.internalStore.store);
+		const hash = createHash('sha512').update(data).digest('base64');
+		const json = JSON.stringify({ date, appVersion: product.version, checksum: hash, data });
+		const path = join(filepath, 'yay-exported-settings.json');
+
+		await writeFile(path, json, 'utf8');
+
+		return path;
 	}
 
 	private encryptValue(data: unknown) {

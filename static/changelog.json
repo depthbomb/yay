@@ -1,5 +1,14 @@
 [
 	{
+		"version": "1.38.0",
+		"changes": [
+			"Added settings exporting and importing",
+			"Moved the update check button to the _About_ settings tab",
+			"The time until you can check for updates is displayed on the _About_ settings tab",
+			"Other minor optimizations"
+		]
+	},
+	{
 		"version": "1.37.1",
 		"changes": [
 			"Updated update checking",

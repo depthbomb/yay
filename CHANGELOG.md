@@ -1,3 +1,12 @@
+# 1.38.0
+
+- Added settings exporting and importing
+- Moved the update check button to the _About_ settings tab
+- The time until you can check for updates is displayed on the _About_ settings tab
+- Other minor optimizations
+
+---
+
 # 1.37.1
 
 - Updated update checking

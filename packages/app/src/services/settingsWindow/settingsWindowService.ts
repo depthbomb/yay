@@ -1,6 +1,9 @@
+import { dialog } from 'electron';
+import { ok, err, unit } from 'shared';
 import { IPCService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
+import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
@@ -13,6 +16,7 @@ export class SettingsWindowService implements IBootstrappable {
 	public constructor(
 		private readonly lifecycle = inject(LifecycleService),
 		private readonly ipc       = inject(IPCService),
+		private readonly settings  = inject(SettingsService),
 		private readonly window    = inject(WindowService),
 	) {
 		this.settingsWindow = this.window.createWindow('settings', {
@@ -50,6 +54,46 @@ export class SettingsWindowService implements IBootstrappable {
 
 	public async bootstrap() {
 		this.ipc.registerHandler('settings<-show-ui', () => this.show());
+		this.ipc.registerHandler('settings<-import', async () => {
+			const { canceled, filePaths } = await dialog.showOpenDialog(this.settingsWindow, {
+				properties: ['openFile'],
+				filters: [{
+					name: 'JSON',
+					extensions: ['json']
+				}]
+			});
+
+			if (canceled || !filePaths.length) {
+				return err('No file path chosen.');
+			}
+
+			const [filepath] = filePaths;
+
+			try {
+				await this.settings.importFromFile(filepath);
+
+				this.window.emitAll('window->should-reload');
+
+				return ok(unit);
+			} catch (e) {
+				return err((e as Error).message);
+			}
+		});
+		this.ipc.registerHandler('settings<-export', async () => {
+			const { canceled, filePaths } = await dialog.showOpenDialog(this.settingsWindow, {
+				properties: ['openDirectory']
+			});
+
+			if (canceled || !filePaths.length) {
+				return err('No file path chosen.');
+			}
+
+			const [filepath] = filePaths;
+
+			const path = await this.settings.exportToFile(filepath);
+
+			return ok(path);
+		});
 
 		this.lifecycle.events.on('shutdown', () => this.settingsWindow.close());
 	}
