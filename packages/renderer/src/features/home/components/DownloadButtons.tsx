@@ -47,7 +47,16 @@ export const DownloadButtons: FC<IDownloadButtonsProps> = ({
 	onCancelDownloadClick
 }) => {
 	const buttonCss = button({ disabled });
-	return (!working ? (
+	if (working) {
+		return (
+			<Button onClick={onCancelDownloadClick} type="danger" size="lg">
+				<Icon path={mdiCancel} className="size-4"/>
+				<span>Cancel</span>
+			</Button>
+		);
+	}
+
+	return (
 		<div className={container({ disabled })}>
 			<button onClick={onDownloadVideoClick} className={`${buttonCss} rounded-l`} disabled={disabled} type="button">
 				<Icon path={mdiVideo} className="size-5"/>
@@ -59,10 +68,5 @@ export const DownloadButtons: FC<IDownloadButtonsProps> = ({
 				<span>Download Audio</span>
 			</button>
 		</div>
-	) : (
-		<Button onClick={onCancelDownloadClick} type="danger" size="lg">
-			<Icon path={mdiCancel} className="size-4"/>
-			<span>Cancel</span>
-		</Button>
-	));
+	);
 };

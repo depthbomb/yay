@@ -1,4 +1,5 @@
 import { Icon } from '@mdi/react';
+import { Section } from './Section';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { mdiTrashCan } from '@mdi/js';
@@ -29,14 +30,13 @@ export const YoutubeTab = () => {
 
 	return (
 		<div className="flex flex-col items space-y-6">
-			<div className="flex flex-col items-start space-y-1.5">
-				<h2 className="font-display">Cookies file</h2>
+			<Section title="Cookies file">
 				<TextInput value={cookiesFilePath ?? 'None'} onClick={() => window.ipc.invoke('main<-pick-cookies-file')} type="text" readOnly className="w-full" size="sm"/>
 				<div className="w-full flex items-center justify-between">
 					<Anchor onClick={() => window.ipc.invoke('main<-pick-cookies-file')} className="text-xs cursor-pointer">Change...</Anchor>
 					{cookiesFilePath && <Anchor onClick={() => window.ipc.invoke('yt-dlp<-remove-cookies-file')} className="text-xs cursor-pointer">Remove</Anchor>}
 				</div>
-			</div>
+			</Section>
 			<SectionSeparator/>
 			<Switch label="Don't download playlists" checked={skipYoutubePlaylists} defaultChecked={skipYoutubePlaylists} onCheckedChange={setSkipYoutubePlaylists}/>
 			<SectionSeparator/>

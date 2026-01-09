@@ -4,8 +4,8 @@ import { GlobalMenuItem } from './components/GlobalMenuItem';
 import { GlobalMenuSeparator } from './components/GlobalMenuSeparator';
 
 import videoIcon from '~/assets/img/menu-icons/video.png';
-import folderIcon from '~/assets/img/menu-icons/folder-open.png';
 import audioIcon from '~/assets/img/menu-icons/music-note.png';
+import folderIcon from '~/assets/img/menu-icons/folder-open.png';
 
 export const GlobalMenuPage = () => {
 	const [isDownloadsDisabled, setIsDownloadsDisabled] = useState(false);

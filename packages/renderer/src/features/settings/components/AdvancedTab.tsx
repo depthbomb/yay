@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai';
 import { Icon } from '@mdi/react';
+import { Section } from './Section';
 import { useSetting } from '~/hooks';
 import { ESettingsKey } from 'shared';
 import { Button } from '~/components/Button';
@@ -43,10 +44,11 @@ export const AdvancedTab = () => {
 
 	return (
 		<div className="flex flex-col space-y-6">
-			<Switch label="Hardware acceleration" subtitle="Requires an app restart" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
+			<Section>
+				<Switch label="Hardware acceleration" subtitle="Requires an app restart" checked={!disableHardwareAcceleration} defaultChecked={!disableHardwareAcceleration} onCheckedChange={checked => setDisableHardwareAcceleration(!checked)}/>
+			</Section>
 			<SectionSeparator/>
-			<div className="flex flex-col items-start space-y-1.5">
-				<h2 className="font-display">Actions</h2>
+			<Section title="Actions">
 				<Button onClick={onRecheckBinariesButtonClicked} disabled={isWorking || isUpdating}>
 					<Icon path={mdiDownload} className="size-4"/>
 					<span>Recheck required binaries</span>
@@ -59,7 +61,7 @@ export const AdvancedTab = () => {
 					<Icon path={mdiRestore} className="size-4"/>
 					<span>Reset settings</span>
 				</Button>
-			</div>
+			</Section>
 		</div>
 	);
 };

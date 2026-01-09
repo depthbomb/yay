@@ -1,11 +1,12 @@
+import { Section } from './Section';
 import { Anchor } from '~/components/Anchor';
 import { SectionSeparator } from './SectionSeparator';
 
 export const DebugTab = () => {
 	return (
 		<div className="space-y-6 flex flex-col">
-			<h1 className="font-display">Accent Color Palette</h1>
-			<div className="space-y-2 flex flex-col">
+			<Section title="Accent Color Palette">
+				<div className="space-y-2 flex flex-col">
 				<div className="py-1 px-2 w-full bg-accent-50 rounded border border-accent-950">
 					<p className="text-accent-50-contrast">contrasting text</p>
 				</div>
@@ -40,6 +41,7 @@ export const DebugTab = () => {
 					<p className="text-accent-950-contrast">contrasting text</p>
 				</div>
 			</div>
+			</Section>
 			<SectionSeparator/>
 			<Anchor onClick={() => window.ipc.invoke('updater<-show-window')}>Show updater window</Anchor>
 			<Anchor onClick={() => window.ipc.invoke('setup<-show-window')}>Show setup window</Anchor>

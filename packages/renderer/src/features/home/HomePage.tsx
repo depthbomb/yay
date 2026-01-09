@@ -2,6 +2,7 @@ import { cx } from 'cva';
 import { useAtom } from 'jotai';
 import { Icon } from '@mdi/react';
 import { mdiUpdate } from '@mdi/js';
+import { useKeyPress } from 'ahooks';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
@@ -9,8 +10,8 @@ import { TwitterMedia } from './components/TwitterMedia';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
+import { useIpc, useTitle, useFeatureFlags, useSetting } from '~/hooks';
 import { lazy, useRef, Activity, useState, Fragment, useEffect } from 'react';
-import { useIpc, useTitle, useKeyPress, useFeatureFlags, useSetting } from '~/hooks';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
@@ -105,9 +106,9 @@ export const HomePage = () => {
 
 	useTitle('yay');
 
-	useKeyPress({ key: 'Enter', onKeyPress: trySubmitting });
-	useKeyPress({ key: 'v', modifiers: { ctrl: true }, onKeyPress: tryPasting });
-	useKeyPress({ key: 'a', modifiers: { ctrl: true }, onKeyPress: trySelectingInput });
+	useKeyPress('enter', () => trySubmitting());
+	useKeyPress(['ctrl.v'], () => tryPasting(), { exactMatch: true });
+	useKeyPress(['ctrl.a'], () => trySelectingInput(), { exactMatch: true });
 
 	useEffect(() => {
 		onDownloadStarted(({ url }) => {
