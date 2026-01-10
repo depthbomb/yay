@@ -1,3 +1,4 @@
+import { ok } from 'shared/ipc';
 import { dirname } from 'node:path';
 import { CLIService } from '~/services/cli';
 import { IPCService } from '~/services/ipc';
@@ -22,6 +23,7 @@ import { app, shell, dialog, BrowserWindow } from 'electron';
 import { FeatureFlagsService } from '~/services/featureFlags';
 import { SettingsWindowService } from '~/services/settingsWindow';
 import { ELifecyclePhase, LifecycleService } from '~/services/lifecycle';
+import type { MessageBoxReturnValue } from 'electron';
 
 @injectable()
 export class MainService {
@@ -83,11 +85,14 @@ export class MainService {
 
 			this.logger.debug('Showing messagebox', { window, options });
 
+			let messageBoxResult: MessageBoxReturnValue;
 			if (window) {
-				return dialog.showMessageBox(window, options);
+				messageBoxResult = await dialog.showMessageBox(window, options);
 			} else {
-				return dialog.showMessageBox(options);
+				messageBoxResult = await dialog.showMessageBox(options);
 			}
+
+			return ok(messageBoxResult);
 		});
 
 		this.ipc.registerHandler('main<-open-app-dir', async () => {
@@ -96,6 +101,8 @@ export class MainService {
 			this.logger.debug('Opening application folder', { path });
 
 			await shell.openPath(path);
+
+			return ok();
 		});
 
 		this.ipc.registerHandler('main<-open-app-data', async () => {
@@ -104,9 +111,14 @@ export class MainService {
 			this.logger.debug('Opening application data folder', { path });
 
 			await shell.openPath(path);
+
+			return ok();
 		});
 
-		this.ipc.registerHandler('main<-open-external-url', async (_e, url) => shell.openExternal(url));
+		this.ipc.registerHandler('main<-open-external-url', async (_e, url) => {
+			await shell.openExternal(url)
+			return ok();
+		});
 
 		if (!this.lifecycle.shutdownInProgress) {
 			this.lifecycle.phase = ELifecyclePhase.Ready;

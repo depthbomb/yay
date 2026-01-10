@@ -1,3 +1,4 @@
+import { ok } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
@@ -12,16 +13,12 @@ export class ThemingService implements IBootstrappable {
 	) {}
 
 	public async bootstrap() {
-		this.ipc.registerHandler('theming<-get-accent-color', () => systemPreferences.getAccentColor());
+		this.ipc.registerHandler('theming<-get-accent-color', () => ok(systemPreferences.getAccentColor()));
 
 		nativeTheme.on('updated', () => {
 			this.window.emitAll('theming->accent-color-changed', {
 				accentColor: systemPreferences.getAccentColor()
 			});
 		});
-	}
-
-	private getAccentColor() {
-		return systemPreferences.getAccentColor();
 	}
 }

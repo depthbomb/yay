@@ -1,4 +1,5 @@
 import { app } from 'electron';
+import { ok } from 'shared/ipc';
 import { CLIService } from '~/services/cli';
 import { IPCService } from '~/services/ipc';
 import { product, ESettingsKey } from 'shared';
@@ -39,6 +40,6 @@ export class AutoStartService implements IBootstrappable {
 	public setAutoStart(openAtLogin: boolean) {
 		app.setLoginItemSettings({ name: product.nameLong, openAtLogin, args: ['--autostart'] });
 
-		return openAtLogin;
+		return ok(openAtLogin);
 	}
 }

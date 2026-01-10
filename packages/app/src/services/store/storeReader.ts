@@ -8,9 +8,9 @@ export class StoreReader {
 	public async read<T>(path: string): Promise<T> {
 		try {
 			const data = await readFile(path, 'utf8');
-			const json = JSON.parse(data);
+			const json = parse(data);
 
-			return json;
+			return json as T;
 		} catch {
 			return {} as T;
 		}

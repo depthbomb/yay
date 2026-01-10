@@ -1,5 +1,11 @@
 [
 	{
+		"version": "1.38.1",
+		"changes": [
+			"The updater window will now be displayed when manually checking for updates when there is a new release"
+		]
+	},
+	{
 		"version": "1.38.0",
 		"changes": [
 			"Added settings exporting and importing",

@@ -2,6 +2,7 @@ import semver from 'semver';
 import { app } from 'electron';
 import { join } from 'node:path';
 import { spawn } from 'node:child_process';
+import { ok, err, unit } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
 import { TimerService } from '~/services/timer';
@@ -58,11 +59,11 @@ export class UpdaterService implements IBootstrappable {
 
 	public async bootstrap() {
 		this.ipc.registerHandler('updater<-check-manual',            () => this.checkForUpdates(true));
-		this.ipc.registerHandler('updater<-get-next-manual-check',   () => this.nextManualCheck);
+		this.ipc.registerHandler('updater<-get-next-manual-check',   () => ok(this.nextManualCheck));
 		this.ipc.registerHandler('updater<-show-window',             () => this.showUpdaterWindow());
 		this.ipc.registerHandler('updater<-get-latest-release',      () => this.getLatestRelease());
-		this.ipc.registerHandler('updater<-get-latest-changelog',    () => this.latestChangelog);
-		this.ipc.registerHandler('updater<-get-commits-since-build', () => this.commits);
+		this.ipc.registerHandler('updater<-get-latest-changelog',    () => ok(this.latestChangelog));
+		this.ipc.registerHandler('updater<-get-commits-since-build', () => ok(this.commits));
 		this.ipc.registerHandler('updater<-update',                  () => this.startUpdate());
 		this.ipc.registerHandler('updater<-cancel-update',           () => this.cancelUpdate());
 
@@ -81,17 +82,19 @@ export class UpdaterService implements IBootstrappable {
 
 		try {
 			const release = await this.getLatestRelease();
-			if (release && semver.gt(release.tag_name, product.version)) {
+			if (release.isOk && release.data && semver.gt(release.data.tag_name, product.version)) {
 				this.hasNewRelease = true;
 
-				this.logger.info('Found new release', { tag: release.tag_name });
+				this.logger.info('Found new release', { tag: release.data.tag_name });
 
-				this.latestChangelog = release.body_html!;
+				this.latestChangelog = release.data.body_html!;
 				this.commits         = await this.github.getRepositoryCommits(REPO_OWNER, REPO_NAME, GIT_HASH);
 
-				this.window.emitAll('updater->outdated', { latestRelease: release });
+				this.window.emitAll('updater->outdated', { latestRelease: release.data });
 
-				if (
+				if (manual) {
+					this.showUpdaterWindow();
+				} else if (
 					this.settings.get(ESettingsKey.EnableNewReleaseToast, true) &&
 					!this.isNotified
 				) {
@@ -99,7 +102,7 @@ export class UpdaterService implements IBootstrappable {
 
 					this.notifications.showNotification(
 						new NotificationBuilder()
-							.setTitle(`Version ${release.tag_name} is available!`)
+							.setTitle(`Version ${release.data.tag_name} is available!`)
 							.setLaunch(`${product.urlProtocol}://open-updater`, 'protocol')
 					);
 				}
@@ -113,31 +116,33 @@ export class UpdaterService implements IBootstrappable {
 
 			this.logger.error('Error while checking for new releases', { error: { message, stack } });
 		}
+
+		return ok();
 	}
 
 	public async startUpdate() {
 		if (!this.hasNewRelease) {
 			this.logger.warn('Tried to start update with no new release?');
-			return;
+			return ok();
 		}
 
 		this.cts = new CancellationTokenSource();
 
 		const release = await this.getLatestRelease();
-		if (!release) {
+		if (release.isErr || !release.data) {
 			this.logger.warn('Tried to start update with no release data?');
-			return;
+			return ok();
 		}
 
 		const token       = this.cts.token;
 		const signal      = token.toAbortSignal();
-		const downloadURL = release.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
+		const downloadURL = release.data.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
 
 		this.logger.info('Downloading latest release', { downloadURL });
 
 		const res = await this.httpClient.get(downloadURL, { signal });
 		if (!res.ok) {
-			return;
+			return err(res.statusText);
 		}
 
 		const onProgress = (progress: number) => {
@@ -148,7 +153,7 @@ export class UpdaterService implements IBootstrappable {
 		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
 
 		if (this.cts.isCancellationRequested) {
-			return;
+			return ok();
 		}
 
 		this.window.emit('updater', 'updater->update-step', { message: 'Running setup...' });
@@ -159,14 +164,18 @@ export class UpdaterService implements IBootstrappable {
 
 		proc.once('spawn', () => app.quit());
 		proc.unref();
+
+		return ok();
 	}
 
 	public async getLatestRelease() {
-		return this.github.getLatestRepositoryRelease(REPO_OWNER, REPO_NAME);
+		const release = await this.github.getLatestRepositoryRelease(REPO_OWNER, REPO_NAME);
+		return ok(release);
 	}
 
 	public cancelUpdate() {
 		this.cts.cancel();
+		return ok();
 	}
 
 	public showUpdaterWindow() {
@@ -199,6 +208,8 @@ export class UpdaterService implements IBootstrappable {
 				this.updaterWindow!.show();
 			}
 		});
+
+		return ok();
 	}
 
 	private scheduleNextUpdateCheck() {

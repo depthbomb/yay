@@ -1,4 +1,5 @@
 import { app } from 'electron';
+import { ok } from 'shared/ipc';
 import { join } from 'node:path';
 import { Readable } from 'node:stream';
 import { USER_AGENT } from '~/constants';
@@ -68,7 +69,7 @@ export class ThumbnailService implements IBootstrappable {
 	private async clearCache() {
 		const files = await readdir(this.cacheDir);
 		if (!files.length) {
-			return;
+			return ok();
 		}
 
 		for (const file of files) {
@@ -76,5 +77,7 @@ export class ThumbnailService implements IBootstrappable {
 				join(this.cacheDir, file)
 			);
 		}
+
+		return ok();
 	}
 }

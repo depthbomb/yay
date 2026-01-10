@@ -50,15 +50,19 @@ export const UpdaterPage = () => {
 	}
 
 	useEffect(() => {
-		window.ipc.invoke('updater<-get-latest-release').then(setRelease);
-	}, []);
+		const getUpdateData = async () => {
+			return await Promise.all([
+				window.ipc.invoke('updater<-get-latest-release'),
+				window.ipc.invoke('updater<-get-latest-changelog'),
+				window.ipc.invoke('updater<-get-commits-since-build')
+			]);
+		};
 
-	useEffect(() => {
-		window.ipc.invoke('updater<-get-latest-changelog').then(changelog => setChangelog(changelog ?? ''));
-	}, []);
-
-	useEffect(() => {
-		window.ipc.invoke('updater<-get-commits-since-build').then(commits => setCommits(commits ?? []));
+		getUpdateData().then(([release, changelog, commits]) => {
+			setRelease(release.data);
+			setChangelog(changelog.data ?? '');
+			setCommits(commits.data ?? [])
+		});
 	}, []);
 
 	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? defaultStatus)), [onUpdateStep]);

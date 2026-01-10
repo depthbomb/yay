@@ -41,8 +41,8 @@ export const AboutTab = () => {
 
 	const getNextUpdateCheck = () => {
 		window.ipc.invoke('updater<-get-next-manual-check').then(nextCheckTimestamp => {
-			setNextUpdateCheck(new Date(nextCheckTimestamp));
-			setCanCheckUpdates(Date.now() >= nextCheckTimestamp);
+			setNextUpdateCheck(new Date(nextCheckTimestamp.data));
+			setCanCheckUpdates(Date.now() >= nextCheckTimestamp.data);
 		});
 	};
 

@@ -1,5 +1,6 @@
 import mitt from 'mitt';
 import { dialog } from 'electron';
+import { ok, err } from 'shared/ipc';
 import { ESettingsKey } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
@@ -44,11 +45,13 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerHandler('yt-dlp<-download-video',   async (_, url: string) => await this.download(url));
-		this.ipc.registerHandler('yt-dlp<-download-audio',   async (_, url: string) => await this.download(url, true));
+		this.ipc.registerHandler('yt-dlp<-download-video',   (_, url: string) => this.download(url));
+		this.ipc.registerHandler('yt-dlp<-download-audio',   (_, url: string) => this.download(url, true));
 		this.ipc.registerHandler('yt-dlp<-download-default', async (_, url: string) => {
 			const defaultAction = this.settings.get(ESettingsKey.DefaultDownloadAction);
 			await this.download(url, defaultAction === 'audio');
+
+			return ok();
 		});
 		this.ipc.registerHandler('yt-dlp<-remove-cookies-file', async () => {
 			const cookiesFilePath = this.settings.get<Nullable<string>>(ESettingsKey.CookiesFilePath, null);
@@ -58,9 +61,11 @@ export class YtdlpService implements IBootstrappable {
 			if (cookiesFilePath) {
 				await unlink(cookiesFilePath);
 			}
+
+			return ok();
 		});
-		this.ipc.registerHandler('yt-dlp<-cancel-download', async () => await this.cancelDownload(false));
-		this.ipc.registerHandler('yt-dlp<-update-binary',   async () => await this.updateBinary());
+		this.ipc.registerHandler('yt-dlp<-cancel-download', () => this.cancelDownload(false));
+		this.ipc.registerHandler('yt-dlp<-update-binary',   () => this.updateBinary());
 
 		this.lifecycle.events.on('shutdown', async () => await this.cancelDownload(true));
 	}
@@ -170,7 +175,9 @@ export class YtdlpService implements IBootstrappable {
 			reject(err);
 		});
 
-		return promise;
+		await promise;
+
+		return ok();
 	}
 
 	public async cancelDownload(shutdown: boolean) {
@@ -187,6 +194,8 @@ export class YtdlpService implements IBootstrappable {
 				this.events.emit('downloadFinished');
 			}
 		}
+
+		return ok();
 	}
 
 	public async updateBinary(silent: boolean = false) {
@@ -235,7 +244,9 @@ export class YtdlpService implements IBootstrappable {
 			resolve();
 		});
 
-		return promise;
+		await promise;
+
+		return ok();
 	}
 
 	private cleanupProcess() {

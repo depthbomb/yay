@@ -1,4 +1,5 @@
 import mitt from 'mitt';
+import { ok } from 'shared/ipc';
 import { join } from 'node:path';
 import { DEV_PORT } from 'shared';
 import { ROOT_PATH } from '~/constants';
@@ -55,6 +56,8 @@ export class WindowService implements IBootstrappable {
 				window?.minimize();
 				this.emit(windowName, 'window->is-minimized');
 			}
+
+			return ok();
 		});
 
 		this.ipc.registerHandler('window<-maximize', (_, windowName) => {
@@ -66,6 +69,8 @@ export class WindowService implements IBootstrappable {
 				window?.maximize();
 				this.emit(windowName, 'window->is-maximized');
 			}
+
+			return ok();
 		});
 
 		this.ipc.registerHandler('window<-close', (_, windowName) => {
@@ -74,6 +79,8 @@ export class WindowService implements IBootstrappable {
 				window.close();
 				this.emitAll('window->is-closed', { windowName });
 			}
+
+			return ok();
 		});
 	}
 

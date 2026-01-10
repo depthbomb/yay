@@ -26,6 +26,7 @@ const extractResolution = (url: string): string => {
 
 export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 	const [loading, setLoading]               = useState(true);
+	const [error, setError]                   = useState(false);
 	const [data, setData]                     = useState<Nullable<ITweetMedia>>(null);
 	const [downloadStates, setDownloadStates] = useState<Record<string, EVariantDownloadState>>({});
 	const [isWorking, setIsWorking]           = useAtom(workingAtom);
@@ -33,11 +34,18 @@ export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 	useEffect(() => {
 		const fetchMediaInfo = async () => {
 			setData(null);
+			setError(false);
 			setLoading(true);
 
 			const res = await window.ipc.invoke('twitter<-get-tweet-media-info', tweetURL);
 
-			setData(res);
+			if (res.isErr) {
+				setError(true);
+			} else {
+				setData(res.data);
+				setError(false);
+			}
+
 			setLoading(false);
 		};
 
@@ -88,6 +96,14 @@ export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 				return mdiDownload;
 		}
 	};
+
+	if (error) {
+		return (
+			<div className="size-full flex flex-col">
+				<p className="text-red-500">Error retrieving Tweet info.</p>
+			</div>
+		);
+	}
 
 	return (
 		<div className="space-y-3 size-full flex flex-col overflow-y-auto [scrollbar-width:thin]">

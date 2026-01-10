@@ -1,3 +1,4 @@
+import { ok } from 'shared/ipc';
 import { ESettingsKey } from 'shared';
 import { spawn } from 'node:child_process';
 import { PRELOAD_PATH } from '~/constants';
@@ -44,6 +45,8 @@ export class SetupService implements IBootstrappable {
 
 			this.finished = false;
 			this.showWindow();
+
+			return ok();
 		});
 		this.ipc.registerHandler('setup<-cancel', () => this.cancel());
 
@@ -53,6 +56,8 @@ export class SetupService implements IBootstrappable {
 	public cancel() {
 		this.emitStep('Cancelling...');
 		this.cts.cancel();
+
+		return ok();
 	}
 
 	private async performSetupActions() {
@@ -93,6 +98,7 @@ export class SetupService implements IBootstrappable {
 			[ESettingsKey.DisableHardwareAcceleration, false],
 			[ESettingsKey.UpdateYtdlpOnStartup, true],
 			[ESettingsKey.UseNewTwitterVideoDownloader, true],
+			[ESettingsKey.CookiesFilePath, null],
 		]);
 	}
 

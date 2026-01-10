@@ -1,4 +1,5 @@
 import { join } from 'node:path';
+import { ok, err } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
 import { BROWSER_USER_AGENT } from '~/constants';
@@ -26,13 +27,13 @@ export class TwitterService implements IBootstrappable {
 
 	public async bootstrap() {
 		this.ipc.registerHandler('twitter<-get-tweet-media-info', (_, url) => this.getMediaDetails(url));
-		this.ipc.registerHandler('twitter<-download-media-url', (_, url) => this.download(url));
+		this.ipc.registerHandler('twitter<-download-media-url',   (_, url) => this.download(url));
 	}
 
 	private async download(url: string) {
 		const res = await this.client.get(url);
 		if (!res.ok) {
-			throw new Error(res.statusText);
+			return err(res.statusText);
 		}
 
 		const filename   = new URL(url).pathname.split('/').pop()!;
@@ -42,6 +43,8 @@ export class TwitterService implements IBootstrappable {
 			// TODO: implement cancellation
 			signal: this.cts.token.toAbortSignal()
 		});
+
+		return ok();
 	}
 
 	private async getMediaDetails(input: string) {
@@ -53,7 +56,7 @@ export class TwitterService implements IBootstrappable {
 		}
 
 		if (this.tweetMediaInfoCache.has(tweetID)) {
-			return this.tweetMediaInfoCache.get(tweetID)!;
+			return ok(this.tweetMediaInfoCache.get(tweetID)!);
 		}
 
 		const url  = `https://cdn.syndication.twimg.com/tweet-result?id=${tweetID}&token=!`;
@@ -62,11 +65,11 @@ export class TwitterService implements IBootstrappable {
 
 		if (!data.mediaDetails.filter(d => d.video_info !== undefined).length) {
 			this.tweetMediaInfoCache.set(tweetID, null);
-			return null;
+			return ok(null);
 		}
 
 		this.tweetMediaInfoCache.set(tweetID, data);
 
-		return data;
+		return ok(data);
 	}
 }

@@ -10,6 +10,70 @@
 			"require": "./dist/index.cjs",
 			"import": "./dist/index.mjs"
 		},
+		"./constants": {
+			"require": "./dist/constants.cjs",
+			"import": "./dist/constants.mjs"
+		},
+		"./featureFlags": {
+			"require": "./dist/featureFlags.cjs",
+			"import": "./dist/featureFlags.mjs"
+		},
+		"./flag": {
+			"require": "./dist/flag.cjs",
+			"import": "./dist/flag.mjs"
+		},
+		"./ipc": {
+			"require": "./dist/ipc/index.cjs",
+			"import": "./dist/ipc/index.mjs"
+		},
+		"./ipc-channels.generated": {
+			"require": "./dist/ipc-channels.generated.cjs",
+			"import": "./dist/ipc-channels.generated.mjs"
+		},
+		"./ipc-events.generated": {
+			"require": "./dist/ipc-events.generated.cjs",
+			"import": "./dist/ipc-events.generated.mjs"
+		},
+		"./ipc/IIPCContracts": {
+			"require": "./dist/ipc/IIPCContracts.cjs",
+			"import": "./dist/ipc/IIPCContracts.mjs"
+		},
+		"./ipc/IIPCEvents": {
+			"require": "./dist/ipc/IIPCEvents.cjs",
+			"import": "./dist/ipc/IIPCEvents.mjs"
+		},
+		"./ipc/ipc-result": {
+			"require": "./dist/ipc/ipc-result.cjs",
+			"import": "./dist/ipc/ipc-result.mjs"
+		},
+		"./product": {
+			"require": "./dist/product.cjs",
+			"import": "./dist/product.mjs"
+		},
+		"./regex": {
+			"require": "./dist/regex.cjs",
+			"import": "./dist/regex.mjs"
+		},
+		"./settings": {
+			"require": "./dist/settings.cjs",
+			"import": "./dist/settings.mjs"
+		},
+		"./twitter": {
+			"require": "./dist/twitter/index.cjs",
+			"import": "./dist/twitter/index.mjs"
+		},
+		"./twitter/ITweetMedia": {
+			"require": "./dist/twitter/ITweetMedia.cjs",
+			"import": "./dist/twitter/ITweetMedia.mjs"
+		},
+		"./types": {
+			"require": "./dist/types.cjs",
+			"import": "./dist/types.mjs"
+		},
+		"./utils": {
+			"require": "./dist/utils.cjs",
+			"import": "./dist/utils.mjs"
+		},
 		"./package.json": "./package.json"
 	},
 	"files": [

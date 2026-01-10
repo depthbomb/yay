@@ -1,5 +1,5 @@
 import { dialog } from 'electron';
-import { ok, err, unit } from 'shared';
+import { ok, err } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
@@ -74,7 +74,7 @@ export class SettingsWindowService implements IBootstrappable {
 
 				this.window.emitAll('window->should-reload');
 
-				return ok(unit);
+				return ok();
 			} catch (e) {
 				return err((e as Error).message);
 			}
@@ -100,5 +100,7 @@ export class SettingsWindowService implements IBootstrappable {
 
 	public show() {
 		this.settingsWindow.show();
+
+		return ok();
 	}
 }

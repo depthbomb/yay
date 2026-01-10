@@ -1,3 +1,4 @@
+import { ok } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { PRELOAD_PATH, } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
@@ -59,9 +60,11 @@ export class GlobalMenuService implements IBootstrappable {
 	public async bootstrap() {
 		this.ipc.registerHandler('global-menu<-open-download-dir', async () => {
 			await shell.openPath(this.settings.get(ESettingsKey.DownloadDir));
+			return ok();
 		});
 		this.ipc.registerHandler('global-menu<-download-from-clipboard', async (_, audio) => {
 			await this.tryDownloadFromClipboard(audio);
+			return ok();
 		});
 
 		const callback = () => this.showMenu();

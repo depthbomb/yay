@@ -58,7 +58,7 @@ export class App {
 		const configFileExists = existsSync(configFilePath);
 		if (configFileExists) {
 			const toml   = readFileSync(configFilePath, 'utf8');
-			const config = parse(toml);
+			const config = JSON.parse(toml);
 			if (ESettingsKey.DisableHardwareAcceleration in config && config[ESettingsKey.DisableHardwareAcceleration]?.valueOf()) {
 				app.disableHardwareAcceleration();
 				app.commandLine.appendSwitch('--disable-software-rasterizer');

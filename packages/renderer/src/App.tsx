@@ -11,7 +11,7 @@ const UpdaterPage    = lazy(() => import('./features/updater/UpdaterPage'));
 const GlobalMenuPage = lazy(() => import('./features/global-menu/GlobalMenuPage'));
 
 export const App = () => {
-	const [,onceShouldReload] = useIpc('window->should-reload');
+	const [,onceShouldReload]                        = useIpc('window->should-reload');
 	const { palette, getCSSColor, getContrastColor } = useWindowsAccent();
 
 	useEffect(() => {

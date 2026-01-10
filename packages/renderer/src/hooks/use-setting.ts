@@ -8,7 +8,7 @@ type UseSettingsOptions<T> = {
 
 export const useSetting = <T>(settingsKey: ESettingsKey, options?: UseSettingsOptions<T>) => {
 	const isReactive        = options?.reactive ?? true;
-	const [value, setValue] = useState<T>(window.settings.getValue(settingsKey, options?.defaultValue));
+	const [value, setValue] = useState<T>(window.settings.getValue(settingsKey, options?.defaultValue)?.data);
 
 	const setSettingValue = async (newValue: T) => {
 		setValue(newValue);
@@ -27,8 +27,6 @@ export const useSetting = <T>(settingsKey: ESettingsKey, options?: UseSettingsOp
 
 			return () => removeListener();
 		}
-
-		return () => {};
 	}, [settingsKey, isReactive]);
 
 	return [value, setSettingValue] as const;

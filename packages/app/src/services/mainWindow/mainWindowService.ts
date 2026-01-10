@@ -1,3 +1,4 @@
+import { ok } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
 import { Flag, ESettingsKey } from 'shared';
@@ -82,6 +83,8 @@ export class MainWindowService implements IBootstrappable {
 			this.logger.info('Opening download directory');
 
 			await shell.openPath(this.settings.get(ESettingsKey.DownloadDir));
+
+			return ok();
 		});
 		this.ipc.registerHandler('main<-pick-download-dir', async () => {
 			this.logger.info('Opening download directory picker');
@@ -98,10 +101,10 @@ export class MainWindowService implements IBootstrappable {
 
 				this.logger.debug('Set download directory', { chosenPath });
 
-				return chosenPath;
+				return ok(chosenPath);
 			}
 
-			return null;
+			return ok(null);
 		});
 		this.ipc.registerHandler('main<-pick-cookies-file', async () => {
 			this.logger.info('Opening cookies file picker');
@@ -121,14 +124,14 @@ export class MainWindowService implements IBootstrappable {
 
 				this.logger.debug('Copied cookies file', { from: chosenPath, to: destinationPath });
 
-				return destinationPath;
+				return ok(destinationPath);
 			}
 
-			return null;
+			return ok(null);
 		});
 		this.ipc.registerHandler('main-window<-toggle-pinned', () => {
 			this.pinned.toggle();
-			return this.pinned.value;
+			return ok(this.pinned.value);
 		});
 		this.ipc.registerHandler('yt-dlp<-recheck-binaries', async () => {
 			this.logger.info('Rechecking binaries');
@@ -151,6 +154,8 @@ export class MainWindowService implements IBootstrappable {
 			app.relaunch({ args: ['--updateBinaries'] });
 
 			this.lifecycle.requestShutdown();
+
+			return ok();
 		});
 
 		this.ytdlp.events.on('downloadStarted',  () => this.mainWindow.setProgressBar(1, { mode: 'indeterminate' }));

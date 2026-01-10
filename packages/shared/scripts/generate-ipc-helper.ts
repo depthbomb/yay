@@ -49,7 +49,7 @@ function generateFromInterface(
 }
 
 generateFromInterface(
-	'./src/ipc.ts',
+	'./src/ipc/IIPCContracts.ts',
 	'IIPCContract',
 	'IPCChannel',
 	'IPCChannels',
@@ -59,7 +59,7 @@ generateFromInterface(
 );
 
 generateFromInterface(
-	'./src/ipc.ts',
+	'./src/ipc/IIPCEvents.ts',
 	'IIPCEvents',
 	'IPCEvent',
 	'IPCEvents',

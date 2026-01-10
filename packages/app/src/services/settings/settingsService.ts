@@ -1,4 +1,5 @@
 import mitt from 'mitt';
+import { ok } from 'shared/ipc';
 import { join } from 'node:path';
 import { IPCService } from '~/services/ipc';
 import { app, safeStorage } from 'electron';
@@ -41,40 +42,40 @@ export class SettingsService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerSyncHandler(
-			'settings<-get',
-			(e, key, defaultValue, secure) => e.returnValue = this.get(key, defaultValue, { secure })
-		);
-		this.ipc.registerHandler(
-			'settings<-get',
-			(_, key, defaultValue, secure) => this.get(key, defaultValue, { secure })
-		);
-		this.ipc.registerHandler(
-			'settings<-set',
-			(_, key, value, secure) => this.set(key, value, { secure })
-		);
-		this.ipc.registerHandler(
-			'settings<-reset',
+		this.ipc.registerSyncHandler('settings<-get', (e, key, defaultValue, secure) => e.returnValue = ok(this.get(key, defaultValue, { secure })));
+		this.ipc.registerHandler('settings<-get', (_, key, defaultValue, secure) => ok(this.get(key, defaultValue, { secure })));
+		this.ipc.registerHandler('settings<-set', (_, key, value, secure) => {
+			this.set(key, value, { secure });
+
+			return ok();
+		});
+		this.ipc.registerHandler('settings<-reset',
 			async () => {
 				await this.reset();
 				app.relaunch();
 				app.exit(0);
+
+				return ok();
 			}
 		);
 
 		this.events.on('settingsUpdated', ({ key, value }) => this.window.emitAll('settings->changed', { key, value }));
 	}
 
-	public get<T>(key: ESettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) {
-		const value = this.internalStore.get(key, defaultValue);
+	public get<T>(key: ESettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) : T {
+		const value = this.internalStore.get(key);
+		if (value === undefined) {
+			return defaultValue as T;
+		}
+
 		if (options?.secure) {
-			if (value) {
-				return this.decryptValue<T>(value as string);
+			if (typeof value === 'string') {
+				return this.decryptValue<T>(value);
 			}
 
 			return defaultValue as T;
 		} else {
-			return value;
+			return value as T;
 		}
 	}
 

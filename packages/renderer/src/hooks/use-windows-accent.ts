@@ -78,9 +78,9 @@ export function useWindowsAccent() {
 	const [contrastColors, setContrastColors] = useState<Nullable<Record<PaletteShade, '#ffffff' | '#000000'>>>(null);
 
 	useEffect(() => {
-		window.ipc.invoke('theming<-get-accent-color').then(color => {
-			setAccentColor(color);
-			const newPalette = generatePalette(color);
+		window.ipc.invoke('theming<-get-accent-color').then(result => {
+			setAccentColor(result.data);
+			const newPalette = generatePalette(result.data);
 			setPalette(newPalette);
 
 			const contrasts = Object.fromEntries(

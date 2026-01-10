@@ -10,7 +10,7 @@ import { workingAtom, updatingAtom } from '~/atoms/app';
 import { mdiUpdate, mdiRestore, mdiDownload } from '@mdi/js';
 
 const onRecheckBinariesButtonClicked = async () => {
-	const { response } = await window.ipc.invoke('main<-show-message-box', {
+	const { data } = await window.ipc.invoke('main<-show-message-box', {
 		type: 'info',
 		title: 'Recheck binaries',
 		message: 'yay needs to restart to check necessary binaries.\nWould you like to continue?',
@@ -18,13 +18,13 @@ const onRecheckBinariesButtonClicked = async () => {
 		defaultId: 0
 	});
 
-	if (response === 0) {
+	if (data.response === 0) {
 		await window.ipc.invoke('yt-dlp<-recheck-binaries');
 	}
 };
 
 const onResetSettingsButtonClicked = async () => {
-	const { response } = await window.ipc.invoke('main<-show-message-box', {
+	const { data } = await window.ipc.invoke('main<-show-message-box', {
 		type: 'info',
 		title: 'Reset settings',
 		message: 'Your settings will be reset to their defaults and yay will restart.\nWould you like to continue?',
@@ -32,7 +32,7 @@ const onResetSettingsButtonClicked = async () => {
 		defaultId: 0
 	});
 
-	if (response === 0) {
+	if (data.response === 0) {
 		await window.ipc.invoke('settings<-reset');
 	}
 };

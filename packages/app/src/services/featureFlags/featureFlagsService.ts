@@ -1,4 +1,5 @@
 import { app } from 'electron';
+import { ok } from 'shared/ipc';
 import { join } from 'node:path';
 import { FeatureFlags } from 'shared';
 import { IPCService } from '~/services/ipc';
@@ -28,7 +29,7 @@ export class FeatureFlagsService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.ipc.registerSyncHandler('feature-flag<-get-feature-flags', e => (e.returnValue = Array.from(this.featureFlags.values())));
+		this.ipc.registerSyncHandler('feature-flag<-get-feature-flags', e => (e.returnValue = ok(Array.from(this.featureFlags.values()))));
 
 		await this.processConfig();
 	}

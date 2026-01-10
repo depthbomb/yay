@@ -9,7 +9,7 @@ try {
 export default defineConfig((options) => ({
 	clean: true,
 	entry: [
-		'src/index.ts',
+		'src/**/*.ts',
 	],
 	exports: true,
 	format: ['cjs', 'esm'],
