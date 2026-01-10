@@ -3979,7 +3979,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.19.3, @types/node@npm:^22.7.7":
+"@types/node@npm:^22.19.5":
+  version: 22.19.5
+  resolution: "@types/node@npm:22.19.5"
+  dependencies:
+    undici-types: "npm:~6.21.0"
+  checksum: 10/59662e5e1cf5039ab82677a050ed8f7428510695aef160b10809a29396d98fea671e6e203f7fca98fc59d8d3f36c32efea34d34e7c18346d4ed2129d56e9293c
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^22.7.7":
   version: 22.19.3
   resolution: "@types/node@npm:22.19.3"
   dependencies:
@@ -9876,7 +9885,7 @@ __metadata:
   dependencies:
     "@octokit/rest": "npm:^22.0.1"
     "@octokit/types": "npm:^16.0.0"
-    "@types/node": "npm:^22.19.3"
+    "@types/node": "npm:^22.19.5"
     asar-trim: "npm:^1.2.2"
     cross-env: "npm:^10.1.0"
     dotenv: "npm:^17.2.3"
@@ -9900,7 +9909,7 @@ __metadata:
     "@loglayer/transport-log-file-rotation": "npm:^2.1.16"
     "@needle-di/core": "npm:1.1.0"
     "@swc-node/sourcemap-support": "npm:^0.6.1"
-    "@types/node": "npm:^22.19.3"
+    "@types/node": "npm:^22.19.5"
     "@types/semver": "npm:^7.7.1"
     cockatiel: "npm:^3.2.1"
     cross-env: "npm:^10.1.0"
