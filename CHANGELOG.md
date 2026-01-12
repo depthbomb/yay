@@ -1,3 +1,9 @@
+# 1.38.1
+
+- The updater window will now be displayed when manually checking for updates when there is a new release
+
+---
+
 # 1.38.0
 
 - Added settings exporting and importing

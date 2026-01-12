@@ -94,12 +94,8 @@ export class UpdaterService implements IBootstrappable {
 
 				if (manual) {
 					this.showUpdaterWindow();
-				} else if (
-					this.settings.get(ESettingsKey.EnableNewReleaseToast, true) &&
-					!this.isNotified
-				) {
+				} else if (this.settings.get(ESettingsKey.EnableNewReleaseToast, true) && !this.isNotified) {
 					this.logger.debug('Showing update toast notification');
-
 					this.notifications.showNotification(
 						new NotificationBuilder()
 							.setTitle(`Version ${release.data.tag_name} is available!`)
