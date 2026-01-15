@@ -12,7 +12,6 @@ export class LoggingService {
 
 	public constructor() {
 		this.logger = new LogLayer({
-			prefix: '[yay]',
 			errorSerializer: serializeError,
 			transport: [
 				new BlankTransport({

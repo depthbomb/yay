@@ -970,12 +970,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@formatjs/fast-memoize@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "@formatjs/fast-memoize@npm:3.0.3"
+"@formatjs/fast-memoize@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "@formatjs/fast-memoize@npm:3.1.0"
   dependencies:
-    tslib: "npm:^2.8.0"
-  checksum: 10/466aa1250eee77897455b6e0282bd178357e326790e18f59e33c77371ebb6099cbf8c520300193ef10ab4909174286ab1d922fa930f02b81dddf08d28eaef1a1
+    tslib: "npm:^2.8.1"
+  checksum: 10/700dfd0a10d20d8cb7427406127f78612a696e4942d38a8f153d82ca213f26bd0616d01a29957f194688887551595455eb0f629c2ce36d964a66ba15815afde9
   languageName: node
   linkType: hard
 
@@ -3993,12 +3993,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.19.6":
-  version: 22.19.6
-  resolution: "@types/node@npm:22.19.6"
+"@types/node@npm:^22.19.7":
+  version: 22.19.7
+  resolution: "@types/node@npm:22.19.7"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10/a5bac443b2c7ca4ceb4a381618c37012d71add696e98351be698aa81e00f20a09fb4aee5bc07f11472080e663602b18ed02233f45242cde9b4eda13140629258
+  checksum: 10/0a5c9cc3bdd2a2d8105735b136e280a2dec90136679adfe82faa7e4de375dcc6b4cebaa6b2de35cc6b37e5e135cdc9486373d574782a4ca22f5eeab299111aa6
   languageName: node
   linkType: hard
 
@@ -9136,7 +9136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.15.1, terser@npm:^5.44.1":
+"terser@npm:^5.15.1":
   version: 5.44.1
   resolution: "terser@npm:5.44.1"
   dependencies:
@@ -9147,6 +9147,20 @@ __metadata:
   bin:
     terser: bin/terser
   checksum: 10/516ece205b7db778c4eddb287a556423cb776b7ca591b06270e558a76aa2d57c8d71d9c3c4410b276d3426beb03516fff7d96ff8b517e10730a72908810c6e33
+  languageName: node
+  linkType: hard
+
+"terser@npm:^5.46.0":
+  version: 5.46.0
+  resolution: "terser@npm:5.46.0"
+  dependencies:
+    "@jridgewell/source-map": "npm:^0.3.3"
+    acorn: "npm:^8.15.0"
+    commander: "npm:^2.20.0"
+    source-map-support: "npm:~0.5.20"
+  bin:
+    terser: bin/terser
+  checksum: 10/331e4f5a165d91d16ac6a95b510d4f5ef24679e4bc9e1b4e4182e89b7245f614d24ce0def583e2ca3ca45f82ba810991e0c5b66dd4353a6e0b7082786af6bd35
   languageName: node
   linkType: hard
 
@@ -9311,7 +9325,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.8.0, tslib@npm:^2.8.1":
+"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10/3e2e043d5c2316461cb54e5c7fe02c30ef6dccb3384717ca22ae5c6b5bc95232a6241df19c622d9c73b809bea33b187f6dbc73030963e29950c2141bc32a79f7
@@ -9849,7 +9863,7 @@ __metadata:
   dependencies:
     "@octokit/rest": "npm:^22.0.1"
     "@octokit/types": "npm:^16.0.0"
-    "@types/node": "npm:^22.19.6"
+    "@types/node": "npm:^22.19.7"
     asar-trim: "npm:^1.2.2"
     cross-env: "npm:^10.1.0"
     dotenv: "npm:^17.2.3"
@@ -9867,12 +9881,12 @@ __metadata:
   dependencies:
     "@depthbomb/node-common": "npm:1.2.0"
     "@eslint/js": "npm:^9.39.2"
-    "@formatjs/fast-memoize": "npm:^3.0.3"
+    "@formatjs/fast-memoize": "npm:^3.1.0"
     "@hono/node-server": "npm:^1.19.9"
     "@loglayer/transport-log-file-rotation": "npm:^2.1.16"
     "@needle-di/core": "npm:1.1.0"
     "@swc-node/sourcemap-support": "npm:^0.6.1"
-    "@types/node": "npm:^22.19.6"
+    "@types/node": "npm:^22.19.7"
     "@types/semver": "npm:^7.7.1"
     cockatiel: "npm:^3.2.1"
     cross-env: "npm:^10.1.0"
@@ -9888,7 +9902,7 @@ __metadata:
     serialize-error: "npm:^12.0.0"
     shared: "workspace:*"
     smol-toml: "npm:1.6.0"
-    terser: "npm:^5.44.1"
+    terser: "npm:^5.46.0"
     type-flag: "npm:^4.0.3"
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.53.0"
