@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { IDGenerator } from '~/common';
 import { serve } from '@hono/node-server';
 import { REST_SERVER_PORT } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
@@ -15,6 +16,8 @@ export class RestService implements IBootstrappable {
 	private hono?: Maybe<Hono>;
 	private server?: Maybe<ServerType>;
 
+	private readonly requestID = new IDGenerator('req#');
+
 	public constructor(
 		private readonly logger    = inject(LoggingService),
 		private readonly lifecycle = inject(LifecycleService),
@@ -30,6 +33,18 @@ export class RestService implements IBootstrappable {
 		this.logger.info('Starting REST server');
 
 		this.hono = new Hono();
+		this.hono.use(async (c, next) => {
+			const id              = this.requestID.nextID();
+			const { url, method } = c.req;
+
+			this.logger.trace('Received HTTP request', { id, method, url });
+
+			await next();
+
+			const { status } = c.res;
+
+			this.logger.trace('Sent HTTP response', { id,method, url, status });
+		});
 		this.hono.get('/ping', c => c.text('PONG'));
 		this.hono.post('/download', c => {
 			const url = c.req.query('url');
