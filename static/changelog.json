@@ -1,5 +1,12 @@
 [
 	{
+		"version": "1.38.2",
+		"changes": [
+			"Removed an unnecessary prefix to log lines",
+			"Requests made to the local REST server (if enabled) are now logged"
+		]
+	},
+	{
 		"version": "1.38.1",
 		"changes": [
 			"The updater window will now be displayed when manually checking for updates when there is a new release"

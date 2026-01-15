@@ -1,3 +1,10 @@
+# 1.38.2
+
+- Removed an unnecessary prefix to log lines
+- Requests made to the local REST server (if enabled) are now logged
+
+---
+
 # 1.38.1
 
 - The updater window will now be displayed when manually checking for updates when there is a new release
