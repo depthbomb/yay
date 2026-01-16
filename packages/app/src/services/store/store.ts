@@ -1,17 +1,15 @@
-import type { StoreReader } from './storeReader';
-import type { StoreWriter } from './storeWriter';
+import { parse, stringify } from 'smol-toml';
 import type { LoggingService } from '~/services/logging';
+import type { Path } from '@depthbomb/node-common/pathlib';
 
 export class Store<S extends Record<string, any>> {
 	public store: S;
 
 	public constructor(
 		private readonly logger: LoggingService,
-		private readonly storeReader: StoreReader,
-		private readonly storeWriter: StoreWriter,
-		private readonly storePath: string,
+		private readonly storePath: Path,
 	) {
-		this.store = this.storeReader.readSync<S>(storePath);
+		this.store = this.readAllSync();
 	}
 
 	public get<T>(key: string, defaultValue?: T) {
@@ -31,7 +29,7 @@ export class Store<S extends Record<string, any>> {
 	}
 
 	public async reload() {
-		this.store = await this.storeReader.read<S>(this.storePath);
+		this.store = await this.readAll();
 	}
 
 	public async reset() {
@@ -54,15 +52,32 @@ export class Store<S extends Record<string, any>> {
 	}
 
 	public async readAll() {
-		return this.storeReader.read<S>(this.storePath);
+		const data = await this.storePath.readText();
+		return parse(data) as S;
 	}
 
 	public readAllSync() {
-		return this.storeReader.readSync<S>(this.storePath);
+		return parse(
+			this.storePath.readTextSync()
+		) as S;
 	}
 
 	public async save() {
 		this.logger.debug('Saving store object to disk', { store: this.store, storePath: this.storePath });
-		await this.storeWriter.write(this.store, this.storePath);
+
+		await this.storePath.writeText(
+			stringify(
+				this.sortSettingsAlphabetically(this.store)
+			)
+		);
+	}
+
+	private sortSettingsAlphabetically(data: Record<string, any>): Record<string, any> {
+		const result = {} as Record<string, any>;
+		for (const key of Object.keys(data).sort()) {
+			result[key] = data[key];
+		}
+
+		return result;
 	}
 }

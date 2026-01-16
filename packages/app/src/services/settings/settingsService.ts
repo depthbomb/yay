@@ -7,6 +7,7 @@ import { product, ESettingsKey } from 'shared';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createHash, timingSafeEqual } from 'node:crypto';
 import type { Maybe } from 'shared';
@@ -30,14 +31,14 @@ export class SettingsService implements IBootstrappable {
 	public readonly events = mitt<{ settingsUpdated: { key: ESettingsKey, value: unknown } }>();
 
 	private readonly internalStore: Store<Settings>;
-	private readonly settingsFilePath: string;
+	private readonly settingsFilePath: Path;
 
 	public constructor(
 		private readonly ipc    = inject(IPCService),
 		private readonly window = inject(WindowService),
 		private readonly store  = inject(StoreService),
 	) {
-		this.settingsFilePath = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
+		this.settingsFilePath = new Path(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
 		this.internalStore    = this.store.createStore<Settings>(this.settingsFilePath);
 	}
 

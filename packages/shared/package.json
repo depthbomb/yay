@@ -86,7 +86,7 @@
 	},
 	"dependencies": {
 		"@depthbomb/common": "^1.0.0",
-		"@depthbomb/node-common": "^2.1.0",
+		"@depthbomb/node-common": "^2.1.1",
 		"fejl": "^4.0.1"
 	},
 	"devDependencies": {
