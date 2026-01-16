@@ -53,7 +53,6 @@ export class UpdaterService implements IBootstrappable {
 		private readonly notifications = inject(NotificationsService),
 	) {
 		this.httpClient = this.http.getClient('Updater', { userAgent: USER_AGENT });
-		this.checkForUpdates();
 		this.scheduleNextUpdateCheck();
 	}
 
