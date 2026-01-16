@@ -14,7 +14,9 @@ export enum ESettingsKey {
 	SkipYoutubePlaylists          = 'skip-youtube-playlists',
 	DisableHardwareAcceleration   = 'disable-hardware-acceleration',
 	UpdateYtdlpOnStartup          = 'update-ytdlp-on-startup',
-	UseNewTwitterVideoDownloader  = 'use-new-twitter-video-downloader'
+	UseNewTwitterVideoDownloader  = 'use-new-twitter-video-downloader',
+	EnableLocalApiServer          = 'enable-local-api-server',
+	LocalApiServerPort            = 'local-api-server-port',
 }
 
 export const SettingsKeys = Object.values(ESettingsKey);

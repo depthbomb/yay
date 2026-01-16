@@ -1,15 +1,17 @@
 import { Hono } from 'hono';
+import { ESettingsKey } from 'shared';
 import { IDGenerator } from '~/common';
 import { serve } from '@hono/node-server';
-import { REST_SERVER_PORT } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
-import { FeatureFlagsService } from '~/services/featureFlags';
 import type { Maybe } from 'shared';
+import type { Context } from 'hono';
 import type { IBootstrappable } from '~/common';
 import type { ServerType } from '@hono/node-server';
+import type { ContentfulStatusCode } from 'hono/utils/http-status';
 
 @injectable()
 export class RestService implements IBootstrappable {
@@ -21,16 +23,18 @@ export class RestService implements IBootstrappable {
 	public constructor(
 		private readonly logger    = inject(LoggingService),
 		private readonly lifecycle = inject(LifecycleService),
-		private readonly features  = inject(FeatureFlagsService),
+		private readonly settings  = inject(SettingsService),
 		private readonly ytdlp     = inject(YtdlpService),
 	) {}
 
 	public async bootstrap() {
-		if (!this.features.isEnabled('RESTServer')) {
+		if (!this.settings.get<boolean>(ESettingsKey.EnableLocalApiServer)) {
 			return;
 		}
 
-		this.logger.info('Starting REST server');
+		const port = this.settings.get<number>(ESettingsKey.LocalApiServerPort);
+
+		this.logger.info('Starting API server');
 
 		this.hono = new Hono();
 		this.hono.use(async (c, next) => {
@@ -43,30 +47,34 @@ export class RestService implements IBootstrappable {
 
 			const { status } = c.res;
 
-			this.logger.trace('Sent HTTP response', { id,method, url, status });
+			c.res.headers.append('X-Request-ID', id);
+
+			this.logger.trace('Sent HTTP response', { id, method, url, status });
 		});
-		this.hono.get('/ping', c => c.text('PONG'));
+		this.hono.get('/ping', c => this.createJSONResponse(c, 'PONG'));
+		this.hono.get('/is-busy', c => this.createJSONResponse(c, '', { busy: this.ytdlp.isBusy }));
 		this.hono.post('/download', c => {
 			const url = c.req.query('url');
 			if (!url) {
-				return c.text('Missing `url` search parameter', 400);
+				return this.createJSONResponse(c, 'Missing `url` search parameter', {}, 400);
 			}
 
 			const format = c.req.query('format') ?? 'video';
 			if (this.ytdlp.isBusy) {
-				return c.text('A download is currently in progress');
+				return this.createJSONResponse(c, 'A download is currently in progress', {}, 423);
 			}
 
 			this.ytdlp.download(url, format === 'audio');
 
-			return c.text('Download started');
+			return this.createJSONResponse(c, 'Download started', { url, format });
 		});
 
-		this.server = serve({
-			fetch: this.hono.fetch,
-			port: REST_SERVER_PORT
-		});
+		this.server = serve({ fetch: this.hono.fetch, port });
 
 		this.lifecycle.events.on('shutdown', () => this.server?.close());
+	}
+
+	private createJSONResponse(c: Context, message: string = '', results: object = {}, status: number = 200) {
+		return c.json({ message, results }, status as ContentfulStatusCode);
 	}
 }

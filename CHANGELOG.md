@@ -1,3 +1,14 @@
+# 1.39.0
+
+- The local REST server (now called _local API server_) has been promoted to a full feature and removed from the feature flags system
+  - Can be toggled in the settings (disabled by default)
+  - Port can now be configured from settings
+  - Responses are now JSON
+- Various minor optimizations
+- Upgraded to [Electron 40.0.0](https://releases.electronjs.org/release/v40.0.0)
+
+---
+
 # 1.38.2
 
 - Removed an unnecessary prefix to log lines

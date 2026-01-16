@@ -18,7 +18,6 @@ import { app, shell, dialog, BrowserWindow } from 'electron';
 import { CancellationTokenSource, OperationCancelledError } from '@depthbomb/node-common';
 import type { Maybe } from 'shared';
 import type { IBootstrappable } from '~/common';
-import type { PathLike } from '@depthbomb/node-common/pathlib';
 
 @injectable()
 export class SetupService implements IBootstrappable {
@@ -40,15 +39,16 @@ export class SetupService implements IBootstrappable {
 	) {}
 
 	public async bootstrap() {
-		this.ipc.registerHandler('setup<-show-window', () => {
-			// This handler is ever only called in dev mode so we set `finished` to false so the
-			// window doesn't immediately close.
+		if (import.meta.env.DEV) {
+			this.ipc.registerHandler('setup<-show-window', () => {
+				// Set `finished` to false so the window doesn't immediately close.
+				this.finished = false;
+				this.showWindow();
 
-			this.finished = false;
-			this.showWindow();
+				return ok();
+			});
+		}
 
-			return ok();
-		});
 		this.ipc.registerHandler('setup<-cancel', () => this.cancel());
 
 		await this.performSetupActions();
@@ -100,6 +100,8 @@ export class SetupService implements IBootstrappable {
 			[ESettingsKey.UpdateYtdlpOnStartup, true],
 			[ESettingsKey.UseNewTwitterVideoDownloader, true],
 			[ESettingsKey.CookiesFilePath, null],
+			[ESettingsKey.EnableLocalApiServer, false],
+			[ESettingsKey.LocalApiServerPort, 9876],
 		]);
 	}
 
