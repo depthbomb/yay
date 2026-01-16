@@ -3,7 +3,7 @@ import { IPCEvents, IPCChannel, IPCChannels } from 'shared';
 import { arch, type, release, platform, hostname } from 'node:os';
 import type { IpcApi, IIPCEvents, IIPCContract, SystemApi, VersionsApi, SettingsApi, FeatureFlagsApi } from 'shared';
 
-type IpcArgs<K extends keyof IIPCContract> = IIPCContract[K]['args'];
+type IpcArgs<K extends keyof IIPCContract>   = IIPCContract[K]['args'];
 type IpcReturn<K extends keyof IIPCContract> = IIPCContract[K]['return'];
 
 const versionsApi = process.versions satisfies VersionsApi;

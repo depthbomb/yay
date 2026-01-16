@@ -36,9 +36,7 @@ export class App {
 
 		app.setAppUserModelId(product.appUserModelID);
 
-		if (import.meta.env.DEV) {
-			await this.createDevelopmentShortcut();
-		}
+		await this.createDevelopmentShortcut();
 
 		await this.container.get(MainService).boot();
 	}
@@ -66,9 +64,12 @@ export class App {
 	}
 
 	private async createDevelopmentShortcut() {
-		// This code ensures that a shortcut exists in the start menu so that we can properly test
-		// toast notifications. The code is only called during development because the installation
-		// step takes care of the shortcut for us in production.
+		if (import.meta.env.PROD) {
+			return;
+		}
+
+		// This method ensures that a shortcut exists in the start menu so that we can properly test
+		// toast notifications during development.
 
 		const shortcutDir    = new Path(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', product.author);
 		const shortcutPath   = shortcutDir.joinpath('yay.lnk');
