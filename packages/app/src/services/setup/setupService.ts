@@ -9,15 +9,16 @@ import { TimerService } from '~/services/timer';
 import { YtdlpService } from '~/services/ytdlp';
 import { OnlineChecker } from './onlineChecker';
 import { WindowService } from '~/services/window';
-import { fileExists } from '@depthbomb/node-common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
 import { BinaryDownloader } from './binaryDownloader';
 import { app, shell, dialog, BrowserWindow } from 'electron';
 import { CancellationTokenSource, OperationCancelledError } from '@depthbomb/node-common';
 import type { Maybe } from 'shared';
 import type { IBootstrappable } from '~/common';
+import type { PathLike } from '@depthbomb/node-common/pathlib';
 
 @injectable()
 export class SetupService implements IBootstrappable {
@@ -173,8 +174,8 @@ export class SetupService implements IBootstrappable {
 		this.emitStep('Checking for FFmpeg...');
 
 		const hasFfmpeg = await Promise.all([
-			fileExists(ffmpegPath),
-			fileExists(ffprobePath)
+			ffmpegPath.exists(),
+			ffprobePath.exists(),
 		]).then(r => r.every(Boolean));
 
 		if (!hasYtdlp || !hasFfmpeg || !hasDeno) {
@@ -311,30 +312,30 @@ export class SetupService implements IBootstrappable {
 		return true;
 	}
 
-	private async hasYtdlpBinary(path: string) {
+	private async hasYtdlpBinary(path: Path) {
 		this.logger.info('Checking for yt-dlp binary');
 
 		const currentPath       = this.settings.get(ESettingsKey.YtdlpPath);
-		const localBinaryExists = await fileExists(path);
+		const localBinaryExists = await path.exists();
 		const test              = (path: string) => this.testBinary(path, ['--version'], /\d{4}\.\d+\.\d+/);
 		if (localBinaryExists) {
 			this.logger.info('Found yt-dlp binary', { path });
 
 			if (currentPath !== path) {
-				await this.settings.set(ESettingsKey.YtdlpPath, path);
+				await this.settings.set(ESettingsKey.YtdlpPath, path.toString());
 			}
 
-			return test(path);
+			return test(path.toString());
 		}
 
 		return test('yt-dlp');
 	}
 
-	private async hasDenoBinary(path: string) {
+	private async hasDenoBinary(path: Path) {
 		this.logger.info('Checking for deno binary');
 
 		const currentPath       = this.settings.get(ESettingsKey.DenoPath);
-		const localBinaryExists = await fileExists(path);
+		const localBinaryExists = await path.exists();
 		const test              = (path: string) => this.testBinary(path, ['-v'], /\d+\.\d+\.\d+/);
 		if (localBinaryExists) {
 			this.logger.info('Found deno binary', { path });
@@ -343,7 +344,7 @@ export class SetupService implements IBootstrappable {
 				await this.settings.set(ESettingsKey.DenoPath, path);
 			}
 
-			return test(path);
+			return test(path.toString());
 		}
 
 		return test('deno');

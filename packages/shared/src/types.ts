@@ -1,7 +1,8 @@
+import { cast, typedEntries } from '@depthbomb/common';
 import type { IIPCEvents, IPCChannel, IIPCContract } from '.';
-import type { Maybe, Nullable, Awaitable } from '@depthbomb/node-common';
+import type { Maybe, assume, Nullable, Awaitable } from '@depthbomb/common';
 
-export { Maybe, Nullable, Awaitable };
+export { cast, Maybe, assume, Nullable, Awaitable, typedEntries };
 
 export type VersionsApi = typeof process.versions;
 
@@ -29,7 +30,3 @@ export type SettingsApi = {
 export type FeatureFlagsApi = {
 	getFeatureFlags(...args: IIPCContract['feature-flag<-get-feature-flags']['args']): IIPCContract['feature-flag<-get-feature-flags']['return'];
 };
-
-export function cast<T>(value: unknown) {
-	return value as T;
-}

@@ -1,12 +1,12 @@
-import { join } from 'node:path';
 import { ok, err } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
 import { BROWSER_USER_AGENT } from '~/constants';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
 import { ESettingsKey, tweetURLPattern } from 'shared';
-import { CancellationTokenSource } from '@depthbomb/node-common';
+import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
 import type { Nullable, ITweetMedia } from 'shared';
@@ -37,7 +37,7 @@ export class TwitterService implements IBootstrappable {
 		}
 
 		const filename   = new URL(url).pathname.split('/').pop()!;
-		const outputPath = join(this.settings.get(ESettingsKey.DownloadDir), filename);
+		const outputPath = new Path(this.settings.get(ESettingsKey.DownloadDir), filename);
 
 		await this.client.downloadWithProgress(res, outputPath, {
 			// TODO: implement cancellation

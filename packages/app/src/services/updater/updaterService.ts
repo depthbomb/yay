@@ -1,8 +1,7 @@
 import semver from 'semver';
 import { app } from 'electron';
-import { join } from 'node:path';
+import { ok, err } from 'shared/ipc';
 import { spawn } from 'node:child_process';
-import { ok, err, unit } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
 import { TimerService } from '~/services/timer';
@@ -10,11 +9,12 @@ import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
-import { CancellationTokenSource } from '@depthbomb/node-common';
 import { TransformableNumber } from '~/common/TransformableNumber';
+import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
@@ -145,7 +145,7 @@ export class UpdaterService implements IBootstrappable {
 			this.window.emit('updater', 'updater->update-step', { message: `Downloading installer... (${progress}%)` });
 		}
 
-		const tempPath = join(app.getPath('temp'), 'yay-setup.exe');
+		const tempPath = new Path(app.getPath('temp'), 'yay-setup.exe');
 		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
 
 		if (this.cts.isCancellationRequested) {
@@ -156,7 +156,7 @@ export class UpdaterService implements IBootstrappable {
 
 		this.logger.info('Spawning setup process', { setupPath: tempPath });
 
-		const proc = spawn(tempPath, ['/UPDATE', '/SILENT'], { detached: true, shell: false });
+		const proc = spawn(tempPath.toString(), ['/UPDATE', '/SILENT'], { detached: true, shell: false });
 
 		proc.once('spawn', () => app.quit());
 		proc.unref();

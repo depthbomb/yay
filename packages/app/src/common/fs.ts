@@ -1,7 +1,9 @@
 import { join } from 'node:path';
 import { memoize } from '@formatjs/fast-memoize';
 import { join as posixJoin } from 'node:path/posix';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { EXE_DIR, RESOURCES_PATH, MONOREPO_ROOT_PATH } from '~/constants';
+import type { PathLike } from '@depthbomb/node-common/pathlib';
 
 /**
  * Resolves the absolute path to an extra resource file path, accounting for environment.
@@ -31,31 +33,31 @@ export function getExtraResourcePath(...paths: string[]) {
  * `<root>/static/extra` (development) directory.
  */
 export function getExtraFilePath(...paths: string[]) {
-	return join(getExtraFileDir(), ...paths);
+	return new Path(getExtraFileDir(), ...paths);
 }
 
 export function getExtraFileDir() {
-	let extraFileDir: string;
+	let extraFileDir: Path;
 	if (import.meta.env.DEV) {
-		extraFileDir = join(MONOREPO_ROOT_PATH, 'static', 'extra');
+		extraFileDir = new Path(MONOREPO_ROOT_PATH, 'static', 'extra');
 	} else {
-		extraFileDir = EXE_DIR;
+		extraFileDir = new Path(EXE_DIR);
 	}
 
 	return extraFileDir;
 }
 
 function _getFilePathFromAsar(...paths: string[]) {
-	let extraFilePath: string;
+	let extraFilePath: Path;
 	if (import.meta.env.DEV) {
-		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
+		extraFilePath = new Path(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
 	} else {
 		const path     = posixJoin(...paths);
 		const parts    = path.split('/');
 		const asarName = parts[0];
 		const restPath = parts.slice(1).join('/');
 
-		extraFilePath = join(RESOURCES_PATH, `${asarName}.asar`, restPath);
+		extraFilePath = new Path(RESOURCES_PATH, `${asarName}.asar`, restPath);
 	}
 
 	return extraFilePath;
@@ -70,4 +72,4 @@ function _getFilePathFromAsar(...paths: string[]) {
  *
  * @param paths The path to the file located inside of an asar archive.
  */
-export const getFilePathFromAsar = <(...paths: string[]) => string>memoize(_getFilePathFromAsar);
+export const getFilePathFromAsar = <(...paths: PathLike[]) => Path>memoize(_getFilePathFromAsar);

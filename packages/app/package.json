@@ -13,7 +13,8 @@
 		"lint": "eslint ./src --ext .ts"
 	},
 	"dependencies": {
-		"@depthbomb/node-common": "1.2.0",
+		"@depthbomb/common": "^1.0.0",
+		"@depthbomb/node-common": "^2.1.0",
 		"@formatjs/fast-memoize": "^3.1.0",
 		"@hono/node-server": "^1.19.9",
 		"@loglayer/transport-log-file-rotation": "^2.1.16",

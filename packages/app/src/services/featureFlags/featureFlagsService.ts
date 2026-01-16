@@ -1,12 +1,10 @@
 import { app } from 'electron';
 import { ok } from 'shared/ipc';
-import { join } from 'node:path';
 import { FeatureFlags } from 'shared';
 import { IPCService } from '~/services/ipc';
 import { parse, stringify } from 'smol-toml';
-import { fileExists } from '@depthbomb/node-common';
 import { inject, injectable } from '@needle-di/core';
-import { readFile, writeFile } from 'node:fs/promises';
+import { Path } from '@depthbomb/node-common/pathlib';
 import type { IBootstrappable } from '~/common';
 import type { FeatureFlag, FeatureFlagKey, FeatureFlagUuid } from 'shared';
 
@@ -20,12 +18,12 @@ export class FeatureFlagsService implements IBootstrappable {
 	public readonly version = 1 as const;
 
 	private readonly featureFlags = new Map<FeatureFlagUuid, FeatureFlag>();
-	private readonly featureFlagsConfigPath: string;
+	private readonly featureFlagsConfigPath: Path;
 
 	public constructor(
 		private readonly ipc = inject(IPCService),
 	) {
-		this.featureFlagsConfigPath = join(app.getPath('userData'), 'features.toml');
+		this.featureFlagsConfigPath = new Path(app.getPath('userData'), 'features.toml');
 	}
 
 	public async bootstrap() {
@@ -51,8 +49,8 @@ export class FeatureFlagsService implements IBootstrappable {
 			});
 		}
 
-		if (await fileExists(this.featureFlagsConfigPath)) {
-			const toml = await readFile(this.featureFlagsConfigPath, 'utf8');
+		if (await this.featureFlagsConfigPath.exists()) {
+			const toml = await this.featureFlagsConfigPath.readText();
 			const data = parse(toml) as FeatureFlagConfig;
 
 			if (data.version === this.version) {
@@ -70,6 +68,6 @@ export class FeatureFlagsService implements IBootstrappable {
 			featureFlags: Array.from(this.featureFlags.values()),
 		});
 
-		await writeFile(this.featureFlagsConfigPath, configToml, 'utf8');
+		await this.featureFlagsConfigPath.writeText(configToml);
 	}
 }

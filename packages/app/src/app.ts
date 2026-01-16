@@ -4,9 +4,7 @@ import { app, Menu, shell } from 'electron';
 import { Container } from '@needle-di/core';
 import { MainService } from '~/services/main';
 import { product, ESettingsKey } from 'shared';
-import { existsSync, readFileSync } from 'node:fs';
-import { fileExists } from '@depthbomb/node-common';
-import { mkdir, unlink, readFile } from 'node:fs/promises';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
 export class App {
@@ -54,10 +52,10 @@ export class App {
 		// load a subset of the config file to do things such as appending command line switches.
 		// This needs to be all synchronous as to not start the event loop yet.
 
-		const configFilePath   = join(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
-		const configFileExists = existsSync(configFilePath);
+		const configFilePath   = new Path(app.getPath('userData'), `yay.${import.meta.env.MODE}.cfg`);
+		const configFileExists = configFilePath.existsSync();
 		if (configFileExists) {
-			const toml   = readFileSync(configFilePath, 'utf8');
+			const toml   = configFilePath.readTextSync();
 			const config = parse(toml);
 			if (ESettingsKey.DisableHardwareAcceleration in config && config[ESettingsKey.DisableHardwareAcceleration]?.valueOf()) {
 				app.disableHardwareAcceleration();
@@ -72,13 +70,13 @@ export class App {
 		// toast notifications. The code is only called during development because the installation
 		// step takes care of the shortcut for us in production.
 
-		const shortcutDir    = join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', product.author);
-		const shortcutPath   = join(shortcutDir, 'yay.lnk');
-		const shortcutExists = await fileExists(shortcutPath);
+		const shortcutDir    = new Path(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', product.author);
+		const shortcutPath   = shortcutDir.joinpath('yay.lnk');
+		const shortcutExists = await shortcutPath.exists();
 		if (!shortcutExists) {
-			await mkdir(shortcutDir, { recursive: true });
+			await shortcutDir.mkdir({ recursive: true });
 
-			shell.writeShortcutLink(shortcutPath, {
+			shell.writeShortcutLink(shortcutPath.toString(), {
 				target: EXE_PATH,
 				args: `${join(MONOREPO_ROOT_PATH, 'packages', 'app')}`,
 				appUserModelId: product.appUserModelID,
@@ -87,9 +85,9 @@ export class App {
 		}
 
 		app.once('quit', async () => {
-			const shortcutContents = await readFile(shortcutPath, 'utf8');
+			const shortcutContents = await shortcutPath.readText();
 			if (shortcutContents.includes('electron.exe')) {
-				await unlink(shortcutPath);
+				await shortcutPath.unlink();
 			}
 		});
 	}

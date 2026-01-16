@@ -264,10 +264,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depthbomb/node-common@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@depthbomb/node-common@npm:1.2.0"
-  checksum: 10/2d1db9258c42f8800e7c410df0d46372b25f356171b2922dca32e19287377107d6e3fc436086759a393e4d76d43c267ac92ef5031d870f9e3a8149a63c5f2a4f
+"@depthbomb/common@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@depthbomb/common@npm:1.0.0"
+  checksum: 10/02bb8f1d883e3c9a7681851db4848d5fd1be3ff5a28422f3e08775ef2635589407cfd0024f0442b77fd5b378d141986f03d5d4a4795d4b7d4e1bc43adb4a9ace
+  languageName: node
+  linkType: hard
+
+"@depthbomb/node-common@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@depthbomb/node-common@npm:2.1.0"
+  checksum: 10/49cc14c3e76beb33e8ce15ed90fa36c3cb502ad1bdbf4a64789b6225e111a0762c7767f0bc180fc5bdff84198c5ec1e94331a674e0f258617fedb9e0c681c14e
   languageName: node
   linkType: hard
 
@@ -8796,7 +8803,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "shared@workspace:packages/shared"
   dependencies:
-    "@depthbomb/node-common": "npm:1.2.0"
+    "@depthbomb/common": "npm:^1.0.0"
+    "@depthbomb/node-common": "npm:^2.1.0"
     fejl: "npm:^4.0.1"
     tsdown: "npm:^0.20.0-beta.3"
     typescript: "npm:^5.9.3"
@@ -9887,7 +9895,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yay@workspace:packages/app"
   dependencies:
-    "@depthbomb/node-common": "npm:1.2.0"
+    "@depthbomb/common": "npm:^1.0.0"
+    "@depthbomb/node-common": "npm:^2.1.0"
     "@eslint/js": "npm:^9.39.2"
     "@formatjs/fast-memoize": "npm:^3.1.0"
     "@hono/node-server": "npm:^1.19.9"

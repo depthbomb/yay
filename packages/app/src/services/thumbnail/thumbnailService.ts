@@ -1,23 +1,20 @@
 import { app } from 'electron';
 import { ok } from 'shared/ipc';
-import { join } from 'node:path';
 import { Readable } from 'node:stream';
 import { USER_AGENT } from '~/constants';
 import { IPCService } from '~/services/ipc';
-import { createWriteStream } from 'node:fs';
 import { HTTPService } from '~/services/http';
 import { finished } from 'node:stream/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import { mkdir, unlink, readdir } from 'node:fs/promises';
-import { dirExists, fileExists } from '@depthbomb/node-common';
+import { Path } from '@depthbomb/node-common/pathlib';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
 
 @injectable()
 export class ThumbnailService implements IBootstrappable {
 	private readonly httpClient: HTTPClient;
-	private readonly cacheDir: string;
+	private readonly cacheDir: Path;
 
 	public constructor(
 		private readonly ipc    = inject(IPCService),
@@ -25,7 +22,7 @@ export class ThumbnailService implements IBootstrappable {
 		private readonly http   = inject(HTTPService),
 	) {
 		this.httpClient = this.http.getClient('ThumbnailService', { userAgent: USER_AGENT });
-		this.cacheDir   = join(app.getPath('userData'), 'thumbnail_cache');
+		this.cacheDir   = new Path(app.getPath('userData'), 'thumbnail_cache');
 	}
 
 	public async bootstrap() {
@@ -33,22 +30,22 @@ export class ThumbnailService implements IBootstrappable {
 	}
 
 	public async downloadThumbnail(videoID: string) {
-		const thumbnailPath   = join(this.cacheDir, `${videoID}.jpg`);
-		const thumbnailExists = await fileExists(thumbnailPath);
+		const thumbnailPath   = new Path(this.cacheDir, `${videoID}.jpg`);
+		const thumbnailExists = await thumbnailPath.isFile();
 		if (thumbnailExists) {
 			this.logger.debug('Found existing thumbnail', { thumbnailPath });
 			return;
 		}
 
-		const cacheDirExists = await dirExists(this.cacheDir);
+		const cacheDirExists = await this.cacheDir.isDir();
 		if (!cacheDirExists) {
 			this.logger.debug('Created thumbnail cache directory', { dir: this.cacheDir });
-			await mkdir(this.cacheDir, { recursive: true });
+			await this.cacheDir.mkdir({ recursive: true });
 		}
 
 		const url = `https://i.ytimg.com/vi/${videoID}/maxresdefault.jpg`;
 		const res = await this.httpClient.get(url);
-		const fs  = createWriteStream(thumbnailPath);
+		const fs  = thumbnailPath.toWriteStream();
 
 		await finished(Readable.fromWeb(res.body!).pipe(fs));
 
@@ -56,8 +53,8 @@ export class ThumbnailService implements IBootstrappable {
 	}
 
 	public async getThumbnail(videoID: string) {
-		const thumbnailPath   = join(this.cacheDir, `${videoID}.jpg`);
-		const thumbnailExists = await fileExists(thumbnailPath);
+		const thumbnailPath   = new Path(this.cacheDir, `${videoID}.jpg`);
+		const thumbnailExists = await thumbnailPath.isFile();
 		if (!thumbnailExists) {
 			this.logger.warn('No thumbnail found?', { thumbnailPath });
 			return null;
@@ -67,15 +64,8 @@ export class ThumbnailService implements IBootstrappable {
 	}
 
 	private async clearCache() {
-		const files = await readdir(this.cacheDir);
-		if (!files.length) {
-			return ok();
-		}
-
-		for (const file of files) {
-			await unlink(
-				join(this.cacheDir, file)
-			);
+		for await (const file of this.cacheDir.iterdir()) {
+			await file.unlink();
 		}
 
 		return ok();

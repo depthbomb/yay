@@ -1,11 +1,11 @@
 import { Readable } from 'node:stream';
 import { IDGenerator } from '~/common';
 import { joinURL, withQuery } from 'ufo';
-import { createWriteStream } from 'node:fs';
 import { finished } from 'node:stream/promises';
 import { retry, ConstantBackoff, handleResultType } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
 import type { LoggingService } from '~/services/logging';
+import type { Path } from '@depthbomb/node-common/pathlib';
 import type { GETOptions, RequestOptions, HTTPClientOptions, DownloadOptions } from './types';
 
 export class HTTPClient {
@@ -82,14 +82,14 @@ export class HTTPClient {
 		}
 	}
 
-	public async downloadWithProgress(res: Response, outputPath: string, options: DownloadOptions) {
+	public async downloadWithProgress(res: Response, outputPath: Path, options: DownloadOptions) {
 		if (!res.ok) {
 			throw new Error(`HTTP ${res.status}: ${res.statusText}`);
 		}
 
 		const contentLength = Number(res.headers.get('content-length') ?? 0);
 		const nodeStream    = Readable.fromWeb(res.body!);
-		const file          = createWriteStream(outputPath);
+		const file          = outputPath.toWriteStream();
 
 		let downloadedBytes = 0;
 

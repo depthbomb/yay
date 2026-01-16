@@ -1,9 +1,9 @@
 import { product } from 'shared';
-import { unlink } from 'node:fs/promises';
 import { app, Menu, Tray } from 'electron';
 import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { LifecycleService } from '~/services/lifecycle';
 import { MainWindowService } from '~/services/mainWindow';
 import { getExtraFilePath, getFilePathFromAsar } from '~/common';
@@ -16,13 +16,13 @@ import type { MenuItemConstructorOptions } from 'electron';
 export class TrayService implements IBootstrappable {
 	public tray: Maybe<Tray>;
 
-	private readonly settingsIcon: string;
-	private readonly showIcon: string;
-	private readonly quitIcon: string;
+	private readonly settingsIcon: Path;
+	private readonly showIcon: Path;
+	private readonly quitIcon: Path;
 	private readonly trayTooltip: string;
-	private readonly logoIcon: string;
-	private readonly trayIcon: string;
-	private readonly trayDownloadingIcon: string;
+	private readonly logoIcon: Path;
+	private readonly trayIcon: Path;
+	private readonly trayDownloadingIcon: Path;
 
 	public constructor(
 		private readonly logger         = inject(LoggingService),
@@ -45,18 +45,18 @@ export class TrayService implements IBootstrappable {
 		this.lifecycle.events.on('readyPhase', () => {
 			this.logger.debug('Creating tray icon');
 
-			this.tray = new Tray(this.trayIcon);
+			this.tray = new Tray(this.trayIcon.toString());
 			this.tray.setToolTip(this.trayTooltip);
 			this.tray.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
 			this.tray.on('click', () => this.mainWindow.showMainWindow());
 
 			this.ytdlp.events.on('downloadStarted', url => {
-				this.tray!.setImage(this.trayDownloadingIcon);
+				this.tray!.setImage(this.trayDownloadingIcon.toString());
 				this.tray!.setToolTip(`Downloading ${url}`);
 			});
 
 			this.ytdlp.events.on('downloadFinished', () => {
-				this.tray!.setImage(this.trayIcon);
+				this.tray!.setImage(this.trayIcon.toString());
 				this.tray!.setToolTip(this.trayTooltip);
 			});
 		});
@@ -74,7 +74,7 @@ export class TrayService implements IBootstrappable {
 		menu.push(
 			{
 				label: 'yay',
-				icon: this.logoIcon,
+				icon: this.logoIcon.toString(),
 				enabled: false,
 			},
 			{ type: 'separator' }
@@ -89,10 +89,10 @@ export class TrayService implements IBootstrappable {
 							label: 'Delete downloadable binaries',
 							click: async () => {
 								await Promise.allSettled([
-									unlink(getExtraFilePath('yt-dlp.exe')),
-									unlink(getExtraFilePath('deno.exe')),
-									unlink(getExtraFilePath('ffmpeg.exe')),
-									unlink(getExtraFilePath('ffprobe.exe')),
+									Path.from(getExtraFilePath('yt-dlp.exe')).unlink(),
+									Path.from(getExtraFilePath('deno.exe')).unlink(),
+									Path.from(getExtraFilePath('ffmpeg.exe')).unlink(),
+									Path.from(getExtraFilePath('ffprobe.exe')).unlink(),
 								]);
 							}
 						},
@@ -112,12 +112,12 @@ export class TrayService implements IBootstrappable {
 		menu.push(
 			{
 				label: 'Show',
-				icon: this.showIcon,
+				icon: this.showIcon.toString(),
 				click: () => this.tray!.emit('click')
 			},
 			{
 				label: 'Settings',
-				icon: this.settingsIcon,
+				icon: this.settingsIcon.toString(),
 				click: () => this.settingsWindow.show()
 			},
 			{
@@ -125,7 +125,7 @@ export class TrayService implements IBootstrappable {
 			},
 			{
 				label: 'Quit',
-				icon: this.quitIcon,
+				icon: this.quitIcon.toString(),
 				click: () => this.lifecycle.requestShutdown()
 			}
 		);

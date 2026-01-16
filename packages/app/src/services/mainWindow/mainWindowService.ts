@@ -4,12 +4,11 @@ import { getExtraFilePath } from '~/common';
 import { Flag, ESettingsKey } from 'shared';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
-import { unlink, copyFile } from 'fs/promises';
 import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
-import { fileExists } from '@depthbomb/node-common';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
@@ -116,15 +115,15 @@ export class MainWindowService implements IBootstrappable {
 			});
 
 			if (!canceled && filePaths.length === 1) {
-				const chosenPath      = filePaths[0];
+				const chosenPath      = new Path(filePaths[0]);
 				const destinationPath = getExtraFilePath('cookies.txt');
 
-				await copyFile(chosenPath, destinationPath);
+				await chosenPath.copyFile(destinationPath);
 				await this.settings.set(ESettingsKey.CookiesFilePath, destinationPath);
 
 				this.logger.debug('Copied cookies file', { from: chosenPath, to: destinationPath });
 
-				return ok(destinationPath);
+				return ok(destinationPath.toString());
 			}
 
 			return ok(null);
@@ -138,13 +137,13 @@ export class MainWindowService implements IBootstrappable {
 
 			for (const bin of ['yt-dlp.exe', 'deno.exe', 'ffmpeg.exe', 'ffprobe.exe']) {
 				const binPath = getExtraFilePath(bin);
-				if (!await fileExists(binPath)) {
+				if (!await binPath.exists()) {
 					continue;
 				}
 
 				this.logger.debug('Deleting binary due to recheck', { bin });
 
-				await unlink(binPath);
+				await binPath.unlink();
 			}
 
 			await this.settings.set(ESettingsKey.YtdlpPath, null);

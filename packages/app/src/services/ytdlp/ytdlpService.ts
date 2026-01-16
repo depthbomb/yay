@@ -1,6 +1,6 @@
 import mitt from 'mitt';
+import { ok } from 'shared/ipc';
 import { dialog } from 'electron';
-import { ok, err } from 'shared/ipc';
 import { ESettingsKey } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
@@ -98,13 +98,13 @@ export class YtdlpService implements IBootstrappable {
 		const ytdlpArgs    = [] as string[];
 
 		if (audioOnly) {
-			ytdlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '0', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
+			ytdlpArgs.push('-x', '--audio-format', 'mp3', '--audio-quality', '0', url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath.toString());
 
 			if (this.settings.get<boolean>(ESettingsKey.UseThumbnailForCoverArt)) {
 				ytdlpArgs.push('--embed-thumbnail');
 			}
 		} else {
-			ytdlpArgs.push(url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath);
+			ytdlpArgs.push(url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath.toString());
 		}
 
 		const cookiesFilePath = this.settings.get<Nullable<string>>(ESettingsKey.CookiesFilePath, null);
@@ -151,11 +151,11 @@ export class YtdlpService implements IBootstrappable {
 
 			if (youtubeMatch) {
 				notificationImagePlacement = 'hero';
-				notificationImage          = await this.thumbnail.getThumbnail(youtubeMatch[1]) ?? '';
+				notificationImage          = await this.thumbnail.getThumbnail(youtubeMatch[1]) ?? getFilePathFromAsar('notifications', 'logo.png');
 			}
 
 			if (showNotification && !this.window.getMainWindow()?.isFocused()) {
-				this.showCompletionNotification(downloadDir, notificationImage, notificationImagePlacement);
+				this.showCompletionNotification(downloadDir, notificationImage.toString(), notificationImagePlacement);
 			}
 
 			this.cleanupProcess();

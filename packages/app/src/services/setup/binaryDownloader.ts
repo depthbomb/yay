@@ -1,13 +1,12 @@
 import { app } from 'electron';
-import { join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { USER_AGENT } from '~/constants';
 import { spawn } from 'node:child_process';
 import { HTTPService } from '~/services/http';
 import { GithubService } from '~/services/github';
-import { unlink, rename } from 'node:fs/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 import { getExtraFileDir, getExtraFilePath } from '~/common';
 import type { HTTPClient } from '~/services/http';
 
@@ -23,7 +22,7 @@ export class BinaryDownloader {
 		this.httpClient = this.http.getClient('BinaryDownloader', { userAgent: USER_AGENT });
 	}
 
-	public async downloadYtdlpBinary(path: string, signal: AbortSignal, onProgress?: (progress: number) => void) {
+	public async downloadYtdlpBinary(path: Path, signal: AbortSignal, onProgress?: (progress: number) => void) {
 		const url = await this.resolveYtdlpDownloadURL();
 		if (!url) {
 			return;
@@ -34,11 +33,10 @@ export class BinaryDownloader {
 			return;
 		}
 
-		const tempPath = join(app.getPath('temp'), '_yt-dlp.exe');
+		const tempPath = new Path(app.getPath('temp'), '_yt-dlp.exe');
 
 		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
-
-		await rename(tempPath, path);
+		await tempPath.rename(path);
 	}
 
 	public async downloadDenoBinary(
@@ -55,7 +53,7 @@ export class BinaryDownloader {
 		await this.downloadAndExtract(
 			url,
 			['deno.exe'],
-			getExtraFileDir(),
+			getExtraFileDir().toString(),
 			signal,
 			onProgress,
 			onExtracting,
@@ -77,7 +75,7 @@ export class BinaryDownloader {
 		await this.downloadAndExtract(
 			url,
 			['ffmpeg.exe', 'ffprobe.exe'],
-			getExtraFileDir(),
+			getExtraFileDir().toString(),
 			signal,
 			onProgress,
 			onExtracting,
@@ -137,7 +135,7 @@ export class BinaryDownloader {
 			return;
 		}
 
-		const tempPath = join(app.getPath('temp'), `_${randomUUID()}.zip`);
+		const tempPath = new Path(app.getPath('temp'), `_${randomUUID()}.zip`);
 
 		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
 
@@ -152,9 +150,9 @@ export class BinaryDownloader {
 
 		onExtracting?.();
 
-		const extraction = spawn(sevenZipPath, [
+		const extraction = spawn(sevenZipPath.toString(), [
 			'e',
-			tempPath,
+			tempPath.toString(),
 			'-r',
 			`-o${extractPath}`,
 			'-aoa',
@@ -170,7 +168,7 @@ export class BinaryDownloader {
 			try {
 				onCleaningUp?.();
 
-				await unlink(tempPath);
+				await tempPath.unlink();
 
 				resolve();
 			} catch (err) {
