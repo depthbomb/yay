@@ -112,10 +112,22 @@ export class WindowService implements IBootstrappable {
 
 				return { action: 'deny' };
 			});
+			window.webContents.on('will-navigate', (event, url) => {
+				if (url.startsWith('file://') || (import.meta.env.DEV && url.startsWith(`http://localhost:${DEV_PORT}`))) {
+					return;
+				}
+
+				const requestedURL = new URL(url);
+				if (externalURLRules.some(r => r(requestedURL))) {
+					shell.openExternal(url);
+				}
+
+				event.preventDefault();
+			});
 		}
 
-		window.on('minimize', () => this.emit(name, 'window->is-minimized'));
-		window.on('maximize', () => this.emit(name, 'window->is-maximized'));
+		window.on('minimize',   () => this.emit(name, 'window->is-minimized'));
+		window.on('maximize',   () => this.emit(name, 'window->is-maximized'));
 		window.on('unmaximize', () => this.emit(name, 'window->is-unmaximized'));
 
 		if (options.handleContextMenu === true) {
@@ -168,7 +180,7 @@ export class WindowService implements IBootstrappable {
 
 		this.events.emit('windowCreated', window);
 
-		this.logger.debug('Created window', { name, window });
+		this.logger.debug('Created window', { name, url, window });
 
 		return window;
 	}
