@@ -1,9 +1,7 @@
-import { config } from 'dotenv';
+import 'dotenv/config';
 import { readFileSync } from 'node:fs';
 import { Octokit } from '@octokit/rest';
-import changelog from '../static/changelog.json';
-
-config();
+import { changelog } from '../product.json';
 
 type ChangeItem = string | ChangeItem[];
 

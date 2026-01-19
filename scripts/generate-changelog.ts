@@ -1,6 +1,6 @@
 import { resolve } from 'node:path';
 import { writeFileSync } from 'node:fs';
-import changelog from '../static/changelog.json';
+import { changelog } from '../product.json';
 
 const changelogFile = resolve('CHANGELOG.md');
 
