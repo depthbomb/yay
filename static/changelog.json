@@ -1,5 +1,12 @@
 [
 	{
+		"version": "1.39.1",
+		"changes": [
+			"Fixed some URLs, specifically in the updater window changelog, opening within the app rather than in an external browser",
+			"Fixed the application notifying of updates during the setup phase"
+		]
+	},
+	{
 		"version": "1.39.0",
 		"changes": [
 			"The local REST server (now called _local API server_) has been promoted to a full feature and removed from the feature flags system",

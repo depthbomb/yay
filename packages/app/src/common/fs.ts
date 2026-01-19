@@ -1,4 +1,3 @@
-import { join } from 'node:path';
 import { memoize } from '@formatjs/fast-memoize';
 import { join as posixJoin } from 'node:path/posix';
 import { Path } from '@depthbomb/node-common/pathlib';
@@ -14,11 +13,11 @@ import type { PathLike } from '@depthbomb/node-common/pathlib';
  * OR `<root>/static/extra` (development) directory.
  */
 export function getExtraResourcePath(...paths: string[]) {
-	let extraFilePath: string;
+	let extraFilePath: Path;
 	if (import.meta.env.DEV) {
-		extraFilePath = join(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
+		extraFilePath = new Path(MONOREPO_ROOT_PATH, 'static', 'extra', ...paths);
 	} else {
-		extraFilePath = join(RESOURCES_PATH, ...paths);
+		extraFilePath = new Path(RESOURCES_PATH, ...paths);
 	}
 
 	return extraFilePath;

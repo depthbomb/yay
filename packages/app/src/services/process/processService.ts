@@ -1,9 +1,9 @@
-import { join } from 'node:path';
 import * as nativelib from 'nativelib';
 import { getExtraResourcePath } from '~/common';
 import { MONOREPO_ROOT_PATH } from '~/constants';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { Path } from '@depthbomb/node-common/pathlib';
 
 @injectable()
 export class ProcessService {
@@ -14,11 +14,11 @@ export class ProcessService {
 	) {
 		if (import.meta.env.DEV) {
 			this.native = require(
-				join(MONOREPO_ROOT_PATH, 'packages', 'nativelib', 'dist', 'nativelib.win32-x64-msvc.node')
+				Path.from(MONOREPO_ROOT_PATH, 'packages', 'nativelib', 'dist', 'nativelib.win32-x64-msvc.node').toString()
 			);
 		} else {
 			this.native = require(
-				getExtraResourcePath('native', 'nativelib.win32-x64-msvc.node')
+				getExtraResourcePath('native', 'nativelib.win32-x64-msvc.node').toString()
 			);
 		}
 	}
