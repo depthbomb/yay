@@ -1,5 +1,5 @@
 {
-	"version": "1.39.1",
+	"version": "1.39.2",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -11,6 +11,12 @@
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
+		{
+			"version": "1.39.2",
+			"changes": [
+				"Cancelling the folder selection dialog when importing or exporting settings will no longer show an error message box"
+			]
+		},
 		{
 			"version": "1.39.1",
 			"changes": [

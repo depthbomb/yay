@@ -1,3 +1,9 @@
+# 1.39.2
+
+- Cancelling the folder selection dialog when importing or exporting settings will no longer show an error message box
+
+---
+
 # 1.39.1
 
 - Fixed some URLs, specifically in the updater window changelog, opening within the app rather than in an external browser
