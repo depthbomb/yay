@@ -10,7 +10,6 @@ export interface IIPCEvents {
 	'window->is-blurred':     void;
 	'window->is-focused':     void;
 	'window->is-closed':      { windowName: string; };
-	'window->should-reload':  void;
 	// Setup Events
 	'setup->step': { message: string; progress: number; };
 	'setup->done': void;

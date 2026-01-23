@@ -29,11 +29,13 @@ export const AppTab = () => {
 				message: res.error
 			});
 		} else {
-			await window.ipc.invoke('main<-show-message-box', {
-				title: 'Settings exporter',
-				type: 'info',
-				message: 'Settings successfully exported.'
-			});
+			if (res.data) {
+				await window.ipc.invoke('main<-show-message-box', {
+					title: 'Settings exporter',
+					type: 'info',
+					message: 'Settings successfully exported.'
+				});
+			}
 		}
 
 		setImportDisabled(false);
@@ -50,11 +52,13 @@ export const AppTab = () => {
 				message: res.error
 			});
 		} else {
-			await window.ipc.invoke('main<-show-message-box', {
-				title: 'Settings exporter',
-				type: 'info',
-				message: 'Settings successfully exported.'
-			});
+			if (res.data) {
+				await window.ipc.invoke('main<-show-message-box', {
+					title: 'Settings exporter',
+					type: 'info',
+					message: 'Settings successfully exported.'
+				});
+			}
 		}
 
 		setExportDisabled(false);

@@ -247,4 +247,12 @@ export class WindowService implements IBootstrappable {
 			window?.webContents.send(channel, ...args);
 		}
 	}
+
+	public reloadAllWindows() {
+		this.logger.debug('Reloading all windows');
+
+		for (const window of this.windows.values()) {
+			window?.reload();
+		}
+	}
 }

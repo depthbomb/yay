@@ -63,7 +63,11 @@ export class SettingsWindowService implements IBootstrappable {
 				}]
 			});
 
-			if (canceled || !filePaths.length) {
+			if (canceled) {
+				return ok(false);
+			}
+
+			if (!filePaths.length) {
 				return err('No file path chosen.');
 			}
 
@@ -72,9 +76,9 @@ export class SettingsWindowService implements IBootstrappable {
 			try {
 				await this.settings.importFromFile(filepath);
 
-				this.window.emitAll('window->should-reload');
+				this.window.reloadAllWindows();
 
-				return ok();
+				return ok(true);
 			} catch (e) {
 				return err((e as Error).message);
 			}
@@ -84,15 +88,19 @@ export class SettingsWindowService implements IBootstrappable {
 				properties: ['openDirectory']
 			});
 
-			if (canceled || !filePaths.length) {
+			if (canceled) {
+				return ok(false);
+			}
+
+			if (!filePaths.length) {
 				return err('No file path chosen.');
 			}
 
 			const [filepath] = filePaths;
 
-			const path = await this.settings.exportToFile(filepath);
+			await this.settings.exportToFile(filepath);
 
-			return ok(path);
+			return ok(true);
 		});
 
 		this.lifecycle.events.on('shutdown', () => this.settingsWindow.close());

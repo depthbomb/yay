@@ -81,11 +81,11 @@ export interface IIPCContract {
 	}
 	'settings<-import': {
 		args: [];
-		return: IPCResult<Unit, string>;
+		return: IPCResult<boolean, string>;
 	}
 	'settings<-export': {
 		args: [];
-		return: IPCResult<string, string>;
+		return: IPCResult<boolean, string>;
 	}
 	'settings<-show-ui': {
 		args: [];
