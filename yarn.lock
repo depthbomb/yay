@@ -6351,10 +6351,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.0.0":
-  version: 17.0.0
-  resolution: "globals@npm:17.0.0"
-  checksum: 10/af6213db9bf5f599b8a609061984c4d5fedb23db336228b866eba70819fe13ea3d11ca507b4799e8afc888331d0f7e5760d01507e38cb988fff9ad3a9635b312
+"globals@npm:^17.1.0":
+  version: 17.1.0
+  resolution: "globals@npm:17.1.0"
+  checksum: 10/6e77442a3b80b41b11fb4f986326f0487b9872dee6852cc9373e01696787889f4648d2264a125504315a645be0dde61625200e422b5b8002c106ffbabaaf8fdc
   languageName: node
   linkType: hard
 
@@ -8078,9 +8078,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:^7.12.0":
-  version: 7.12.0
-  resolution: "react-router@npm:7.12.0"
+"react-router@npm:^7.13.0":
+  version: 7.13.0
+  resolution: "react-router@npm:7.13.0"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -8090,7 +8090,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10/578324f792721200bd57a220c7931af692613943051c9bb0c6303613849ec9a2c2365a3a6afe1b3976c13edc8f71616bb9cfdb13c0ac501f239ad11a6884e3f8
+  checksum: 10/8bc0a1eebf37136851ee345e53b137b5a7ec0de10c842861a06810bb54c0a389826734a7454f4afe8731daf39499948ba73657e60a6bd2acb93b3e567fd79127
   languageName: node
   linkType: hard
 
@@ -8172,12 +8172,12 @@ __metadata:
     eslint: "npm:^9.39.2"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.26"
-    globals: "npm:^17.0.0"
+    globals: "npm:^17.1.0"
     jotai: "npm:^2.16.2"
     postcss: "npm:^8.5.6"
     react: "npm:^19.2.3"
     react-dom: "npm:^19.2.3"
-    react-router: "npm:^7.12.0"
+    react-router: "npm:^7.13.0"
     sass-embedded: "npm:^1.97.3"
     shared: "workspace:*"
     tailwindcss: "npm:^4.1.18"
@@ -9976,7 +9976,7 @@ __metadata:
     cross-env: "npm:^10.1.0"
     electron: "npm:40.0.0"
     eslint: "npm:^9.39.2"
-    globals: "npm:^17.0.0"
+    globals: "npm:^17.1.0"
     hono: "npm:^4.11.5"
     loglayer: "npm:^8.4.0"
     mitt: "npm:^3.0.1"
