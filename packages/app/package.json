@@ -20,7 +20,7 @@
 		"@loglayer/transport-log-file-rotation": "^2.1.16",
 		"@needle-di/core": "1.1.0",
 		"cockatiel": "^3.2.1",
-		"hono": "^4.11.4",
+		"hono": "^4.11.5",
 		"loglayer": "^8.4.0",
 		"mitt": "^3.0.1",
 		"nativelib": "workspace:*",
