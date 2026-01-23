@@ -1,15 +1,15 @@
 import { ipcRenderer, contextBridge } from 'electron';
 import { IPCEvents, IPCChannel, IPCChannels } from 'shared';
 import { arch, type, release, platform, hostname } from 'node:os';
-import type { IpcApi, IIPCEvents, IIPCContract, SystemApi, VersionsApi, SettingsApi, FeatureFlagsApi } from 'shared';
+import type { IPCAPI, IIPCEvents, IIPCContract, SystemAPI, VersionsAPI, SettingsAPI, FeatureFlagsAPI } from 'shared';
 
-type IpcArgs<K extends keyof IIPCContract>   = IIPCContract[K]['args'];
-type IpcReturn<K extends keyof IIPCContract> = IIPCContract[K]['return'];
+type IPCArgs<K extends keyof IIPCContract>   = IIPCContract[K]['args'];
+type IPCReturn<K extends keyof IIPCContract> = IIPCContract[K]['return'];
 
-const versionsApi = process.versions satisfies VersionsApi;
+const versionsAPI = process.versions satisfies VersionsAPI;
 
-const ipcApi = {
-	invoke<K extends keyof IIPCContract>(channel: K, ...args: IpcArgs<K>){
+const ipcAPI = {
+	invoke<K extends keyof IIPCContract>(channel: K, ...args: IPCArgs<K>){
 		if (!IPCChannels.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to invoke invalid channel: ${channel}`);
@@ -20,9 +20,9 @@ const ipcApi = {
 			return Promise.reject(new Error(`Invalid channel: ${channel}`));
 		}
 
-		return ipcRenderer.invoke(channel, ...args) as Promise<IpcReturn<K>>;
+		return ipcRenderer.invoke(channel, ...args) as Promise<IPCReturn<K>>;
 	},
-	sendSync<K extends keyof IIPCContract>(channel: K, ...args: IpcArgs<K>){
+	sendSync<K extends keyof IIPCContract>(channel: K, ...args: IPCArgs<K>){
 		if (!IPCChannels.includes(channel)) {
 			if (__STRICT__) {
 				throw new Error(`Attempted to invoke invalid channel: ${channel}`);
@@ -33,7 +33,7 @@ const ipcApi = {
 			return null;
 		}
 
-		return ipcRenderer.sendSync(channel, ...args) as IpcReturn<K>;
+		return ipcRenderer.sendSync(channel, ...args) as IPCReturn<K>;
 	},
 	on<K extends keyof IIPCEvents>(channel: K, listener: (payload: IIPCEvents[K]) => void) {
 		if (!IPCEvents.includes(channel)) {
@@ -92,25 +92,25 @@ const ipcApi = {
 
 		ipcRenderer.removeAllListeners(channel);
 	}
-} satisfies IpcApi;
+} satisfies IPCAPI;
 
-const systemApi = { arch, type, release, platform, hostname } satisfies SystemApi;
+const systemAPI = { arch, type, release, platform, hostname } satisfies SystemAPI;
 
-const settingsApi = {
+const settingsAPI = {
 	getValue(key, defaultValue, secure) {
-		return ipcApi.sendSync('settings<-get', key, defaultValue, secure);
+		return ipcAPI.sendSync('settings<-get', key, defaultValue, secure);
 	},
-} satisfies SettingsApi;
+} satisfies SettingsAPI;
 
-const featureFlagsApi = {
+const featureFlagsAPI = {
 	getFeatureFlags() {
-		return ipcApi.sendSync('feature-flag<-get-feature-flags')!;
+		return ipcAPI.sendSync('feature-flag<-get-feature-flags')!;
 	},
-} satisfies FeatureFlagsApi;
+} satisfies FeatureFlagsAPI;
 
-contextBridge.exposeInMainWorld('versions', versionsApi);
+contextBridge.exposeInMainWorld('versions', versionsAPI);
 contextBridge.exposeInMainWorld('buildDate', new Date(__BUILD_DATE__));
-contextBridge.exposeInMainWorld('ipc', ipcApi);
-contextBridge.exposeInMainWorld('system', systemApi);
-contextBridge.exposeInMainWorld('settings', settingsApi);
-contextBridge.exposeInMainWorld('featureFlags', featureFlagsApi);
+contextBridge.exposeInMainWorld('ipc', ipcAPI);
+contextBridge.exposeInMainWorld('system', systemAPI);
+contextBridge.exposeInMainWorld('settings', settingsAPI);
+contextBridge.exposeInMainWorld('featureFlags', featureFlagsAPI);
