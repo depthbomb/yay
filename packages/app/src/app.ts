@@ -84,7 +84,8 @@ export class App {
 		}
 
 		app.once('quit', async () => {
-			if (EXE_PATH.toLowerCase().includes('electron.exe')) {
+			const shortcutContents = await shortcutPath.readText();
+			if (shortcutContents.includes('electron.exe')) {
 				await shortcutPath.unlink().catch(console.warn);
 			}
 		});
