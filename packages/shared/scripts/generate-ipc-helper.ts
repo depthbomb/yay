@@ -37,7 +37,7 @@ function generateFromInterface(
 		`import type { ${interfaceName} } from './ipc';`,
 		``,
 		`export type ${typeName} = keyof ${interfaceName};`,
-		`export const ${arrayName} = ${JSON.stringify(keys.map(k => k.replace(/'/g, ''))).replace(/"/g, '\'')} as ${typeName}[];`,
+		`export const ${arrayName} = new Set<${typeName}>(${JSON.stringify(keys.map(k => k.replace(/'/g, ''))).replace(/"/g, '\'')});`,
 		``,
 		`export const enum ${enumName} {`,
 		...keys.map((k) => `\t${toEnumKey(k, isEvent)} = ${k},`),

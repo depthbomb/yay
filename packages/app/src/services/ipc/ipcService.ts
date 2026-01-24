@@ -45,7 +45,7 @@ export class IPCService {
 	}
 
 	private assertValidIpcChannel(channel: keyof IIPCContract): void | never {
-		if (!IPCChannels.includes(channel)) {
+		if (!IPCChannels.has(channel)) {
 			throw new Error(`Invalid IPC channel "${channel}"`);
 		}
 	}
