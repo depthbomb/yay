@@ -1,4 +1,5 @@
 import type { ESettingsKey } from '../settings';
+import type { IDownloadSession } from '../ytdlp';
 
 export interface IIPCEvents {
 	// Main Events
@@ -17,9 +18,11 @@ export interface IIPCEvents {
 	'settings->changed':  { key: ESettingsKey; value: any };
 	'settings->imported': void;
 	// yt-dlp Events
-	'yt-dlp->download-started':  { url: string; };
-	'yt-dlp->download-canceled': void;
-	'yt-dlp->download-finished': void;
+	'yt-dlp->download-queued':   IDownloadSession;
+	'yt-dlp->download-started':  IDownloadSession;
+	'yt-dlp->download-progress': IDownloadSession;
+	'yt-dlp->download-canceled': IDownloadSession;
+	'yt-dlp->download-finished': IDownloadSession;
 	'yt-dlp->stdout':            { line: string; };
 	'yt-dlp->updating-binary':   void;
 	'yt-dlp->updated-binary':    void;

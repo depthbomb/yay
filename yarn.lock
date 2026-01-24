@@ -3598,13 +3598,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:*":
-  version: 4.55.1
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.55.1"
-  conditions: os=linux & cpu=x64 & libc=glibc
-  languageName: node
-  linkType: hard
-
 "@rollup/rollup-linux-x64-gnu@npm:4.55.2":
   version: 4.55.2
   resolution: "@rollup/rollup-linux-x64-gnu@npm:4.55.2"
@@ -6039,19 +6032,6 @@ __metadata:
     picomatch:
       optional: true
   checksum: 10/14ca1c9f0a0e8f4f2e9bf4e8551065a164a09545dae548c12a18d238b72e51e5a7b39bd8e5494b56463a0877672d0a6c1ef62c6fa0677db1b0c847773be939b1
-  languageName: node
-  linkType: hard
-
-"fejl@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "fejl@npm:4.0.1"
-  dependencies:
-    "@rollup/rollup-linux-x64-gnu": "npm:*"
-    tslib: "npm:^2.8.1"
-  dependenciesMeta:
-    "@rollup/rollup-linux-x64-gnu":
-      optional: true
-  checksum: 10/d931e7b6f6dbe148e949ff94c9ec4135e9dba32e54ed1c86b47f6fb6522522f7bfff614b1557c1dab2de04696e645a9198f398ed1cc0552b9e746c1f79f38b34
   languageName: node
   linkType: hard
 
@@ -8859,7 +8839,6 @@ __metadata:
   dependencies:
     "@depthbomb/common": "npm:^1.0.0"
     "@depthbomb/node-common": "npm:^2.1.1"
-    fejl: "npm:^4.0.1"
     tsdown: "npm:^0.20.1"
     typescript: "npm:^5.9.3"
   languageName: unknown

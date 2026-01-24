@@ -1,5 +1,6 @@
 import semver from 'semver';
 import { app } from 'electron';
+import { eventBus } from '~/events';
 import { ok, err } from 'shared/ipc';
 import { spawn } from 'node:child_process';
 import { IPCService } from '~/services/ipc';
@@ -11,7 +12,6 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
-import { LifecycleService } from '~/services/lifecycle';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
 import { TransformableNumber } from '~/common/TransformableNumber';
 import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
@@ -43,7 +43,6 @@ export class UpdaterService implements IBootstrappable {
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
-		private readonly lifecycle     = inject(LifecycleService),
 		private readonly ipc           = inject(IPCService),
 		private readonly timer         = inject(TimerService),
 		private readonly window        = inject(WindowService),
@@ -66,8 +65,8 @@ export class UpdaterService implements IBootstrappable {
 		this.ipc.registerHandler('updater<-update',                  () => this.startUpdate());
 		this.ipc.registerHandler('updater<-cancel-update',           () => this.cancelUpdate());
 
-		this.lifecycle.events.on('readyPhase', () => this.checkForUpdates());
-		this.lifecycle.events.on('shutdown',   () => this.timer.clearTimeout(this.checkTimeout!));
+		eventBus.on('lifecycle:ready-phase', () => this.checkForUpdates());
+		eventBus.on('lifecycle:shutdown',   () => this.timer.clearTimeout(this.checkTimeout!));
 	}
 
 	public async checkForUpdates(manual = false) {

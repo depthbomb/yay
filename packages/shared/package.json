@@ -74,6 +74,14 @@
 			"require": "./dist/utils.cjs",
 			"import": "./dist/utils.mjs"
 		},
+		"./ytdlp": {
+			"require": "./dist/ytdlp/index.cjs",
+			"import": "./dist/ytdlp/index.mjs"
+		},
+		"./ytdlp/IDownloadSession": {
+			"require": "./dist/ytdlp/IDownloadSession.cjs",
+			"import": "./dist/ytdlp/IDownloadSession.mjs"
+		},
 		"./package.json": "./package.json"
 	},
 	"files": [
@@ -86,8 +94,7 @@
 	},
 	"dependencies": {
 		"@depthbomb/common": "^1.0.0",
-		"@depthbomb/node-common": "^2.1.1",
-		"fejl": "^4.0.1"
+		"@depthbomb/node-common": "^2.1.1"
 	},
 	"devDependencies": {
 		"tsdown": "^0.20.1",

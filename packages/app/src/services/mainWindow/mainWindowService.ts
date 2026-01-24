@@ -1,10 +1,10 @@
 import { ok } from 'shared/ipc';
+import { eventBus } from '~/events';
 import { IPCService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
 import { Flag, ESettingsKey } from 'shared';
 import { TrayService } from '~/services/tray';
 import { app, shell, dialog } from 'electron';
-import { YtdlpService } from '~/services/ytdlp';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
@@ -30,7 +30,6 @@ export class MainWindowService implements IBootstrappable {
 		private readonly windowPosition = inject(WindowPositionService),
 		// @ts-expect-error circular type inference
 		private readonly tray           = inject(TrayService, { lazy: true }),
-		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.pinned = new Flag(false);
 		this.mainWindow = this.window.createMainWindow({
@@ -157,14 +156,13 @@ export class MainWindowService implements IBootstrappable {
 			return ok();
 		});
 
-		this.ytdlp.events.on('downloadStarted',  () => this.mainWindow.setProgressBar(1, { mode: 'indeterminate' }));
-		this.ytdlp.events.on('downloadProgress', p => this.mainWindow.setProgressBar(p, { mode: 'normal' }));
-		this.ytdlp.events.on('downloadFinished', () => {
+		eventBus.on('ytdlp:download-started',  () => this.mainWindow.setProgressBar(1, { mode: 'indeterminate' }));
+		eventBus.on('ytdlp:download-progress', e => this.mainWindow.setProgressBar(e.progress, { mode: 'normal' }));
+		eventBus.on('ytdlp:download-finished', () => {
 			this.mainWindow.setProgressBar(0, { mode: 'none' });
 			this.mainWindow.flashFrame(true);
 		});
-
-		this.lifecycle.events.on('shutdown', () => {
+		eventBus.on('lifecycle:shutdown', () => {
 			if (this.mainWindow) {
 				this.mainWindow.closable = true;
 				this.mainWindow.close();

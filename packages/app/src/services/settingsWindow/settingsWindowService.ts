@@ -1,4 +1,5 @@
 import { dialog } from 'electron';
+import { eventBus } from '~/events';
 import { ok, err } from 'shared/ipc';
 import { IPCService } from '~/services/ipc';
 import { WindowService } from '~/services/window';
@@ -103,7 +104,7 @@ export class SettingsWindowService implements IBootstrappable {
 			return ok(true);
 		});
 
-		this.lifecycle.events.on('shutdown', () => this.settingsWindow.close());
+		eventBus.on('lifecycle:shutdown', () => this.settingsWindow.close());
 	}
 
 	public show() {

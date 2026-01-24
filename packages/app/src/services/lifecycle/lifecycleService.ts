@@ -1,5 +1,5 @@
-import mitt from 'mitt';
 import { app } from 'electron';
+import { eventBus } from '~/events';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { Awaitable } from 'shared';
@@ -11,13 +11,6 @@ type ShutdownVetoRequest = {
 	canProceed: () => Awaitable<boolean>;
 };
 
-type LifecycleEvents = {
-	shutdownRequested: { veto: (reason: string, source: string, canProceed?: () => Awaitable<boolean>) => void };
-	shutdown: void;
-	phaseChanged: ELifecyclePhase;
-	readyPhase: void;
-};
-
 export const enum ELifecyclePhase {
 	Starting,
 	Ready,
@@ -27,8 +20,6 @@ export const enum ELifecyclePhase {
 
 @injectable()
 export class LifecycleService implements IBootstrappable {
-	public readonly events = mitt<LifecycleEvents>();
-
 	private _phase                                 = ELifecyclePhase.Starting;
 	private _shutdownInProgress                    = false;
 	private _shutdownVetoes: ShutdownVetoRequest[] = [];
@@ -55,10 +46,12 @@ export class LifecycleService implements IBootstrappable {
 		}
 
 		this._phase = value;
-		this.events.emit('phaseChanged', this._phase);
+
+		eventBus.emit('lifecycle:phase-changed', this._phase);
 
 		if (this._phase === ELifecyclePhase.Ready) {
-			this.events.emit('readyPhase');
+			eventBus.emit('lifecycle:ready-phase');
+
 			this._readyResolve?.();
 		}
 
@@ -137,7 +130,8 @@ export class LifecycleService implements IBootstrappable {
 
 		try {
 			this.logger.info('Emitting shutdown event');
-			this.events.emit('shutdown');
+
+			eventBus.emit('lifecycle:shutdown');
 
 			await this.waitForShutdownHandlers();
 
@@ -161,7 +155,7 @@ export class LifecycleService implements IBootstrappable {
 			this._shutdownVetoes.push({ reason, source, canProceed: canProceed || (() => false) });
 		};
 
-		this.events.emit('shutdownRequested', { veto: vetoFn });
+		eventBus.emit('lifecycle:shutdown-requested', { veto: vetoFn });
 
 		if (this._shutdownVetoes.length === 0) {
 			return true;

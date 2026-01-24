@@ -1,4 +1,5 @@
 import { ok } from 'shared/ipc';
+import { eventBus } from '~/events';
 import { IPCService } from '~/services/ipc';
 import { PRELOAD_PATH, } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
@@ -69,7 +70,7 @@ export class GlobalMenuService implements IBootstrappable {
 
 		const callback = () => this.showMenu();
 		if (this.settings.get(ESettingsKey.EnableGlobalMenu) === true) {
-			this.lifecycle.events.on('readyPhase', () => globalShortcut.register(accelerator, callback));
+			eventBus.on('lifecycle:ready-phase', () => globalShortcut.register(accelerator, callback));
 		}
 
 		this.settings.events.on('settingsUpdated', ({ key, value }) => {
@@ -82,7 +83,7 @@ export class GlobalMenuService implements IBootstrappable {
 			}
 		});
 
-		this.lifecycle.events.on('shutdown', () => {
+		eventBus.on('lifecycle:shutdown', () => {
 			this.globalMenuWindow.closable = true;
 			this.globalMenuWindow.close();
 		});

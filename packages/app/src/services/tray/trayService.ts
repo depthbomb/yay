@@ -1,6 +1,6 @@
 import { product } from 'shared';
-import { app, Menu, Tray } from 'electron';
-import { YtdlpService } from '~/services/ytdlp';
+import { eventBus } from '~/events';
+import { app, Menu, Tray } from 'electron'
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
@@ -30,7 +30,6 @@ export class TrayService implements IBootstrappable {
 		// @ts-expect-error circular type inference
 		private readonly mainWindow     = inject(MainWindowService),
 		private readonly settingsWindow = inject(SettingsWindowService),
-		private readonly ytdlp          = inject(YtdlpService),
 	) {
 		this.trayTooltip         = product.description;
 		this.logoIcon            = getFilePathFromAsar('tray', 'action-icons', 'logo-16.png');
@@ -42,7 +41,7 @@ export class TrayService implements IBootstrappable {
 	}
 
 	public async bootstrap() {
-		this.lifecycle.events.on('readyPhase', () => {
+		eventBus.on('lifecycle:ready-phase', () => {
 			this.logger.debug('Creating tray icon');
 
 			this.tray = new Tray(this.trayIcon.toString());
@@ -50,17 +49,17 @@ export class TrayService implements IBootstrappable {
 			this.tray.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
 			this.tray.on('click', () => this.mainWindow.showMainWindow());
 
-			this.ytdlp.events.on('downloadStarted', url => {
+			eventBus.on('ytdlp:download-started', url => {
 				this.tray!.setImage(this.trayDownloadingIcon.toString());
 				this.tray!.setToolTip(`Downloading ${url}`);
 			});
 
-			this.ytdlp.events.on('downloadFinished', () => {
+			eventBus.on('ytdlp:download-finished', () => {
 				this.tray!.setImage(this.trayIcon.toString());
 				this.tray!.setToolTip(this.trayTooltip);
 			});
 		});
-		this.lifecycle.events.on('shutdown', () => {
+		eventBus.on('lifecycle:shutdown', () => {
 			if (this.tray) {
 				this.logger.debug('Destroying tray icon');
 				this.tray?.destroy();

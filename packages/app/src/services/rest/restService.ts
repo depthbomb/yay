@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { eventBus } from '~/events';
 import { ESettingsKey } from 'shared';
 import { IDGenerator } from '~/common';
 import { serve } from '@hono/node-server';
@@ -6,7 +7,6 @@ import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
-import { LifecycleService } from '~/services/lifecycle';
 import type { Maybe } from 'shared';
 import type { Context } from 'hono';
 import type { IBootstrappable } from '~/common';
@@ -21,10 +21,9 @@ export class RestService implements IBootstrappable {
 	private readonly requestID = new IDGenerator('req#');
 
 	public constructor(
-		private readonly logger    = inject(LoggingService),
-		private readonly lifecycle = inject(LifecycleService),
-		private readonly settings  = inject(SettingsService),
-		private readonly ytdlp     = inject(YtdlpService),
+		private readonly logger   = inject(LoggingService),
+		private readonly settings = inject(SettingsService),
+		private readonly ytdlp    = inject(YtdlpService),
 	) {}
 
 	public async bootstrap() {
@@ -71,7 +70,7 @@ export class RestService implements IBootstrappable {
 
 		this.server = serve({ fetch: this.hono.fetch, port });
 
-		this.lifecycle.events.on('shutdown', () => this.server?.close());
+		eventBus.on('lifecycle:shutdown', () => this.server?.close());
 	}
 
 	private createJSONResponse(c: Context, message: string = '', results: object = {}, status: number = 200) {
