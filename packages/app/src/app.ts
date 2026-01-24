@@ -20,12 +20,11 @@ export class App {
 	}
 
 	public async start() {
+		app.setAppUserModelId(product.appUserModelID);
+
 		Menu.setApplicationMenu(null);
 
 		if (!app.requestSingleInstanceLock()) {
-			app.disableHardwareAcceleration();
-			app.commandLine.appendSwitch('--in-process-gpu');
-			app.commandLine.appendSwitch('--disable-software-rasterizer');
 			app.quit();
 			return;
 		}
@@ -33,11 +32,7 @@ export class App {
 		this.applyEarlySettings();
 
 		await app.whenReady();
-
-		app.setAppUserModelId(product.appUserModelID);
-
 		await this.createDevelopmentShortcut();
-
 		await this.container.get(MainService).boot();
 	}
 
@@ -55,7 +50,7 @@ export class App {
 		if (configFileExists) {
 			const toml   = configFilePath.readTextSync();
 			const config = parse(toml);
-			if (ESettingsKey.DisableHardwareAcceleration in config && config[ESettingsKey.DisableHardwareAcceleration]?.valueOf()) {
+			if (config?.[ESettingsKey.DisableHardwareAcceleration]?.valueOf()) {
 				app.disableHardwareAcceleration();
 				app.commandLine.appendSwitch('--disable-software-rasterizer');
 				app.commandLine.appendSwitch('--disable-gpu');
@@ -77,18 +72,20 @@ export class App {
 		if (!shortcutExists) {
 			await shortcutDir.mkdir({ recursive: true });
 
-			shell.writeShortcutLink(shortcutPath.toString(), {
+			const ok = shell.writeShortcutLink(shortcutPath.toString(), {
 				target: EXE_PATH,
 				args: `${join(MONOREPO_ROOT_PATH, 'packages', 'app')}`,
 				appUserModelId: product.appUserModelID,
 				toastActivatorClsid: product.clsid
 			});
+			if (!ok) {
+				console.warn('Failed to create development shortcut');
+			}
 		}
 
 		app.once('quit', async () => {
-			const shortcutContents = await shortcutPath.readText();
-			if (shortcutContents.includes('electron.exe')) {
-				await shortcutPath.unlink();
+			if (EXE_PATH.toLowerCase().includes('electron.exe')) {
+				await shortcutPath.unlink().catch(console.warn);
 			}
 		});
 	}
