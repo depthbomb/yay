@@ -1,3 +1,9 @@
+# 1.39.3
+
+- Minor optimizations and future-proofing
+
+---
+
 # 1.39.2
 
 - Cancelling the folder selection dialog when importing or exporting settings will no longer show an error message box

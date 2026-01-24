@@ -1,5 +1,5 @@
 {
-	"version": "1.39.2",
+	"version": "1.39.3",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -11,6 +11,12 @@
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
+		{
+			"version": "1.39.3",
+			"changes": [
+				"Minor optimizations and future-proofing"
+			]
+		},
 		{
 			"version": "1.39.2",
 			"changes": [
