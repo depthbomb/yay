@@ -1,6 +1,6 @@
 import { cx } from 'cva';
-import { useIpc } from '~/hooks';
 import { Icon } from '@mdi/react';
+import { useIPCEvent } from '~/hooks';
 import { mdiDownload } from '@mdi/js';
 import { HTML } from '~/components/HTML';
 import { useState, useEffect } from 'react';
@@ -36,18 +36,19 @@ export const UpdaterPage = () => {
 	const [release, setRelease]     = useState<Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>>(null);
 	const [changelog, setChangelog] = useState('');
 	const [commits, setCommits]     = useState<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>([]);
-	const [onUpdateStep]            = useIpc('updater->update-step');
 
 	const onDownloadButtonClicked = async () => {
 		setUpdating(true);
 		await window.ipc.invoke('updater<-update');
-	}
+	};
 
 	const onCancelButtonClicked = async () => {
 		await window.ipc.invoke('updater<-cancel-update');
 		setUpdating(false);
 		setStatus(defaultStatus);
-	}
+	};
+
+	useIPCEvent('updater->update-step', ({ message }) => setStatus(message ?? defaultStatus));
 
 	useEffect(() => {
 		const getUpdateData = async () => {
@@ -64,8 +65,6 @@ export const UpdaterPage = () => {
 			setCommits(commits.data ?? [])
 		});
 	}, []);
-
-	useEffect(() => onUpdateStep(({ message }) => setStatus(message ?? defaultStatus)), [onUpdateStep]);
 
 	return (
 		<WindowShell windowName="updater" title="Updater">

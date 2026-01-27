@@ -1,8 +1,8 @@
 import { cx } from 'cva';
 import { Logo } from './Logo';
-import { useState, useEffect } from 'react';
-import { useIpc, useWindowFocus } from '~/hooks';
+import { useState } from 'react';
 import { TitlebarButton } from './TitlebarButton';
+import { useIPCEvent, useWindowFocus } from '~/hooks';
 import type { FC } from 'react';
 
 export interface ITitlebarProps {
@@ -16,23 +16,14 @@ export interface ITitlebarProps {
 export const Titlebar: FC<ITitlebarProps> = ({ windowName, title, minimizeButton = true, maximizeButton = true, showIcon = true }) => {
 	const [focused, setFocused]         = useState(true);
 	const [isMaximized, setIsMaximized] = useState(false);
-	const [onWindowMaximized]           = useIpc('window->is-maximized');
-	const [onWindowRestored]            = useIpc('window->is-unmaximized');
 
 	useWindowFocus(
 		() => setFocused(true),
 		() => setFocused(false)
 	);
 
-	useEffect(() => {
-		const offMaximized = onWindowMaximized(() => setIsMaximized(true));
-		const offRestored  = onWindowRestored(()  => setIsMaximized(false));
-
-		return () => {
-			offMaximized();
-			offRestored();
-		};
-	}, [onWindowMaximized, onWindowRestored]);
+	useIPCEvent('window->is-maximized',   () => setIsMaximized(true));
+	useIPCEvent('window->is-unmaximized', () => setIsMaximized(false));
 
 	return (
 		<div className="w-full h-8 flex items-center">

@@ -1,6 +1,6 @@
-import { useIpc } from '~/hooks';
+import { useState } from 'react';
+import { useIPCEvent } from '~/hooks';
 import { Logo } from '~/components/Logo';
-import { useState, useEffect } from 'react';
 import { Spinner } from '~/components/SpinnerV2';
 import { WindowShell } from '~/components/WindowShell';
 import { ProgressBar } from './components/ProgressBar';
@@ -12,23 +12,8 @@ export const SetupPage = () => {
 		progress: -1,
 	});
 
-	const [onSetupDone] = useIpc('setup->done');
-	const [onSetupStep] = useIpc('setup->step');
-
-	useEffect(() => {
-		const removeStep = onSetupStep(({ message, progress }) =>
-			setState(s => ({ ...s, step: message, progress }))
-		);
-
-		const removeDone = onSetupDone(() =>
-			setState(s => ({ ...s, done: true }))
-		);
-
-		return () => {
-			removeStep();
-			removeDone();
-		};
-	}, [onSetupStep, onSetupDone]);
+	useIPCEvent('setup->done', () => setState(s => ({ ...s, done: true })));
+	useIPCEvent('setup->step', ({ message, progress }) =>setState(s => ({ ...s, step: message, progress })));
 
 	const { done, step, progress } = state;
 	const progressState            = done ? 'done' : progress > -1 ? 'active' : 'indeterminate';

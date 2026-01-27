@@ -1,7 +1,7 @@
 import { cx } from 'cva';
+import { useState } from 'react';
 import { Titlebar } from './Titlebar';
-import { useEffect, useState } from 'react';
-import { useIpc, useTitle, useWindowFocus } from '~/hooks';
+import { useTitle, useIPCEvent, useWindowFocus } from '~/hooks';
 import type { FC, PropsWithChildren } from 'react';
 
 export interface IWindowShellProps extends PropsWithChildren {
@@ -24,18 +24,9 @@ export const WindowShell: FC<IWindowShellProps> = ({
 
 	const [isFocused, setIsFocused]     = useState(true);
 	const [isMaximized, setIsMaximized] = useState(false);
-	const [onIsMaximized]               = useIpc('window->is-maximized');
-	const [onIsUnmaximized]             = useIpc('window->is-unmaximized');
 
-	useEffect(() => {
-		const offIsMaximized   = onIsMaximized(() => setIsMaximized(true));
-		const offIsUnmaximized = onIsUnmaximized(() => setIsMaximized(false));
-
-		return () => {
-			offIsMaximized();
-			offIsUnmaximized();
-		};
-	}, [onIsMaximized, onIsUnmaximized]);
+	useIPCEvent('window->is-maximized',   () => setIsMaximized(true));
+	useIPCEvent('window->is-unmaximized', () => setIsMaximized(false));
 
 	useWindowFocus(
 		() => setIsFocused(true),

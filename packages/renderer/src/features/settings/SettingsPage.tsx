@@ -1,8 +1,8 @@
 import { cx } from 'cva';
+import { lazy} from 'react';
 import { useAtom } from 'jotai';
-import { useIpc } from '~/hooks';
 import { Icon } from '@mdi/react';
-import { lazy, useEffect} from 'react';
+import { useIPCEvent } from '~/hooks';
 import { APITab } from './components/APITab';
 import { AppTab } from './components/AppTab';
 import { AboutTab } from './components/AboutTab';
@@ -44,25 +44,11 @@ const TabButton: FC<ITabButtonProps> = ({ title, icon, value, className }) => {
 export const SettingsPage = () => {
 	const [,setIsWorking]         = useAtom(workingAtom);
 	const [,setIsUpdating]        = useAtom(updatingAtom);
-	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
-	const [onDownloadFinished]    = useIpc('yt-dlp->download-finished');
-	const [onUpdatingYtdlpBinary] = useIpc('yt-dlp->updating-binary');
-	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
 
-	useEffect(() => {
-		onUpdatingYtdlpBinary(() => setIsUpdating(true));
-		onUpdatedYtdlpBinary(() => setIsUpdating(false));
-		onDownloadStarted(() => setIsWorking(true));
-		onDownloadFinished(() => setIsWorking(false));
-	}, [
-		onUpdatingYtdlpBinary,
-		onUpdatedYtdlpBinary,
-		onDownloadStarted,
-		onDownloadFinished,
-		setIsUpdating,
-		setIsWorking,
-	]);
-
+	useIPCEvent('yt-dlp->download-started',  () => setIsWorking(true));
+	useIPCEvent('yt-dlp->download-finished', () => setIsWorking(false));
+	useIPCEvent('yt-dlp->updating-binary',   () => setIsUpdating(true));
+	useIPCEvent('yt-dlp->updated-binary',    () => setIsUpdating(false));
 
 	return (
 		<WindowShell windowName="settings" title="Settings">

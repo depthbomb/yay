@@ -1,9 +1,9 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useEffectEvent } from 'react';
 import type { IIPCEvents } from 'shared';
 
 type Listener<K extends keyof IIPCEvents> = (payload: IIPCEvents[K]) => void;
 
-export const useIpc = <K extends keyof IIPCEvents>(channel: K) => {
+export const useIPC = <K extends keyof IIPCEvents>(channel: K) => {
 	const listenerRemovers = useRef<Set<() => void>>(new Set());
 
 	const on = useCallback((listener: Listener<K>) => {
@@ -36,4 +36,11 @@ export const useIpc = <K extends keyof IIPCEvents>(channel: K) => {
 	}, []);
 
 	return [on, once, off] as const;
+};
+
+export const useIPCEvent = <K extends keyof IIPCEvents>(channel: K, listener: Listener<K>) => {
+	const stable = useEffectEvent(listener);
+	const [on]   = useIPC(channel);
+
+	useEffect(() => on(stable), [on]);
 };

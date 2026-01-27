@@ -88,8 +88,8 @@ export const AboutTab = () => {
 				]
 			]}/>
 			<InfoSection title="Framework" values={[
-				['Electron version', window.versions.electron],
-				['Chrome version', window.versions.chrome],
+				['Electron version', window.versions.electron!],
+				['Chrome version', window.versions.chrome!],
 				['Node.js version', window.versions.node],
 				['V8 version', window.versions.v8],
 			]}/>

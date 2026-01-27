@@ -1,5 +1,5 @@
-import { useIpc } from '~/hooks';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useIPCEvent } from '~/hooks';
 import { GlobalMenuItem } from './components/GlobalMenuItem';
 import { GlobalMenuSeparator } from './components/GlobalMenuSeparator';
 
@@ -9,13 +9,9 @@ import folderIcon from '~/assets/img/menu-icons/folder-open.png';
 
 export const GlobalMenuPage = () => {
 	const [isDownloadsDisabled, setIsDownloadsDisabled] = useState(false);
-	const [onDownloadStarted]                           = useIpc('yt-dlp->download-started');
-	const [onDownloadFinished]                          = useIpc('yt-dlp->download-finished');
 
-	useEffect(() => {
-		onDownloadStarted(()  => setIsDownloadsDisabled(true));
-		onDownloadFinished(() => setIsDownloadsDisabled(false));
-	}, [onDownloadStarted, onDownloadFinished]);
+	useIPCEvent('yt-dlp->download-started',  () => setIsDownloadsDisabled(true));
+	useIPCEvent('yt-dlp->download-finished', () => setIsDownloadsDisabled(false));
 
 	return (
 		<div className="relative p-px w-screen h-screen">

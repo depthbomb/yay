@@ -10,7 +10,7 @@ import { TwitterMedia } from './components/TwitterMedia';
 import { DownloadButtons } from './components/DownloadButtons';
 import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
-import { useIpc, useTitle, useFeatureFlags, useSetting } from '~/hooks';
+import { useTitle, useSetting, useIPCEvent, useFeatureFlags } from '~/hooks';
 import { lazy, useRef, Activity, useState, Fragment, useEffect } from 'react';
 import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
@@ -55,14 +55,6 @@ export const HomePage = () => {
 	const [updateAvailable, setUpdateAvailable] = useAtom(updateAvailableAtom);
 	const [urlIsValid]                          = useAtom(isURLValidAtom);
 	const [logs]                                = useAtom(logAtom);
-
-	const [onDownloadStarted]     = useIpc('yt-dlp->download-started');
-	const [onDownloadOutput]      = useIpc('yt-dlp->stdout');
-	const [onDownloadCanceled]    = useIpc('yt-dlp->download-canceled');
-	const [onDownloadFinished]    = useIpc('yt-dlp->download-finished');
-	const [onUpdatingYtdlpBinary] = useIpc('yt-dlp->updating-binary');
-	const [onUpdatedYtdlpBinary]  = useIpc('yt-dlp->updated-binary');
-	const [onUpdateAvailable]     = useIpc('updater->outdated');
 
 	const mediaURLEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
@@ -110,26 +102,21 @@ export const HomePage = () => {
 	useKeyPress(['ctrl.v'], () => tryPasting(), { exactMatch: true });
 	useKeyPress(['ctrl.a'], () => trySelectingInput(), { exactMatch: true });
 
-	useEffect(() => {
-		onDownloadStarted(({ url }) => {
-			setURL(url);
-			setIsWorking(true);
-			clearLog();
-			pushToLog('OPERATION STARTED');
-		});
-
-		onDownloadOutput(({ line }) => pushToLog(line));
-
-		onDownloadFinished(() => {
-			resetApp();
-			pushToLog('OPERATION FINISHED')
-		});
-
-		onDownloadCanceled(() => pushToLog('OPERATION CANCELED'));
-		onUpdatingYtdlpBinary(() => setIsUpdating(true));
-		onUpdatedYtdlpBinary(() => setIsUpdating(false));
-		onUpdateAvailable(() => setUpdateAvailable(true));
-	}, []);
+	useIPCEvent('yt-dlp->download-started', ({ url }) => {
+		setURL(url);
+		setIsWorking(true);
+		clearLog();
+		pushToLog('OPERATION STARTED');
+	});
+	useIPCEvent('yt-dlp->stdout', ({ line }) => pushToLog(line));
+	useIPCEvent('yt-dlp->download-canceled', () => pushToLog('OPERATION CANCELED'));
+	useIPCEvent('yt-dlp->download-finished', () => {
+		resetApp();
+		pushToLog('OPERATION FINISHED');
+	});
+	useIPCEvent('yt-dlp->updating-binary', () => setIsUpdating(true));
+	useIPCEvent('yt-dlp->updated-binary', () => setIsUpdating(false));
+	useIPCEvent('updater->outdated', () => setUpdateAvailable(true));
 
 	useEffect(() => {
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
