@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
 		base: '',
 		assetsInclude: '**/*.node',
 		build: {
-			target: 'node22',
+			target: 'node24',
 			outDir: resolve('./dist'),
 			assetsDir: '.',
 			emptyOutDir: !isProduction,
