@@ -25,7 +25,8 @@ function generateFromInterface(
 	arrayName: string,
 	enumName: string,
 	outputPath: string,
-	isEvent = false
+	isEvent = false,
+	generateEnums = false,
 ) {
 	const project = new Project({ tsConfigFilePath: resolve('./tsconfig.json') });
 	const source  = project.getSourceFileOrThrow(sourcePath);
@@ -38,13 +39,19 @@ function generateFromInterface(
 		``,
 		`export type ${typeName} = keyof ${interfaceName};`,
 		`export const ${arrayName} = new Set<${typeName}>(${JSON.stringify(keys.map(k => k.replace(/'/g, ''))).replace(/"/g, '\'')});`,
-		``,
-		`export const enum ${enumName} {`,
-		...keys.map((k) => `\t${toEnumKey(k, isEvent)} = ${k},`),
-		`}`,
 	];
 
+	if (generateEnums) {
+		typeLines.push(
+			'',
+			`export const enum ${enumName} {`,
+			...keys.map((k) => `\t${toEnumKey(k, isEvent)} = ${k},`),
+			`}`,
+		)
+	}
+
 	writeFileSync(outputPath, typeLines.join('\n'), 'utf-8');
+
 	console.log(`✅ Generated ${outputPath}`);
 }
 
@@ -55,6 +62,7 @@ generateFromInterface(
 	'IPCChannels',
 	'EIPCChannel',
 	'./src/ipc-channels.generated.ts',
+	false,
 	false
 );
 
@@ -65,5 +73,6 @@ generateFromInterface(
 	'IPCEvents',
 	'EIPCEvent',
 	'./src/ipc-events.generated.ts',
-	true
+	true,
+	false
 );
