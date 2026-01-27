@@ -13,6 +13,10 @@
 			"path": "packages/shared"
 		},
 		{
+			"name": "Vite Plugin",
+			"path": "packages/vite-plugin-ipc-channel-obf"
+		},
+		{
 			"name": "NativeLib",
 			"path": "packages/nativelib"
 		},

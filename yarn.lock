@@ -4064,12 +4064,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:^19.2.9":
-  version: 19.2.9
-  resolution: "@types/react@npm:19.2.9"
+"@types/react@npm:^19.2.10":
+  version: 19.2.10
+  resolution: "@types/react@npm:19.2.10"
   dependencies:
     csstype: "npm:^3.2.2"
-  checksum: 10/580a4acf91cb596edfcf280e3d94380bd5bc675fdce257787432cc77ab67440374fd17a1abde869f3bd47ec1705bf2d66e442a9e9e371603f628e34f9d5790a6
+  checksum: 10/0e34a0e42db02f4b3f4bed446128c555446c2854b833d71d597e6c8b08800dd90519a03a226ad250cccc4a0c9e51bd3f9c54cdcb79ee1219f4d5b318fb3a3813
   languageName: node
   linkType: hard
 
@@ -6331,10 +6331,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.1.0":
-  version: 17.1.0
-  resolution: "globals@npm:17.1.0"
-  checksum: 10/6e77442a3b80b41b11fb4f986326f0487b9872dee6852cc9373e01696787889f4648d2264a125504315a645be0dde61625200e422b5b8002c106ffbabaaf8fdc
+"globals@npm:^17.2.0":
+  version: 17.2.0
+  resolution: "globals@npm:17.2.0"
+  checksum: 10/2812d7ae9a2889da33cad5188e6fe7c2d1a615e62d8e2092fbaa76a016536c2fcd72aba25896d8c6112fa0f2d95f005f59bf1dfc81ee014fe1ba54326ce14e57
   languageName: node
   linkType: hard
 
@@ -6413,10 +6413,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.11.6":
-  version: 4.11.6
-  resolution: "hono@npm:4.11.6"
-  checksum: 10/a1869051bb19a1a4eb28815b6937dc1ef63fe2c7067735aacb7bf6a65407a6045ba6df4ffe95a5b6ca697e753ac5c2da49569fdbe485ad33b6f4227361befdf1
+"hono@npm:^4.11.7":
+  version: 4.11.7
+  resolution: "hono@npm:4.11.7"
+  checksum: 10/16f5a715f70430bd4050b250207adf7c567774c1d91386d5454577fbc191fc4a50b912628845ce8392fae0e3fd9f364a947412961e3747a9f0b2f714790b738e
   languageName: node
   linkType: hard
 
@@ -7533,9 +7533,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:^12.1.0":
-  version: 12.1.0
-  resolution: "node-gyp@npm:12.1.0"
+"node-gyp@npm:^12.2.0":
+  version: 12.2.0
+  resolution: "node-gyp@npm:12.2.0"
   dependencies:
     env-paths: "npm:^2.2.0"
     exponential-backoff: "npm:^3.1.1"
@@ -7544,12 +7544,12 @@ __metadata:
     nopt: "npm:^9.0.0"
     proc-log: "npm:^6.0.0"
     semver: "npm:^7.3.5"
-    tar: "npm:^7.5.2"
+    tar: "npm:^7.5.4"
     tinyglobby: "npm:^0.2.12"
     which: "npm:^6.0.0"
   bin:
     node-gyp: bin/node-gyp.js
-  checksum: 10/d93079236cef1dd7fa4df683708d8708ad255c55865f6656664c8959e4d3963d908ac48e8f9f341705432e979dbbf502a40d68d65a17fe35956a5a05ba6c1cb4
+  checksum: 10/4ebab5b77585a637315e969c2274b5520562473fe75de850639a580c2599652fb9f33959ec782ea45a2e149d8f04b548030f472eeeb3dbdf19a7f2ccbc30b908
   languageName: node
   linkType: hard
 
@@ -8141,7 +8141,7 @@ __metadata:
     "@radix-ui/react-tabs": "npm:^1.1.13"
     "@tailwindcss/typography": "npm:^0.5.19"
     "@tailwindcss/vite": "npm:^4.1.18"
-    "@types/react": "npm:^19.2.9"
+    "@types/react": "npm:^19.2.10"
     "@types/react-dom": "npm:^19.2.3"
     "@vitejs/plugin-react": "npm:^5.1.2"
     ahooks: "npm:^3.9.6"
@@ -8152,7 +8152,7 @@ __metadata:
     eslint: "npm:^9.39.2"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.26"
-    globals: "npm:^17.1.0"
+    globals: "npm:^17.2.0"
     jotai: "npm:^2.16.2"
     postcss: "npm:^8.5.6"
     react: "npm:^19.2.4"
@@ -8165,6 +8165,7 @@ __metadata:
     typescript-eslint: "npm:^8.54.0"
     vite: "npm:rolldown-vite@7.2.5"
     vite-plugin-babel: "npm:^1.4.1"
+    vite-plugin-ipc-channel-obf: "workspace:*"
     vite-plugin-minify: "npm:^2.1.0"
   languageName: unknown
   linkType: soft
@@ -9173,16 +9174,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tar@npm:^7.5.2":
-  version: 7.5.2
-  resolution: "tar@npm:7.5.2"
+"tar@npm:^7.5.4":
+  version: 7.5.6
+  resolution: "tar@npm:7.5.6"
   dependencies:
     "@isaacs/fs-minipass": "npm:^4.0.0"
     chownr: "npm:^3.0.0"
     minipass: "npm:^7.1.2"
     minizlib: "npm:^3.1.0"
     yallist: "npm:^5.0.0"
-  checksum: 10/dbad9c9a07863cd1bdf8801d563b3280aa7dd0f4a6cead779ff7516d148dc80b4c04639ba732d47f91f04002f57e8c3c6573a717d649daecaac74ce71daa7ad3
+  checksum: 10/cf4a84d79b9327fcf765f2ea16de4702b9b8dd7dc6b1840b16e0f999628d96b81b2c7efbf83d4eb42b0164856f1db887a5a61ffef97d36cdb77cac742219f9ee
   languageName: node
   linkType: hard
 
@@ -9640,6 +9641,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite-plugin-ipc-channel-obf@workspace:*, vite-plugin-ipc-channel-obf@workspace:packages/vite-plugin-ipc-channel-obf":
+  version: 0.0.0-use.local
+  resolution: "vite-plugin-ipc-channel-obf@workspace:packages/vite-plugin-ipc-channel-obf"
+  dependencies:
+    "@types/node": "npm:^24.10.9"
+    tsdown: "npm:^0.20.1"
+    typescript: "npm:^5.9.3"
+    vite: "npm:^7.3.1"
+  languageName: unknown
+  linkType: soft
+
 "vite-plugin-minify@npm:^2.1.0":
   version: 2.1.0
   resolution: "vite-plugin-minify@npm:2.1.0"
@@ -9930,7 +9942,7 @@ __metadata:
     cross-env: "npm:^10.1.0"
     dotenv: "npm:^17.2.3"
     electron-builder: "npm:26.5.0"
-    node-gyp: "npm:^12.1.0"
+    node-gyp: "npm:^12.2.0"
     ts-morph: "npm:27.0.2"
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
@@ -9955,8 +9967,8 @@ __metadata:
     cross-env: "npm:^10.1.0"
     electron: "npm:40.0.0"
     eslint: "npm:^9.39.2"
-    globals: "npm:^17.1.0"
-    hono: "npm:^4.11.6"
+    globals: "npm:^17.2.0"
+    hono: "npm:^4.11.7"
     loglayer: "npm:^8.4.0"
     mitt: "npm:^3.0.1"
     nativelib: "workspace:*"
@@ -9971,6 +9983,7 @@ __metadata:
     typescript-eslint: "npm:^8.54.0"
     ufo: "npm:^1.6.3"
     vite: "npm:^7.3.1"
+    vite-plugin-ipc-channel-obf: "workspace:*"
   languageName: unknown
   linkType: soft
 

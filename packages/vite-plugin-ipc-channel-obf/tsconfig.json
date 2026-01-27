@@ -1,0 +1,49 @@
+{
+	"compilerOptions": {
+		"ignoreDeprecations": "5.0",
+
+		// Type Checking
+		"allowUnreachableCode": false,
+		"allowUnusedLabels": false,
+		// "exactOptionalPropertyTypes": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"strict": true,
+		"useUnknownInCatchVariables": true,
+
+		// Modules
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+
+		// Emit
+		"declaration": true,
+		"importHelpers": true,
+		"inlineSources": true,
+		"newLine": "lf",
+		"noEmitHelpers": true,
+		"outDir": "dist",
+		"preserveConstEnums": false,
+		"removeComments": true,
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+
+		// Language and Environment
+		"emitDecoratorMetadata": false,
+		"experimentalDecorators": false,
+		"lib": ["ESNext", "DOM"],
+		"target": "ESNext",
+		"useDefineForClassFields": true,
+
+		// Projects
+		//"incremental": true,
+
+		// Completeness
+		"skipLibCheck": true
+	},
+	"include": ["**/*.ts"]
+}

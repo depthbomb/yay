@@ -1,0 +1,29 @@
+{
+	"private": true,
+	"name": "vite-plugin-ipc-channel-obf",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.cts",
+	"exports": {
+		".": {
+			"require": "./dist/index.cjs",
+			"import": "./dist/index.mjs"
+		}
+	},
+	"files": [
+		"dist"
+	],
+	"sideEffects": false,
+	"scripts": {
+		"build:d": "tsdown",
+		"build:p": "tsdown",
+		"lint": "eslint ./src --ext .ts"
+	},
+	"devDependencies": {
+		"@types/node": "^24.10.9",
+		"tsdown": "^0.20.1",
+		"typescript": "^5.9.3",
+		"vite": "^7.3.1"
+	},
+	"packageManager": "yarn@4.12.0"
+}

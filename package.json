@@ -27,6 +27,7 @@
 		"packages/app",
 		"packages/renderer",
 		"packages/shared",
+		"packages/vite-plugin-ipc-channel-obf",
 		"packages/nativelib"
 	],
 	"devDependencies": {
@@ -37,7 +38,7 @@
 		"cross-env": "^10.1.0",
 		"dotenv": "^17.2.3",
 		"electron-builder": "26.5.0",
-		"node-gyp": "^12.1.0",
+		"node-gyp": "^12.2.0",
 		"ts-morph": "27.0.2",
 		"tsx": "^4.21.0",
 		"typescript": "^5.9.3"

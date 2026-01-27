@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { builtinModules } from 'module';
 import { loadEnv, defineConfig } from 'vite';
+import { ipcChannelObfuscationPlugin } from 'vite-plugin-ipc-channel-obf';
 import type { UserConfigExport } from 'vite';
 
 const { platform } = process;
@@ -49,6 +50,9 @@ export default defineConfig(({ mode }) => {
 				}
 			},
 		},
+		plugins: [
+			ipcChannelObfuscationPlugin()
+		],
 		define: {
 			__WIN32__: platform === 'win32',
 			__MACOS__: platform === 'darwin',
