@@ -1,10 +1,10 @@
 export class Flag {
 	public value: boolean;
-	private readonly initialValue: boolean;
+	readonly #initialValue: boolean;
 
 	public constructor(value: boolean = false) {
 		this.value        = value;
-		this.initialValue = value;
+		this.#initialValue = value;
 	}
 
 	public get isTrue() {
@@ -32,7 +32,7 @@ export class Flag {
 	}
 
 	public reset() {
-		this.value = this.initialValue;
+		this.value = this.#initialValue;
 	}
 
 	public valueOf() {

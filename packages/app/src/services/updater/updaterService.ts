@@ -12,7 +12,7 @@ import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
 import isVersionGreaterThan from 'semver/functions/gt';
-import { product, GIT_HASH, ESettingsKey } from 'shared';
+import { Flag, product, GIT_HASH, ESettingsKey } from 'shared';
 import { TransformableNumber } from '~/common/TransformableNumber';
 import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -40,6 +40,7 @@ export class UpdaterService implements IBootstrappable {
 	private readonly httpClient: HTTPClient;
 	private readonly checkInterval       = new TransformableNumber(30_000, x => x + 15_000);
 	private readonly manualCheckInterval = new TransformableNumber(15_000, x => x + 15_000);
+	private readonly isStartupCheck      = new Flag(true);
 
 	public constructor(
 		private readonly logger        = inject(LoggingService),
@@ -90,7 +91,7 @@ export class UpdaterService implements IBootstrappable {
 
 				this.window.emitAll('updater->outdated', { latestRelease: release.data });
 
-				if (manual) {
+				if (manual || this.isStartupCheck.isTrue) {
 					this.showUpdaterWindow();
 				} else if (this.settings.get(ESettingsKey.EnableNewReleaseToast, true) && !this.isNotified) {
 					this.logger.debug('Showing update toast notification');
@@ -110,6 +111,8 @@ export class UpdaterService implements IBootstrappable {
 
 			this.logger.error('Error while checking for new releases', { error: { message, stack } });
 		}
+
+		this.isStartupCheck.setFalse();
 
 		return ok();
 	}

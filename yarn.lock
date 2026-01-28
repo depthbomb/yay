@@ -279,17 +279,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depthbomb/common@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "@depthbomb/common@npm:1.0.0"
-  checksum: 10/02bb8f1d883e3c9a7681851db4848d5fd1be3ff5a28422f3e08775ef2635589407cfd0024f0442b77fd5b378d141986f03d5d4a4795d4b7d4e1bc43adb4a9ace
+"@depthbomb/common@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@depthbomb/common@npm:1.1.2"
+  checksum: 10/e6320a95b5af7dfed995f840ce54e99c8152ecb897055c0c6e661bf70ac487956ff5cede188de2c0e14b4d50cad9376cd9bde4dbf067732bced3ef29b15f5bf2
   languageName: node
   linkType: hard
 
-"@depthbomb/node-common@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "@depthbomb/node-common@npm:2.1.1"
-  checksum: 10/779cec32a4617de1a9d46b090aff324fa821f28f8718522b2415a9f7c1dc87d7e54f0e4c305d5c9ac2fff536c6ae8b6dd807d0ae37d95906bdd9388e4774916c
+"@depthbomb/node-common@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "@depthbomb/node-common@npm:2.2.1"
+  checksum: 10/d105ff35d28f190ff98d40fd32dd2d26f82cd44027fba23fe1f8e73a539a3097ee2bb0c429f420950167da55509f631b360b4337a8df268a6a4bd5aa5115ddf6
   languageName: node
   linkType: hard
 
@@ -8965,8 +8965,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "shared@workspace:packages/shared"
   dependencies:
-    "@depthbomb/common": "npm:^1.0.0"
-    "@depthbomb/node-common": "npm:^2.1.1"
+    "@depthbomb/common": "npm:^1.1.2"
+    "@depthbomb/node-common": "npm:^2.2.1"
     tsdown: "npm:^0.20.1"
     typescript: "npm:^5.9.3"
   languageName: unknown
@@ -10066,8 +10066,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yay@workspace:packages/app"
   dependencies:
-    "@depthbomb/common": "npm:^1.0.0"
-    "@depthbomb/node-common": "npm:^2.1.1"
+    "@depthbomb/common": "npm:^1.1.2"
+    "@depthbomb/node-common": "npm:^2.2.1"
     "@eslint/js": "npm:^9.39.2"
     "@formatjs/fast-memoize": "npm:^3.1.0"
     "@hono/node-server": "npm:^1.19.9"
