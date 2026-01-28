@@ -73,7 +73,12 @@ export class GlobalMenuService implements IBootstrappable {
 			eventBus.on('lifecycle:ready-phase', () => globalShortcut.register(accelerator, callback));
 		}
 
-		this.settings.events.on('settingsUpdated', ({ key, value }) => {
+		eventBus.on('lifecycle:shutdown', () => {
+			this.globalMenuWindow.closable = true;
+			this.globalMenuWindow.close();
+		});
+
+		eventBus.on('settings:updated', ({ key, value }) => {
 			if (key === ESettingsKey.EnableGlobalMenu) {
 				if (value as boolean) {
 					globalShortcut.register(accelerator, callback);
@@ -81,11 +86,6 @@ export class GlobalMenuService implements IBootstrappable {
 					globalShortcut.unregister(accelerator);
 				}
 			}
-		});
-
-		eventBus.on('lifecycle:shutdown', () => {
-			this.globalMenuWindow.closable = true;
-			this.globalMenuWindow.close();
 		});
 	}
 

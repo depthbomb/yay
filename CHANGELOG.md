@@ -1,3 +1,9 @@
+# 1.39.4
+
+- More minor optimizations and some reduction in file size
+
+---
+
 # 1.39.3
 
 - Minor optimizations and future-proofing

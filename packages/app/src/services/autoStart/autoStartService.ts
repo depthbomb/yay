@@ -1,5 +1,6 @@
 import { app } from 'electron';
 import { ok } from 'shared/ipc';
+import { eventBus } from '~/events';
 import { CLIService } from '~/services/cli';
 import { IPCService } from '~/services/ipc';
 import { product, ESettingsKey } from 'shared';
@@ -26,7 +27,7 @@ export class AutoStartService implements IBootstrappable {
 		this.ipc.registerHandler('autostart<-disable', () => this.setAutoStart(false));
 		this.ipc.registerHandler('autostart<-toggle',  () => this.setAutoStart(!this.isAutoStartEnabled()));
 
-		this.settings.events.on('settingsUpdated', ({ key, value }) => {
+		eventBus.on('settings:updated', ({ key, value }) => {
 			if (key === ESettingsKey.AutoStart) {
 				this.setAutoStart(value as boolean);
 			}

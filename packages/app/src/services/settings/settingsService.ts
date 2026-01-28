@@ -1,6 +1,6 @@
-import mitt from 'mitt';
 import { ok } from 'shared/ipc';
 import { join } from 'node:path';
+import { eventBus } from '~/events';
 import { IPCService } from '~/services/ipc';
 import { app, safeStorage } from 'electron';
 import { product, ESettingsKey } from 'shared';
@@ -28,8 +28,6 @@ type ExportedSettings = {
 
 @injectable()
 export class SettingsService implements IBootstrappable {
-	public readonly events = mitt<{ settingsUpdated: { key: ESettingsKey, value: unknown } }>();
-
 	private readonly internalStore: Store<Settings>;
 	private readonly settingsFilePath: Path;
 
@@ -60,7 +58,7 @@ export class SettingsService implements IBootstrappable {
 			}
 		);
 
-		this.events.on('settingsUpdated', ({ key, value }) => this.window.emitAll('settings->changed', { key, value }));
+		eventBus.on('settings:updated', ({ key, value }) => this.window.emitAll('settings->changed', { key, value }));
 	}
 
 	public get<T>(key: ESettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) : T {
@@ -84,7 +82,7 @@ export class SettingsService implements IBootstrappable {
 		const $value = options?.secure ? this.encryptValue(value) : value;
 		await this.internalStore.set(key, $value);
 
-		this.events.emit('settingsUpdated', { key, value });
+		eventBus.emit('settings:updated', { key, value });
 	}
 
 	public async setDefault<T>(key: ESettingsKey, value: T, options?: SettingsManagerSetOptions) {

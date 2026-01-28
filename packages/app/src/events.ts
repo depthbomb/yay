@@ -1,6 +1,6 @@
 import mitt from 'mitt';
-import type { Awaitable, IDownloadSession } from 'shared';
 import type { ELifecyclePhase } from '~/services/lifecycle';
+import type { Awaitable, ESettingsKey, IDownloadSession } from 'shared';
 
 type Events = {
 	// Lifecycle events
@@ -8,6 +8,8 @@ type Events = {
 	'lifecycle:shutdown':           void;
 	'lifecycle:phase-changed':      ELifecyclePhase;
 	'lifecycle:ready-phase':        void;
+	//
+	'settings:updated': { key: ESettingsKey, value: unknown };
 	// yt-dlp events
 	'ytdlp:download-queued':   IDownloadSession;
 	'ytdlp:download-started':  IDownloadSession;

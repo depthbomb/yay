@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
 import type { Plugin } from 'vite';
 
+export * from './lib/token-expand';
+
 const ARROW_PATTERN = /\b[a-zA-Z][\w-]*(?:<-|->)[a-zA-Z][\w-]*\b/g;
 
 function channelId(input: string): string {
