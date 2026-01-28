@@ -1,6 +1,6 @@
 {
 	"private": true,
-	"name": "vite-plugin-ipc-channel-obf",
+	"name": "vite-plugin-obfuscation",
 	"type": "module",
 	"main": "./dist/index.mjs",
 	"module": "./dist/index.mjs",

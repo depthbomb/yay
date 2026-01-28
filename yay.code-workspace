@@ -14,7 +14,7 @@
 		},
 		{
 			"name": "Vite Plugin",
-			"path": "packages/vite-plugin-ipc-channel-obf"
+			"path": "packages/vite-plugin-obfuscation"
 		},
 		{
 			"name": "NativeLib",

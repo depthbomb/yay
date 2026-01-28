@@ -27,7 +27,7 @@
 		"packages/app",
 		"packages/renderer",
 		"packages/shared",
-		"packages/vite-plugin-ipc-channel-obf",
+		"packages/vite-plugin-obfuscation",
 		"packages/nativelib"
 	],
 	"devDependencies": {

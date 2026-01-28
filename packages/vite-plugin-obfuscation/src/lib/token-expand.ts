@@ -101,7 +101,7 @@ defineGenerators({
 		const buf = seed
 			? crypto.createHmac('sha256', hashSeed(seed)).update('base64').digest()
 			: randomBytes(len);
-		return buf.toString('base64').replace(/=+/g, '').slice(0, len);
+		return buf.toString('base64').slice(0, len);
 	},
 
 	base64url: ({ seed, args }) => {
@@ -109,7 +109,7 @@ defineGenerators({
 		const buf = seed
 			? crypto.createHmac('sha256', hashSeed(seed)).update('base64url').digest()
 			: randomBytes(len);
-		return buf.toString('base64url').replace(/=+/g, '').slice(0, len);
+		return buf.toString('base64url').slice(0, len);
 	},
 
 	uuid: ({ seed }) => {
@@ -144,32 +144,36 @@ function expand(code: string, cache: Map<string, string>) {
 		};
 
 		if (!groups?.type) {
-			throw new Error('[vite-token-expand] Token matched but no type was captured');
+			throw new Error('[token-expand] Token matched but no type was captured');
 		}
 
 		const { type, seed, opts, args: genArgs } = groups;
-		const key = [
-			type ?? '',
-			opts ?? '',
-			seed ?? '',
-			String(genArgs ?? ''),
-		].join('|');
+		const isSeeded                            = typeof seed === 'string' && seed.length > 0;
 
-		if (cache.has(key)) {
-			return cache.get(key)!;
+		let out: string;
+
+		if (isSeeded) {
+			const key = [
+				type ?? '',
+				opts ?? '',
+				seed ?? '',
+				String(genArgs ?? ''),
+			].join('|');
+
+			if (cache.has(key)) {
+				return cache.get(key)!;
+			}
+
+			out = registry.get(type)({ type, seed, args: genArgs, opts });
+			if (opts?.includes('a')) out = enforceAlphaFirst(out, seed);
+			if (opts?.includes('id')) out = enforceIdentifier(out, seed);
+
+			cache.set(key, out);
+		} else {
+			out = registry.get(type)({ type, seed: undefined, args: genArgs, opts });
+			if (opts?.includes('a')) out = enforceAlphaFirst(out);
+			if (opts?.includes('id')) out = enforceIdentifier(out);
 		}
-
-		let out = registry.get(type)({ type, seed, args: genArgs!, opts });
-
-		if (opts?.includes('a')) {
-			out = enforceAlphaFirst(out, seed);
-		}
-
-		if (opts?.includes('id')) {
-			out = enforceIdentifier(out, seed);
-		}
-
-		cache.set(key, out);
 
 		return out;
 	});
@@ -185,9 +189,6 @@ export function tokenExpandPlugin({ globalCache = true }: ITokenExpandOptions = 
 	return {
 		name: 'vite-token-expand',
 		enforce: 'pre',
-		buildStart() {
-			console.log('[token-expand] buildStart');
-		},
 		config(_1, { mode }) {
 			isProduction = mode.toLocaleLowerCase() !== 'development';
 		},

@@ -6,7 +6,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { URL, fileURLToPath } from 'node:url';
 import { ViteMinifyPlugin } from 'vite-plugin-minify';
-import { ipcChannelObfuscationPlugin } from 'vite-plugin-ipc-channel-obf';
+import { obfuscationPlugin } from 'vite-plugin-obfuscation';
 import type { UserConfigExport } from 'vite';
 
 let entryID = 0;
@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => {
 			}),
 			tailwindcss(),
 			ViteMinifyPlugin(),
-			ipcChannelObfuscationPlugin()
+			obfuscationPlugin()
 		],
 		resolve: {
 			alias: {

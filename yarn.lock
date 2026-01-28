@@ -8292,8 +8292,8 @@ __metadata:
     typescript-eslint: "npm:^8.54.0"
     vite: "npm:rolldown-vite@7.2.5"
     vite-plugin-babel: "npm:^1.4.1"
-    vite-plugin-ipc-channel-obf: "workspace:*"
     vite-plugin-minify: "npm:^2.1.0"
+    vite-plugin-obfuscation: "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -9754,17 +9754,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-ipc-channel-obf@workspace:*, vite-plugin-ipc-channel-obf@workspace:packages/vite-plugin-ipc-channel-obf":
-  version: 0.0.0-use.local
-  resolution: "vite-plugin-ipc-channel-obf@workspace:packages/vite-plugin-ipc-channel-obf"
-  dependencies:
-    "@types/node": "npm:^24.10.9"
-    tsdown: "npm:^0.20.1"
-    typescript: "npm:^5.9.3"
-    vite: "npm:^7.3.1"
-  languageName: unknown
-  linkType: soft
-
 "vite-plugin-minify@npm:^2.1.0":
   version: 2.1.0
   resolution: "vite-plugin-minify@npm:2.1.0"
@@ -9776,6 +9765,17 @@ __metadata:
   checksum: 10/c823a80dc6071f2403a0c6dfe761c9339196a68c6d9f3894345364a699c79762c150d94145717955b6529b8c86b262d9df199c5d5b92c240c2f005a39733516e
   languageName: node
   linkType: hard
+
+"vite-plugin-obfuscation@workspace:*, vite-plugin-obfuscation@workspace:packages/vite-plugin-obfuscation":
+  version: 0.0.0-use.local
+  resolution: "vite-plugin-obfuscation@workspace:packages/vite-plugin-obfuscation"
+  dependencies:
+    "@types/node": "npm:^24.10.9"
+    tsdown: "npm:^0.20.1"
+    typescript: "npm:^5.9.3"
+    vite: "npm:^7.3.1"
+  languageName: unknown
+  linkType: soft
 
 "vite@npm:^7.3.1":
   version: 7.3.1
@@ -10096,7 +10096,7 @@ __metadata:
     typescript-eslint: "npm:^8.54.0"
     ufo: "npm:^1.6.3"
     vite: "npm:^7.3.1"
-    vite-plugin-ipc-channel-obf: "workspace:*"
+    vite-plugin-obfuscation: "workspace:*"
   languageName: unknown
   linkType: soft
 
