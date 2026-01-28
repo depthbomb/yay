@@ -1,4 +1,3 @@
-import semver from 'semver';
 import { app } from 'electron';
 import { eventBus } from '~/events';
 import { ok, err } from 'shared/ipc';
@@ -12,6 +11,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
+import isVersionGreaterThan from 'semver/functions/gt';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
 import { TransformableNumber } from '~/common/TransformableNumber';
 import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
@@ -80,7 +80,7 @@ export class UpdaterService implements IBootstrappable {
 
 		try {
 			const release = await this.getLatestRelease();
-			if (release.isOk && release.data && semver.gt(release.data.tag_name, product.version)) {
+			if (release.isOk && release.data && isVersionGreaterThan(release.data.tag_name, product.version)) {
 				this.hasNewRelease = true;
 
 				this.logger.info('Found new release', { tag: release.data.tag_name });
