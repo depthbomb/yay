@@ -226,7 +226,6 @@ export class YtdlpService implements IBootstrappable {
 
 		this.proc = spawn(ytDlpPath, args);
 
-		let lastPercent = 0;
 		const percentPattern = /\b(\d+(?:\.\d+)?)%/;
 
 		this.proc.stdout!.on('data', (buf: Buffer) => {
@@ -239,12 +238,8 @@ export class YtdlpService implements IBootstrappable {
 				return;
 			}
 
-			const percent = Math.min(1, Math.max(0, parseFloat(match[1]) / 100));
-			if (percent <= lastPercent) {
-				return;
-			}
+			const percent = Math.min(100, Math.max(0, parseFloat(match[1])));
 
-			lastPercent = percent;
 			session.progress = percent;
 
 			this.window.emitAll('yt-dlp->download-progress', session);

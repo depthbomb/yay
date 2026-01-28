@@ -1,3 +1,10 @@
+# 1.39.5
+
+- Download progress is now also shown on the home screen when downloading
+- The updater window will now be displayed on startup, after the setup phase, if there is a new release
+
+---
+
 # 1.39.4
 
 - More minor optimizations and some reduction in file size

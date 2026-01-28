@@ -2,10 +2,12 @@ import { cva } from 'cva';
 import type { VariantProps } from 'cva';
 import type { FC, ButtonHTMLAttributes } from 'react';
 
-export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {}
+export interface IButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'type'>, VariantProps<typeof button> {
+	progress?: number;
+}
 
 const button = cva({
-	base: 'inline-flex items-center justify-center shrink-0 shadow outline-offset-2 focus:outline-2 transition-[color,background-color]',
+	base: 'relative inline shrink-0 shadow outline-offset-2 focus:outline-2 transition-[color,background-color]',
 	variants: {
 		type: {
 			accent: 'text-accent-500-contrast bg-accent-500 outline-accent-500/50 hover:bg-accent-600 active:bg-accent-700',
@@ -32,13 +34,21 @@ const button = cva({
 	}
 });
 
-export const Button: FC<IButtonProps> = ({ type, size, className, disabled, ...props }) => {
+export const Button: FC<IButtonProps> = ({ type, size, progress = 0, className, disabled, ...props }) => {
 	return (
 		<button
 			className={button({ type, size, disabled, className })}
 			disabled={disabled}
 			{...props}
 			type="button"
-		>{props.children}</button>
+		>
+			<span className="relative flex items-center justify-center z-10">{props.children}</span>
+
+			{progress > 0 && (
+				<span className="absolute inset-x-0 bottom-0 h-1 bg-black/20 rounded-b overflow-hidden">
+					<span className="block h-full bg-lime-500 transition-[width]" style={{ width: `${progress}%` }}/>
+				</span>
+			)}
+		</button>
 	);
 };

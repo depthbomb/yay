@@ -45,6 +45,7 @@ const isSnowfall = () => {
 
 export const HomePage = () => {
 	const [isTweetURL, setIsTweetURL]           = useState(false);
+	const [progress, setProgress]               = useState(0); // TODO maybe add this to global state?
 	const [useNewTwitterVideoDownloader]        = useSetting<boolean>(ESettingsKey.UseNewTwitterVideoDownloader);
 	const [,clearLog]                           = useAtom(clearLogAtom);
 	const [,pushToLog]                          = useAtom(pushToLogAtom);
@@ -98,7 +99,7 @@ export const HomePage = () => {
 
 	useTitle('yay');
 
-	useKeyPress('enter', () => trySubmitting());
+	useKeyPress('enter',    () => trySubmitting());
 	useKeyPress(['ctrl.v'], () => tryPasting(), { exactMatch: true });
 	useKeyPress(['ctrl.a'], () => trySelectingInput(), { exactMatch: true });
 
@@ -108,15 +109,17 @@ export const HomePage = () => {
 		clearLog();
 		pushToLog('OPERATION STARTED');
 	});
-	useIPCEvent('yt-dlp->stdout', ({ line }) => pushToLog(line));
+	useIPCEvent('yt-dlp->stdout',            ({ line }) => pushToLog(line));
+	useIPCEvent('yt-dlp->download-progress', ({ progress }) => setProgress(progress));
 	useIPCEvent('yt-dlp->download-canceled', () => pushToLog('OPERATION CANCELED'));
 	useIPCEvent('yt-dlp->download-finished', () => {
 		resetApp();
+		setProgress(0);
 		pushToLog('OPERATION FINISHED');
 	});
 	useIPCEvent('yt-dlp->updating-binary', () => setIsUpdating(true));
-	useIPCEvent('yt-dlp->updated-binary', () => setIsUpdating(false));
-	useIPCEvent('updater->outdated', () => setUpdateAvailable(true));
+	useIPCEvent('yt-dlp->updated-binary',  () => setIsUpdating(false));
+	useIPCEvent('updater->outdated',       () => setUpdateAvailable(true));
 
 	useEffect(() => {
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
@@ -160,6 +163,7 @@ export const HomePage = () => {
 										onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
 										onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
 										working={isWorking}
+										progress={progress}
 										disabled={!urlIsValid || isUpdating}
 									/>
 									<div className="grow bg-black/50 border border-gray-900 rounded-xs shadow overflow-hidden">

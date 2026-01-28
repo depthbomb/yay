@@ -8,6 +8,7 @@ import type { FC } from 'react';
 export interface IDownloadButtonsProps {
 	disabled: boolean;
 	working: boolean;
+	progress?: number;
 	onDownloadVideoClick: () => void;
 	onDownloadAudioClick: () => void;
 	onCancelDownloadClick: () => void;
@@ -42,6 +43,7 @@ const button = cva({
 export const DownloadButtons: FC<IDownloadButtonsProps> = ({
 	disabled,
 	working,
+	progress = 0,
 	onDownloadVideoClick,
 	onDownloadAudioClick,
 	onCancelDownloadClick
@@ -49,7 +51,7 @@ export const DownloadButtons: FC<IDownloadButtonsProps> = ({
 	const buttonCss = button({ disabled });
 	if (working) {
 		return (
-			<Button onClick={onCancelDownloadClick} type="danger" size="lg">
+			<Button onClick={onCancelDownloadClick} type="danger" size="lg" progress={progress}>
 				<Icon path={mdiCancel} className="size-4"/>
 				<span>Cancel</span>
 			</Button>
