@@ -1,9 +1,10 @@
 import { Readable } from 'node:stream';
 import { IDGenerator } from '~/common';
-import { joinURL, withQuery } from 'ufo';
 import { finished } from 'node:stream/promises';
+import { URLPath } from '@depthbomb/common/urllib';
 import { retry, ConstantBackoff, handleResultType } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
+import type { URLLike } from '@depthbomb/common/urllib';
 import type { LoggingService } from '~/services/logging';
 import type { Path } from '@depthbomb/node-common/pathlib';
 import type { GETOptions, RequestOptions, HTTPClientOptions, DownloadOptions } from './types';
@@ -24,7 +25,7 @@ export class HTTPClient {
 		this.retry       = !!options?.retry;
 		this.retryPolicy = retry(handleResultType(Response, res => res.status >= 500 || res.status === 429), {
 			maxAttempts: 5,
-			backoff: new ConstantBackoff(1_000)
+			backoff: new ConstantBackoff(1_500)
 		});
 		this.idGenerator = new IDGenerator(`${this.name}#`);
 		this.logger      = logger;
@@ -38,24 +39,35 @@ export class HTTPClient {
 		return this._doRequest(url, options);
 	}
 
-	private async _doRequest(input: string | URL, options?: RequestOptions) {
-		if (typeof input !== 'string') {
-			input = input.toString();
-		}
-
+	private async _doRequest(input: URLLike, options: RequestOptions = {}) {
 		const requestInit = {
 			...options,
 			headers: {
 				'user-agent': this.userAgent,
 				'accept': 'application/json',
-				...(options?.headers ?? {})
+				...options.headers
 			},
 		};
 
-		let requestURL = this.baseURL ? joinURL(this.baseURL, input) : input;
+		let requestURL: URLPath;
+		if (input instanceof URLPath) {
+			requestURL = input;
+		} else if (input instanceof URL) {
+			requestURL = new URLPath(input);
+		} else {
+			if (this.baseURL) {
+				if (/^[a-zA-Z][a-zA-Z+\-.]*:/.test(input)) {
+					requestURL = new URLPath(input);
+				} else {
+					requestURL = URLPath.from(this.baseURL).joinpath(input);
+				}
+			} else {
+				requestURL = new URLPath(input);
+			}
+		}
 
-		if (options?.query) {
-			requestURL = withQuery(requestURL, options.query);
+		if (options.query) {
+			requestURL = requestURL.withQuery(options.query);
 		}
 
 		const requestID = this.idGenerator.nextID();
@@ -65,9 +77,9 @@ export class HTTPClient {
 		try {
 			let res: Response;
 			if (this.retry) {
-				res = await this.retryPolicy.execute(() => fetch(requestURL, requestInit));
+				res = await this.retryPolicy.execute(() => requestURL.fetch(requestInit));
 			} else {
-				res = await fetch(requestURL, requestInit);
+				res = await requestURL.fetch(requestInit);
 			}
 
 			this.logger.debug('Finished HTTP request', {
@@ -100,6 +112,6 @@ export class HTTPClient {
 			}
 		});
 
-		return finished(nodeStream.pipe(file), { signal: options.signal })
+		return finished(nodeStream.pipe(file), { signal: options.signal });
 	}
 }

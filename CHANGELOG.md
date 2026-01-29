@@ -1,3 +1,9 @@
+# 1.39.6
+
+- Upgraded to [Electron 40.1.0](https://releases.electronjs.org/release/v40.1.0)
+
+---
+
 # 1.39.5
 
 - Download progress is now also shown on the home screen when downloading
