@@ -279,10 +279,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depthbomb/common@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "@depthbomb/common@npm:1.1.2"
-  checksum: 10/e6320a95b5af7dfed995f840ce54e99c8152ecb897055c0c6e661bf70ac487956ff5cede188de2c0e14b4d50cad9376cd9bde4dbf067732bced3ef29b15f5bf2
+"@depthbomb/common@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@depthbomb/common@npm:1.3.1"
+  checksum: 10/9d29514b7bfb0a3976de0382f7b731ac10727d072ee5b889bdc56d823986e93787350d6f78aff2498dea321336bb074f2908d0bdce9bac9fab69286c4cb8f72c
   languageName: node
   linkType: hard
 
@@ -5500,16 +5500,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:40.0.0":
-  version: 40.0.0
-  resolution: "electron@npm:40.0.0"
+"electron@npm:40.1.0":
+  version: 40.1.0
+  resolution: "electron@npm:40.1.0"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^24.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/ac4896cb44dacddd68b89b2a04fbc0834234c2dc40a1630bd1ed5ff05972d6a4712baab5e2101c1cc08a1589b5381b4058b14a25d5bd0f2804f8f7fc056efd5c
+  checksum: 10/6ba90c59a88cec0eb9d0d43a590f621f368cba2f3181295da10b68b9e1c6493dc8626329f36f931addc15ba24d1fd904ef1a9c165c924afbd6e57c018be2bc70
   languageName: node
   linkType: hard
 
@@ -8275,7 +8275,7 @@ __metadata:
     babel-plugin-react-compiler: "npm:^1.0.0"
     cva: "npm:^1.0.0-beta.4"
     dompurify: "npm:3.3.1"
-    electron: "npm:40.0.0"
+    electron: "npm:40.1.0"
     eslint: "npm:^9.39.2"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.4.26"
@@ -8965,7 +8965,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "shared@workspace:packages/shared"
   dependencies:
-    "@depthbomb/common": "npm:^1.1.2"
+    "@depthbomb/common": "npm:^1.3.1"
     "@depthbomb/node-common": "npm:^2.2.1"
     tsdown: "npm:^0.20.1"
     typescript: "npm:^5.9.3"
@@ -9596,13 +9596,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ufo@npm:^1.6.3":
-  version: 1.6.3
-  resolution: "ufo@npm:1.6.3"
-  checksum: 10/79803984f3e414567273a666183d6a50d1bec0d852100a98f55c1e393cb705e3b88033e04029dd651714e6eec99e1b00f54fdc13f32404968251a16f8898cfe5
-  languageName: node
-  linkType: hard
-
 "unconfig-core@npm:^7.4.2":
   version: 7.4.2
   resolution: "unconfig-core@npm:7.4.2"
@@ -10066,7 +10059,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yay@workspace:packages/app"
   dependencies:
-    "@depthbomb/common": "npm:^1.1.2"
+    "@depthbomb/common": "npm:^1.3.1"
     "@depthbomb/node-common": "npm:^2.2.1"
     "@eslint/js": "npm:^9.39.2"
     "@formatjs/fast-memoize": "npm:^3.1.0"
@@ -10078,7 +10071,7 @@ __metadata:
     "@types/semver": "npm:^7.7.1"
     cockatiel: "npm:^3.2.1"
     cross-env: "npm:^10.1.0"
-    electron: "npm:40.0.0"
+    electron: "npm:40.1.0"
     eslint: "npm:^9.39.2"
     globals: "npm:^17.2.0"
     hono: "npm:^4.11.7"
@@ -10094,7 +10087,6 @@ __metadata:
     type-flag: "npm:^4.0.3"
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.54.0"
-    ufo: "npm:^1.6.3"
     vite: "npm:^7.3.1"
     vite-plugin-obfuscation: "workspace:*"
   languageName: unknown
