@@ -155,7 +155,7 @@ export class LifecycleService implements IBootstrappable {
 			this._shutdownVetoes.push({ reason, source, canProceed: canProceed || (() => false) });
 		};
 
-		eventBus.emit('lifecycle:shutdown-requested', { veto: vetoFn });
+		eventBus.emit('lifecycle:shutdown-requested', vetoFn);
 
 		if (this._shutdownVetoes.length === 0) {
 			return true;

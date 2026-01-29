@@ -58,7 +58,7 @@ export class SettingsService implements IBootstrappable {
 			}
 		);
 
-		eventBus.on('settings:updated', ({ key, value }) => this.window.emitAll('settings->changed', { key, value }));
+		eventBus.on('settings:updated', (key, value) => this.window.emitAll('settings->changed', { key, value }));
 	}
 
 	public get<T>(key: ESettingsKey, defaultValue?: T, options?: SettingsManagerSetOptions) : T {
@@ -82,7 +82,7 @@ export class SettingsService implements IBootstrappable {
 		const $value = options?.secure ? this.encryptValue(value) : value;
 		await this.internalStore.set(key, $value);
 
-		eventBus.emit('settings:updated', { key, value });
+		eventBus.emit('settings:updated', key, value);
 	}
 
 	public async setDefault<T>(key: ESettingsKey, value: T, options?: SettingsManagerSetOptions) {

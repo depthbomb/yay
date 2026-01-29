@@ -49,7 +49,7 @@ export class TrayService implements IBootstrappable {
 			this.tray.setContextMenu(Menu.buildFromTemplate(this.createTrayMenu()));
 			this.tray.on('click', () => this.mainWindow.showMainWindow());
 
-			eventBus.on('ytdlp:download-started', url => {
+			eventBus.on('ytdlp:download-started', ({ url }) => {
 				this.tray!.setImage(this.trayDownloadingIcon.toString());
 				this.tray!.setToolTip(`Downloading ${url}`);
 			});

@@ -5,15 +5,13 @@ import { CLIService } from '~/services/cli';
 import { IPCService } from '~/services/ipc';
 import { product, ESettingsKey } from 'shared';
 import { inject, injectable } from '@needle-di/core';
-import { SettingsService } from '~/services/settings';
 import type { IBootstrappable } from '~/common';
 
 @injectable()
 export class AutoStartService implements IBootstrappable {
 	public constructor(
-		private readonly cli      = inject(CLIService),
-		private readonly ipc      = inject(IPCService),
-		private readonly settings = inject(SettingsService),
+		private readonly cli = inject(CLIService),
+		private readonly ipc = inject(IPCService),
 	) {}
 
 	public async bootstrap() {
@@ -27,7 +25,7 @@ export class AutoStartService implements IBootstrappable {
 		this.ipc.registerHandler('autostart<-disable', () => this.setAutoStart(false));
 		this.ipc.registerHandler('autostart<-toggle',  () => this.setAutoStart(!this.isAutoStartEnabled()));
 
-		eventBus.on('settings:updated', ({ key, value }) => {
+		eventBus.on('settings:updated', (key, value) => {
 			if (key === ESettingsKey.AutoStart) {
 				this.setAutoStart(value as boolean);
 			}

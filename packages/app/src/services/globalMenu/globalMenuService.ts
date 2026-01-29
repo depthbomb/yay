@@ -78,9 +78,9 @@ export class GlobalMenuService implements IBootstrappable {
 			this.globalMenuWindow.close();
 		});
 
-		eventBus.on('settings:updated', ({ key, value }) => {
+		eventBus.on('settings:updated', (key, value) => {
 			if (key === ESettingsKey.EnableGlobalMenu) {
-				if (value as boolean) {
+				if (value === true) {
 					globalShortcut.register(accelerator, callback);
 				} else {
 					globalShortcut.unregister(accelerator);

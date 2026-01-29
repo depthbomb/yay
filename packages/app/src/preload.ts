@@ -98,7 +98,7 @@ const featureFlagsAPI = Object.freeze({
 }) satisfies FeatureFlagsAPI;
 
 contextBridge.exposeInMainWorld('versions', versionsAPI);
-contextBridge.exposeInMainWorld('buildDate', new Date(__BUILD_DATE__));
+contextBridge.exposeInMainWorld('buildDate', Object.freeze(new Date(__BUILD_DATE__)));
 contextBridge.exposeInMainWorld('ipc', ipcAPI);
 contextBridge.exposeInMainWorld('system', systemAPI);
 contextBridge.exposeInMainWorld('settings', settingsAPI);

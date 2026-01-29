@@ -7515,13 +7515,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mitt@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "mitt@npm:3.0.1"
-  checksum: 10/287c70d8e73ffc25624261a4989c783768aed95ecb60900f051d180cf83e311e3e59865bfd6e9d029cdb149dc20ba2f128a805e9429c5c4ce33b1416c65bbd14
-  languageName: node
-  linkType: hard
-
 "mkdirp@npm:^3.0.1":
   version: 3.0.1
   resolution: "mkdirp@npm:3.0.1"
@@ -10076,7 +10069,6 @@ __metadata:
     globals: "npm:^17.2.0"
     hono: "npm:^4.11.7"
     loglayer: "npm:^8.4.0"
-    mitt: "npm:^3.0.1"
     nativelib: "workspace:*"
     octokit: "npm:^5.0.5"
     semver: "npm:^7.7.3"
