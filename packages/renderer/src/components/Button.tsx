@@ -18,10 +18,10 @@ const button = cva({
 			twitter: 'text-white bg-[#55acee] outline-[#55acee]/50 hover:bg-[#1b88dc] active:bg-[#0d5597]'
 		},
 		size: {
-			sm: 'px-1.75 space-x-0.5 h-5 text-[10px] rounded-[3px]',
-			default: 'px-2.5 space-x-1 h-6 text-xs rounded',
-			lg: 'px-2.75 space-x-1 text-sm h-8 rounded',
-			xl: 'px-3.5 space-x-1.5 h-8.5 text-lg rounded'
+			sm: 'px-1.75 h-5 rounded-[3px]',
+			default: 'px-2.5 h-6 rounded',
+			lg: 'px-2.75 h-8 rounded',
+			xl: 'px-3.5 h-8.5 rounded'
 		},
 		disabled: {
 			false: 'cursor-pointer',
@@ -34,6 +34,21 @@ const button = cva({
 	}
 });
 
+const inner = cva({
+	base: 'relative flex items-center justify-center z-10',
+	variants: {
+		size: {
+			sm: 'space-x-0.5 text-[10px]',
+			default: 'space-x-1 h-6 text-xs',
+			lg: 'space-x-1 text-sm',
+			xl: 'space-x-1.5 text-lg'
+		},
+	},
+	defaultVariants: {
+		size: 'default'
+	}
+});
+
 export const Button: FC<IButtonProps> = ({ type, size, progress = 0, className, disabled, ...props }) => {
 	return (
 		<button
@@ -42,7 +57,7 @@ export const Button: FC<IButtonProps> = ({ type, size, progress = 0, className, 
 			{...props}
 			type="button"
 		>
-			<span className="relative flex items-center justify-center z-10">{props.children}</span>
+			<span className={inner({ size })}>{props.children}</span>
 
 			{progress > 0 && (
 				<span className="absolute inset-x-0 bottom-0 h-1 bg-black/20 rounded-b overflow-hidden">

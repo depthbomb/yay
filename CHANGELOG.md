@@ -1,5 +1,6 @@
 # 1.39.6
 
+- Fixed the spacing between icons and text in buttons
 - Upgraded to [Electron 40.1.0](https://releases.electronjs.org/release/v40.1.0)
 
 ---
