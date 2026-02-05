@@ -25,7 +25,7 @@ Run the renderer in watch mode with `yarn watch` and the application in developm
 
 The following must be installed on your system and added to the PATH:
 
-- [Inno Setup >= 6.6](https://jrsoftware.org/isinfo.php)
+- [Inno Setup >= 6.7](https://jrsoftware.org/isinfo.php)
 - [7-Zip](https://7-zip.org)
 
 Run `yarn package` to build the application, and `yarn create-installer` to create both the online files archive and the setup binary.
