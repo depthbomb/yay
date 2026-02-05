@@ -1,3 +1,9 @@
+# 1.39.7
+
+- Fixed an application crash related to the lack of a config file
+
+---
+
 # 1.39.6
 
 - Fixed the spacing between icons and text in buttons

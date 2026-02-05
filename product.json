@@ -1,5 +1,5 @@
 {
-	"version": "1.39.6",
+	"version": "1.39.7",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -11,6 +11,12 @@
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
+		{
+			"version": "1.39.7",
+			"changes": [
+				"Fixed an application crash related to the lack of a config file"
+			]
+		},
 		{
 			"version": "1.39.6",
 			"changes": [

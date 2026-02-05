@@ -97,7 +97,7 @@
 		"@depthbomb/node-common": "^2.2.1"
 	},
 	"devDependencies": {
-		"tsdown": "^0.20.1",
+		"tsdown": "^0.20.3",
 		"typescript": "^5.9.3"
 	}
 }
