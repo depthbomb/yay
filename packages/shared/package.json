@@ -7,80 +7,80 @@
 	"types": "./dist/index.d.cts",
 	"exports": {
 		".": {
-			"require": "./dist/index.cjs",
-			"import": "./dist/index.mjs"
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.cjs"
 		},
 		"./constants": {
-			"require": "./dist/constants.cjs",
-			"import": "./dist/constants.mjs"
+			"import": "./dist/constants.mjs",
+			"require": "./dist/constants.cjs"
 		},
 		"./featureFlags": {
-			"require": "./dist/featureFlags.cjs",
-			"import": "./dist/featureFlags.mjs"
+			"import": "./dist/featureFlags.mjs",
+			"require": "./dist/featureFlags.cjs"
 		},
 		"./flag": {
-			"require": "./dist/flag.cjs",
-			"import": "./dist/flag.mjs"
+			"import": "./dist/flag.mjs",
+			"require": "./dist/flag.cjs"
 		},
 		"./ipc": {
-			"require": "./dist/ipc/index.cjs",
-			"import": "./dist/ipc/index.mjs"
+			"import": "./dist/ipc/index.mjs",
+			"require": "./dist/ipc/index.cjs"
 		},
 		"./ipc-channels.generated": {
-			"require": "./dist/ipc-channels.generated.cjs",
-			"import": "./dist/ipc-channels.generated.mjs"
+			"import": "./dist/ipc-channels.generated.mjs",
+			"require": "./dist/ipc-channels.generated.cjs"
 		},
 		"./ipc-events.generated": {
-			"require": "./dist/ipc-events.generated.cjs",
-			"import": "./dist/ipc-events.generated.mjs"
+			"import": "./dist/ipc-events.generated.mjs",
+			"require": "./dist/ipc-events.generated.cjs"
 		},
 		"./ipc/IIPCContracts": {
-			"require": "./dist/ipc/IIPCContracts.cjs",
-			"import": "./dist/ipc/IIPCContracts.mjs"
+			"import": "./dist/ipc/IIPCContracts.mjs",
+			"require": "./dist/ipc/IIPCContracts.cjs"
 		},
 		"./ipc/IIPCEvents": {
-			"require": "./dist/ipc/IIPCEvents.cjs",
-			"import": "./dist/ipc/IIPCEvents.mjs"
+			"import": "./dist/ipc/IIPCEvents.mjs",
+			"require": "./dist/ipc/IIPCEvents.cjs"
 		},
 		"./ipc/ipc-result": {
-			"require": "./dist/ipc/ipc-result.cjs",
-			"import": "./dist/ipc/ipc-result.mjs"
+			"import": "./dist/ipc/ipc-result.mjs",
+			"require": "./dist/ipc/ipc-result.cjs"
 		},
 		"./product": {
-			"require": "./dist/product.cjs",
-			"import": "./dist/product.mjs"
+			"import": "./dist/product.mjs",
+			"require": "./dist/product.cjs"
 		},
 		"./regex": {
-			"require": "./dist/regex.cjs",
-			"import": "./dist/regex.mjs"
+			"import": "./dist/regex.mjs",
+			"require": "./dist/regex.cjs"
 		},
 		"./settings": {
-			"require": "./dist/settings.cjs",
-			"import": "./dist/settings.mjs"
+			"import": "./dist/settings.mjs",
+			"require": "./dist/settings.cjs"
 		},
 		"./twitter": {
-			"require": "./dist/twitter/index.cjs",
-			"import": "./dist/twitter/index.mjs"
+			"import": "./dist/twitter/index.mjs",
+			"require": "./dist/twitter/index.cjs"
 		},
 		"./twitter/ITweetMedia": {
-			"require": "./dist/twitter/ITweetMedia.cjs",
-			"import": "./dist/twitter/ITweetMedia.mjs"
+			"import": "./dist/twitter/ITweetMedia.mjs",
+			"require": "./dist/twitter/ITweetMedia.cjs"
 		},
 		"./types": {
-			"require": "./dist/types.cjs",
-			"import": "./dist/types.mjs"
+			"import": "./dist/types.mjs",
+			"require": "./dist/types.cjs"
 		},
 		"./utils": {
-			"require": "./dist/utils.cjs",
-			"import": "./dist/utils.mjs"
+			"import": "./dist/utils.mjs",
+			"require": "./dist/utils.cjs"
 		},
 		"./ytdlp": {
-			"require": "./dist/ytdlp/index.cjs",
-			"import": "./dist/ytdlp/index.mjs"
+			"import": "./dist/ytdlp/index.mjs",
+			"require": "./dist/ytdlp/index.cjs"
 		},
 		"./ytdlp/IDownloadSession": {
-			"require": "./dist/ytdlp/IDownloadSession.cjs",
-			"import": "./dist/ytdlp/IDownloadSession.mjs"
+			"import": "./dist/ytdlp/IDownloadSession.mjs",
+			"require": "./dist/ytdlp/IDownloadSession.cjs"
 		},
 		"./package.json": "./package.json"
 	},

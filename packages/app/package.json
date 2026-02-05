@@ -24,7 +24,7 @@
 		"loglayer": "^8.4.1",
 		"nativelib": "workspace:*",
 		"octokit": "^5.0.5",
-		"semver": "^7.7.3",
+		"semver": "^7.7.4",
 		"serialize-error": "^13.0.1",
 		"shared": "workspace:*",
 		"smol-toml": "1.6.0",
@@ -33,7 +33,7 @@
 	"devDependencies": {
 		"@eslint/js": "^9.39.2",
 		"@swc-node/sourcemap-support": "^0.6.1",
-		"@types/node": "^24.10.10",
+		"@types/node": "^24.10.11",
 		"@types/semver": "^7.7.1",
 		"cross-env": "^10.1.0",
 		"electron": "40.1.0",

@@ -18,7 +18,7 @@
 		"lint": "eslint ./src --ext .ts"
 	},
 	"devDependencies": {
-		"@types/node": "^24.10.10",
+		"@types/node": "^24.10.11",
 		"tsdown": "^0.20.3",
 		"typescript": "^5.9.3",
 		"vite": "^7.3.1"
