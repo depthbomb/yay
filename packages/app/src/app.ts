@@ -55,6 +55,8 @@ export class App {
 				app.commandLine.appendSwitch('--disable-software-rasterizer');
 				app.commandLine.appendSwitch('--disable-gpu');
 			}
+		} else {
+			configFilePath.touchSync();
 		}
 	}
 
