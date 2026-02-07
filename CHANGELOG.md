@@ -1,3 +1,10 @@
+# 1.39.8
+
+- Improved unhandled exception error message
+- Upgraded to [Electron 40.2.1](https://releases.electronjs.org/release/v40.2.1)
+
+---
+
 # 1.39.7
 
 - Fixed an application crash related to the lack of a config file

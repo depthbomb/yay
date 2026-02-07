@@ -1,5 +1,5 @@
 {
-	"version": "1.39.7",
+	"version": "1.39.8",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -11,6 +11,13 @@
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
+		{
+			"version": "1.39.8",
+			"changes": [
+				"Improved unhandled exception error message",
+				"Upgraded to [Electron 40.2.1](https://releases.electronjs.org/release/v40.2.1)"
+			]
+		},
 		{
 			"version": "1.39.7",
 			"changes": [
