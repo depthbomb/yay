@@ -216,9 +216,14 @@ export class SetupService implements IBootstrappable {
 					}
 				);
 
+				const downloadedBinaryWorks = await this.testBinary(ytdlpPath.toString(), ['--version'], /\d{4}\.\d+\.\d+/);
+				if (!downloadedBinaryWorks) {
+					throw new Error('Downloaded yt-dlp binary failed verification.');
+				}
+
 				this.downloadedYtdlpBinary = true;
 
-				await this.settings.set(ESettingsKey.YtdlpPath, ytdlpPath);
+				await this.settings.set(ESettingsKey.YtdlpPath, ytdlpPath.toString());
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
 					const res = await dialog.showMessageBox(this.setupWindow!, {
@@ -253,6 +258,13 @@ export class SetupService implements IBootstrappable {
 					},
 					() => this.emitStep('Cleaning up...')
 				);
+
+				const downloadedBinaryWorks = await this.testBinary(denoPath.toString(), ['-v'], /\d+\.\d+\.\d+/);
+				if (!downloadedBinaryWorks) {
+					throw new Error('Downloaded Deno binary failed verification.');
+				}
+
+				await this.settings.set(ESettingsKey.DenoPath, denoPath.toString());
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
 					const res = await dialog.showMessageBox(this.setupWindow!, {
@@ -285,6 +297,14 @@ export class SetupService implements IBootstrappable {
 					},
 					() => this.emitStep('Cleaning up...')
 				);
+
+				const downloadedFilesExist = await Promise.all([
+					ffmpegPath.exists(),
+					ffprobePath.exists(),
+				]).then(r => r.every(Boolean));
+				if (!downloadedFilesExist) {
+					throw new Error('Downloaded FFmpeg binaries failed verification.');
+				}
 			} catch (err) {
 				if (!(err instanceof OperationCancelledError)) {
 					const res = await dialog.showMessageBox(this.setupWindow!, {
@@ -323,7 +343,7 @@ export class SetupService implements IBootstrappable {
 		if (localBinaryExists) {
 			this.logger.info('Found yt-dlp binary', { path });
 
-			if (currentPath !== path) {
+			if (currentPath !== path.toString()) {
 				await this.settings.set(ESettingsKey.YtdlpPath, path.toString());
 			}
 
@@ -342,8 +362,8 @@ export class SetupService implements IBootstrappable {
 		if (localBinaryExists) {
 			this.logger.info('Found deno binary', { path });
 
-			if (currentPath !== path) {
-				await this.settings.set(ESettingsKey.DenoPath, path);
+			if (currentPath !== path.toString()) {
+				await this.settings.set(ESettingsKey.DenoPath, path.toString());
 			}
 
 			return test(path.toString());

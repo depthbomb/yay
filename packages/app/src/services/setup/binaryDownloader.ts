@@ -6,6 +6,7 @@ import { HTTPService } from '~/services/http';
 import { GithubService } from '~/services/github';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { OperationCancelledError } from '@depthbomb/node-common';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { getExtraFileDir, getExtraFilePath } from '~/common';
 import type { HTTPClient } from '~/services/http';
@@ -23,20 +24,35 @@ export class BinaryDownloader {
 	}
 
 	public async downloadYtdlpBinary(path: Path, signal: AbortSignal, onProgress?: (progress: number) => void) {
+		this.throwIfCancelled(signal);
+
 		const url = await this.resolveYtdlpDownloadURL();
 		if (!url) {
-			return;
+			throw new Error('Could not resolve yt-dlp release download URL');
 		}
 
 		const res = await this.httpClient.get(url, { signal });
 		if (!res.ok) {
-			return;
+			throw new Error(`Could not download yt-dlp binary (${res.status} ${res.statusText})`);
 		}
 
 		const tempPath = new Path(app.getPath('temp'), '_yt-dlp.exe');
 
-		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
-		await tempPath.rename(path);
+		try {
+			await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
+			this.throwIfCancelled(signal);
+
+			await tempPath.rename(path);
+
+			if (!await path.exists()) {
+				throw new Error('Downloaded yt-dlp binary could not be moved to its destination');
+			}
+		} catch (err) {
+			this.rethrowIfCancelled(signal, err);
+			throw err;
+		} finally {
+			await tempPath.unlink().catch(() => {});
+		}
 	}
 
 	public async downloadDenoBinary(
@@ -130,52 +146,96 @@ export class BinaryDownloader {
 		onExtracting?: () => void,
 		onCleaningUp?: () => void
 	) {
+		this.throwIfCancelled(signal);
+
 		const res = await this.httpClient.get(url, { signal });
 		if (!res.ok) {
-			return;
+			throw new Error(`Could not download archive (${res.status} ${res.statusText})`);
 		}
 
 		const tempPath = new Path(app.getPath('temp'), `_${randomUUID()}.zip`);
-
-		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
-
 		const sevenZipPath = getExtraFilePath('7za.exe');
+
+		try {
+			await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
+			this.throwIfCancelled(signal);
+
+			onExtracting?.();
+
+			await this.extractArchive(sevenZipPath, tempPath, filesToExtract, extractPath, signal);
+			this.throwIfCancelled(signal);
+
+			for (const file of filesToExtract) {
+				const extractedPath = new Path(extractPath, file);
+				if (!await extractedPath.exists()) {
+					throw new Error(`Archive extraction finished but expected file is missing: ${file}`);
+				}
+			}
+		} catch (err) {
+			this.rethrowIfCancelled(signal, err);
+			throw err;
+		} finally {
+			onCleaningUp?.();
+			await tempPath.unlink().catch(() => {});
+		}
+	}
+
+	private async extractArchive(sevenZipPath: Path, archivePath: Path, filesToExtract: string[], extractPath: string, signal: AbortSignal) {
+		this.throwIfCancelled(signal);
 
 		const { promise, resolve, reject } = Promise.withResolvers<void>();
 
-		if (signal.aborted) {
-			resolve();
-			return promise;
-		}
-
-		onExtracting?.();
-
 		const extraction = spawn(sevenZipPath.toString(), [
 			'e',
-			tempPath.toString(),
+			archivePath.toString(),
 			'-r',
 			`-o${extractPath}`,
 			'-aoa',
 			...filesToExtract,
 		]);
 
+		const onAbort = () => {
+			this.logger.info('Cancelling archive extraction');
+			extraction.kill();
+		};
+
+		signal.addEventListener('abort', onAbort, { once: true });
+
 		extraction.once('error', err => {
+			signal.removeEventListener('abort', onAbort);
 			this.logger.error('Error while extracting archive', { err });
 			reject(err);
 		});
 
-		extraction.once('close', async () => {
-			try {
-				onCleaningUp?.();
+		extraction.once('close', code => {
+			signal.removeEventListener('abort', onAbort);
 
-				await tempPath.unlink();
-
-				resolve();
-			} catch (err) {
-				reject(err);
+			if (signal.aborted) {
+				reject(new OperationCancelledError());
+				return;
 			}
+
+			if (code !== 0) {
+				reject(new Error(`Archive extraction failed with exit code ${code}`));
+				return;
+			}
+
+			resolve();
 		});
 
 		return promise;
+	}
+
+	private throwIfCancelled(signal: AbortSignal): void | never {
+		if (signal.aborted) {
+			throw new OperationCancelledError();
+		}
+	}
+
+	private rethrowIfCancelled(signal: AbortSignal, err: unknown): void | never {
+		const maybeError = err as { name?: string; code?: string; };
+		if (signal.aborted || maybeError?.name === 'AbortError' || maybeError?.code === 'ABORT_ERR') {
+			throw new OperationCancelledError();
+		}
 	}
 }
