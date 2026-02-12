@@ -29,7 +29,7 @@ export class TimerService implements IBootstrappable {
 	public setInterval(...args: SetIntervalParameters): SetIntervalReturnType {
 		const id = setInterval(args[0], args[1]);
 
-		this.timeouts.add(id);
+		this.intervals.add(id);
 
 		return id;
 	}
