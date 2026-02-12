@@ -32,7 +32,6 @@
 	],
 	"devDependencies": {
 		"@octokit/rest": "^22.0.1",
-		"@octokit/types": "^16.0.0",
 		"@types/node": "^24.10.13",
 		"asar-trim": "^1.2.3",
 		"cross-env": "^10.1.0",

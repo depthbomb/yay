@@ -9,8 +9,7 @@ import { Spinner } from '~/components/SpinnerV2';
 import { WindowShell } from '~/components/WindowShell';
 import { Root, List, Trigger, Content } from '@radix-ui/react-tabs';
 import type { FC } from 'react';
-import type { Nullable } from 'shared';
-import type { Endpoints } from '@octokit/types';
+import type { Nullable, GitHubCommit, GitHubRelease } from 'shared';
 import type { TabsTriggerProps } from '@radix-ui/react-tabs';
 
 type TabButtonProps = TabsTriggerProps;
@@ -33,9 +32,9 @@ const defaultStatus = 'Updating...' as const;
 export const UpdaterPage = () => {
 	const [updating, setUpdating]   = useState(false);
 	const [status, setStatus]       = useState<string>(defaultStatus);
-	const [release, setRelease]     = useState<Nullable<Endpoints['GET /repos/{owner}/{repo}/releases']['response']['data'][number]>>(null);
+	const [release, setRelease]     = useState<Nullable<GitHubRelease>>(null);
 	const [changelog, setChangelog] = useState('');
-	const [commits, setCommits]     = useState<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>([]);
+	const [commits, setCommits]     = useState<GitHubCommit[]>([]);
 
 	const onDownloadButtonClicked = async () => {
 		setUpdating(true);
@@ -60,7 +59,7 @@ export const UpdaterPage = () => {
 		};
 
 		getUpdateData().then(([release, changelog, commits]) => {
-			setRelease(release.data);
+			setRelease(release.data ?? null);
 			setChangelog(changelog.data ?? '');
 			setCommits(commits.data ?? [])
 		});

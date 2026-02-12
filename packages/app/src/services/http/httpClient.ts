@@ -50,20 +50,10 @@ export class HTTPClient extends EventEmitter<HTTPClientEvents> {
 		} as RequestInit;
 
 		let requestURL: URLPath;
-		if (input instanceof URLPath) {
-			requestURL = input;
-		} else if (input instanceof URL) {
-			requestURL = new URLPath(input);
+		if (this.baseURL) {
+			requestURL = URLPath.from(input, this.baseURL);
 		} else {
-			if (this.baseURL) {
-				if (/^[a-zA-Z][a-zA-Z+\-.]*:/.test(input)) {
-					requestURL = new URLPath(input);
-				} else {
-					requestURL = URLPath.from(this.baseURL).joinpath(input);
-				}
-			} else {
-				requestURL = new URLPath(input);
-			}
+			requestURL = URLPath.from(input);
 		}
 
 		if (options.query) {

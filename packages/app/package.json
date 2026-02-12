@@ -23,7 +23,6 @@
 		"hono": "^4.11.9",
 		"loglayer": "^8.4.1",
 		"nativelib": "workspace:*",
-		"octokit": "^5.0.5",
 		"semver": "^7.7.4",
 		"serialize-error": "^13.0.1",
 		"shared": "workspace:*",

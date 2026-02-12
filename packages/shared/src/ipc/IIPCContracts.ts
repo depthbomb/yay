@@ -1,9 +1,9 @@
 import type { ITweetMedia } from '../twitter';
 import type { ESettingsKey } from '../settings';
 import type { Maybe, Nullable } from '../types';
-import type { Endpoints } from '@octokit/types';
 import type { FeatureFlag } from '../featureFlags';
 import type { Unit, IPCResult } from './ipc-result';
+import type { GitHubCommit, GitHubRelease } from '../github';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
 export interface IIPCContract {
@@ -162,7 +162,7 @@ export interface IIPCContract {
 	}
 	'updater<-get-latest-release': {
 		args: [];
-		return: IPCResult<Maybe<any>, never>;
+		return: IPCResult<Maybe<GitHubRelease>, never>;
 	}
 	'updater<-get-latest-changelog': {
 		args: [];
@@ -170,7 +170,7 @@ export interface IIPCContract {
 	}
 	'updater<-get-commits-since-build': {
 		args: [];
-		return: IPCResult<Nullable<Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data']>, never>;
+		return: IPCResult<Nullable<GitHubCommit[]>, never>;
 	}
 	'updater<-show-window': {
 		args: [];

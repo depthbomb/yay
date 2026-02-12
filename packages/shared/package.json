@@ -22,6 +22,10 @@
 			"import": "./dist/flag.mjs",
 			"require": "./dist/flag.cjs"
 		},
+		"./github": {
+			"import": "./dist/github/index.mjs",
+			"require": "./dist/github/index.cjs"
+		},
 		"./ipc": {
 			"import": "./dist/ipc/index.mjs",
 			"require": "./dist/ipc/index.cjs"

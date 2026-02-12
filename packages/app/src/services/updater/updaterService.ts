@@ -22,14 +22,13 @@ import { CancellationTokenSource } from '@depthbomb/node-common/cancellation';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import { REPO_NAME, REPO_OWNER, USER_AGENT, PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
-import type { Maybe, Nullable } from 'shared';
-import type { Endpoints } from '@octokit/types';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
+import type { Maybe, Nullable, GitHubCommit, GitHubRelease, GitHubReleaseAsset } from 'shared';
 
-type Commits       = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
-type LatestRelease = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']['data'];
-type ReleaseAsset  = LatestRelease['assets'][number];
+type Commits       = GitHubCommit[];
+type LatestRelease = GitHubRelease;
+type ReleaseAsset  = GitHubReleaseAsset;
 
 @injectable()
 export class UpdaterService implements IBootstrappable {
@@ -296,7 +295,7 @@ export class UpdaterService implements IBootstrappable {
 	}
 
 	private tryGetDigestSHA256(asset: ReleaseAsset) {
-		const digest = (asset as ReleaseAsset & { digest?: string }).digest;
+		const digest = asset.digest;
 		if (!digest) {
 			return null;
 		}
