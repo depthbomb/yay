@@ -94,9 +94,31 @@ export class SettingsService implements IBootstrappable {
 	public async setDefaults(settings: Array<[ESettingsKey, unknown] | [ESettingsKey, unknown, Maybe<SettingsManagerSetOptions>]>): Promise<void>;
 	public async setDefaults(settings: Array<[ESettingsKey, unknown]>): Promise<void>;
 	public async setDefaults(settings: Array<[ESettingsKey, unknown] | [ESettingsKey, unknown, Maybe<SettingsManagerSetOptions>]>) {
+		const pendingDefaults = {} as Record<string, unknown>;
+		const updatedSettings = [] as Array<{ key: ESettingsKey; value: unknown }>;
+
 		for (const setting of settings) {
 			const [key, value, options = undefined] = setting;
-			await this.setDefault(key, value, options);
+
+			if (this.get(key, null, options) !== null) {
+				continue;
+			}
+
+			pendingDefaults[key] = options?.secure
+				? this.encryptValue(value)
+				: value;
+
+			updatedSettings.push({ key, value });
+		}
+
+		if (updatedSettings.length === 0) {
+			return;
+		}
+
+		await this.internalStore.apply(pendingDefaults);
+
+		for (const { key, value } of updatedSettings) {
+			eventBus.emit('settings:updated', key, value);
 		}
 	}
 
