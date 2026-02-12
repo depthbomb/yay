@@ -25,8 +25,6 @@ export const YoutubeTab = () => {
 		if (!canClearThumbnails) {
 			setTimeout(() => setCanClearThumbnails(true), 5_000);
 		}
-
-		console.log(cookiesFilePath);
 	}, [canClearThumbnails]);
 
 	return (
