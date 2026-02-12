@@ -99,20 +99,36 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	public async cancelDownload(shutdown: boolean) {
+		const activeSession = this.activeSession;
+		if (!activeSession) {
+			return ok();
+		}
+
 		if (this.proc) {
 			this.logger.info('Killing yt-dlp process', { shutdown });
 
-			await this.process.killProcessTree(this.proc.pid!);
-
-			this.cleanupProcess();
-
-			if (!shutdown) {
-				this.window.emitAll('yt-dlp->download-canceled', this.activeSession!);
-				this.window.emitAll('yt-dlp->download-finished', this.activeSession!);
-
-				eventBus.emit('ytdlp:download-finished', this.activeSession!);
+			try {
+				await this.process.killProcessTree(this.proc.pid!);
+			} catch (err) {
+				this.logger.warn('Failed to kill yt-dlp process tree during cancellation', { err });
 			}
 		}
+
+		this.cleanupProcess();
+
+		activeSession.cancelled  = true;
+		activeSession.success    = false;
+		activeSession.finishedAt = Date.now();
+
+		if (!shutdown) {
+			this.window.emitAll('yt-dlp->download-canceled', activeSession);
+			this.window.emitAll('yt-dlp->download-finished', activeSession);
+
+			eventBus.emit('ytdlp:download-finished', activeSession);
+		}
+
+		this.activeSession = null;
+		this.tryStartNext();
 
 		return ok();
 	}
