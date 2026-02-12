@@ -1,5 +1,5 @@
 import { app } from 'electron';
-import { product } from 'shared';
+import { product, isValidURL } from 'shared';
 import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
 import { UpdaterService } from '~/services/updater';
@@ -40,6 +40,11 @@ export class DeepLinksService implements IBootstrappable {
 
 		if (searchParams.has('url')) {
 			const mediaURL = searchParams.get('url')!;
+			if (!isValidURL(mediaURL)) {
+				this.logger.warn('Ignoring deeplink with invalid media URL', { host, mediaURL });
+				return;
+			}
+
 			switch (host) {
 				case 'download-video':
 					await this.ytdlp.download(mediaURL, false);
