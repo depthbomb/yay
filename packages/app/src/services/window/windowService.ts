@@ -1,8 +1,9 @@
 import { ok } from 'shared/ipc';
-import { join } from 'node:path';
 import { DEV_PORT } from 'shared';
 import { ROOT_PATH } from '~/constants';
+import { fileURLToPath } from 'node:url';
 import { IPCService } from '~/services/ipc';
+import { join, normalize } from 'node:path';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Menu, shell, BrowserWindow } from 'electron';
@@ -103,24 +104,38 @@ export class WindowService implements IBootstrappable {
 
 		if (externalURLRules) {
 			window.webContents.setWindowOpenHandler(({ url }) => {
-				const requestedURL = new URL(url);
+				let requestedURL: URL;
+				try {
+					requestedURL = new URL(url);
+				} catch {
+					return { action: 'deny' };
+				}
+
 				if (externalURLRules.some(r => r(requestedURL))) {
 					shell.openExternal(url);
 				}
 
 				return { action: 'deny' };
 			});
-			window.webContents.on('will-navigate', (event, url) => {
-				if (url.startsWith('file://') || (import.meta.env.DEV && url.startsWith(`http://localhost:${DEV_PORT}`))) {
+
+			window.webContents.on('will-navigate', (e, url) => {
+				let requestedURL: URL;
+				try {
+					requestedURL = new URL(url);
+				} catch {
+					e.preventDefault();
 					return;
 				}
 
-				const requestedURL = new URL(url);
+				if (this.isAllowedInternalNavigation(requestedURL)) {
+					return;
+				}
+
 				if (externalURLRules.some(r => r(requestedURL))) {
 					shell.openExternal(url);
 				}
 
-				event.preventDefault();
+				e.preventDefault();
 			});
 		}
 
@@ -248,6 +263,31 @@ export class WindowService implements IBootstrappable {
 
 		for (const window of this.windows.values()) {
 			window?.reload();
+		}
+	}
+
+	private isAllowedInternalNavigation(requestedURL: URL) {
+		if (import.meta.env.DEV) {
+			const isLocalHost = requestedURL.hostname === 'localhost' || requestedURL.hostname === '127.0.0.1';
+			return (
+				(requestedURL.protocol === 'http:' || requestedURL.protocol === 'https:')
+				&& isLocalHost
+				&& requestedURL.port === String(DEV_PORT)
+				&& requestedURL.pathname === '/renderer.html'
+			);
+		}
+
+		if (requestedURL.protocol !== 'file:') {
+			return false;
+		}
+
+		try {
+			const requestedPath = normalize(fileURLToPath(requestedURL));
+			const rendererPath  = normalize(this.getHTMLPath('renderer.html'));
+
+			return requestedPath === rendererPath;
+		} catch {
+			return false;
 		}
 	}
 }
