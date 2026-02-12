@@ -217,8 +217,7 @@ export class WindowService implements IBootstrappable {
 	public closeAllWindows(force = false) {
 		this.logger.debug('Attempting to close all windows', { force });
 
-		for (const name in this.windows) {
-			const window = this.windows.get(name)!;
+		for (const [name, window] of this.windows.entries()) {
 			if (force) {
 				window.closable = true;
 			}
