@@ -84,7 +84,7 @@ export const HomePage = () => {
 		mediaURLEl.current?.select();
 	};
 	const trySubmitting = async () => {
-		if (!isValidURL) {
+		if (!urlIsValid) {
 			return;
 		}
 
