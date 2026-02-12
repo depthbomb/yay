@@ -39,7 +39,14 @@ export const WindowShell: FC<IWindowShellProps> = ({
 			'border-accent-500': isFocused,
 			'border-gray-900': !isFocused
 		})} {...props}>
-			<Titlebar title={title} windowName={windowName} minimizeButton={minimizeButton} maximizeButton={maximizeButton}/>
+			<Titlebar
+				title={title}
+				windowName={windowName}
+				minimizeButton={minimizeButton}
+				maximizeButton={maximizeButton}
+				focused={isFocused}
+				isMaximized={isMaximized}
+			/>
 			<main className="h-full overflow-hidden">{children}</main>
 		</div>
 	);
