@@ -12,6 +12,9 @@ let chunkID = 0;
 export default defineConfig(({ mode }) => {
 	const isProduction = mode === 'production';
 	const env = loadEnv(mode, process.cwd(), '');
+	const githubAccessToken = !isProduction && typeof env.GITHUB_ACCESS_TOKEN === 'string'
+		? env.GITHUB_ACCESS_TOKEN
+		: '';
 	const config: UserConfigExport = {
 		root: resolve('./src'),
 		base: '',
@@ -59,7 +62,7 @@ export default defineConfig(({ mode }) => {
 			__LINUX__: platform === 'linux',
 			__STRICT__: isProduction,
 			__BUILD_DATE__: new Date(),
-			__GITHUB_ACCESS_TOKEN__: JSON.stringify(env.GITHUB_ACCESS_TOKEN),
+			__GITHUB_ACCESS_TOKEN__: JSON.stringify(githubAccessToken),
 		},
 		resolve: {
 			alias: {
