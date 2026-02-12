@@ -7,6 +7,7 @@ import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { TimerService } from '~/services/timer';
 import { YtdlpService } from '~/services/ytdlp';
+import { EXTERNAL_URL_RULES } from '~/constants';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { ThemingService } from '~/services/theming';
@@ -116,7 +117,13 @@ export class MainService {
 		});
 
 		this.ipc.registerHandler('main<-open-external-url', async (_e, url) => {
+			if (!this.isAllowedExternalURL(url)) {
+				this.logger.warn('Blocked request to open disallowed external URL', { url });
+				return ok();
+			}
+
 			await shell.openExternal(url)
+
 			return ok();
 		});
 
@@ -125,5 +132,20 @@ export class MainService {
 
 			await this.deepLinks.handleDeepLinks(this.cli.args._);
 		}
+	}
+
+	private isAllowedExternalURL(input: string): boolean {
+		let parsed: URL;
+		try {
+			parsed = new URL(input);
+		} catch {
+			return false;
+		}
+
+		if (parsed.protocol !== 'https:') {
+			return false;
+		}
+
+		return EXTERNAL_URL_RULES.some(rule => rule(parsed));
 	}
 }
