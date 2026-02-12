@@ -51,7 +51,10 @@ export class MainWindowService implements IBootstrappable {
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
-					nodeIntegration: true,
+					nodeIntegration: false,
+					contextIsolation: true,
+					sandbox: false,
+					webSecurity: true,
 					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}

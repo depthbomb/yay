@@ -15,6 +15,9 @@ let chunkID = 0;
 
 export default defineConfig(({ mode }) => {
 	const isProduction = mode === 'production';
+	const cspContent  = isProduction
+		? `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';`
+		: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https: http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:*; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';`;
 	const config: UserConfigExport = {
 		root: resolve('./src'),
 		base: '',
@@ -45,6 +48,12 @@ export default defineConfig(({ mode }) => {
 			},
 		},
 		plugins: [
+			{
+				name: 'inject-csp',
+				transformIndexHtml(html) {
+					return html.replace(/%APP_CSP%/g, cspContent);
+				},
+			},
 			react(),
 			babel({
 				babelConfig: {
