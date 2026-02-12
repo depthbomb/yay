@@ -31,9 +31,13 @@ export class RestService implements IBootstrappable {
 			return;
 		}
 
-		const port = this.settings.get<number>(ESettingsKey.LocalApiServerPort);
+		const port = Number(this.settings.get(ESettingsKey.LocalApiServerPort));
+		if (!Number.isInteger(port) || port < 1 || port > 65535) {
+			this.logger.error('Cannot start local API server due to invalid port setting', { port });
+			return;
+		}
 
-		this.logger.info('Starting API server');
+		this.logger.info('Starting API server', { port });
 
 		this.hono = new Hono();
 		this.hono.use(async (c, next) => {
@@ -73,7 +77,12 @@ export class RestService implements IBootstrappable {
 			return this.createJSONResponse(c, 'Download started', { url, format });
 		});
 
-		this.server = serve({ fetch: this.hono.fetch, port });
+		try {
+			this.server = serve({ fetch: this.hono.fetch, port });
+		} catch (error) {
+			this.logger.error('Failed to start local API server', { error });
+			return;
+		}
 
 		eventBus.on('lifecycle:shutdown', () => this.server?.close());
 	}

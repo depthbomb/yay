@@ -5,6 +5,22 @@ import { useState, useEffect } from 'react';
 import { Switch } from '~/components/Switch';
 import { TextInput } from '~/components/Input';
 
+const MIN_PORT = 1 as const;
+const MAX_PORT = 65535 as const;
+
+const parsePort = (input: string) => {
+	const value = Number(input.trim());
+	if (!Number.isInteger(value)) {
+		return null;
+	}
+
+	if (value < MIN_PORT || value > MAX_PORT) {
+		return null;
+	}
+
+	return value;
+};
+
 export const APITab = () => {
 	const [port, setPort]       = useSetting<number>(ESettingsKey.LocalApiServerPort, { reactive: false });
 	const [enabled, setEnabled] = useSetting<boolean>(ESettingsKey.EnableLocalApiServer, { reactive: false });
@@ -16,8 +32,8 @@ export const APITab = () => {
 	}, [port]);
 
 	const handleBlur = () => {
-		const parsed = Number(portInput);
-		if (Number.isInteger(parsed)) {
+		const parsed = parsePort(portInput);
+		if (parsed !== null) {
 			setPort(parsed);
 		} else {
 			setPortInput(String(port));
