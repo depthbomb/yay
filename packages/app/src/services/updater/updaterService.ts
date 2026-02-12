@@ -1,9 +1,13 @@
 import { app } from 'electron';
 import { eventBus } from '~/events';
 import { ok, err } from 'shared/ipc';
+import { stat } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { spawn } from 'node:child_process';
+import { createReadStream } from 'node:fs';
 import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
+import { finished } from 'node:stream/promises';
 import { TimerService } from '~/services/timer';
 import { WindowService } from '~/services/window';
 import { GithubService } from '~/services/github';
@@ -23,7 +27,9 @@ import type { Endpoints } from '@octokit/types';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
 
-type Commits = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
+type Commits       = Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'];
+type LatestRelease = Endpoints['GET /repos/{owner}/{repo}/releases/latest']['response']['data'];
+type ReleaseAsset  = LatestRelease['assets'][number];
 
 @injectable()
 export class UpdaterService implements IBootstrappable {
@@ -38,6 +44,7 @@ export class UpdaterService implements IBootstrappable {
 	private nextManualCheck = Date.now();
 
 	private readonly httpClient: HTTPClient;
+	private readonly installerAssetName = `${product.applicationName}-setup.exe`;
 	private readonly checkInterval       = new TransformableNumber(30_000, x => x + 15_000);
 	private readonly manualCheckInterval = new TransformableNumber(15_000, x => x + 15_000);
 	private readonly isStartupCheck      = new Flag(true);
@@ -125,42 +132,68 @@ export class UpdaterService implements IBootstrappable {
 
 		this.cts = new CancellationTokenSource();
 
-		const release = await this.getLatestRelease();
-		if (release.isErr || !release.data) {
-			this.logger.warn('Tried to start update with no release data?');
-			return ok();
+		try {
+			const release = await this.getLatestRelease();
+			if (release.isErr || !release.data) {
+				this.logger.warn('Tried to start update with no release data?');
+				return ok();
+			}
+
+			const installerAsset = release.data.assets.find(a => a.name === this.installerAssetName);
+			if (!installerAsset) {
+				const errorMessage = `Could not find expected installer asset "${this.installerAssetName}" in the latest release`;
+				this.logger.error(errorMessage);
+				return err(errorMessage);
+			}
+
+			const token       = this.cts.token;
+			const signal      = token.toAbortSignal();
+			const downloadURL = installerAsset.browser_download_url;
+			const expectedHash = await this.getExpectedSHA256(release.data, installerAsset, signal);
+			if (!expectedHash) {
+				const errorMessage = `Could not find a SHA-256 checksum for "${installerAsset.name}"`;
+				this.logger.error(errorMessage);
+				return err(errorMessage);
+			}
+
+			this.logger.info('Downloading latest release', { downloadURL });
+
+			const res = await this.httpClient.get(downloadURL, { signal });
+			if (!res.ok) {
+				return err(res.statusText);
+			}
+
+			const onProgress = (progress: number) => {
+				this.window.emit('updater', 'updater->update-step', { message: `Downloading installer... (${progress}%)` });
+			}
+
+			const tempPath = new Path(app.getPath('temp'), 'yay-setup.exe');
+			await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
+
+			if (this.cts.isCancellationRequested) {
+				return ok();
+			}
+
+			await this.verifyInstaller(tempPath, installerAsset, expectedHash);
+
+			this.window.emit('updater', 'updater->update-step', { message: 'Running setup...' });
+
+			this.logger.info('Spawning setup process', { setupPath: tempPath });
+
+			const proc = spawn(tempPath.toString(), ['/UPDATE', '/SILENT'], { detached: true, shell: false });
+
+			proc.once('spawn', () => app.quit());
+			proc.unref();
+		} catch (error) {
+			const e = error as Error;
+			if (this.cts.isCancellationRequested || e.name === 'AbortError') {
+				return ok();
+			}
+
+			this.logger.error('Failed to start installer update', { error: { message: e.message, stack: e.stack } });
+
+			return err(e.message);
 		}
-
-		const token       = this.cts.token;
-		const signal      = token.toAbortSignal();
-		const downloadURL = release.data.assets.find(a => a.browser_download_url.includes('.exe'))!.browser_download_url;
-
-		this.logger.info('Downloading latest release', { downloadURL });
-
-		const res = await this.httpClient.get(downloadURL, { signal });
-		if (!res.ok) {
-			return err(res.statusText);
-		}
-
-		const onProgress = (progress: number) => {
-			this.window.emit('updater', 'updater->update-step', { message: `Downloading installer... (${progress}%)` });
-		}
-
-		const tempPath = new Path(app.getPath('temp'), 'yay-setup.exe');
-		await this.httpClient.downloadWithProgress(res, tempPath, { signal, onProgress });
-
-		if (this.cts.isCancellationRequested) {
-			return ok();
-		}
-
-		this.window.emit('updater', 'updater->update-step', { message: 'Running setup...' });
-
-		this.logger.info('Spawning setup process', { setupPath: tempPath });
-
-		const proc = spawn(tempPath.toString(), ['/UPDATE', '/SILENT'], { detached: true, shell: false });
-
-		proc.once('spawn', () => app.quit());
-		proc.unref();
 
 		return ok();
 	}
@@ -217,5 +250,84 @@ export class UpdaterService implements IBootstrappable {
 			await this.checkForUpdates();
 			this.scheduleNextUpdateCheck();
 		}, this.checkInterval.value);
+	}
+
+	private async getExpectedSHA256(release: LatestRelease, installerAsset: ReleaseAsset, signal: AbortSignal) {
+		const checksumAssetName = `${installerAsset.name}.sha256`;
+		const checksumAsset     = release.assets.find(a => a.name === checksumAssetName);
+		if (checksumAsset) {
+			this.logger.debug('Found checksum asset for installer', { checksumAssetName });
+
+			const checksumRes = await this.httpClient.get(checksumAsset.browser_download_url, {
+				signal,
+				headers: {
+					accept: 'text/plain'
+				}
+			});
+			if (!checksumRes.ok) {
+				throw new Error(`Could not download checksum asset (${checksumRes.status} ${checksumRes.statusText})`);
+			}
+
+			const checksumText = await checksumRes.text();
+			const parsed       = this.parseChecksumText(checksumText);
+			if (!parsed) {
+				throw new Error(`Checksum file "${checksumAssetName}" is invalid`);
+			}
+
+			return parsed;
+		}
+
+		const digest = this.tryGetDigestSHA256(installerAsset);
+		if (digest) {
+			this.logger.debug('Using installer digest from GitHub API response');
+			return digest;
+		}
+
+		return null;
+	}
+
+	private parseChecksumText(checksumText: string) {
+		const hashMatch = /\b([a-fA-F0-9]{64})\b/.exec(checksumText);
+		if (!hashMatch) {
+			return null;
+		}
+
+		return hashMatch[1].toLowerCase();
+	}
+
+	private tryGetDigestSHA256(asset: ReleaseAsset) {
+		const digest = (asset as ReleaseAsset & { digest?: string }).digest;
+		if (!digest) {
+			return null;
+		}
+
+		const match = /^sha256:([a-fA-F0-9]{64})$/i.exec(digest.trim());
+		if (!match) {
+			return null;
+		}
+
+		return match[1].toLowerCase();
+	}
+
+	private async verifyInstaller(path: Path, asset: ReleaseAsset, expectedSHA256: string) {
+		const { size } = await stat(path.toString());
+		if (asset.size > 0 && size !== asset.size) {
+			throw new Error(`Installer size mismatch (expected ${asset.size} bytes, got ${size} bytes)`);
+		}
+
+		const actualSHA256 = await this.getFileSHA256(path);
+		if (actualSHA256 !== expectedSHA256.toLowerCase()) {
+			throw new Error('Installer SHA-256 verification failed');
+		}
+	}
+
+	private async getFileSHA256(path: Path) {
+		const hash = createHash('sha256');
+		const file = createReadStream(path.toString());
+		file.on('data', chunk => hash.update(chunk as Buffer));
+
+		await finished(file);
+
+		return hash.digest('hex').toLowerCase();
 	}
 }

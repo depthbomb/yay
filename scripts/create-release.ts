@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { readFileSync } from 'node:fs';
 import { Octokit } from '@octokit/rest';
+import { createHash } from 'node:crypto';
 import { changelog } from '../product.json';
 
 type ChangeItem = string | ChangeItem[];
@@ -39,6 +40,10 @@ bodyLines.push(...formatChanges(latestChanges.changes));
 const body    = bodyLines.join('\n');
 const octokit = new Octokit({ auth: token });
 
+function createSHA256(data: Buffer) {
+	return createHash('sha256').update(data).digest('hex');
+}
+
 (async () => {
 	const release = await octokit.repos.createRelease({
 		owner,
@@ -56,18 +61,26 @@ const octokit = new Octokit({ auth: token });
 		{ path: archivePath,  name: 'yay-online-files.7z', contentType: 'application/x-7z-compressed' },
 	]) {
 		const data = readFileSync(asset.path);
-		const url  = upload_url.replace('{?name,label}', `?name=${encodeURIComponent(asset.name)}`);
-		await octokit.request({
-			method: 'POST',
-			url,
-			headers: {
-				'content-type': asset.contentType,
-				'content-length': data.length,
-				authorization: `token ${token}`,
-			},
-			data,
-		});
+		const hash = createSHA256(data);
+		const checksumData = Buffer.from(`${hash}  ${asset.name}\n`, 'utf8');
 
-		console.log(`Uploaded ${asset.name}`);
+		for (const upload of [
+			{ name: asset.name, contentType: asset.contentType, data },
+			{ name: `${asset.name}.sha256`, contentType: 'text/plain; charset=utf-8', data: checksumData },
+		]) {
+			const url = upload_url.replace('{?name,label}', `?name=${encodeURIComponent(upload.name)}`);
+			await octokit.request({
+				method: 'POST',
+				url,
+				headers: {
+					'content-type': upload.contentType,
+					'content-length': upload.data.length,
+					authorization: `token ${token}`,
+				},
+				data: upload.data,
+			});
+
+			console.log(`Uploaded ${upload.name}`);
+		}
 	}
 })();
