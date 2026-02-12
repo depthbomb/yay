@@ -16,7 +16,15 @@ type AppEvents = {
 	'ytdlp:download-finished': [IDownloadSession];
 };
 
-export class AppEventEmitter extends EventEmitter<AppEvents> {}
+export class AppEventEmitter extends EventEmitter<AppEvents> {
+	public async emitAsync<K extends keyof AppEvents>(eventName: K, ...args: AppEvents[K]) {
+		const listeners = this.rawListeners(eventName) as Array<(...params: AppEvents[K]) => Awaitable<unknown>>;
+
+		return Promise.allSettled(
+			listeners.map(listener => Promise.resolve().then(() => listener.apply(this, args)))
+		);
+	}
+}
 
 
 export const eventBus = new AppEventEmitter();

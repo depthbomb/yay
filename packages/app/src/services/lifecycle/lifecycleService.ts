@@ -130,9 +130,6 @@ export class LifecycleService implements IBootstrappable {
 
 		try {
 			this.logger.info('Emitting shutdown event');
-
-			eventBus.emit('lifecycle:shutdown');
-
 			await this.waitForShutdownHandlers();
 
 			this.logger.info('Shutdown complete, exiting');
@@ -194,16 +191,27 @@ export class LifecycleService implements IBootstrappable {
 	}
 
 	private async waitForShutdownHandlers(timeoutMs = 5000) {
-		return new Promise<void>((res) => {
-			const timeout = setTimeout(() => {
-				this.logger.warn(`Shutdown handlers exceeded ${timeoutMs}ms timeout`);
-				res();
-			}, timeoutMs);
+		const listenerCount = eventBus.listenerCount('lifecycle:shutdown');
+		this.logger.debug('Dispatching shutdown handlers', { listenerCount, timeoutMs });
 
-			setTimeout(() => {
-				clearTimeout(timeout);
-				res();
-			}, 100);
+		const TIMEOUT = Symbol('shutdown-timeout');
+		const timeout = new Promise<typeof TIMEOUT>((resolve) => {
+			setTimeout(() => resolve(TIMEOUT), timeoutMs);
 		});
+
+		const shutdown = eventBus.emitAsync('lifecycle:shutdown', undefined);
+
+		const result = await Promise.race([shutdown, timeout]);
+		if (result === TIMEOUT) {
+			this.logger.warn(`Shutdown handlers exceeded ${timeoutMs}ms timeout`);
+			return;
+		}
+
+		const failed = result.filter(r => r.status === 'rejected');
+		if (failed.length > 0) {
+			this.logger.error('One or more shutdown handlers failed', {
+				failures: failed.map(f => f.reason)
+			});
+		}
 	}
 }
