@@ -1,5 +1,5 @@
 {
-	"version": "1.39.8",
+	"version": "1.39.9",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -11,6 +11,15 @@
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
+		{
+			"version": "1.39.9",
+			"changes": [
+				"Improved update reliability and installer validation",
+				"Various security improvements",
+				"Various minor optimizations and maintenance fixes",
+				"Upgraded to [Electron 40.4.0](https://releases.electronjs.org/release/v40.4.0)"
+			]
+		},
 		{
 			"version": "1.39.8",
 			"changes": [

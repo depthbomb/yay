@@ -1,3 +1,12 @@
+# 1.39.9
+
+- Improved update reliability and installer validation
+- Various security improvements
+- Various minor optimizations and maintenance fixes
+- Upgraded to [Electron 40.4.0](https://releases.electronjs.org/release/v40.4.0)
+
+---
+
 # 1.39.8
 
 - Improved unhandled exception error message
