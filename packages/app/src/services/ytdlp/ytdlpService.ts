@@ -1,13 +1,13 @@
 import { ok } from 'shared/ipc';
 import { dialog } from 'electron';
 import { eventBus } from '~/events';
-import { ESettingsKey } from 'shared';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
 import { IPCService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
 import { Queue } from '@depthbomb/common/queue';
 import { WindowService } from '~/services/window';
+import { isValidURL, ESettingsKey } from 'shared';
 import { LoggingService } from '~/services/logging';
 import { ProcessService } from '~/services/process';
 import { inject, injectable } from '@needle-di/core';
@@ -74,6 +74,11 @@ export class YtdlpService implements IBootstrappable {
 	}
 
 	public async enqueue(url: string, audioOnly = false) {
+		if (!isValidURL(url)) {
+			this.logger.warn('Rejected download request with invalid URL', { url });
+			return ok();
+		}
+
 		const session = {
 			id: crypto.randomUUID(),
 			url,
@@ -207,7 +212,7 @@ export class YtdlpService implements IBootstrappable {
 			}
 		}
 
-		args.push(session.url, '-o', downloadPath, '--ffmpeg-location', ffmpegPath.toString());
+		args.push('-o', downloadPath, '--ffmpeg-location', ffmpegPath.toString());
 
 		const cookies = this.settings.get<Nullable<string>>(ESettingsKey.CookiesFilePath, null);
 		if (cookies) {
@@ -217,6 +222,9 @@ export class YtdlpService implements IBootstrappable {
 		if (this.settings.get(ESettingsKey.SkipYoutubePlaylists)) {
 			args.push('--no-playlist');
 		}
+
+		// Keep the media URL after `--` so it is never parsed as an option.
+		args.push('--', session.url);
 
 		if (youtubeMatch) {
 			this.thumbnail.downloadThumbnail(youtubeMatch[1]);
