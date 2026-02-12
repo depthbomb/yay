@@ -1,9 +1,9 @@
 import { Hono } from 'hono';
 import { eventBus } from '~/events';
-import { ESettingsKey } from 'shared';
 import { IDGenerator } from '~/common';
 import { serve } from '@hono/node-server';
 import { YtdlpService } from '~/services/ytdlp';
+import { isValidURL, ESettingsKey } from 'shared';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -53,9 +53,14 @@ export class RestService implements IBootstrappable {
 		this.hono.get('/ping', c => this.createJSONResponse(c, 'PONG'));
 		this.hono.get('/is-busy', c => this.createJSONResponse(c, '', { busy: this.ytdlp.isBusy }));
 		this.hono.post('/download', c => {
-			const url = c.req.query('url');
-			if (!url) {
+			const inputURL = c.req.query('url');
+			if (!inputURL) {
 				return this.createJSONResponse(c, 'Missing `url` search parameter', {}, 400);
+			}
+
+			const url = inputURL.trim();
+			if (!isValidURL(url)) {
+				return this.createJSONResponse(c, 'Invalid `url` search parameter', {}, 400);
 			}
 
 			const format = c.req.query('format') ?? 'video';
