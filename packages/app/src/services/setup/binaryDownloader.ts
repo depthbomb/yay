@@ -31,7 +31,14 @@ export class BinaryDownloader {
 			throw new Error('Could not resolve yt-dlp release download URL');
 		}
 
-		const res = await this.httpClient.get(url, { signal });
+		let res: Response;
+		try {
+			res = await this.httpClient.get(url, { signal });
+		} catch (err) {
+			this.rethrowIfCancelled(signal, err);
+			throw err;
+		}
+
 		if (!res.ok) {
 			throw new Error(`Could not download yt-dlp binary (${res.status} ${res.statusText})`);
 		}
@@ -148,7 +155,14 @@ export class BinaryDownloader {
 	) {
 		this.throwIfCancelled(signal);
 
-		const res = await this.httpClient.get(url, { signal });
+		let res: Response;
+		try {
+			res = await this.httpClient.get(url, { signal });
+		} catch (err) {
+			this.rethrowIfCancelled(signal, err);
+			throw err;
+		}
+
 		if (!res.ok) {
 			throw new Error(`Could not download archive (${res.status} ${res.statusText})`);
 		}

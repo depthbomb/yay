@@ -51,7 +51,13 @@ export class SetupService implements IBootstrappable {
 
 		this.ipc.registerHandler('setup<-cancel', () => this.cancel());
 
-		await this.performSetupActions();
+		try {
+			await this.performSetupActions();
+		} catch (err) {
+			if (!this.isCancellationError(err)) {
+				throw err;
+			}
+		}
 	}
 
 	public cancel() {
@@ -72,7 +78,7 @@ export class SetupService implements IBootstrappable {
 			return;
 		}
 
-		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true) && !this.downloadedYtdlpBinary) {
+		if (this.settings.get(ESettingsKey.UpdateYtdlpOnStartup, true) && !this.downloadedYtdlpBinary && !this.cts.isCancellationRequested) {
 			await this.updateYtdlp();
 		}
 
@@ -228,7 +234,7 @@ export class SetupService implements IBootstrappable {
 
 				await this.settings.set(ESettingsKey.YtdlpPath, ytdlpPath.toString());
 			} catch (err) {
-				if (!(err instanceof OperationCancelledError)) {
+				if (!this.isCancellationError(err)) {
 					const res = await dialog.showMessageBox(this.setupWindow!, {
 						type: 'error',
 						message: `There was an issue downloading the latest release of yt-dlp.\nYou can try to manually download the latest release and place the file into the same folder as yay.exe\n\nWould you like to continue to the download?`,
@@ -269,7 +275,7 @@ export class SetupService implements IBootstrappable {
 
 				await this.settings.set(ESettingsKey.DenoPath, denoPath.toString());
 			} catch (err) {
-				if (!(err instanceof OperationCancelledError)) {
+				if (!this.isCancellationError(err)) {
 					const res = await dialog.showMessageBox(this.setupWindow!, {
 						type: 'error',
 						message: `There was an issue downloading the latest release of Deno.\nThis file is currently not required but will likely be in the future.\n\nWould you like to continue?`,
@@ -309,7 +315,7 @@ export class SetupService implements IBootstrappable {
 					throw new Error('Downloaded FFmpeg binaries failed verification.');
 				}
 			} catch (err) {
-				if (!(err instanceof OperationCancelledError)) {
+				if (!this.isCancellationError(err)) {
 					const res = await dialog.showMessageBox(this.setupWindow!, {
 						type: 'error',
 						message: `There was an issue downloading the latest release of FFmpeg.\nYou can try to manually download the latest release and extract the files into the same folder as yay.exe\n\nWould you like to continue?`,
@@ -332,6 +338,7 @@ export class SetupService implements IBootstrappable {
 
 		if (this.cts.isCancellationRequested) {
 			this.setupWindow!.setProgressBar(1, { mode: 'error' });
+			return false;
 		}
 
 		return true;
@@ -424,6 +431,16 @@ export class SetupService implements IBootstrappable {
 		this.emitStep('Checking for yt-dlp updates...');
 
 		await this.ytdlp.updateBinary(true);
+	}
+
+	private isCancellationError(err: unknown) {
+		if (this.cts.isCancellationRequested || err instanceof OperationCancelledError) {
+			return true;
+		}
+
+		const maybeError = err as { name?: string; code?: string; };
+
+		return maybeError?.name === 'AbortError' || maybeError?.code === 'ABORT_ERR';
 	}
 
 	private emitStep(message: string, progress = -1) {

@@ -1,7 +1,7 @@
 import { Readable } from 'node:stream';
 import EventEmitter from 'node:events';
 import { IDGenerator } from '~/common';
-import { finished } from 'node:stream/promises';
+import { pipeline } from 'node:stream/promises';
 import { URLPath } from '@depthbomb/common/urllib';
 import { retry, ConstantBackoff, handleResultType } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
@@ -93,14 +93,19 @@ export class HTTPClient extends EventEmitter<HTTPClientEvents> {
 		const file          = outputPath.toWriteStream();
 
 		let downloadedBytes = 0;
-
-		nodeStream.on('data', (chunk: Buffer) => {
+		const onData = (chunk: Buffer | Uint8Array) => {
 			downloadedBytes += chunk.length;
 			if (contentLength && options.onProgress) {
 				options.onProgress(Math.round((downloadedBytes / contentLength) * 100));
 			}
-		});
+		};
 
-		return finished(nodeStream.pipe(file), { signal: options.signal });
+		nodeStream.on('data', onData);
+
+		try {
+			await pipeline(nodeStream, file, { signal: options.signal });
+		} finally {
+			nodeStream.off('data', onData);
+		}
 	}
 }
