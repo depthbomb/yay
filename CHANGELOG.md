@@ -1,6 +1,6 @@
 # 1.39.10
 
-This is the last release for a while as I work on other projects.
+<p style="color:#fff;">This is the last release for a while as I work on other projects.</p>
 
 - Fixed a crash that would occur when closing the setup window while a binary was downloading
 - Upgraded to [Electron 40.4.1](https://releases.electronjs.org/release/v40.4.1)
