@@ -10,6 +10,7 @@ export const HTML: FC<IHTMLProps> = ({ html }) => {
 		<div
 			className="
 				prose
+				prose-p:text-white
 				prose-li:text-white
 				prose-headings:text-white
 				prose-strong:text-white
