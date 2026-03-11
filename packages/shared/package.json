@@ -105,6 +105,6 @@
 		"typescript": "^5.9.3"
 	},
 	"inlinedDependencies": {
-		"electron": "40.8.0"
+		"electron": "41.0.0"
 	}
 }
