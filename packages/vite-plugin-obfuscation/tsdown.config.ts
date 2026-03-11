@@ -8,7 +8,9 @@ export default defineConfig({
 	format: 'esm',
 	dts: true,
 	minify: true,
-	skipNodeModulesBundle: true,
+	deps: {
+		skipNodeModulesBundle: false,
+	},
 	target: 'node24',
 	exports: {
 		legacy: true,

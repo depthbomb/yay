@@ -19,9 +19,18 @@
 	},
 	"devDependencies": {
 		"@types/node": "^24.12.0",
-		"tsdown": "^0.21.0",
+		"tsdown": "^0.21.1",
 		"typescript": "^5.9.3",
 		"vite": "^7.3.1"
 	},
-	"packageManager": "yarn@4.12.0"
+	"packageManager": "yarn@4.12.0",
+	"inlinedDependencies": {
+		"vite": "7.3.1",
+		"@types/estree": "1.0.8",
+		"rollup": "4.55.2",
+		"esbuild": "0.27.2",
+		"@jridgewell/trace-mapping": "0.3.25",
+		"terser": "5.46.0",
+		"postcss": "8.5.6"
+	}
 }

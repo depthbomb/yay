@@ -15,7 +15,9 @@ export default defineConfig((options) => ({
 	format: ['cjs', 'esm'],
 	dts: true,
 	minify: true,
-	skipNodeModulesBundle: false,
+	deps: {
+		skipNodeModulesBundle: false,
+	},
 	splitting: true,
 	sourcemap: false,
 	target: 'esnext',
