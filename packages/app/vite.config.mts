@@ -2,7 +2,7 @@ import { resolve } from 'node:path';
 import { builtinModules } from 'module';
 import { loadEnv, defineConfig } from 'vite';
 import { obfuscationPlugin } from 'vite-plugin-obfuscation';
-import type { UserConfigExport } from 'vite';
+import type { UserConfig } from 'vite';
 
 const { platform } = process;
 
@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
 	const githubAccessToken = !isProduction && typeof env.GITHUB_ACCESS_TOKEN === 'string'
 		? env.GITHUB_ACCESS_TOKEN
 		: '';
-	const config: UserConfigExport = {
+	const config: UserConfig = {
 		root: resolve('./src'),
 		base: '',
 		assetsInclude: '**/*.node',
@@ -54,7 +54,7 @@ export default defineConfig(({ mode }) => {
 			},
 		},
 		plugins: [
-			obfuscationPlugin()
+			obfuscationPlugin() as any
 		],
 		define: {
 			__WIN32__: platform === 'win32',
