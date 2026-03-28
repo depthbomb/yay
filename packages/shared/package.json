@@ -97,14 +97,14 @@
 		"gen:ipc": "tsx scripts/generate-ipc-helper.ts"
 	},
 	"dependencies": {
-		"@depthbomb/common": "^1.3.2",
-		"@depthbomb/node-common": "^2.2.2"
+		"@depthbomb/common": "^2.2.0",
+		"@depthbomb/node-common": "^2.3.0"
 	},
 	"devDependencies": {
-		"tsdown": "^0.21.1",
-		"typescript": "^5.9.3"
+		"tsdown": "^0.21.7",
+		"typescript": "^6.0.2"
 	},
 	"inlinedDependencies": {
-		"electron": "41.0.0"
+		"electron": "41.0.1"
 	}
 }
