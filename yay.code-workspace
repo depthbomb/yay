@@ -43,7 +43,6 @@
 	},
 	"extensions": {
 		"recommendations": [
-			"christian-kohler.npm-intellisense",
 			"dbaeumer.vscode-eslint",
 			"tamasfe.even-better-toml",
 			"yoavbls.pretty-ts-errors",

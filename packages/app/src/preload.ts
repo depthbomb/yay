@@ -1,7 +1,7 @@
 import { ipcRenderer, contextBridge } from 'electron';
 import { IPCEvents, IPCChannel, IPCChannels } from 'shared';
-import { arch, type, release, platform, hostname } from 'node:os';
-import type { IPCAPI, IIPCEvents, IIPCContract, SystemAPI, VersionsAPI, SettingsAPI, FeatureFlagsAPI } from 'shared';
+import { arch, type, release, hostname, platform } from 'node:os';
+import type { IPCAPI, SystemAPI, IIPCEvents, SettingsAPI, VersionsAPI, IIPCContract, FeatureFlagsAPI } from 'shared';
 
 type IPCArgs<K extends keyof IIPCContract>   = IIPCContract[K]['args'];
 type IPCReturn<K extends keyof IIPCContract> = IIPCContract[K]['return'];

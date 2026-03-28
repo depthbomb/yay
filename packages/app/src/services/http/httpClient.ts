@@ -1,13 +1,13 @@
+import { IDGenerator } from '~/common';
 import { Readable } from 'node:stream';
 import EventEmitter from 'node:events';
-import { IDGenerator } from '~/common';
 import { pipeline } from 'node:stream/promises';
-import { URLPath } from '@depthbomb/common/urllib';
+import { URLPath } from '@depthbomb/common/url';
 import { retry, ConstantBackoff, handleResultType } from 'cockatiel';
 import type { RetryPolicy } from 'cockatiel';
-import type { URLLike } from '@depthbomb/common/urllib';
+import type { URLLike } from '@depthbomb/common/url';
 import type { Path } from '@depthbomb/node-common/pathlib';
-import type { GETOptions, RequestOptions, HTTPClientEvents, HTTPClientOptions, DownloadOptions } from './types';
+import type { GETOptions, RequestOptions, DownloadOptions, HTTPClientEvents, HTTPClientOptions } from './types';
 
 export class HTTPClient extends EventEmitter<HTTPClientEvents> {
 	public readonly name: string;

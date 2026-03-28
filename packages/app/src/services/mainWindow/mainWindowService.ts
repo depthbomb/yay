@@ -1,10 +1,10 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
-import { IPCService } from '~/services/ipc';
-import { getExtraFilePath } from '~/common';
 import { Flag, ESettingsKey } from 'shared';
-import { TrayService } from '~/services/tray';
+import { getExtraFilePath } from '~/common';
+import { IPCService } from '~/services/ipc';
 import { app, shell, dialog } from 'electron';
+import { TrayService } from '~/services/tray';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
@@ -51,10 +51,7 @@ export class MainWindowService implements IBootstrappable {
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
-					nodeIntegration: false,
-					contextIsolation: true,
-					sandbox: false,
-					webSecurity: true,
+					nodeIntegration: true,
 					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}

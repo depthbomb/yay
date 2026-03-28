@@ -1,6 +1,6 @@
 import { product } from 'shared';
 import { eventBus } from '~/events';
-import { app, Menu, Tray } from 'electron'
+import { app, Menu, Tray } from 'electron';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';

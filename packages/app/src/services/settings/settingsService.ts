@@ -1,8 +1,8 @@
 import { ok } from 'shared/ipc';
 import { join } from 'node:path';
 import { eventBus } from '~/events';
-import { IPCService } from '~/services/ipc';
 import { app, safeStorage } from 'electron';
+import { IPCService } from '~/services/ipc';
 import { product, ESettingsKey } from 'shared';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';

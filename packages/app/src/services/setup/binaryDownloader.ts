@@ -6,9 +6,9 @@ import { HTTPService } from '~/services/http';
 import { GithubService } from '~/services/github';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
-import { OperationCancelledError } from '@depthbomb/node-common';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { getExtraFileDir, getExtraFilePath } from '~/common';
+import { OperationCancelledError } from '@depthbomb/node-common/cancellation';
 import type { HTTPClient } from '~/services/http';
 
 @injectable()

@@ -35,10 +35,7 @@ export class SettingsWindowService implements IBootstrappable {
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
-					nodeIntegration: false,
-					contextIsolation: true,
-					sandbox: false,
-					webSecurity: true,
+					nodeIntegration: true,
 					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}

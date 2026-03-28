@@ -1,21 +1,21 @@
 import { ok } from 'shared/ipc';
 import { ESettingsKey } from 'shared';
-import { spawn } from 'node:child_process';
 import { PRELOAD_PATH } from '~/constants';
+import { spawn } from 'node:child_process';
 import { CLIService } from '~/services/cli';
-import { IPCService } from '~/services/ipc';
 import { getExtraFilePath } from '~/common';
+import { IPCService } from '~/services/ipc';
+import { OnlineChecker } from './onlineChecker';
 import { TimerService } from '~/services/timer';
 import { YtdlpService } from '~/services/ytdlp';
-import { OnlineChecker } from './onlineChecker';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
+import { BinaryDownloader } from './binaryDownloader';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
-import { BinaryDownloader } from './binaryDownloader';
 import { app, shell, dialog, BrowserWindow } from 'electron';
-import { CancellationTokenSource, OperationCancelledError } from '@depthbomb/node-common';
+import { CancellationTokenSource, OperationCancelledError } from '@depthbomb/node-common/cancellation';
 import type { Maybe } from 'shared';
 import type { IBootstrappable } from '~/common';
 
@@ -126,10 +126,7 @@ export class SetupService implements IBootstrappable {
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
-					nodeIntegration: false,
-					contextIsolation: true,
-					sandbox: false,
-					webSecurity: true,
+					nodeIntegration: true,
 					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}

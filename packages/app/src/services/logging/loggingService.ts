@@ -2,7 +2,7 @@ import { app } from 'electron';
 import { join } from 'node:path';
 import { injectable } from '@needle-di/core';
 import { serializeError } from 'serialize-error';
-import { LogLevel, LogLayer, BlankTransport } from 'loglayer';
+import { LogLayer, LogLevel, BlankTransport } from 'loglayer';
 import { LogFileRotationTransport } from '@loglayer/transport-log-file-rotation';
 import type { LogLayerMetadata } from 'loglayer';
 

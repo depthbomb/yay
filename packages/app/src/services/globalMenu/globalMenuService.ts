@@ -1,10 +1,10 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
+import { PRELOAD_PATH } from '~/constants';
 import { IPCService } from '~/services/ipc';
-import { PRELOAD_PATH, } from '~/constants';
 import { YtdlpService } from '~/services/ytdlp';
-import { WindowService } from '~/services/window';
 import { isValidURL, ESettingsKey } from 'shared';
+import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
@@ -42,10 +42,7 @@ export class GlobalMenuService implements IBootstrappable {
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
-					nodeIntegration: false,
-					contextIsolation: true,
-					sandbox: false,
-					webSecurity: true,
+					nodeIntegration: true,
 					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}
