@@ -13,7 +13,7 @@
 		"lint": "eslint ./src --ext .ts"
 	},
 	"dependencies": {
-		"@depthbomb/common": "^2.3.0",
+		"@depthbomb/common": "^2.4.0",
 		"@depthbomb/node-common": "^2.3.0",
 		"@formatjs/fast-memoize": "^3.1.1",
 		"@hono/node-server": "^1.19.12",
@@ -35,7 +35,7 @@
 		"@types/node": "^24.12.0",
 		"@types/semver": "^7.7.1",
 		"cross-env": "^10.1.0",
-		"electron": "41.1.0",
+		"electron": "41.1.1",
 		"eslint": "^10.1.0",
 		"globals": "^17.4.0",
 		"terser": "^5.46.1",

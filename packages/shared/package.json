@@ -97,7 +97,7 @@
 		"gen:ipc": "tsx scripts/generate-ipc-helper.ts"
 	},
 	"dependencies": {
-		"@depthbomb/common": "^2.3.0",
+		"@depthbomb/common": "^2.4.0",
 		"@depthbomb/node-common": "^2.3.0"
 	},
 	"devDependencies": {
