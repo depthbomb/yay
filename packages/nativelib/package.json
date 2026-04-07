@@ -25,8 +25,8 @@
 		"version": "napi version"
 	},
 	"devDependencies": {
-		"@emnapi/core": "^1.9.1",
-		"@emnapi/runtime": "^1.9.1",
+		"@emnapi/core": "^1.9.2",
+		"@emnapi/runtime": "^1.9.2",
 		"@napi-rs/cli": "^3.6.0",
 		"@oxc-node/core": "^0.1.0",
 		"@taplo/cli": "^0.7.0",

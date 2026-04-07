@@ -21,10 +21,10 @@
 		"ahooks": "^3.9.7",
 		"cva": "^1.0.0-beta.4",
 		"dompurify": "3.3.3",
-		"jotai": "^2.19.0",
+		"jotai": "^2.19.1",
 		"react": "^19.2.4",
 		"react-dom": "^19.2.4",
-		"react-router": "^7.13.2",
+		"react-router": "^7.14.0",
 		"shared": "workspace:*"
 	},
 	"devDependencies": {
@@ -33,24 +33,21 @@
 		"@tailwindcss/vite": "^4.2.2",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react": "^6.0.1",
+		"@vitejs/plugin-react": "^5.2.0",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"electron": "41.1.1",
-		"eslint": "^10.1.0",
+		"eslint": "^10.2.0",
 		"eslint-plugin-react-hooks": "^7.0.1",
 		"eslint-plugin-react-refresh": "^0.5.2",
 		"globals": "^17.4.0",
 		"postcss": "^8.5.8",
-		"sass-embedded": "^1.98.0",
+		"sass-embedded": "^1.99.0",
 		"tailwindcss": "^4.2.2",
 		"typescript": "^6.0.2",
 		"typescript-eslint": "^8.58.0",
-		"vite": "npm:rolldown-vite@7.2.5",
+		"vite": "7.3.2",
 		"vite-plugin-babel": "^1.6.0",
 		"vite-plugin-minify": "^2.1.0",
 		"vite-plugin-obfuscation": "workspace:*"
-	},
-	"overrides": {
-		"vite": "npm:rolldown-vite@7.2.5"
 	}
 }
