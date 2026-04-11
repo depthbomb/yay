@@ -4,9 +4,9 @@ import type { Awaitable, ESettingsKey, IDownloadSession } from 'shared';
 
 type AppEvents = {
 	'lifecycle:shutdown-requested': [veto: (reason: string, source: string, canProceed?: () => Awaitable<boolean>) => void];
-	'lifecycle:shutdown':           [void];
+	'lifecycle:shutdown':           [];
 	'lifecycle:phase-changed':      [ELifecyclePhase];
-	'lifecycle:ready-phase':        [void];
+	'lifecycle:ready-phase':        [];
 
 	'settings:updated': [key: ESettingsKey, value: unknown];
 
