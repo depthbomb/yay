@@ -199,7 +199,7 @@ export class LifecycleService implements IBootstrappable {
 			setTimeout(() => resolve(TIMEOUT), timeoutMs);
 		});
 
-		const shutdown = eventBus.emitAsync('lifecycle:shutdown', undefined);
+		const shutdown = eventBus.emitAsync('lifecycle:shutdown');
 
 		const result = await Promise.race([shutdown, timeout]);
 		if (result === TIMEOUT) {
