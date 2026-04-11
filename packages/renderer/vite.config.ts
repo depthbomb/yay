@@ -1,11 +1,9 @@
 import { DEV_PORT } from 'shared';
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
-import babel from 'vite-plugin-babel';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { URL, fileURLToPath } from 'node:url';
-import { ViteMinifyPlugin } from 'vite-plugin-minify';
 import { obfuscationPlugin } from 'vite-plugin-obfuscation';
 import type { UserConfig } from 'vite';
 
@@ -54,14 +52,12 @@ export default defineConfig(({ mode }) => {
 					return html.replace(/%APP_CSP%/g, cspContent);
 				},
 			},
-			react(),
-			babel({
-				babelConfig: {
-					plugins: ['babel-plugin-react-compiler'],
-				},
+			react({
+				babel: {
+					plugins: ['babel-plugin-react-compiler']
+				}
 			}),
 			tailwindcss(),
-			ViteMinifyPlugin(),
 			obfuscationPlugin() as any
 		],
 		resolve: {

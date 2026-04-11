@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
 			assetsDir: '.',
 			emptyOutDir: !isProduction,
 			sourcemap: !isProduction,
-			minify: isProduction ? 'terser' : false,
+			minify: isProduction,
 			lib: {
 				entry: {
 					app: resolve('./src/index.ts'),
