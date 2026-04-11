@@ -1,4 +1,4 @@
-# 1.39.12
+# 1.39.13
 
 - Upgraded to [Electron 41.2.0](https://releases.electronjs.org/release/v41.2.0)
 
