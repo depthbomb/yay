@@ -3801,14 +3801,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.28.1":
-  version: 0.28.1
-  resolution: "@ts-morph/common@npm:0.28.1"
+"@ts-morph/common@npm:~0.29.0":
+  version: 0.29.0
+  resolution: "@ts-morph/common@npm:0.29.0"
   dependencies:
     minimatch: "npm:^10.0.1"
     path-browserify: "npm:^1.0.1"
     tinyglobby: "npm:^0.2.14"
-  checksum: 10/d5c6ed11cf046c186c7263c28c7e9b5fbefb61c65b99f66cfe6a3b249f70f3fbf116b5aace2980602a7ceabecdc399065d5a7f14aabe5475eb43fd573a3cc665
+  checksum: 10/d23cfb6c81110235a79cf5fbeb7efed04f4c8d560391a45184470b2363661f8da42f76572808be213f1e30d148117cb6dd57cac84a1c2a236839de986d2c27b8
   languageName: node
   linkType: hard
 
@@ -4186,7 +4186,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:5.*":
+"@vitejs/plugin-react@npm:^5.2.0":
   version: 5.2.0
   resolution: "@vitejs/plugin-react@npm:5.2.0"
   dependencies:
@@ -5304,10 +5304,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^17.4.1":
-  version: 17.4.1
-  resolution: "dotenv@npm:17.4.1"
-  checksum: 10/addbff54aed55b80b5d4527ba0a221a63718835c10a2ed7d949f5caeab96995796a4c88f30263724aa71014aa4e3092a1ef551559ddef44d68c429494e13ff68
+"dotenv@npm:^17.4.2":
+  version: 17.4.2
+  resolution: "dotenv@npm:17.4.2"
+  checksum: 10/ca1b6f54d58e39914901e1518958e86083aca8deb5aa2e7f2a51acd53291d97852479b0ab26ed949b6a45a0e9adcc7b0d1c3c72375e8ea670f7005e341c6daba
   languageName: node
   linkType: hard
 
@@ -6319,10 +6319,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globals@npm:^17.4.0":
-  version: 17.4.0
-  resolution: "globals@npm:17.4.0"
-  checksum: 10/ffad244617e94efcb3da72b7beefc941167c21316148ce378f322db7af72db06468f370e23224b3c7b17b5173a7c75b134e5e7b0949f2828519054a76892508d
+"globals@npm:^17.5.0":
+  version: 17.5.0
+  resolution: "globals@npm:17.5.0"
+  checksum: 10/c405a95e1ecf14a1a17caaecd4dadbad38166b3c1b514e07924604ee224e922c043fc93ae21164d124dae5536e5a812566355469e34a689601db7d3d424dc8e7
   languageName: node
   linkType: hard
 
@@ -8049,7 +8049,7 @@ __metadata:
     "@tailwindcss/vite": "npm:^4.2.2"
     "@types/react": "npm:^19.2.14"
     "@types/react-dom": "npm:^19.2.3"
-    "@vitejs/plugin-react": "npm:5.*"
+    "@vitejs/plugin-react": "npm:^5.2.0"
     ahooks: "npm:^3.9.7"
     babel-plugin-react-compiler: "npm:^1.0.0"
     cva: "npm:^1.0.0-beta.4"
@@ -8058,7 +8058,7 @@ __metadata:
     eslint: "npm:^10.2.0"
     eslint-plugin-react-hooks: "npm:^7.0.1"
     eslint-plugin-react-refresh: "npm:^0.5.2"
-    globals: "npm:^17.4.0"
+    globals: "npm:^17.5.0"
     jotai: "npm:^2.19.1"
     postcss: "npm:^8.5.9"
     react: "npm:^19.2.5"
@@ -9205,13 +9205,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:27.0.2":
-  version: 27.0.2
-  resolution: "ts-morph@npm:27.0.2"
+"ts-morph@npm:28.0.0":
+  version: 28.0.0
+  resolution: "ts-morph@npm:28.0.0"
   dependencies:
-    "@ts-morph/common": "npm:~0.28.1"
+    "@ts-morph/common": "npm:~0.29.0"
     code-block-writer: "npm:^13.0.3"
-  checksum: 10/b9bd8ed86d4b76ca23446d3f808787cfe95a3bcb2316769a2f3fa262ea9ab4043bb76bf8aef677f9be0d758576f074df2926e701a535f84fd21946fdbf465148
+  checksum: 10/fb5541c2c5b25386ae85346203046cc136d4afa2821a9b7b5ea9ffdbcff6d8867eccf98a3d7d50dd86f64428f80cf4ae9e609bd8f02f99cef902ba2760ecd5d9
   languageName: node
   linkType: hard
 
@@ -9782,10 +9782,10 @@ __metadata:
     "@types/node": "npm:^24.12.2"
     asar-trim: "npm:^1.2.3"
     cross-env: "npm:^10.1.0"
-    dotenv: "npm:^17.4.1"
+    dotenv: "npm:^17.4.2"
     electron-builder: "npm:26.8.2"
     node-gyp: "npm:^12.2.0"
-    ts-morph: "npm:27.0.2"
+    ts-morph: "npm:28.0.0"
     tsx: "npm:^4.21.0"
     typescript: "npm:^6.0.2"
   languageName: unknown
@@ -9809,7 +9809,7 @@ __metadata:
     cross-env: "npm:^10.1.0"
     electron: "npm:41.2.0"
     eslint: "npm:^10.2.0"
-    globals: "npm:^17.4.0"
+    globals: "npm:^17.5.0"
     hono: "npm:^4.12.12"
     loglayer: "npm:^9.1.0"
     nativelib: "workspace:*"
