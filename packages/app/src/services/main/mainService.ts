@@ -130,7 +130,7 @@ export class MainService {
 		if (!this.lifecycle.shutdownInProgress) {
 			this.lifecycle.phase = ELifecyclePhase.Ready;
 
-			await this.deepLinks.handleDeepLinks(this.cli.args._);
+			await this.deepLinks.handleDeepLinks(this.cli.args);
 		}
 	}
 

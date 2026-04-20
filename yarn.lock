@@ -9180,13 +9180,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-flag@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "type-flag@npm:4.2.0"
-  checksum: 10/fb866363118358fd5a4fc697fdb3eaa7c82b22651550778dd31cc3a0f82b05744bae8a31fbea065b54d7606f64c7ba4daba4354956921310c70b8abc62d3e805
-  languageName: node
-  linkType: hard
-
 "typescript-eslint@npm:^8.59.0":
   version: 8.59.0
   resolution: "typescript-eslint@npm:8.59.0"
@@ -9679,7 +9672,6 @@ __metadata:
     shared: "workspace:*"
     smol-toml: "npm:1.6.1"
     terser: "npm:^5.46.1"
-    type-flag: "npm:^4.2.0"
     typescript: "npm:^6.0.3"
     typescript-eslint: "npm:^8.59.0"
     vite: "npm:^7.3.2"

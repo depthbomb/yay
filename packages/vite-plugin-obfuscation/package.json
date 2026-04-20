@@ -25,13 +25,13 @@
 	},
 	"inlinedDependencies": {
 		"@jridgewell/trace-mapping": "0.3.25",
-		"@oxc-project/types": "0.124.0",
-		"@rolldown/pluginutils": "1.0.0-rc.15",
+		"@oxc-project/types": "0.126.0",
+		"@rolldown/pluginutils": "1.0.0-rc.16",
 		"esbuild": "0.27.0",
-		"postcss": "8.5.9",
-		"rolldown": "1.0.0-rc.15",
+		"postcss": "8.5.10",
+		"rolldown": "1.0.0-rc.16",
 		"terser": "5.46.1",
-		"vite": "8.0.8"
+		"vite": "8.0.9"
 	},
 	"packageManager": "yarn@4.12.0"
 }
