@@ -101,8 +101,8 @@
 		"@depthbomb/node-common": "^2.3.0"
 	},
 	"devDependencies": {
-		"tsdown": "^0.21.7",
-		"typescript": "^6.0.2"
+		"tsdown": "^0.21.9",
+		"typescript": "^6.0.3"
 	},
 	"inlinedDependencies": {
 		"electron": "41.2.0"
