@@ -1,3 +1,10 @@
+# 1.39.14
+
+- Minor optimizations
+- Upgraded to [Electron 41.2.1](https://releases.electronjs.org/release/v41.2.0)
+
+---
+
 # 1.39.13
 
 - Upgraded to [Electron 41.2.0](https://releases.electronjs.org/release/v41.2.0)
