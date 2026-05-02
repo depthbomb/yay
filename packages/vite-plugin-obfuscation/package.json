@@ -19,19 +19,19 @@
 	},
 	"devDependencies": {
 		"@types/node": "^24.12.2",
-		"tsdown": "^0.21.9",
+		"tsdown": "0.21.9",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.9"
+		"vite": "^8.0.10"
 	},
 	"inlinedDependencies": {
 		"@jridgewell/trace-mapping": "0.3.25",
-		"@oxc-project/types": "0.126.0",
-		"@rolldown/pluginutils": "1.0.0-rc.16",
+		"@oxc-project/types": "0.127.0",
+		"@rolldown/pluginutils": "1.0.0-rc.17",
 		"esbuild": "0.27.0",
 		"postcss": "8.5.10",
-		"rolldown": "1.0.0-rc.16",
-		"terser": "5.46.1",
-		"vite": "8.0.9"
+		"rolldown": "1.0.0-rc.17",
+		"terser": "5.46.2",
+		"vite": "8.0.10"
 	},
 	"packageManager": "yarn@4.12.0"
 }
