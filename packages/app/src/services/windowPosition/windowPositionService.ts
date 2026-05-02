@@ -53,7 +53,7 @@ export class WindowPositionService {
 		}
 
 		const windowBounds = window.getBounds();
-		const trayBounds = tray.getBounds();
+		const trayBounds   = tray.getBounds();
 
 		let x = 0;
 		let y = 0;

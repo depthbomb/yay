@@ -1,5 +1,5 @@
 {
-	"version": "1.39.15",
+	"version": "1.39.16",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -11,6 +11,15 @@
 	"urlProtocol": "yay",
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
+		{
+			"version": "1.39.16",
+			"changes": [
+				"Downgraded to [Electron 41.4.0](https://releases.electronjs.org/release/v41.4.0) to fix a regression that causes the some windows to shrink in size each time they are shown",
+				[
+					"A fix for this issue on v41.5.0 will be in a future release"
+				]
+			]
+		},
 		{
 			"version": "1.39.15",
 			"changes": [

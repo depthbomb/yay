@@ -1,3 +1,10 @@
+# 1.39.16
+
+- Downgraded to [Electron 41.4.0](https://releases.electronjs.org/release/v41.4.0) to fix a regression that causes the main window to shrink in size each time it is shown
+  - A fix for this issue on v41.5.0 will be in a future release
+
+---
+
 # 1.39.15
 
 - Upgraded to [Electron 41.5.0](https://releases.electronjs.org/release/compare/v41.2.0/v41.5.0)
