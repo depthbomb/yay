@@ -5385,16 +5385,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:41.5.0":
-  version: 41.5.0
-  resolution: "electron@npm:41.5.0"
+"electron@npm:41.4.0":
+  version: 41.4.0
+  resolution: "electron@npm:41.4.0"
   dependencies:
     "@electron/get": "npm:^2.0.0"
     "@types/node": "npm:^24.9.0"
     extract-zip: "npm:^2.0.1"
   bin:
     electron: cli.js
-  checksum: 10/d443ce66989910883fbfa923967e67d5cf7e003b3b83dec0531411d5ea43d48f0c04b82d7e819fd27c6c43d755cf47b587ce728101e9d2219834fed2571aeeab
+  checksum: 10/486126e0a8bd43f25e2fb64f525bf44f31709046409e309238c1df4270147683050d11ba86db6d67849b5a6ada7f10016f492f7596143d61371d7f9cc68123c3
   languageName: node
   linkType: hard
 
@@ -6415,10 +6415,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hono@npm:^4.12.16":
-  version: 4.12.16
-  resolution: "hono@npm:4.12.16"
-  checksum: 10/60ebaf89dc62820a9caf2b15dcc720d29037489c292bdd4e14e59ce3481978f08c1268ad1d179bc15b241e027717dad812ed37eb4bb3dd19589038be5da3ba6f
+"hono@npm:^4.12.18":
+  version: 4.12.18
+  resolution: "hono@npm:4.12.18"
+  checksum: 10/0adda91eeb68c921e073bcbedd8758f026cc47dbbe7824147cf0ee8ef03004b1891f4d4edc80f6ab4c6ab33ec1f2fac52c4f7098752f8acf6833bcb76efb39e4
   languageName: node
   linkType: hard
 
@@ -8024,7 +8024,7 @@ __metadata:
     babel-plugin-react-compiler: "npm:^1.0.0"
     cva: "npm:^1.0.0-beta.4"
     dompurify: "npm:3.4.2"
-    electron: "npm:41.5.0"
+    electron: "npm:41.4.0"
     eslint: "npm:^10.3.0"
     eslint-plugin-react-hooks: "npm:^7.1.1"
     eslint-plugin-react-refresh: "npm:^0.5.2"
@@ -9778,10 +9778,10 @@ __metadata:
     "@types/semver": "npm:^7.7.1"
     cockatiel: "npm:^3.2.1"
     cross-env: "npm:^10.1.0"
-    electron: "npm:41.5.0"
+    electron: "npm:41.4.0"
     eslint: "npm:^10.3.0"
     globals: "npm:^17.6.0"
-    hono: "npm:^4.12.16"
+    hono: "npm:^4.12.18"
     loglayer: "npm:^9.1.0"
     nativelib: "workspace:*"
     semver: "npm:^7.7.4"
