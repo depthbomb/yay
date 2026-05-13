@@ -1,7 +1,6 @@
 import { resolve } from 'node:path';
 import { builtinModules } from 'module';
 import { loadEnv, defineConfig } from 'vite';
-import { obfuscationPlugin } from 'vite-plugin-obfuscation';
 import type { UserConfig } from 'vite';
 
 const { platform } = process;
@@ -53,9 +52,6 @@ export default defineConfig(({ mode }) => {
 				}
 			},
 		},
-		plugins: [
-			obfuscationPlugin() as any
-		],
 		define: {
 			__WIN32__: platform === 'win32',
 			__MACOS__: platform === 'darwin',

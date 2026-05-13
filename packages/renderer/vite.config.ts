@@ -4,7 +4,6 @@ import { resolve } from 'node:path';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { URL, fileURLToPath } from 'node:url';
-import { obfuscationPlugin } from 'vite-plugin-obfuscation';
 import type { UserConfig } from 'vite';
 
 let entryID = 0;
@@ -58,7 +57,6 @@ export default defineConfig(({ mode }) => {
 				}
 			}),
 			tailwindcss(),
-			obfuscationPlugin() as any
 		],
 		resolve: {
 			alias: {

@@ -13,10 +13,6 @@
 			"path": "packages/shared"
 		},
 		{
-			"name": "Vite Plugin",
-			"path": "packages/vite-plugin-obfuscation"
-		},
-		{
 			"name": "NativeLib",
 			"path": "packages/nativelib"
 		},

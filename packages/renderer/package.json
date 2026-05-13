@@ -20,7 +20,7 @@
 		"@radix-ui/react-tabs": "^1.1.13",
 		"ahooks": "^3.9.7",
 		"cva": "^1.0.0-beta.4",
-		"dompurify": "3.4.2",
+		"dompurify": "3.4.3",
 		"jotai": "^2.20.0",
 		"react": "^19.2.6",
 		"react-dom": "^19.2.6",
@@ -44,8 +44,7 @@
 		"sass-embedded": "^1.99.0",
 		"tailwindcss": "^4.3.0",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.59.2",
-		"vite": "8.0.11",
-		"vite-plugin-obfuscation": "workspace:*"
+		"typescript-eslint": "^8.59.3",
+		"vite": "8.0.12"
 	}
 }

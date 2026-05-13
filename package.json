@@ -27,16 +27,15 @@
 		"packages/app",
 		"packages/renderer",
 		"packages/shared",
-		"packages/vite-plugin-obfuscation",
 		"packages/nativelib"
 	],
 	"devDependencies": {
 		"@octokit/rest": "^22.0.1",
-		"@types/node": "^24.12.3",
+		"@types/node": "^24.12.4",
 		"asar-trim": "^1.2.3",
 		"cross-env": "^10.1.0",
 		"dotenv": "^17.4.2",
-		"electron-builder": "26.9.1",
+		"electron-builder": "26.10.0",
 		"node-gyp": "^12.3.0",
 		"ts-morph": "28.0.0",
 		"tsx": "^4.21.0",
