@@ -68,11 +68,6 @@ export class YtdlpService implements IBootstrappable {
 		eventBus.on('lifecycle:shutdown', () => this.cancelDownload(true));
 	}
 
-	/** @deprecated Prefer enqueue() */
-	public async download(url: string, audioOnly = false) {
-		return this.enqueue(url, audioOnly);
-	}
-
 	public async enqueue(url: string, audioOnly = false) {
 		if (!isValidURL(url)) {
 			this.logger.warn('Rejected download request with invalid URL', { url });

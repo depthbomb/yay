@@ -1,10 +1,11 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
-import { Flag, ESettingsKey } from 'shared';
+import { ESettingsKey } from 'shared';
 import { getExtraFilePath } from '~/common';
 import { IPCService } from '~/services/ipc';
 import { app, shell, dialog } from 'electron';
 import { TrayService } from '~/services/tray';
+import { Flag } from '@depthbomb/common/state';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';

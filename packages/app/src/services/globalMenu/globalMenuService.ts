@@ -127,6 +127,6 @@ export class GlobalMenuService implements IBootstrappable {
 			return;
 		}
 
-		await this.ytdlp.download(text, downloadAudio);
+		await this.ytdlp.enqueue(text, downloadAudio);
 	}
 }

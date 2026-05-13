@@ -2,7 +2,6 @@ import { app } from 'electron';
 import { product, isValidURL } from 'shared';
 import { YtdlpService } from '~/services/ytdlp';
 import { LoggingService } from '~/services/logging';
-import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
 import type { IBootstrappable } from '~/common';
 
@@ -10,7 +9,6 @@ import type { IBootstrappable } from '~/common';
 export class DeepLinksService implements IBootstrappable {
 	public constructor(
 		private readonly logger  = inject(LoggingService),
-		private readonly updater = inject(UpdaterService),
 		private readonly ytdlp   = inject(YtdlpService),
 	) {}
 
@@ -47,15 +45,11 @@ export class DeepLinksService implements IBootstrappable {
 
 			switch (host) {
 				case 'download-video':
-					await this.ytdlp.download(mediaURL, false);
+					await this.ytdlp.enqueue(mediaURL, false);
 					break;
 				case 'download-audio':
-					await this.ytdlp.download(mediaURL, true);
+					await this.ytdlp.enqueue(mediaURL, true);
 					break;
-			}
-		} else if (host === 'open-updater') {
-			if (this.updater.hasNewRelease) {
-				this.updater.showUpdaterWindow();
 			}
 		}
 	}

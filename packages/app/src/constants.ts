@@ -24,6 +24,5 @@ export const BROWSER_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) App
  * URL should be opened externally.
  */
 export const EXTERNAL_URL_RULES = [
-	(url: URL) => url.host === 'github.com',
 	(url: URL) => url.host.endsWith('electronjs.org'),
 ];

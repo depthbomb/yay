@@ -1,10 +1,8 @@
 import { Icon } from '@mdi/react';
+import { mdiHeart } from '@mdi/js';
 import { Section } from './Section';
 import { useFeatureFlags } from '~/hooks';
-import { useState, useEffect } from 'react';
 import { Anchor } from '~/components/Anchor';
-import { Button } from '~/components/Button';
-import { mdiHeart, mdiUpdate } from '@mdi/js';
 import { SectionSeparator } from './SectionSeparator';
 import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
@@ -30,29 +28,7 @@ const InfoSection: FC<InfoSectionProps> = ({ title, values }) => {
 };
 
 export const AboutTab = () => {
-	const [canCheckUpdates, setCanCheckUpdates] = useState(false);
-	const [nextUpdateCheck, setNextUpdateCheck] = useState<Date>();
-	const [,featureFlags]                       = useFeatureFlags();
-
-	const checkForUpdates = async () => {
-		setCanCheckUpdates(false);
-		await window.ipc.invoke('updater<-check-manual');
-	};
-
-	const getNextUpdateCheck = () => {
-		window.ipc.invoke('updater<-get-next-manual-check').then(nextCheckTimestamp => {
-			setNextUpdateCheck(new Date(nextCheckTimestamp.data));
-			setCanCheckUpdates(Date.now() >= nextCheckTimestamp.data);
-		});
-	};
-
-	useEffect(() => {
-		const timer = setInterval(getNextUpdateCheck, 1_000);
-
-		getNextUpdateCheck();
-
-		return () => clearInterval(timer);
-	}, []);
+	const [,featureFlags] = useFeatureFlags();
 
 	return (
 		<div className="space-y-6 flex flex-col">
@@ -67,14 +43,6 @@ export const AboutTab = () => {
 					</Anchor>
 				</p>
 			</div>
-			<SectionSeparator/>
-			<Section>
-				<Button onClick={() => checkForUpdates()} size="lg" disabled={!canCheckUpdates}>
-					<Icon path={mdiUpdate} className="size-4"/>
-					<span>Check for updates</span>
-				</Button>
-				<p>Next check: <span className="font-mono text-sm">{nextUpdateCheck?.toLocaleString()}</span></p>
-			</Section>
 			<SectionSeparator/>
 			<InfoSection title="Application" values={[
 				['Product version', product.version],

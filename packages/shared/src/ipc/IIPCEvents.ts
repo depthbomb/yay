@@ -26,12 +26,6 @@ export interface IIPCEvents {
 	'yt-dlp->stdout':            { line: string; };
 	'yt-dlp->updating-binary':   void;
 	'yt-dlp->updated-binary':    void;
-	// Updater Events
-	'updater->outdated':             { latestRelease: any; };
-	'updater->show-window':          void;
-	'updater->checking-for-updates': void;
-	'updater->update-step':          { message: string; };
-	'updater->update-complete':      void;
 	// Theming Events
 	'theming->accent-color-changed': { accentColor: string; };
 }

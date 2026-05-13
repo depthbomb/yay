@@ -18,10 +18,6 @@
 			"import": "./dist/featureFlags.mjs",
 			"require": "./dist/featureFlags.cjs"
 		},
-		"./flag": {
-			"import": "./dist/flag.mjs",
-			"require": "./dist/flag.cjs"
-		},
 		"./github": {
 			"import": "./dist/github/index.mjs",
 			"require": "./dist/github/index.cjs"

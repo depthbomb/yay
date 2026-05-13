@@ -72,7 +72,7 @@ export class RestService implements IBootstrappable {
 				return this.createJSONResponse(c, 'A download is currently in progress', {}, 423);
 			}
 
-			this.ytdlp.download(url, format === 'audio');
+			this.ytdlp.enqueue(url, format === 'audio');
 
 			return this.createJSONResponse(c, 'Download started', { url, format });
 		});

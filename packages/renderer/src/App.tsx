@@ -7,7 +7,6 @@ import { Route, Routes, HashRouter } from 'react-router';
 import type { ColorPalette } from './hooks/use-windows-accent';
 
 const SettingsPage   = lazy(() => import('./features/settings/SettingsPage'));
-const UpdaterPage    = lazy(() => import('./features/updater/UpdaterPage'));
 const GlobalMenuPage = lazy(() => import('./features/global-menu/GlobalMenuPage'));
 
 export const App = () => {
@@ -30,7 +29,6 @@ export const App = () => {
 			<Routes>
 				<Route index element={<HomePage/>}/>
 				<Route path="settings" element={<SettingsPage/>}/>
-				<Route path="updater" element={<UpdaterPage/>}/>
 				<Route path="setup" element={<SetupPage/>}/>
 				<Route path="global-menu" element={<GlobalMenuPage/>}/>
 			</Routes>

@@ -1,6 +1,14 @@
+# 1.40.0
+
+This is the final release for _yay_. My interest in Electron applications comes and goes, and my interest has currently gone. However, that's not to say that the project is entirely dead. I may be making a sort of spiritual successor in the near future.
+
+- Removed automatic and manual new release checks
+
+---
+
 # 1.39.16
 
-- Downgraded to [Electron 41.4.0](https://releases.electronjs.org/release/v41.4.0) to fix a regression that causes the main window to shrink in size each time it is shown
+- Downgraded to [Electron 41.4.0](https://releases.electronjs.org/release/v41.4.0) to fix a regression that causes some windows to shrink in size each time they are shown
   - A fix for this issue on v41.5.0 will be in a future release
 
 ---

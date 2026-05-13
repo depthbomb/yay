@@ -26,5 +26,4 @@ export class AppEventEmitter extends EventEmitter<AppEvents> {
 	}
 }
 
-
 export const eventBus = new AppEventEmitter();
