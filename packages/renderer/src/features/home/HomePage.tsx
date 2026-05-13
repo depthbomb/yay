@@ -1,18 +1,16 @@
 import { cx } from 'cva';
 import { useAtom } from 'jotai';
-import { Icon } from '@mdi/react';
-import { mdiUpdate } from '@mdi/js';
 import { useKeyPress } from 'ahooks';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
 import { TwitterMedia } from './components/TwitterMedia';
 import { DownloadButtons } from './components/DownloadButtons';
-import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
+import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
+import { lazy, useRef, Fragment, useState, useEffect } from 'react';
 import { useTitle, useSetting, useIPCEvent, useFeatureFlags } from '~/hooks';
-import { lazy, useRef, Activity, useState, Fragment, useEffect } from 'react';
-import { urlAtom, workingAtom, updatingAtom, resetAppAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
+import { urlAtom, workingAtom, resetAppAtom, updatingAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };
@@ -53,7 +51,6 @@ export const HomePage = () => {
 	const [url, setURL]                         = useAtom(urlAtom);
 	const [isWorking, setIsWorking]             = useAtom(workingAtom);
 	const [isUpdating, setIsUpdating]           = useAtom(updatingAtom);
-	const [updateAvailable, setUpdateAvailable] = useAtom(updateAvailableAtom);
 	const [urlIsValid]                          = useAtom(isURLValidAtom);
 	const [logs]                                = useAtom(logAtom);
 
@@ -119,7 +116,6 @@ export const HomePage = () => {
 	});
 	useIPCEvent('yt-dlp->updating-binary', () => setIsUpdating(true));
 	useIPCEvent('yt-dlp->updated-binary',  () => setIsUpdating(false));
-	useIPCEvent('updater->outdated',       () => setUpdateAvailable(true));
 
 	useEffect(() => {
 		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
@@ -140,12 +136,6 @@ export const HomePage = () => {
 					<Fragment>
 						<Masthead/>
 						<div className="p-3 h-full flex flex-col space-y-4 overflow-hidden">
-							<Activity mode={updateAvailable ? 'visible' : 'hidden'}>
-								<a className="py-1.5 px-2 flex flex-row items-center space-x-2 text-sky-100 bg-sky-950/50 border border-sky-900 hover:text-white hover:bg-sky-900 hover:border-sky-600 rounded cursor-pointer transition" onClick={() => window.ipc.invoke('updater<-show-window')}>
-									<Icon path={mdiUpdate} className="size-4"/>
-									<p className="text-sm">A new version of yay is available.</p>
-								</a>
-							</Activity>
 							<TextInput
 								ref={mediaURLEl}
 								onChange={onInputChange}

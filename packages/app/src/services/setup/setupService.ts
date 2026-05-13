@@ -100,7 +100,6 @@ export class SetupService implements IBootstrappable {
 			[ESettingsKey.EnableGlobalMenu, false],
 			[ESettingsKey.EnableDownloadCompletionToast, true],
 			[ESettingsKey.UseThumbnailForCoverArt, false],
-			[ESettingsKey.EnableNewReleaseToast, true],
 			[ESettingsKey.HideSetupWindow, false],
 			[ESettingsKey.DisableHardwareAcceleration, false],
 			[ESettingsKey.UpdateYtdlpOnStartup, true],

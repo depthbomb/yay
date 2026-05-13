@@ -43,7 +43,6 @@ export const DebugTab = () => {
 			</div>
 			</Section>
 			<SectionSeparator/>
-			<Anchor onClick={() => window.ipc.invoke('updater<-show-window')}>Show updater window</Anchor>
 			<Anchor onClick={() => window.ipc.invoke('setup<-show-window')}>Show setup window</Anchor>
 		</div>
 	);
