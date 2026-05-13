@@ -53,7 +53,7 @@ export class MainWindowService implements IBootstrappable {
 					spellcheck: false,
 					enableWebSQL: false,
 					nodeIntegration: true,
-					devTools: /* import.meta.env.DEV */true,
+					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}
 			}
@@ -75,8 +75,6 @@ export class MainWindowService implements IBootstrappable {
 				this.mainWindow.hide();
 			}
 		});
-
-		this.mainWindow.webContents.openDevTools();
 	}
 
 	public async bootstrap() {
