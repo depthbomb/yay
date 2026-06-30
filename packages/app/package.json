@@ -15,31 +15,31 @@
 	"dependencies": {
 		"@depthbomb/common": "^3.1.0",
 		"@depthbomb/node-common": "^2.3.0",
-		"@formatjs/fast-memoize": "^3.1.5",
-		"@hono/node-server": "^2.0.2",
-		"@loglayer/transport-log-file-rotation": "^3.0.2",
+		"@formatjs/fast-memoize": "^3.1.6",
+		"@hono/node-server": "^2.0.6",
+		"@loglayer/transport-log-file-rotation": "^3.2.0",
 		"@needle-di/core": "1.1.2",
-		"cockatiel": "^3.2.1",
-		"hono": "^4.12.18",
-		"loglayer": "^9.1.0",
+		"cockatiel": "^4.0.0",
+		"hono": "^4.12.27",
+		"loglayer": "^9.3.0",
 		"nativelib": "workspace:*",
-		"semver": "^7.8.0",
+		"semver": "^7.8.5",
 		"serialize-error": "^13.0.1",
 		"shared": "workspace:*",
-		"smol-toml": "1.6.1"
+		"smol-toml": "1.7.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@swc-node/sourcemap-support": "^0.6.1",
-		"@types/node": "^24.12.4",
+		"@types/node": "^24.13.2",
 		"@types/semver": "^7.7.1",
 		"cross-env": "^10.1.0",
-		"electron": "41.4.0",
-		"eslint": "^10.3.0",
-		"globals": "^17.6.0",
-		"terser": "^5.47.1",
+		"electron": "43.0.0",
+		"eslint": "^10.6.0",
+		"globals": "^17.7.0",
+		"terser": "^5.48.0",
 		"typescript": "^6.0.3",
-		"typescript-eslint": "^8.59.3",
-		"vite": "^7.3.3"
+		"typescript-eslint": "^8.62.1",
+		"vite": "^7.3.6"
 	}
 }
