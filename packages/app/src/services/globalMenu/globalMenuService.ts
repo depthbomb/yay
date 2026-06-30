@@ -1,5 +1,6 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
+import { isWindows11 } from '~/utils';
 import { PRELOAD_PATH } from '~/constants';
 import { IPCService } from '~/services/ipc';
 import { YtdlpService } from '~/services/ytdlp';
@@ -37,6 +38,7 @@ export class GlobalMenuService implements IBootstrappable {
 				resizable: false,
 				closable: false,
 				frame: false,
+				thickFrame: !isWindows11(),
 				skipTaskbar: !import.meta.env.DEV,
 				alwaysOnTop: true,
 				webPreferences: {

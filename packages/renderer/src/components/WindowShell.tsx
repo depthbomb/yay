@@ -12,6 +12,8 @@ export interface IWindowShellProps extends PropsWithChildren {
 	className?: string;
 }
 
+const isWindows11 = window.system.platform() === 'win32' && parseInt(window.system.release().split('.')[2], 10) >= 22000;
+
 export const WindowShell: FC<IWindowShellProps> = ({
 	windowName,
 	title = '',
@@ -34,10 +36,11 @@ export const WindowShell: FC<IWindowShellProps> = ({
 	);
 
 	return (
-		<div className={cx('relative flex flex-col justify-center h-screen w-screen border overflow-hidden', {
-			'border-gray-950': isMaximized,
-			'border-accent-500': isFocused,
-			'border-gray-900': !isFocused
+		<div className={cx('relative flex flex-col justify-center h-screen w-screen overflow-hidden', {
+			'border': !isWindows11,
+			'border-gray-950': isMaximized && !isWindows11,
+			'border-accent-500': isFocused && !isWindows11,
+			'border-gray-900': !isFocused && !isWindows11
 		})} {...props}>
 			<Titlebar
 				title={title}

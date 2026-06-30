@@ -31,7 +31,6 @@ export class SettingsWindowService implements IBootstrappable {
 				height: 520,
 				backgroundColor: '#202223',
 				frame: false,
-				roundedCorners: false,
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,

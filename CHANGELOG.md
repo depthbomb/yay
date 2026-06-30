@@ -1,6 +1,15 @@
+# 1.41.0
+
+This is the final Electron-based release for _yay_ as the application is being completely rewritten from scratch.
+
+- Improved support for Windows 11
+- Upgraded to [Electron 43.0.0](https://releases.electronjs.org/release/v43.0.0)
+
+---
+
 # 1.40.0
 
-This is the final release for _yay_. My interest in Electron applications comes and goes, and my interest has currently gone. However, that's not to say that the project is entirely dead. I may be making a sort of spiritual successor in the near future.
+This is the final release for _yay_ for a while. My interest in Electron applications comes and goes, and my interest has currently gone. However, that's not to say that the project is entirely dead. I may be making a sort of spiritual successor in the near future.
 
 - Removed automatic and manual new release checks
 

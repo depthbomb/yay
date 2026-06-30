@@ -1,5 +1,5 @@
 {
-	"version": "1.40.0",
+	"version": "1.41.0",
 	"author": "Caprine Logic",
 	"nameLong": "yay",
 	"applicationName": "yay",
@@ -12,8 +12,16 @@
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
 		{
+			"version": "1.41.0",
+			"description": "This is the final Electron-based release for _yay_ as the application is being completely rewritten from scratch.",
+			"changes": [
+				"Improved Windows 11 support",
+				"Upgraded to [Electron 43.0.0](https://releases.electronjs.org/release/v43.0.0)"
+			]
+		},
+		{
 			"version": "1.40.0",
-			"description": "This is the final release for _yay_. My interest in Electron applications comes and goes, and my interest has currently gone. However, that's not to say that the project is entirely dead. I may be making a sort of spiritual successor in the near future.",
+			"description": "This is the final release for _yay_ for a while. My interest in Electron applications comes and goes, and my interest has currently gone. However, that's not to say that the project is entirely dead. I may be making a sort of spiritual successor in the near future.",
 			"changes": [
 				"Removed automatic and manual new release checks"
 			]
