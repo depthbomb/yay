@@ -1,7 +1,7 @@
 import { ipcRenderer, contextBridge } from 'electron';
 import { IPCEvents, IPCChannel, IPCChannels } from 'shared';
 import { arch, type, release, hostname, platform } from 'node:os';
-import type { IPCAPI, SystemAPI, IIPCEvents, SettingsAPI, VersionsAPI, IIPCContract, FeatureFlagsAPI } from 'shared';
+import type { IPCAPI, SystemAPI, IIPCEvents, VersionsAPI, IIPCContract, FeatureFlagsAPI } from 'shared';
 
 type IPCArgs<K extends keyof IIPCContract>   = IIPCContract[K]['args'];
 type IPCReturn<K extends keyof IIPCContract> = IIPCContract[K]['return'];
@@ -85,12 +85,6 @@ const ipcAPI = Object.freeze({
 
 const systemAPI = Object.freeze({ arch, type, release, platform, hostname }) satisfies SystemAPI;
 
-const settingsAPI = Object.freeze({
-	getValue(key, defaultValue, secure) {
-		return ipcAPI.sendSync('settings<-get', key, defaultValue, secure);
-	},
-}) satisfies SettingsAPI;
-
 const featureFlagsAPI = Object.freeze({
 	getFeatureFlags() {
 		return ipcAPI.sendSync('feature-flag<-get-feature-flags')!;
@@ -101,5 +95,4 @@ contextBridge.exposeInMainWorld('versions', versionsAPI);
 contextBridge.exposeInMainWorld('buildDate', Object.freeze(new Date(__BUILD_DATE__)));
 contextBridge.exposeInMainWorld('ipc', ipcAPI);
 contextBridge.exposeInMainWorld('system', systemAPI);
-contextBridge.exposeInMainWorld('settings', settingsAPI);
 contextBridge.exposeInMainWorld('featureFlags', featureFlagsAPI);

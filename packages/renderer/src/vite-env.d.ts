@@ -1,6 +1,6 @@
 /// <reference types="vite/client" />
 
-import type { IPCAPI, SystemAPI, VersionsAPI, SettingsAPI, FeatureFlagsAPI } from 'shared';
+import type { IPCAPI, SystemAPI, VersionsAPI, FeatureFlagsAPI } from 'shared';
 
 declare global {
 	interface Window {
@@ -8,7 +8,6 @@ declare global {
 		versions: VersionsAPI;
 		ipc: IPCAPI;
 		system: SystemAPI;
-		settings: SettingsAPI;
 		featureFlags: FeatureFlagsAPI;
 	}
 }

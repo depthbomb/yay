@@ -1,6 +1,8 @@
+import { useSetAtom } from 'jotai';
 import { typedEntries } from 'shared';
 import { lazy, useEffect } from 'react';
 import { useWindowsAccent } from './hooks';
+import { settingsAtom } from './atoms/settings';
 import { HomePage } from './features/home/HomePage';
 import { SetupPage } from './features/setup/SetupPage';
 import { Route, Routes, HashRouter } from 'react-router';
@@ -11,6 +13,15 @@ const GlobalMenuPage = lazy(() => import('./features/global-menu/GlobalMenuPage'
 
 export const App = () => {
 	const { palette, getCSSColor, getContrastColor } = useWindowsAccent();
+	const setSettings                                = useSetAtom(settingsAtom);
+
+	useEffect(() => {
+		window.ipc.invoke('settings<-get-all').then(result => {
+			if (result.isOk) {
+				setSettings(result.data);
+			}
+		});
+	}, [setSettings]);
 
 	useEffect(() => {
 		const root = document.documentElement;

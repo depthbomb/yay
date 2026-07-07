@@ -1,17 +1,20 @@
-import { ESettingsKey } from 'shared';
-import { useState, useEffect } from 'react';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import { settingsAtom } from '../atoms/settings';
+import type { ESettingsKey } from 'shared';
 
-type UseSettingsOptions<T> = {
-	defaultValue?: T;
+type UseSettingsOptions = {
 	reactive?: boolean;
 };
 
-export const useSetting = <T>(settingsKey: ESettingsKey, options?: UseSettingsOptions<T>) => {
-	const isReactive        = options?.reactive ?? true;
-	const [value, setValue] = useState<T>(window.settings.getValue(settingsKey, options?.defaultValue)?.data);
+export const useSetting = <T>(settingsKey: ESettingsKey, options?: UseSettingsOptions) => {
+	const isReactive              = options?.reactive ?? true;
+	const [settings, setSettings] = useAtom(settingsAtom);
+
+	const value = settings[settingsKey] as T;
 
 	const setSettingValue = async (newValue: T) => {
-		setValue(newValue);
+		setSettings(previous => ({ ...previous, [settingsKey]: newValue }));
 		await window.ipc.invoke('settings<-set', settingsKey, newValue);
 	};
 
@@ -22,12 +25,12 @@ export const useSetting = <T>(settingsKey: ESettingsKey, options?: UseSettingsOp
 					return;
 				}
 
-				setValue(value);
+				setSettings(previous => ({ ...previous, [key]: value }));
 			});
 
 			return () => removeListener();
 		}
-	}, [settingsKey, isReactive]);
+	}, [settingsKey, isReactive, setSettings]);
 
 	return [value, setSettingValue] as const;
 };

@@ -89,7 +89,11 @@ export interface IIPCContract {
 	'settings<-show-ui': {
 		args: [];
 		return: IPCResult<Unit, never>;
-	}
+	},
+	'settings<-get-all': {
+		args: [];
+		return: IPCResult<Record<string, unknown>, never>;
+	},
 	//
 	'yt-dlp<-download-video': {
 		args: [url: string];
