@@ -1,5 +1,6 @@
 # Unreleased
 
+- Improved installer security by verifying downloaded application files before installation
 - Restored automatic and manual application updates with a safer Markdown changelog and verified installer downloads
 - Improved download cancellation for deeply nested process trees
 - Hardened external-link handling and restored approved GitHub links
