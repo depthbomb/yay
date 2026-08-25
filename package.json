@@ -3,6 +3,9 @@
 	"name": "yay-root",
 	"scripts": {
 		"test": "yarn workspace shared build:d && yarn workspace yay test && yarn workspace renderer test",
+		"audit": "yarn audit:production && yarn audit:development",
+		"audit:production": "yarn npm audit --all --recursive --environment production --no-deprecations",
+		"audit:development": "yarn npm audit --all --recursive --severity high --no-deprecations",
 		"typecheck": "yarn workspace shared build:d && yarn workspaces foreach -Apt run typecheck",
 		"lint": "yarn workspaces foreach -Apt run lint",
 		"dev": "yarn workspace yay run dev",

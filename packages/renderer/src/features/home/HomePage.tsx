@@ -1,6 +1,5 @@
 import { cx } from 'cva';
 import { useAtom } from 'jotai';
-import { useKeyPress } from 'ahooks';
 import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
@@ -9,7 +8,7 @@ import { DownloadButtons } from './components/DownloadButtons';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
 import { logAtom, clearLogAtom, pushToLogAtom, pushManyToLogAtom } from '~/atoms/log';
 import { lazy, useRef, Fragment, useState, useEffect } from 'react';
-import { useTitle, useSetting, useIPCEvent, useFeatureFlags } from '~/hooks';
+import { useTitle, useSetting, useIPCEvent, useKeyPress, useFeatureFlags } from '~/hooks';
 import { urlAtom, workingAtom, resetAppAtom, updatingAtom, isURLValidAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 

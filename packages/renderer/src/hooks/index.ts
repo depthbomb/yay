@@ -1,5 +1,6 @@
 export * from './use-feature-flag';
 export * from './use-ipc';
+export * from './use-key-press';
 export * from './use-modifier-key';
 export * from './use-setting';
 export * from './use-throttle';
