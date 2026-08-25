@@ -1,5 +1,6 @@
 # Unreleased
 
+- Fixed incorrect text colors on download and accent buttons
 - Added spacing between the main window and the Windows 11 taskbar
 - Added a full-window animated download progress effect
 - Added native Mica backgrounds throughout the application on supported Windows 11 versions

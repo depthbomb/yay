@@ -10,7 +10,7 @@ const button = cva({
 	base: 'relative inline shrink-0 shadow outline-offset-2 focus:outline-2 transition-[color,background-color]',
 	variants: {
 		type: {
-			accent: 'text-accent-500-contrast bg-accent-500 outline-accent-500/50 hover:bg-accent-600 active:bg-accent-700',
+			accent: 'text-accent-500-contrast bg-accent-500 outline-accent-500/50 hover:text-accent-600-contrast hover:bg-accent-600 active:text-accent-700-contrast active:bg-accent-700',
 			success: 'text-black bg-lime-500 outline-lime-500/50 hover:bg-lime-600 active:bg-lime-700',
 			warning: 'text-white bg-orange-500 outline-orange-500/50 hover:bg-orange-600 active:bg-orange-700',
 			danger: 'text-white bg-red-500 outline-red-500/50 hover:bg-red-600 active:bg-red-700',
