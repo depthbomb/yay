@@ -6,15 +6,15 @@ import { useIPCEvent } from '~/hooks';
 import { APITab } from './components/APITab';
 import { AppTab } from './components/AppTab';
 import { AboutTab } from './components/AboutTab';
+import { List, Root, Content, Trigger } from '~/components/Tabs';
 import { YoutubeTab } from './components/YoutubeTab';
 import { AdvancedTab } from './components/AdvancedTab';
 import { WindowShell } from '~/components/WindowShell';
 import { workingAtom, updatingAtom } from '~/atoms/app';
 import { DownloadsTab } from './components/DownloadsTab';
-import { List, Root, Content, Trigger } from '@radix-ui/react-tabs';
 import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiCodeBraces, mdiInformation, mdiApplicationCog } from '@mdi/js';
 import type { FC } from 'react';
-import type { TabsTriggerProps } from '@radix-ui/react-tabs';
+import type { TabsTriggerProps } from '~/components/Tabs';
 
 export interface ITabButtonProps extends TabsTriggerProps {
 	value: string;

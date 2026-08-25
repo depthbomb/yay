@@ -6,11 +6,11 @@ import { useIPCEvent } from '~/hooks';
 import ReactMarkdown from 'react-markdown';
 import { Button } from '~/components/Button';
 import { Spinner } from '~/components/SpinnerV2';
+import { List, Root, Content, Trigger } from '~/components/Tabs';
 import { useRef, useState, useEffect } from 'react';
 import { WindowShell } from '~/components/WindowShell';
-import { List, Root, Content, Trigger } from '@radix-ui/react-tabs';
 import type { FC } from 'react';
-import type { TabsTriggerProps } from '@radix-ui/react-tabs';
+import type { TabsTriggerProps } from '~/components/Tabs';
 import type { Nullable, GitHubCommit, GitHubRelease } from 'shared';
 
 const TabButton: FC<TabsTriggerProps> = ({ className, ...props }) => (
