@@ -1,5 +1,6 @@
 # Unreleased
 
+- Restored automatic and manual application updates with a safer Markdown changelog and verified installer downloads
 - Improved download cancellation for deeply nested process trees
 - Hardened external-link handling and restored approved GitHub links
 - Fixed failed downloads showing success notifications and improved thumbnail cache reliability

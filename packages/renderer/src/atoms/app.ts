@@ -3,6 +3,7 @@ import { isValidURL } from 'shared';
 import { RESET, atomWithReset } from 'jotai/utils';
 
 export const updatingAtom        = atomWithReset<boolean>(false);
+export const updateAvailableAtom = atomWithReset<boolean>(false);
 export const workingAtom         = atomWithReset<boolean>(false);
 export const urlAtom             = atomWithReset<string>('');
 export const isURLValidAtom      = atom(get => isValidURL(get(urlAtom)));

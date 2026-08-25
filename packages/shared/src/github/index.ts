@@ -8,7 +8,8 @@ export type GitHubReleaseAsset = {
 export type GitHubRelease = {
 	tag_name: string;
 	prerelease: boolean;
-	body_html: string | null;
+	draft: boolean;
+	body: string | null;
 	assets: GitHubReleaseAsset[];
 };
 

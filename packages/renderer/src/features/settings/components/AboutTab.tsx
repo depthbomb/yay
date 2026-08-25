@@ -1,8 +1,10 @@
 import { Icon } from '@mdi/react';
-import { mdiHeart } from '@mdi/js';
+import { mdiHeart, mdiUpdate } from '@mdi/js';
 import { Section } from './Section';
 import { useFeatureFlags } from '~/hooks';
+import { useEffect, useState } from 'react';
 import { Anchor } from '~/components/Anchor';
+import { Button } from '~/components/Button';
 import { SectionSeparator } from './SectionSeparator';
 import { product, GIT_HASH, GIT_HASH_SHORT } from 'shared';
 import type { FC, JSX } from 'react';
@@ -29,6 +31,61 @@ const InfoSection: FC<InfoSectionProps> = ({ title, values }) => {
 
 export const AboutTab = () => {
 	const [,featureFlags] = useFeatureFlags();
+	const [checking, setChecking] = useState(false);
+	const [nextManualCheck, setNextManualCheck] = useState(0);
+	const [canCheckForUpdates, setCanCheckForUpdates] = useState(true);
+
+	const refreshNextCheck = async () => {
+		const result = await window.ipc.invoke('updater<-get-next-manual-check');
+		setNextManualCheck(result.data);
+		setCanCheckForUpdates(Date.now() >= result.data);
+	};
+
+	const checkForUpdates = async () => {
+		setChecking(true);
+		try {
+			const result = await window.ipc.invoke('updater<-check-manual');
+			if (result.isErr) {
+				await window.ipc.invoke('main<-show-message-box', {
+					title: 'Update check failed',
+					type: 'error',
+					message: result.error,
+				});
+			} else if (!result.data) {
+				await window.ipc.invoke('main<-show-message-box', {
+					title: 'Application updater',
+					type: 'info',
+					message: 'You are using the latest version of yay.',
+				});
+			}
+		} finally {
+			await refreshNextCheck();
+			setChecking(false);
+		}
+	};
+
+	useEffect(() => {
+		let active = true;
+		void window.ipc.invoke('updater<-get-next-manual-check').then(result => {
+			if (active) {
+				setNextManualCheck(result.data);
+				setCanCheckForUpdates(Date.now() >= result.data);
+			}
+		});
+		return () => {
+			active = false;
+		};
+	}, []);
+
+	useEffect(() => {
+		const delay = nextManualCheck - Date.now();
+		if (delay <= 0) {
+			return;
+		}
+
+		const timer = setTimeout(() => setCanCheckForUpdates(true), delay);
+		return () => clearTimeout(timer);
+	}, [nextManualCheck]);
 
 	return (
 		<div className="space-y-6 flex flex-col">
@@ -43,6 +100,16 @@ export const AboutTab = () => {
 					</Anchor>
 				</p>
 			</div>
+			<SectionSeparator/>
+			<Section>
+				<Button onClick={() => void checkForUpdates()} size="lg" disabled={checking || !canCheckForUpdates}>
+					<Icon path={mdiUpdate} className="size-4"/>
+					<span>{checking ? 'Checking for updates...' : 'Check for updates'}</span>
+				</Button>
+				{!canCheckForUpdates && (
+					<p className="text-sm">Next check: <span className="font-mono">{new Date(nextManualCheck).toLocaleTimeString()}</span></p>
+				)}
+			</Section>
 			<SectionSeparator/>
 			<InfoSection title="Application" values={[
 				['Product version', product.version],

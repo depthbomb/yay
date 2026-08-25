@@ -12,6 +12,7 @@ import { isAllowedExternalURL } from '~/constants';
 import { LoggingService } from '~/services/logging';
 import { ThemingService } from '~/services/theming';
 import { TwitterService } from '~/services/twitter';
+import { UpdaterService } from '~/services/updater';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { AutoStartService } from '~/services/autoStart';
@@ -40,6 +41,7 @@ export class MainService {
 		private readonly featureFlags   = inject(FeatureFlagsService),
 		private readonly setup          = inject(SetupService),
 		private readonly ytdlp          = inject(YtdlpService),
+		private readonly updater        = inject(UpdaterService),
 		private readonly tray           = inject(TrayService),
 		private readonly globalMenu     = inject(GlobalMenuService),
 		private readonly deepLinks      = inject(DeepLinksService),
@@ -71,6 +73,7 @@ export class MainService {
 			this.timer.bootstrap(),
 			this.window.bootstrap(),
 			this.ytdlp.bootstrap(),
+			this.updater.bootstrap(),
 			this.globalMenu.bootstrap(),
 			this.deepLinks.bootstrap(),
 			this.tray.bootstrap(),

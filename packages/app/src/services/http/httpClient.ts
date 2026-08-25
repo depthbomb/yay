@@ -1,5 +1,5 @@
 import { IDGenerator } from '~/common';
-import { Readable } from 'node:stream';
+import { Readable, Transform } from 'node:stream';
 import EventEmitter from 'node:events';
 import { pipeline } from 'node:stream/promises';
 import { URLPath } from '@depthbomb/common/url';
@@ -89,23 +89,35 @@ export class HTTPClient extends EventEmitter<HTTPClientEvents> {
 		}
 
 		const contentLength = Number(res.headers.get('content-length') ?? 0);
-		const nodeStream    = Readable.fromWeb(res.body!);
+		if (!res.body) {
+			throw new Error('HTTP response did not include a body');
+		}
+
+		const nodeStream    = Readable.fromWeb(res.body);
 		const file          = outputPath.toWriteStream();
 
 		let downloadedBytes = 0;
-		const onData = (chunk: Buffer | Uint8Array) => {
-			downloadedBytes += chunk.length;
-			if (contentLength && options.onProgress) {
-				options.onProgress(Math.round((downloadedBytes / contentLength) * 100));
-			}
-		};
+		let lastProgress = -1;
+		const monitor = new Transform({
+			transform(chunk: Buffer, _encoding, callback) {
+				downloadedBytes += chunk.length;
+				if (options.maxBytes !== undefined && downloadedBytes > options.maxBytes) {
+					callback(new Error(`Download exceeded the ${options.maxBytes}-byte limit`));
+					return;
+				}
 
-		nodeStream.on('data', onData);
+				if (contentLength && options.onProgress) {
+					const progress = Math.min(100, Math.round((downloadedBytes / contentLength) * 100));
+					if (progress !== lastProgress) {
+						lastProgress = progress;
+						options.onProgress(progress);
+					}
+				}
 
-		try {
-			await pipeline(nodeStream, file, { signal: options.signal });
-		} finally {
-			nodeStream.off('data', onData);
-		}
+				callback(null, chunk);
+			},
+		});
+
+		await pipeline(nodeStream, monitor, file, { signal: options.signal });
 	}
 }

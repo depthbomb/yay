@@ -3,6 +3,7 @@ import type { ESettingsKey } from '../settings';
 import type { FeatureFlag } from '../featureFlags';
 import type { Unit, IPCResult } from './ipc-result';
 import type { Nullable, SystemInfo } from '../types';
+import type { GitHubCommit, GitHubRelease } from '../github';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
 
 export interface IIPCContract {
@@ -151,6 +152,35 @@ export interface IIPCContract {
 		return: IPCResult<Unit, never>;
 	}
 	'global-menu<-open-download-dir': {
+		args: [];
+		return: IPCResult<Unit, never>;
+	}
+	//
+	'updater<-check-manual': {
+		args: [];
+		return: IPCResult<Nullable<GitHubRelease>, string>;
+	}
+	'updater<-get-next-manual-check': {
+		args: [];
+		return: IPCResult<number, never>;
+	}
+	'updater<-get-latest-release': {
+		args: [];
+		return: IPCResult<Nullable<GitHubRelease>, never>;
+	}
+	'updater<-get-commits-since-build': {
+		args: [];
+		return: IPCResult<Nullable<GitHubCommit[]>, never>;
+	}
+	'updater<-show-window': {
+		args: [];
+		return: IPCResult<Unit, never>;
+	}
+	'updater<-update': {
+		args: [];
+		return: IPCResult<Unit, string>;
+	}
+	'updater<-cancel-update': {
 		args: [];
 		return: IPCResult<Unit, never>;
 	}

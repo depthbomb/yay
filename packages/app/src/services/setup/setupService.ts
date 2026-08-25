@@ -93,6 +93,7 @@ export class SetupService implements IBootstrappable {
 		this.logger.debug('Setting default settings');
 
 		await this.settings.setDefaults([
+			[ESettingsKey.EnableNewReleaseToast, true],
 			[ESettingsKey.YtdlpPath, 'yt-dlp'],
 			[ESettingsKey.DownloadDir, app.getPath('downloads')],
 			[ESettingsKey.DownloadNameTemplate, '%(title)s [%(id)s].%(ext)s'],

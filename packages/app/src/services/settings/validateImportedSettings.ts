@@ -2,6 +2,7 @@ import { ESettingsKey, SettingsKeys } from 'shared';
 import type { Settings } from './types';
 
 const booleanKeys = new Set<ESettingsKey>([
+	ESettingsKey.EnableNewReleaseToast,
 	ESettingsKey.EnableGlobalMenu,
 	ESettingsKey.AutoStart,
 	ESettingsKey.HideSetupWindow,

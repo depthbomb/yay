@@ -20,16 +20,22 @@ export class GithubService {
 		this.token = import.meta.env.DEV ? __GITHUB_ACCESS_TOKEN__.trim() : '';
 	}
 
-	public async getLatestRepositoryRelease(owner: string, repo: string, prerelease: boolean = false) {
-		const releases = await this.getRepositoryReleases(owner, repo);
+	public async getLatestRepositoryRelease(owner: string, repo: string, prerelease: boolean = false, signal?: AbortSignal) {
+		if (!prerelease) {
+			const path = `repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases/latest`;
+			return this.getJSON<GitHubRelease>(path, { signal });
+		}
 
-		return releases.find(r => r.prerelease === prerelease);
+		const releases = await this.getRepositoryReleases(owner, repo, signal);
+
+		return releases.find(r => !r.draft && r.prerelease === prerelease);
 	}
 
-	public async getRepositoryReleases(owner: string, repo: string) {
+	public async getRepositoryReleases(owner: string, repo: string, signal?: AbortSignal) {
 		const path = `repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/releases`;
 		return this.getJSON<GitHubRelease[]>(path, {
-			accept: 'application/vnd.github.html+json'
+			accept: 'application/vnd.github+json',
+			signal,
 		});
 	}
 
@@ -51,14 +57,26 @@ export class GithubService {
 		return data;
 	}
 
+	public async getRepositoryCommitsBetween(owner: string, repo: string, base: string, head: string, signal?: AbortSignal) {
+		const path = `repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/compare/${encodeURIComponent(base)}...${encodeURIComponent(head)}`;
+		const data = await this.getJSON<{ commits: GitHubCommit[] }>(path, {
+			query: { per_page: 100 },
+			signal,
+		});
+
+		return data.commits;
+	}
+
 	private async getJSON<T>(
 		path: string,
 		options?: {
 			accept?: string;
 			query?: Record<string, string | number>;
+			signal?: AbortSignal;
 		}
 	) {
 		const res = await this.client.get(path, {
+			signal: options?.signal,
 			query: options?.query,
 			headers: {
 				accept: options?.accept ?? 'application/vnd.github+json',

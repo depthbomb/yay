@@ -1,4 +1,5 @@
 import type { ESettingsKey } from '../settings';
+import type { GitHubRelease } from '../github';
 import type { IDownloadSession } from '../ytdlp';
 
 export interface IIPCEvents {
@@ -26,6 +27,9 @@ export interface IIPCEvents {
 	'yt-dlp->stdout':            { lines: string[]; };
 	'yt-dlp->updating-binary':   void;
 	'yt-dlp->updated-binary':    void;
+	// Updater Events
+	'updater->outdated':    { latestRelease: GitHubRelease; };
+	'updater->update-step': { message: string; };
 	// Theming Events
 	'theming->accent-color-changed': { accentColor: string; };
 }
