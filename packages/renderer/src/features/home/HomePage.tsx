@@ -6,6 +6,7 @@ import { TextInput } from '~/components/Input';
 import { Masthead } from './components/Masthead';
 import { Spinner } from '~/components/SpinnerV2';
 import { TwitterMedia } from './components/TwitterMedia';
+import { HalloweenOverlay } from '~/components/effects/HalloweenOverlay';
 import { DownloadButtons } from './components/DownloadButtons';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
 import { lazy, useRef, Fragment, useState, useEffect } from 'react';
@@ -154,6 +155,7 @@ export const HomePage = () => {
 	return (
 		<div className={windowCss}>
 			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
+			{isEnabled('SeasonalEffects') && <HalloweenOverlay/>}
 			{progressPhase !== 'hidden' && (
 				<div className={cx('download-progress-background', { 'is-fading': progressPhase === 'fading' })} aria-hidden="true">
 					<div
