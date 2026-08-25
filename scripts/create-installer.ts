@@ -8,6 +8,15 @@ import { readdir, stat } from 'node:fs/promises';
 const archivePath = 'build/release/yay-online-files.7z';
 const unpackedPath = 'build/win-unpacked';
 
+function getNumericVersion(version: string) {
+	const match = /^(\d+)\.(\d+)\.(\d+)(?:\.(\d+))?(?:[-+].*)?$/.exec(version);
+	if (!match) {
+		throw new Error(`Product version "${version}" is not a supported semantic version.`);
+	}
+
+	return match.slice(1, 5).filter(component => component !== undefined).join('.');
+}
+
 async function createSHA256(path: string) {
 	const hash = createHash('sha256');
 
@@ -57,7 +66,7 @@ async function main() {
 		Copyright: `Copyright (C) 2024-${new Date().getFullYear()} ${product.author}`,
 		DirName: product.dirName,
 		Version: product.version,
-		RawVersion: product.version.replace(/-\w+$/, ''),
+		NumericVersion: getNumericVersion(product.version),
 		ExeBasename: product.applicationName,
 		AppID: product.appID,
 		AppUserModelID: product.appUserModelID,
