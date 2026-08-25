@@ -1,5 +1,6 @@
 import { Tray, screen } from 'electron';
 import { EWindowPosition } from './EWindowPosition';
+import { getTaskbarPosition } from './taskbarPosition';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import type { Rectangle, BrowserWindow } from 'electron';
@@ -72,30 +73,23 @@ export class WindowPositionService {
 		const workArea = trayDisplay.workArea;
 
 		if (__WIN32__) {
-			// Windows: Position based on taskbar position
-			const taskbarIsHorizontal = workArea.height < trayDisplay.bounds.height;
-			if (taskbarIsHorizontal) {
-				// Taskbar is at top or bottom
-				if (workArea.y > 0) {
-					// Taskbar is at top
+			switch (getTaskbarPosition(trayDisplay.bounds, workArea, trayBounds)) {
+				case 'top':
 					x = trayBounds.x + Math.floor(trayBounds.width / 2) - Math.floor(windowBounds.width / 2);
-					y = trayBounds.y + trayBounds.height + padding;
-				} else {
-					// Taskbar is at bottom
+					y = workArea.y + padding;
+					break;
+				case 'bottom':
 					x = trayBounds.x + Math.floor(trayBounds.width / 2) - Math.floor(windowBounds.width / 2);
-					y = trayBounds.y - windowBounds.height - padding;
-				}
-			} else {
-				// Taskbar is at left or right
-				if (workArea.x > 0) {
-					// Taskbar is at left
-					x = trayBounds.x + trayBounds.width + padding;
+					y = workArea.y + workArea.height - windowBounds.height - padding;
+					break;
+				case 'left':
+					x = workArea.x + padding;
 					y = trayBounds.y + Math.floor(trayBounds.height / 2) - Math.floor(windowBounds.height / 2);
-				} else {
-					// Taskbar is at right
-					x = trayBounds.x - windowBounds.width - padding;
+					break;
+				case 'right':
+					x = workArea.x + workArea.width - windowBounds.width - padding;
 					y = trayBounds.y + Math.floor(trayBounds.height / 2) - Math.floor(windowBounds.height / 2);
-				}
+					break;
 			}
 		} else if (__MACOS__) {
 			// macOS: Tray is always at the top

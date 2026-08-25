@@ -183,7 +183,7 @@ export class MainWindowService implements IBootstrappable {
 		const { tray }   = this.tray();
 		const mainWindow = this.mainWindow;
 
-		this.windowPosition.setWindowPositionAtTray(mainWindow, tray!);
+		this.windowPosition.setWindowPositionAtTray(mainWindow, tray!, isWindows11() ? 8 : 0);
 
 		mainWindow.show();
 		mainWindow.focus();
