@@ -15,9 +15,6 @@ export class CLIService {
 				fromShortcut: {
 					type: 'boolean'
 				},
-				uninstall: {
-					type: 'boolean'
-				},
 				updateBinaries: {
 					type: 'boolean'
 				},

@@ -55,7 +55,7 @@ Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringCh
 Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringChange(NameLong, '&', '&&')}}"; Flags: nowait skipifnotsilent; Check: IsUpdate
 
 [UninstallRun]
-Filename: "{app}\{#ExeBasename}"; Parameters: "--uninstall"; RunOnceId: "DisableAutoStart"; Flags: runhidden runascurrentuser
+Filename: "{sys}\reg.exe"; Parameters: "delete ""HKCU\Software\Microsoft\Windows\CurrentVersion\Run"" /v ""{#NameLong}"" /f"; RunOnceId: "DisableAutoStart"; Flags: runhidden runascurrentuser
 
 [Code]
 var
