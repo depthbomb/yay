@@ -1,6 +1,6 @@
 # Unreleased
 
-- Improved build, type checking, and lint reliability
+- Improved settings persistence reliability
 - Enabled renderer sandboxing and disabled Node.js integration
 - Restricted the local API server to authenticated connections from the local computer
 

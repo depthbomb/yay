@@ -43,8 +43,8 @@ export class SettingsService implements IBootstrappable {
 	public async bootstrap() {
 		this.ipc.registerHandler('settings<-get', (_, key, defaultValue, secure) => ok(this.get(key, defaultValue, { secure })));
 		this.ipc.registerHandler('settings<-get-all', () => ok(this.internalStore.store));
-		this.ipc.registerHandler('settings<-set', (_, key, value, secure) => {
-			this.set(key, value, { secure });
+		this.ipc.registerHandler('settings<-set', async (_, key, value, secure) => {
+			await this.set(key, value, { secure });
 
 			return ok();
 		});

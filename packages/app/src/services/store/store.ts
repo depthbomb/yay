@@ -1,9 +1,12 @@
 import { parse, stringify } from 'smol-toml';
+import { rename, unlink, writeFile } from 'node:fs/promises';
 import type { LoggingService } from '~/services/logging';
 import type { Path } from '@depthbomb/node-common/pathlib';
 
 export class Store<S extends Record<string, any>> {
 	public store: S;
+	private pendingWrite = Promise.resolve();
+	private writeID = 0;
 
 	public constructor(
 		private readonly logger: LoggingService,
@@ -65,11 +68,23 @@ export class Store<S extends Record<string, any>> {
 	public async save() {
 		this.logger.debug('Saving store object to disk', { store: this.store, storePath: this.storePath });
 
-		await this.storePath.writeText(
-			stringify(
-				this.sortSettingsAlphabetically(this.store)
-			)
-		);
+		const contents = stringify(this.sortSettingsAlphabetically(this.store));
+		const write    = this.pendingWrite.then(() => this.writeAtomically(contents));
+
+		this.pendingWrite = write.catch(() => {});
+		await write;
+	}
+
+	private async writeAtomically(contents: string) {
+		const storePath = this.storePath.toString();
+		const tempPath  = `${storePath}.${process.pid}.${this.writeID++}.tmp`;
+
+		try {
+			await writeFile(tempPath, contents, 'utf8');
+			await rename(tempPath, storePath);
+		} finally {
+			await unlink(tempPath).catch(() => {});
+		}
 	}
 
 	private sortSettingsAlphabetically(data: Record<string, any>): Record<string, any> {
