@@ -33,9 +33,18 @@ export class ProcessService {
 			return;
 		}
 
-		for (const pid of [tree.pid, ...tree.children.map(c => c.pid)]) {
+		for (const pid of flattenProcessTree(tree)) {
 			this.logger.debug('Killing process', { pid });
-			process.kill(pid);
+			try {
+				process.kill(pid);
+			} catch (error) {
+				this.logger.warn('Failed to kill process', { pid, error });
+			}
 		}
 	}
 }
+
+const flattenProcessTree = (node: nativelib.JsProcessNode): number[] => [
+	...node.children.flatMap(flattenProcessTree),
+	node.pid,
+];

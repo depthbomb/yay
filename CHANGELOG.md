@@ -1,5 +1,6 @@
 # Unreleased
 
+- Improved download cancellation for deeply nested process trees
 - Hardened external-link handling and restored approved GitHub links
 - Fixed failed downloads showing success notifications and improved thumbnail cache reliability
 - Fixed Twitter/X downloads showing false success and getting stuck after lookup errors
