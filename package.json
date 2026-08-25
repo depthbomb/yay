@@ -2,18 +2,20 @@
 	"private": true,
 	"name": "yay-root",
 	"scripts": {
+		"typecheck": "yarn workspaces foreach -Apt run typecheck",
+		"lint": "yarn workspaces foreach -Apt run lint",
 		"dev": "yarn workspace yay run dev",
 		"watch": "yarn workspace renderer run watch",
 		"build": "yarn create-asars && yarn workspaces foreach -Apti run build:d",
 		"package": "yarn create-asars && cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:dist && yarn postpackage",
 		"postpackage": "asar-trim ./build/win-unpacked/resources",
 		"build:p": "yarn clean-dist && cross-env ENV=PRODUCTION yarn workspaces foreach -Apti run build:p",
-		"clean-dist": "tsx scripts/clean-dist.ts",
-		"create-asars": "tsx scripts/create-asars.ts",
-		"create-installer": "yarn create-online-files-archive && tsx scripts/create-installer.ts",
-		"create-online-files-archive": "tsx scripts/create-online-files-archive.ts",
-		"create-release": "tsx scripts/create-release.ts",
-		"generate-changelog": "tsx scripts/generate-changelog.ts"
+		"clean-dist": "yarn run -T tsx scripts/clean-dist.ts",
+		"create-asars": "yarn run -T tsx scripts/create-asars.ts",
+		"create-installer": "yarn create-online-files-archive && yarn run -T tsx scripts/create-installer.ts",
+		"create-online-files-archive": "yarn run -T tsx scripts/create-online-files-archive.ts",
+		"create-release": "yarn run -T tsx scripts/create-release.ts",
+		"generate-changelog": "yarn run -T tsx scripts/generate-changelog.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -39,7 +41,7 @@
 		"node-gyp": "^13.0.1",
 		"ts-morph": "28.0.0",
 		"tsx": "^4.23.12",
-		"typescript": "^7.0.2"
+		"typescript": "^5.9.3"
 	},
 	"packageManager": "yarn@4.18.0"
 }

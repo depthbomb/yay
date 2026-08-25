@@ -4,6 +4,7 @@
 	"author": "Caprine Logic",
 	"main": "dist/app.js",
 	"scripts": {
+		"typecheck": "tsc --noEmit",
 		"dev": "cross-env NODE_ENV=development yarn build:d && yarn electron:test",
 		"build:d": "tsc --noEmit && vite build --mode development && vite build --config vite.preload.config.mts --mode development",
 		"build:p": "tsc --noEmit && vite build --mode production && vite build --config vite.preload.config.mts --mode production",
@@ -38,7 +39,7 @@
 		"eslint": "^10.9.1",
 		"globals": "^17.11.0",
 		"terser": "^5.50.0",
-		"typescript": "^7.0.2",
+		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.68.0",
 		"vite": "^8.2.2"
 	}

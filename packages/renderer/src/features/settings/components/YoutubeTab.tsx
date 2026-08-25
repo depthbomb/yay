@@ -14,7 +14,7 @@ import type { Nullable } from 'shared';
 export const YoutubeTab = () => {
 	const [canClearThumbnails, setCanClearThumbnails]     = useState(true);
 	const [cookiesFilePath]                               = useSetting<Nullable<string>>(ESettingsKey.CookiesFilePath);
-	const [skipYoutubePlaylists, setSkipYoutubePlaylists] = useSetting(ESettingsKey.SkipYoutubePlaylists, { defaultValue: true, reactive: false });
+	const [skipYoutubePlaylists, setSkipYoutubePlaylists] = useSetting<boolean>(ESettingsKey.SkipYoutubePlaylists, { reactive: false });
 
 	const clearThumbnailCache = async () => {
 		setCanClearThumbnails(false);

@@ -1,7 +1,8 @@
 import { DEV_PORT } from 'shared';
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
-import react from '@vitejs/plugin-react';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import { URL, fileURLToPath } from 'node:url';
 import type { UserConfig } from 'vite';
@@ -51,11 +52,8 @@ export default defineConfig(({ mode }) => {
 					return html.replace(/%APP_CSP%/g, cspContent);
 				},
 			},
-			react({
-				babel: {
-					plugins: ['babel-plugin-react-compiler']
-				}
-			}),
+			react(),
+			babel({ presets: [reactCompilerPreset()] }),
 			tailwindcss(),
 		],
 		resolve: {

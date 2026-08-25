@@ -55,8 +55,8 @@ export class WindowPositionService {
 		const windowBounds = window.getBounds();
 		const trayBounds   = tray.getBounds();
 
-		let x = 0;
-		let y = 0;
+		let x: number;
+		let y: number;
 
 		const displays = screen.getAllDisplays();
 		const trayDisplay = displays.find((display) => {

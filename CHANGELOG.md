@@ -1,7 +1,13 @@
-# 1.41.0
+# Unreleased
 
+- Improved build, type checking, and lint reliability
 - Enabled renderer sandboxing and disabled Node.js integration
 - Restricted the local API server to authenticated connections from the local computer
+
+---
+
+# 1.41.0
+
 - Improved Windows 11 support
 - Upgraded to [Electron 43.0.0](https://releases.electronjs.org/release/v43.0.0)
 

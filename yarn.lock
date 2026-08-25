@@ -16,10 +16,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/code-frame@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/code-frame@npm:8.0.0"
+  dependencies:
+    "@babel/helper-validator-identifier": "npm:^8.0.0"
+    js-tokens: "npm:^10.0.0"
+  checksum: 10/735b64f3ae476ec1841be118f79639d2ec99e2cc391a196b0160c53e4ed52253ee5c2170da510c00ea0f23faa26636364052ed507bfa4cd8caea87c5b1e8adad
+  languageName: node
+  linkType: hard
+
 "@babel/compat-data@npm:^7.27.2":
   version: 7.28.5
   resolution: "@babel/compat-data@npm:7.28.5"
   checksum: 10/5a5ff00b187049e847f04bd02e21fbd8094544e5016195c2b45e56fa2e311eeb925b158f52a85624c9e6bacc1ce0323e26c303513723d918a8034e347e22610d
+  languageName: node
+  linkType: hard
+
+"@babel/compat-data@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/compat-data@npm:8.0.0"
+  checksum: 10/83b1776ecfdaf02559a4b4fb2f4a2c5e6ba8a2b41bf898807caaf863379ee9c8e91c163de71e79d73eb68659b58bcb18cbcff9a39aae6f88c106af680619326c
   languageName: node
   linkType: hard
 
@@ -46,6 +63,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/core@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "@babel/core@npm:8.0.1"
+  dependencies:
+    "@babel/code-frame": "npm:^8.0.0"
+    "@babel/generator": "npm:^8.0.0"
+    "@babel/helper-compilation-targets": "npm:^8.0.0"
+    "@babel/helpers": "npm:^8.0.0"
+    "@babel/parser": "npm:^8.0.0"
+    "@babel/template": "npm:^8.0.0"
+    "@babel/traverse": "npm:^8.0.0"
+    "@babel/types": "npm:^8.0.0"
+    "@types/gensync": "npm:^1.0.5"
+    convert-source-map: "npm:^2.0.0"
+    empathic: "npm:^2.0.1"
+    gensync: "npm:^1.0.0-beta.2"
+    import-meta-resolve: "npm:^4.2.0"
+    json5: "npm:^2.2.3"
+    obug: "npm:^2.1.1"
+    semver: "npm:^7.7.3"
+  checksum: 10/def06f2ddcb0cf6872ccbd72742d21b16c4af1eee01b5aae800b4456e03ef50a3f8e976c09158b1a684d0c3f09b6c9a1c1bed65cc15390f0d8abbbe3c9516a28
+  languageName: node
+  linkType: hard
+
 "@babel/generator@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/generator@npm:7.28.5"
@@ -56,6 +97,20 @@ __metadata:
     "@jridgewell/trace-mapping": "npm:^0.3.28"
     jsesc: "npm:^3.0.2"
   checksum: 10/ae618f0a17a6d76c3983e1fd5d9c2f5fdc07703a119efdb813a7d9b8ad4be0a07d4c6f0d718440d2de01a68e321f64e2d63c77fc5d43ae47ae143746ef28ac1f
+  languageName: node
+  linkType: hard
+
+"@babel/generator@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/generator@npm:8.0.0"
+  dependencies:
+    "@babel/parser": "npm:^8.0.0"
+    "@babel/types": "npm:^8.0.0"
+    "@jridgewell/gen-mapping": "npm:^0.3.12"
+    "@jridgewell/trace-mapping": "npm:^0.3.28"
+    "@types/jsesc": "npm:^2.5.0"
+    jsesc: "npm:^3.0.2"
+  checksum: 10/8d9b801886b4bbe46b101768abae0ffa1c9435601a8788358331c115b1a38a7c5acdd0e8b85b4d0c00806b0b74a0cc0e75ef50647f7322ffa3646a238e1b5420
   languageName: node
   linkType: hard
 
@@ -72,10 +127,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-compilation-targets@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/helper-compilation-targets@npm:8.0.0"
+  dependencies:
+    "@babel/compat-data": "npm:^8.0.0"
+    "@babel/helper-validator-option": "npm:^8.0.0"
+    browserslist: "npm:^4.24.0"
+    lru-cache: "npm:^11.0.0"
+    semver: "npm:^7.7.3"
+  checksum: 10/2814f178f119887abe5221fb6178f62f1adfec9561a915aa67ca65f5ece8d6f1ee83ed731a3e335065d579c1f3c73fc4fdbf83a70fa4ea0113b8932f173b2262
+  languageName: node
+  linkType: hard
+
 "@babel/helper-globals@npm:^7.28.0":
   version: 7.28.0
   resolution: "@babel/helper-globals@npm:7.28.0"
   checksum: 10/91445f7edfde9b65dcac47f4f858f68dc1661bf73332060ab67ad7cc7b313421099a2bfc4bda30c3db3842cfa1e86fffbb0d7b2c5205a177d91b22c8d7d9cb47
+  languageName: node
+  linkType: hard
+
+"@babel/helper-globals@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/helper-globals@npm:8.0.0"
+  checksum: 10/dbb78c61e46c391d72dabd7fffc87a192350ec4e97314befa928cda14f32c77d30d70560122aec1b15bc287cfb59f03bbb59f061c856b7594abe00c9aa719855
   languageName: node
   linkType: hard
 
@@ -109,6 +184,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-string-parser@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/helper-string-parser@npm:8.0.0"
+  checksum: 10/3c38887284b8bd76d2c5865b4a4a37f75a0dd2740d34169e3f140f1c35c5efff5682e50cbd38c47b0f143a38c145b93864a7a156a203a234317824083ec742cc
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-identifier@npm:^7.27.1, @babel/helper-validator-identifier@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/helper-validator-identifier@npm:7.28.5"
@@ -116,10 +198,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-validator-identifier@npm:^8.0.0, @babel/helper-validator-identifier@npm:^8.0.4":
+  version: 8.0.4
+  resolution: "@babel/helper-validator-identifier@npm:8.0.4"
+  checksum: 10/4b9d741e990a62d49d138e0b7205cd8d1bf9df87afdc20243a2053f411ae22cf327b00a06c4a1119a2d839c148f809500c04036e45ec8a382f0876a26556ee3d
+  languageName: node
+  linkType: hard
+
 "@babel/helper-validator-option@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/helper-validator-option@npm:7.27.1"
   checksum: 10/db73e6a308092531c629ee5de7f0d04390835b21a263be2644276cb27da2384b64676cab9f22cd8d8dbd854c92b1d7d56fc8517cf0070c35d1c14a8c828b0903
+  languageName: node
+  linkType: hard
+
+"@babel/helper-validator-option@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/helper-validator-option@npm:8.0.0"
+  checksum: 10/12c2bf5457fbe1ff0701321b4e471420d46a94a2b10858042c7a96134894212ba04224021345c8572ed3eb7b536890deb842ccd7e5f655aa56de594529ec64d0
   languageName: node
   linkType: hard
 
@@ -133,6 +229,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helpers@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/helpers@npm:8.0.0"
+  dependencies:
+    "@babel/template": "npm:^8.0.0"
+    "@babel/types": "npm:^8.0.0"
+  checksum: 10/129fca6e339022059028b7189c9cb6907ed813233ef335d8636a82b927282fea022970fc4da33bc575d6dbb8900ca550c5dcaaae84f7265c4808e8514ec81339
+  languageName: node
+  linkType: hard
+
 "@babel/parser@npm:^7.24.4, @babel/parser@npm:^7.27.2, @babel/parser@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/parser@npm:7.28.5"
@@ -141,6 +247,17 @@ __metadata:
   bin:
     parser: ./bin/babel-parser.js
   checksum: 10/8d9bfb437af6c97a7f6351840b9ac06b4529ba79d6d3def24d6c2996ab38ff7f1f9d301e868ca84a93a3050fadb3d09dbc5105b24634cd281671ac11eebe8df7
+  languageName: node
+  linkType: hard
+
+"@babel/parser@npm:^8.0.0, @babel/parser@npm:^8.0.4":
+  version: 8.0.4
+  resolution: "@babel/parser@npm:8.0.4"
+  dependencies:
+    "@babel/types": "npm:^8.0.4"
+  bin:
+    parser: ./bin/babel-parser.js
+  checksum: 10/230554794a2c296ce1fb60f57459d94903802369e14e1d83c3ea266b64a4f88ab292eadf5213823d87c04541c9c43b8b6daaae919f25551d3637800663fb25bf
   languageName: node
   linkType: hard
 
@@ -162,6 +279,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/template@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@babel/template@npm:8.0.0"
+  dependencies:
+    "@babel/code-frame": "npm:^8.0.0"
+    "@babel/parser": "npm:^8.0.0"
+    "@babel/types": "npm:^8.0.0"
+  checksum: 10/7ff1d1634cd071d58998f931dfb8c79c297038b965bd9a9704160d9fb2e0a469eac01d86b2c38c713d158dc0ea86f9ef95ebe4baceab546a8319fe3fbad5940e
+  languageName: node
+  linkType: hard
+
 "@babel/traverse@npm:^7.27.1, @babel/traverse@npm:^7.28.3, @babel/traverse@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/traverse@npm:7.28.5"
@@ -177,6 +305,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/traverse@npm:^8.0.0":
+  version: 8.0.4
+  resolution: "@babel/traverse@npm:8.0.4"
+  dependencies:
+    "@babel/code-frame": "npm:^8.0.0"
+    "@babel/generator": "npm:^8.0.0"
+    "@babel/helper-globals": "npm:^8.0.0"
+    "@babel/parser": "npm:^8.0.4"
+    "@babel/template": "npm:^8.0.0"
+    "@babel/types": "npm:^8.0.4"
+    obug: "npm:^2.1.1"
+  checksum: 10/234bc16c8c14af13e9471141bfd371186bb7fd2c347b1b416c46040e6fc1995242e3852d36181fa7a0240543b8d642a91d33261f942880584c87a7420df7247d
+  languageName: node
+  linkType: hard
+
 "@babel/types@npm:^7.26.0, @babel/types@npm:^7.27.1, @babel/types@npm:^7.28.4, @babel/types@npm:^7.28.5":
   version: 7.28.5
   resolution: "@babel/types@npm:7.28.5"
@@ -184,6 +327,16 @@ __metadata:
     "@babel/helper-string-parser": "npm:^7.27.1"
     "@babel/helper-validator-identifier": "npm:^7.28.5"
   checksum: 10/4256bb9fb2298c4f9b320bde56e625b7091ea8d2433d98dcf524d4086150da0b6555aabd7d0725162670614a9ac5bf036d1134ca13dedc9707f988670f1362d7
+  languageName: node
+  linkType: hard
+
+"@babel/types@npm:^8.0.0, @babel/types@npm:^8.0.4":
+  version: 8.0.4
+  resolution: "@babel/types@npm:8.0.4"
+  dependencies:
+    "@babel/helper-string-parser": "npm:^8.0.0"
+    "@babel/helper-validator-identifier": "npm:^8.0.4"
+  checksum: 10/7b58bdb4c9149fb5ea6a272912f8cd8af082939a9fc97c6de126299b38f258dd9f78717f7cad3c7fe8bfa7d1fce4cff5fa26b0e80885935255fd3a062e9296ad
   languageName: node
   linkType: hard
 
@@ -2888,6 +3041,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rolldown/plugin-babel@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@rolldown/plugin-babel@npm:0.2.3"
+  dependencies:
+    picomatch: "npm:^4.0.4"
+  peerDependencies:
+    "@babel/core": ^7.29.0 || ^8.0.0-rc.1
+    "@babel/plugin-transform-runtime": ^7.29.0 || ^8.0.0-rc.1
+    "@babel/runtime": ^7.27.0 || ^8.0.0-rc.1
+    rolldown: ^1.0.0-rc.5
+    vite: ^8.0.0
+  peerDependenciesMeta:
+    "@babel/plugin-transform-runtime":
+      optional: true
+    "@babel/runtime":
+      optional: true
+    vite:
+      optional: true
+  checksum: 10/dd40e5605dc6e0482a54545ee7ac9cdc9a7d29db7e75ac9be1999eafec30618a574f6a1356ad6e4337d220eb38ac980dc4d8c5f552eaa985ea331a7c0e07375a
+  languageName: node
+  linkType: hard
+
 "@rolldown/pluginutils@npm:^1.0.0, @rolldown/pluginutils@npm:^1.0.1":
   version: 1.0.1
   resolution: "@rolldown/pluginutils@npm:1.0.1"
@@ -3185,6 +3360,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/gensync@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "@types/gensync@npm:1.0.5"
+  checksum: 10/1b417012a1249c60d2a5d3a646c208710473f31ab91ee702d4a0bf742d4d20a04c4296efcf6f42b7c1b38536ff732c3aa00dd5afc8fa138c70d1905a0521a5c3
+  languageName: node
+  linkType: hard
+
 "@types/http-cache-semantics@npm:*":
   version: 4.0.4
   resolution: "@types/http-cache-semantics@npm:4.0.4"
@@ -3196,6 +3378,13 @@ __metadata:
   version: 3.0.6
   resolution: "@types/js-cookie@npm:3.0.6"
   checksum: 10/272d551687547445cb210213c73e72e0e5d58ad73e2e444a65d688b8ff9425529779ee0cd6492aaa1f070161916d4254ef2b1a76d64179100437f60749d094ef
+  languageName: node
+  linkType: hard
+
+"@types/jsesc@npm:^2.5.0":
+  version: 2.5.1
+  resolution: "@types/jsesc@npm:2.5.1"
+  checksum: 10/25407775ed621790d2eec0cc51e194bd0d67a82e39204fd9748899c249ef965e17d9e6560f6c658773714f6d45a259465f3639790bb55750ebb168ee23801596
   languageName: node
   linkType: hard
 
@@ -3422,146 +3611,6 @@ __metadata:
     "@typescript-eslint/types": "npm:8.68.0"
     eslint-visitor-keys: "npm:^5.0.0"
   checksum: 10/d802bc2c4569495f3d83f9bcf169e3a432ac1c6672e243399886409dbc55d7fa30375d9d0b2cf0d9466b81fc2b01b991483eb56e8cdb8141721009978d3b078b
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-aix-ppc64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-aix-ppc64@npm:7.0.2"
-  conditions: os=aix & cpu=ppc64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-darwin-arm64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-darwin-arm64@npm:7.0.2"
-  conditions: os=darwin & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-darwin-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-darwin-x64@npm:7.0.2"
-  conditions: os=darwin & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-freebsd-arm64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-freebsd-arm64@npm:7.0.2"
-  conditions: os=freebsd & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-freebsd-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-freebsd-x64@npm:7.0.2"
-  conditions: os=freebsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-arm64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-arm64@npm:7.0.2"
-  conditions: os=linux & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-arm@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-arm@npm:7.0.2"
-  conditions: os=linux & cpu=arm
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-loong64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-loong64@npm:7.0.2"
-  conditions: os=linux & cpu=loong64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-mips64el@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-mips64el@npm:7.0.2"
-  conditions: os=linux & cpu=mips64el
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-ppc64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-ppc64@npm:7.0.2"
-  conditions: os=linux & cpu=ppc64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-riscv64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-riscv64@npm:7.0.2"
-  conditions: os=linux & cpu=riscv64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-s390x@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-s390x@npm:7.0.2"
-  conditions: os=linux & cpu=s390x
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-linux-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-linux-x64@npm:7.0.2"
-  conditions: os=linux & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-netbsd-arm64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-netbsd-arm64@npm:7.0.2"
-  conditions: os=netbsd & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-netbsd-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-netbsd-x64@npm:7.0.2"
-  conditions: os=netbsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-openbsd-arm64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-openbsd-arm64@npm:7.0.2"
-  conditions: os=openbsd & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-openbsd-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-openbsd-x64@npm:7.0.2"
-  conditions: os=openbsd & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-sunos-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-sunos-x64@npm:7.0.2"
-  conditions: os=sunos & cpu=x64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-win32-arm64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-win32-arm64@npm:7.0.2"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@typescript/typescript-win32-x64@npm:7.0.2":
-  version: 7.0.2
-  resolution: "@typescript/typescript-win32-x64@npm:7.0.2"
-  conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
@@ -5856,6 +5905,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"import-meta-resolve@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "import-meta-resolve@npm:4.2.0"
+  checksum: 10/3499ee8b7eddb79be77067b368bcdf39e6f144306dea4686d08071ae7e65a2e3bdca3f98f2a0f4babdcd4ba9d9e7d379ae7e27c4b9bf8b08c1e812a28c674bf3
+  languageName: node
+  linkType: hard
+
 "import-without-cache@npm:^0.4.0":
   version: 0.4.0
   resolution: "import-without-cache@npm:0.4.0"
@@ -6055,6 +6111,13 @@ __metadata:
   version: 3.0.5
   resolution: "js-cookie@npm:3.0.5"
   checksum: 10/366494b1630b9fb8abaef3659748db5dfd52c58c6fc3459b9f0a03b492593bc1b01c6dfcc066b46f6413c28edb3a00cc68fb61ea8cdf6991bedf1f100f8a389d
+  languageName: node
+  linkType: hard
+
+"js-tokens@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "js-tokens@npm:10.0.0"
+  checksum: 10/88f536ec89f076fc230d29df255b3c55531237669d746d1868fca716b1e3f5f2e4abf8e5b8701903216e3f00d2dc3918d078b35da87772d433ab6a513c3bf76d
   languageName: node
   linkType: hard
 
@@ -6814,7 +6877,7 @@ __metadata:
     "@taplo/cli": "npm:^0.7.0"
     chalk: "npm:^6.0.0"
     npm-run-all2: "npm:^9.0.3"
-    typescript: "npm:^7.0.2"
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -7022,17 +7085,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"obug@npm:^2.1.1, obug@npm:^2.1.4":
+  version: 2.1.4
+  resolution: "obug@npm:2.1.4"
+  checksum: 10/05e3ac83f60ef18edb935d67703bada2cbc0feb1a1cef575240b1e48e6e877df95b74048e69bbe549759df18c57ad1808e1e60a9fc4f785525c8549bf7fe81db
+  languageName: node
+  linkType: hard
+
 "obug@npm:^2.1.2":
   version: 2.1.3
   resolution: "obug@npm:2.1.3"
   checksum: 10/574e5c3d3def75440c54c29ce8a6d82a5698116962d2f9f28fb13f6fd5dbcc01b7df1b8e02a95f816c8dba482dcf315d9c5c97d9e718516cfea8bd6c896dcf67
-  languageName: node
-  linkType: hard
-
-"obug@npm:^2.1.4":
-  version: 2.1.4
-  resolution: "obug@npm:2.1.4"
-  checksum: 10/05e3ac83f60ef18edb935d67703bada2cbc0feb1a1cef575240b1e48e6e877df95b74048e69bbe549759df18c57ad1808e1e60a9fc4f785525c8549bf7fe81db
   languageName: node
   linkType: hard
 
@@ -7472,6 +7535,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "renderer@workspace:packages/renderer"
   dependencies:
+    "@babel/core": "npm:^8.0.1"
     "@eslint/js": "npm:^10.0.1"
     "@fontsource-variable/jetbrains-mono": "npm:^5.3.0"
     "@fontsource/momo-trust-display": "npm:^5.3.0"
@@ -7480,6 +7544,7 @@ __metadata:
     "@mdi/react": "npm:^1.6.1"
     "@radix-ui/react-switch": "npm:^1.3.7"
     "@radix-ui/react-tabs": "npm:^1.1.21"
+    "@rolldown/plugin-babel": "npm:^0.2.3"
     "@tailwindcss/typography": "npm:^0.5.20"
     "@tailwindcss/vite": "npm:^4.3.3"
     "@types/react": "npm:^19.2.18"
@@ -7499,10 +7564,11 @@ __metadata:
     react: "npm:^19.2.8"
     react-dom: "npm:^19.2.8"
     react-router: "npm:^8.3.0"
+    rolldown: "npm:1.2.5"
     sass-embedded: "npm:^1.103.1"
     shared: "workspace:*"
     tailwindcss: "npm:^4.3.3"
-    typescript: "npm:^7.0.2"
+    typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.68.0"
     vite: "npm:8.2.2"
   languageName: unknown
@@ -7622,7 +7688,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rolldown@npm:~1.2.0, rolldown@npm:~1.2.4":
+"rolldown@npm:1.2.5, rolldown@npm:~1.2.0, rolldown@npm:~1.2.4":
   version: 1.2.5
   resolution: "rolldown@npm:1.2.5"
   dependencies:
@@ -8030,7 +8096,7 @@ __metadata:
     "@depthbomb/common": "npm:^3.2.0"
     "@depthbomb/node-common": "npm:^2.4.0"
     tsdown: "npm:0.22.14"
-    typescript: "npm:^7.0.2"
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -8580,6 +8646,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.9.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/c089d9d3da2729fd4ac517f9b0e0485914c4b3c26f80dc0cffcb5de1719a17951e92425d55db59515c1a7ddab65808466debb864d0d56dcf43f27007d0709594
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^6.0.3":
   version: 6.0.3
   resolution: "typescript@npm:6.0.3"
@@ -8590,74 +8666,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^7.0.2":
-  version: 7.0.2
-  resolution: "typescript@npm:7.0.2"
-  dependencies:
-    "@typescript/typescript-aix-ppc64": "npm:7.0.2"
-    "@typescript/typescript-darwin-arm64": "npm:7.0.2"
-    "@typescript/typescript-darwin-x64": "npm:7.0.2"
-    "@typescript/typescript-freebsd-arm64": "npm:7.0.2"
-    "@typescript/typescript-freebsd-x64": "npm:7.0.2"
-    "@typescript/typescript-linux-arm": "npm:7.0.2"
-    "@typescript/typescript-linux-arm64": "npm:7.0.2"
-    "@typescript/typescript-linux-loong64": "npm:7.0.2"
-    "@typescript/typescript-linux-mips64el": "npm:7.0.2"
-    "@typescript/typescript-linux-ppc64": "npm:7.0.2"
-    "@typescript/typescript-linux-riscv64": "npm:7.0.2"
-    "@typescript/typescript-linux-s390x": "npm:7.0.2"
-    "@typescript/typescript-linux-x64": "npm:7.0.2"
-    "@typescript/typescript-netbsd-arm64": "npm:7.0.2"
-    "@typescript/typescript-netbsd-x64": "npm:7.0.2"
-    "@typescript/typescript-openbsd-arm64": "npm:7.0.2"
-    "@typescript/typescript-openbsd-x64": "npm:7.0.2"
-    "@typescript/typescript-sunos-x64": "npm:7.0.2"
-    "@typescript/typescript-win32-arm64": "npm:7.0.2"
-    "@typescript/typescript-win32-x64": "npm:7.0.2"
-  dependenciesMeta:
-    "@typescript/typescript-aix-ppc64":
-      optional: true
-    "@typescript/typescript-darwin-arm64":
-      optional: true
-    "@typescript/typescript-darwin-x64":
-      optional: true
-    "@typescript/typescript-freebsd-arm64":
-      optional: true
-    "@typescript/typescript-freebsd-x64":
-      optional: true
-    "@typescript/typescript-linux-arm":
-      optional: true
-    "@typescript/typescript-linux-arm64":
-      optional: true
-    "@typescript/typescript-linux-loong64":
-      optional: true
-    "@typescript/typescript-linux-mips64el":
-      optional: true
-    "@typescript/typescript-linux-ppc64":
-      optional: true
-    "@typescript/typescript-linux-riscv64":
-      optional: true
-    "@typescript/typescript-linux-s390x":
-      optional: true
-    "@typescript/typescript-linux-x64":
-      optional: true
-    "@typescript/typescript-netbsd-arm64":
-      optional: true
-    "@typescript/typescript-netbsd-x64":
-      optional: true
-    "@typescript/typescript-openbsd-arm64":
-      optional: true
-    "@typescript/typescript-openbsd-x64":
-      optional: true
-    "@typescript/typescript-sunos-x64":
-      optional: true
-    "@typescript/typescript-win32-arm64":
-      optional: true
-    "@typescript/typescript-win32-x64":
-      optional: true
+"typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
     tsc: bin/tsc
-  checksum: 10/b0179005349b43dc1febb35c4e79162cdf89b84eae60f6deac142429109041e07582e69a6aacf5a897e085869686d4512ea444a10acf5b5aa2b60910f82a19ca
+    tsserver: bin/tsserver
+  checksum: 10/696e1b017bc2635f4e0c94eb4435357701008e2f272f553d06e35b494b8ddc60aa221145e286c28ace0c89ee32827a28c2040e3a69bdc108b1a5dc8fb40b72e3
   languageName: node
   linkType: hard
 
@@ -8668,77 +8683,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/22b67a18dafedf9b1468b64ca20d9aa02ea61d449b65413d8aa6552aeb63f52ef369e86beb25b6b4c91a803d9726ee5c196f391a9b64201263263410a4223ee6
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^7.0.2#optional!builtin<compat/typescript>":
-  version: 7.0.2
-  resolution: "typescript@patch:typescript@npm%3A7.0.2#optional!builtin<compat/typescript>::version=7.0.2&hash=3bafbf"
-  dependencies:
-    "@typescript/typescript-aix-ppc64": "npm:7.0.2"
-    "@typescript/typescript-darwin-arm64": "npm:7.0.2"
-    "@typescript/typescript-darwin-x64": "npm:7.0.2"
-    "@typescript/typescript-freebsd-arm64": "npm:7.0.2"
-    "@typescript/typescript-freebsd-x64": "npm:7.0.2"
-    "@typescript/typescript-linux-arm": "npm:7.0.2"
-    "@typescript/typescript-linux-arm64": "npm:7.0.2"
-    "@typescript/typescript-linux-loong64": "npm:7.0.2"
-    "@typescript/typescript-linux-mips64el": "npm:7.0.2"
-    "@typescript/typescript-linux-ppc64": "npm:7.0.2"
-    "@typescript/typescript-linux-riscv64": "npm:7.0.2"
-    "@typescript/typescript-linux-s390x": "npm:7.0.2"
-    "@typescript/typescript-linux-x64": "npm:7.0.2"
-    "@typescript/typescript-netbsd-arm64": "npm:7.0.2"
-    "@typescript/typescript-netbsd-x64": "npm:7.0.2"
-    "@typescript/typescript-openbsd-arm64": "npm:7.0.2"
-    "@typescript/typescript-openbsd-x64": "npm:7.0.2"
-    "@typescript/typescript-sunos-x64": "npm:7.0.2"
-    "@typescript/typescript-win32-arm64": "npm:7.0.2"
-    "@typescript/typescript-win32-x64": "npm:7.0.2"
-  dependenciesMeta:
-    "@typescript/typescript-aix-ppc64":
-      optional: true
-    "@typescript/typescript-darwin-arm64":
-      optional: true
-    "@typescript/typescript-darwin-x64":
-      optional: true
-    "@typescript/typescript-freebsd-arm64":
-      optional: true
-    "@typescript/typescript-freebsd-x64":
-      optional: true
-    "@typescript/typescript-linux-arm":
-      optional: true
-    "@typescript/typescript-linux-arm64":
-      optional: true
-    "@typescript/typescript-linux-loong64":
-      optional: true
-    "@typescript/typescript-linux-mips64el":
-      optional: true
-    "@typescript/typescript-linux-ppc64":
-      optional: true
-    "@typescript/typescript-linux-riscv64":
-      optional: true
-    "@typescript/typescript-linux-s390x":
-      optional: true
-    "@typescript/typescript-linux-x64":
-      optional: true
-    "@typescript/typescript-netbsd-arm64":
-      optional: true
-    "@typescript/typescript-netbsd-x64":
-      optional: true
-    "@typescript/typescript-openbsd-arm64":
-      optional: true
-    "@typescript/typescript-openbsd-x64":
-      optional: true
-    "@typescript/typescript-sunos-x64":
-      optional: true
-    "@typescript/typescript-win32-arm64":
-      optional: true
-    "@typescript/typescript-win32-x64":
-      optional: true
-  bin:
-    tsc: bin/tsc
-  checksum: 10/6d7f3d34ca7fbd3eb4999f06db29340d3dcedd7d40ed71654ea53ecd0f28a330edf0f55a0acf541bf294a2f024f11242075c1a83aed4bd99776fe99af45b994b
   languageName: node
   linkType: hard
 
@@ -9117,7 +9061,7 @@ __metadata:
     node-gyp: "npm:^13.0.1"
     ts-morph: "npm:28.0.0"
     tsx: "npm:^4.23.12"
-    typescript: "npm:^7.0.2"
+    typescript: "npm:^5.9.3"
   languageName: unknown
   linkType: soft
 
@@ -9148,7 +9092,7 @@ __metadata:
     shared: "workspace:*"
     smol-toml: "npm:1.8.0"
     terser: "npm:^5.50.0"
-    typescript: "npm:^7.0.2"
+    typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.68.0"
     vite: "npm:^8.2.2"
   languageName: unknown

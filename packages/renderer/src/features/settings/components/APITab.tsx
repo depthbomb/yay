@@ -25,24 +25,20 @@ export const APITab = () => {
 	const [port, setPort]       = useSetting<number>(ESettingsKey.LocalApiServerPort, { reactive: false });
 	const [enabled, setEnabled] = useSetting<boolean>(ESettingsKey.EnableLocalApiServer, { reactive: false });
 
-	const [portInput, setPortInput] = useState(String(port));
+	const [portInput, setPortInput] = useState<string | null>(null);
 	const [token, setToken]         = useState('');
-
-	useEffect(() => {
-		setPortInput(String(port));
-	}, [port]);
 
 	useEffect(() => {
 		window.ipc.invoke('rest<-get-api-token').then(result => setToken(result.data));
 	}, []);
 
 	const handleBlur = () => {
-		const parsed = parsePort(portInput);
+		const parsed = parsePort(portInput ?? '');
 		if (parsed !== null) {
 			setPort(parsed);
-		} else {
-			setPortInput(String(port));
 		}
+
+		setPortInput(null);
 	};
 
 	return (
@@ -52,7 +48,7 @@ export const APITab = () => {
 			</Section>
 			<Section title="Port">
 				<TextInput
-					value={portInput}
+					value={portInput ?? String(port)}
 					onChange={e => setPortInput(e.target.value)}
 					onBlur={handleBlur}
 					type="string"
