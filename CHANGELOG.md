@@ -1,5 +1,6 @@
 # Unreleased
 
+- Preserved settings and other application data during uninstall unless removal is explicitly requested
 - Improved installer security by verifying downloaded application files before installation
 - Restored automatic and manual application updates with a safer Markdown changelog and verified installer downloads
 - Improved download cancellation for deeply nested process trees

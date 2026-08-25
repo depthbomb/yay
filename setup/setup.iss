@@ -50,12 +50,27 @@ Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringCh
 Filename: "{app}\{#ExeBasename}"; Parameters: "--uninstall"; RunOnceId: "DisableAutoStart"; Flags: runhidden runascurrentuser
 
 [UninstallDelete]
-Type: filesandordirs; Name: "{userappdata}\{#Company}\{#NameLong}\*"
-Type: dirifempty; Name: "{userappdata}\{#Company}\{#NameLong}"
-Type: filesandordirs; Name: "{app}\*"
-Type: dirifempty; Name: "{app}"
+Type: filesandordirs; Name: "{userappdata}\{#Company}\{#NameLong}"; Check: ShouldRemoveUserData
 
 [Code]
+var
+  RemoveUserDataPrompted: Boolean;
+  RemoveUserData: Boolean;
+
+function ShouldRemoveUserData(): Boolean;
+begin
+  if not RemoveUserDataPrompted then
+  begin
+    RemoveUserDataPrompted := True;
+    RemoveUserData := (not UninstallSilent) and
+      (SuppressibleMsgBox(
+        'Would you also like to remove your yay settings, logs, and cached data?',
+        mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES);
+  end;
+
+  Result := RemoveUserData;
+end;
+
 function CmdLineParamExists(const value: string): Boolean;
 var
   i: Integer;
