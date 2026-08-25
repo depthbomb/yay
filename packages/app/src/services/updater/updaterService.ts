@@ -63,7 +63,12 @@ export class UpdaterService implements IBootstrappable {
 	public async bootstrap() {
 		this.ipc.registerHandler('updater<-check-manual',            () => this.checkForUpdates(true));
 		this.ipc.registerHandler('updater<-get-next-manual-check',   () => ok(this.nextManualCheck));
-		this.ipc.registerHandler('updater<-show-window',             () => this.showUpdaterWindow());
+		this.ipc.registerHandler('updater<-show-window',             async (_, preview) => {
+			if (import.meta.env.DEV && preview && !this.latestRelease) {
+				await this.checkForUpdates();
+			}
+			return this.showUpdaterWindow(preview);
+		});
 		this.ipc.registerHandler('updater<-get-latest-release',      () => ok(this.latestRelease));
 		this.ipc.registerHandler('updater<-get-commits-since-build', async () => ok(await this.getCommitsSinceBuild()));
 		this.ipc.registerHandler('updater<-update',                  () => this.startUpdate());
@@ -140,8 +145,8 @@ export class UpdaterService implements IBootstrappable {
 		}
 	}
 
-	public showUpdaterWindow() {
-		if (!this.latestRelease || !this.hasNewRelease) {
+	public showUpdaterWindow(preview = false) {
+		if (!this.latestRelease || (!this.hasNewRelease && !(import.meta.env.DEV && preview))) {
 			return ok();
 		}
 
@@ -192,7 +197,7 @@ export class UpdaterService implements IBootstrappable {
 				|| !isNewerStableRelease(release, product.version)
 			) {
 				this.hasNewRelease = false;
-				this.latestRelease = null;
+				this.latestRelease = import.meta.env.DEV ? release : null;
 				this.commits = null;
 				this.logger.info('No new application release found', { latestVersion: remoteVersion });
 				return ok(null);

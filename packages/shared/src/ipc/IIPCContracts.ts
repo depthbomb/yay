@@ -173,7 +173,7 @@ export interface IIPCContract {
 		return: IPCResult<Nullable<GitHubCommit[]>, never>;
 	}
 	'updater<-show-window': {
-		args: [];
+		args: [preview?: boolean];
 		return: IPCResult<Unit, never>;
 	}
 	'updater<-update': {
