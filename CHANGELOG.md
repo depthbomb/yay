@@ -1,5 +1,6 @@
 # Unreleased
 
+- Improved the accuracy of installer progress reporting
 - Improved update installation reliability and prevented duplicate application launches
 - Preserved settings and other application data during uninstall unless removal is explicitly requested
 - Improved installer security by verifying downloaded application files before installation

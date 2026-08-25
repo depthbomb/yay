@@ -37,7 +37,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "https://github.com/depthbomb/yay/releases/download/{#Version}/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: 270000000; Hash: "{#ArchiveSHA256}"; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
+Source: "https://github.com/depthbomb/yay/releases/download/{#Version}/yay-online-files.7z"; DestDir: "{app}"; DestName: "yay-online-files.7z"; ExternalSize: {#ArchiveUnpackedSize}; Hash: "{#ArchiveSHA256}"; Flags: external download extractarchive recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#Company}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; AppUserModelID: "{#AppUserModelID}"; AppUserModelToastActivatorCLSID: "{#AppUserModelToastActivatorClsid}"; Comment: "yay start menu shortcut"; Parameters: "--from-shortcut"
