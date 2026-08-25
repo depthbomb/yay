@@ -15,6 +15,22 @@ async function createSHA256(path: string) {
 	return hash.digest('hex');
 }
 
+function runCompiler(args: string[]) {
+	return new Promise<void>((resolve, reject) => {
+		const child = spawn('iscc.exe', args, { stdio: ['ignore', 'inherit', 'inherit'] });
+
+		child.once('error', reject);
+		child.once('exit', (code, signal) => {
+			if (code === 0) {
+				resolve();
+				return;
+			}
+
+			reject(new Error(`Inno Setup failed (${signal ? `signal ${signal}` : `exit code ${code}`}).`));
+		});
+	});
+}
+
 async function main() {
 	const definitions: { [key: string]: string } = {
 		Company: product.author,
@@ -38,9 +54,10 @@ async function main() {
 		...defs
 	];
 
-	spawn('iscc.exe', args, { stdio: ['ignore', 'inherit', 'inherit'] })
-		.on('error', console.error)
-		.on('exit', console.log);
+	await runCompiler(args);
 }
 
-void main().catch(console.error);
+void main().catch(error => {
+	console.error(error);
+	process.exitCode = 1;
+});
