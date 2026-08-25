@@ -49,7 +49,7 @@ async function main() {
 			'-m0=lzma2',
 			'-md=128m',
 			'-mfb=64',
-			'-ms=on',
+			'-ms=off',
 			'-mmt=on',
 			'-x!*.html'
 		]);
