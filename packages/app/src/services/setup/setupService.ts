@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { PRELOAD_PATH } from '~/constants';
 import { spawn } from 'node:child_process';
 import { CLIService } from '~/services/cli';
+import { supportsWindowsBackgroundMaterial } from '~/utils';
 import { getExtraFilePath } from '~/common';
 import { IPCService } from '~/services/ipc';
 import { OnlineChecker } from './onlineChecker';
@@ -124,7 +125,9 @@ export class SetupService implements IBootstrappable {
 				titleBarStyle: 'hidden',
 				resizable: false,
 				maximizable: false,
-				backgroundColor: '#191919',
+				...(supportsWindowsBackgroundMaterial()
+					? { backgroundMaterial: 'mica' }
+					: { backgroundColor: '#191919' }),
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,

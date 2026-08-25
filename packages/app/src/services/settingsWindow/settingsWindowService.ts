@@ -6,6 +6,7 @@ import { WindowService } from '~/services/window';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
+import { supportsWindowsBackgroundMaterial } from '~/utils';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
@@ -29,7 +30,9 @@ export class SettingsWindowService implements IBootstrappable {
 				width: 610,
 				minHeight: 520,
 				height: 520,
-				backgroundColor: '#202223',
+				...(supportsWindowsBackgroundMaterial()
+					? { backgroundMaterial: 'mica' }
+					: { backgroundColor: '#202223' }),
 				frame: false,
 				webPreferences: {
 					spellcheck: false,

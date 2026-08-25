@@ -15,6 +15,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
+import { supportsWindowsBackgroundMaterial } from '~/utils';
 import { product, GIT_HASH, ESettingsKey } from 'shared';
 import { getAssetSHA256, isNewerStableRelease, isTrustedReleaseAssetURL, isTrustedReleaseDownloadURL, parseChecksumText } from './updaterValidation';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
@@ -160,7 +161,9 @@ export class UpdaterService implements IBootstrappable {
 				height: 500,
 				minHeight: 400,
 				frame: false,
-				backgroundColor: '#191919',
+				...(supportsWindowsBackgroundMaterial()
+					? { backgroundMaterial: 'mica' }
+					: { backgroundColor: '#191919' }),
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,

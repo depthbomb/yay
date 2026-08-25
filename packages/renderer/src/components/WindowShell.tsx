@@ -10,6 +10,7 @@ export interface IWindowShellProps extends PropsWithChildren {
 	minimizeButton?: boolean;
 	maximizeButton?: boolean;
 	className?: string;
+	titlebarClassName?: string;
 }
 
 const isWindows11 = window.system.platform() === 'win32' && parseInt(window.system.release().split('.')[2], 10) >= 22000;
@@ -20,6 +21,7 @@ export const WindowShell: FC<IWindowShellProps> = ({
 	minimizeButton = true,
 	maximizeButton = true,
 	children,
+	titlebarClassName,
 	...props
 }) => {
 	useTitle(title);
@@ -43,6 +45,7 @@ export const WindowShell: FC<IWindowShellProps> = ({
 			'border-gray-900': !isFocused && !isWindows11
 		})} {...props}>
 			<Titlebar
+				className={titlebarClassName}
 				title={title}
 				windowName={windowName}
 				minimizeButton={minimizeButton}

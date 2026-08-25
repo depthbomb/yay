@@ -11,6 +11,7 @@ export interface ITitlebarProps {
 	showIcon?: boolean;
 	focused?: boolean;
 	isMaximized?: boolean;
+	className?: string;
 }
 
 export const Titlebar: FC<ITitlebarProps> = ({
@@ -21,9 +22,10 @@ export const Titlebar: FC<ITitlebarProps> = ({
 	showIcon = true,
 	focused = true,
 	isMaximized = false,
+	className,
 }) => {
 	return (
-		<div className="w-full h-8 flex items-center">
+		<div className={cx('w-full h-8 flex items-center', className)}>
 			{showIcon && (
 				<div className="size-8 flex items-center justify-center shrink-0 draggable">
 					<Logo type="icon" className="size-4"/>

@@ -17,6 +17,7 @@ import type { FC, ChangeEvent } from 'react';
 type LogLineProps = { line: string; };
 
 const Snowfall = lazy(() => import('~/components/effects/Snowfall'));
+const isWindows11 = window.system.platform() === 'win32' && parseInt(window.system.release().split('.')[2], 10) >= 22000;
 
 const LogLine: FC<LogLineProps> = ({ line, ...props }) => {
 	const css = cx(
@@ -62,11 +63,11 @@ export const HomePage = () => {
 
 	const [isEnabled] = useFeatureFlags();
 
-	const accentCss = cx(
-		'absolute -z-10',
+	const windowCss = cx(
+		'relative w-screen h-screen overflow-hidden',
 		{
-			'inset-0 bg-accent-500': !isWorking,
-			'-inset-137.5 bg-[linear-gradient(90deg,transparent_0%,var(--accent-500)_100%)] animate-spin': isWorking
+			'border border-accent-500': !isWindows11 && !isWorking,
+			'border animated-accent-border': !isWindows11 && isWorking
 		}
 	);
 
@@ -126,9 +127,9 @@ export const HomePage = () => {
 	}, [logs]);
 
 	return (
-		<div className="relative p-px w-screen h-screen overflow-hidden">
+		<div className={windowCss}>
 			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
-			<div className="flex flex-col w-[calc(100vw-2px)] h-[calc(100vh-2px)] bg-gray-950">
+			<div className="flex flex-col size-full bg-transparent">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">
 						<div className="space-x-2 flex items-center">
@@ -183,7 +184,6 @@ export const HomePage = () => {
 					</Fragment>
 				)}
 			</div>
-			<div className={accentCss}/>
 		</div>
 	);
 };

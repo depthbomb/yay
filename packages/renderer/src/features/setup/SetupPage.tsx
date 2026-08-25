@@ -19,8 +19,8 @@ export const SetupPage = () => {
 	const progressState            = done ? 'done' : progress > -1 ? 'active' : 'indeterminate';
 
 	return (
-		<WindowShell title="yay setup" windowName="setup" minimizeButton={false} maximizeButton={false}>
-			<div className="space-y-3 h-full flex flex-col items-center justify-center draggable">
+		<WindowShell title="yay setup" windowName="setup" minimizeButton={false} maximizeButton={false} titlebarClassName="bg-gray-950/40">
+			<div className="space-y-3 h-full flex flex-col items-center justify-center bg-gray-950/40 draggable">
 				<Logo type="lockup" className="w-56 h-auto"/>
 				<div className="p-2 space-x-2 flex flex-row items-center draggable">
 					{!done && <Spinner className="size-5"/>}

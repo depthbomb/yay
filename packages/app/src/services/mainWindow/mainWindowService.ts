@@ -1,7 +1,7 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
 import { ESettingsKey } from 'shared';
-import { isWindows11 } from '~/utils';
+import { isWindows11, supportsWindowsBackgroundMaterial } from '~/utils';
 import { getExtraFilePath } from '~/common';
 import { IPCService } from '~/services/ipc';
 import { app, shell, dialog } from 'electron';
@@ -46,12 +46,15 @@ export class MainWindowService implements IBootstrappable {
 				alwaysOnTop: true,
 				resizable: false,
 				frame: false,
-				thickFrame: !isWindows11(),
+				thickFrame: isWindows11(),
 				minimizable: false,
 				maximizable: false,
 				closable: false,
 				skipTaskbar: import.meta.env.PROD,
-				roundedCorners: false,
+				roundedCorners: isWindows11(),
+				...(supportsWindowsBackgroundMaterial()
+					? { backgroundMaterial: 'mica' }
+					: { backgroundColor: '#191919' }),
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,

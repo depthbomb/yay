@@ -51,9 +51,9 @@ export const SettingsPage = () => {
 	useIPCEvent('yt-dlp->updated-binary',    () => setIsUpdating(false));
 
 	return (
-		<WindowShell windowName="settings" title="Settings">
-			<Root defaultValue="app" orientation="vertical" className="h-[calc(100vh-34px)] flex items-stretch bg-gray-950 overflow-y-auto">
-				<List className="py-3 w-36 flex flex-col shrink-0 bg-black/50">
+		<WindowShell windowName="settings" title="Settings" titlebarClassName="bg-[color-mix(in_srgb,var(--color-gray-950)_50%,black)]">
+			<Root defaultValue="app" orientation="vertical" className="h-[calc(100vh-34px)] flex items-stretch overflow-y-auto">
+				<List className="py-3 w-36 flex flex-col shrink-0 bg-[color-mix(in_srgb,var(--color-gray-950)_50%,black)]">
 					<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
 					<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
 					<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
@@ -62,7 +62,7 @@ export const SettingsPage = () => {
 					<TabButton value="about" title="About" icon={mdiInformation}/>
 					{import.meta.env.DEV && <TabButton value="debug" title="Debug" icon={mdiTools}/>}
 				</List>
-				<div className="p-3 w-full overflow-y-auto [scrollbar-width:thin]">
+				<div className="p-3 w-full bg-transparent overflow-y-auto scrollbar-thin">
 					<Content value="app">
 						<AppTab/>
 					</Content>

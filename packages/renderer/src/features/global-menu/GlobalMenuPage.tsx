@@ -13,8 +13,8 @@ export const GlobalMenuPage = () => {
 	useIPCEvent('yt-dlp->download-finished', () => setIsDownloadsDisabled(false));
 
 	return (
-		<div className="relative p-px w-screen h-screen">
-			<div className="w-[calc(100vw-2px)] h-[calc(100vh-2px)] flex flex-col items-stretch bg-gray-950">
+		<div className="w-screen h-screen">
+			<div className="w-full h-full flex flex-col items-stretch bg-transparent">
 				<GlobalMenuItem
 					icon={videoIcon}
 					text="Video from clipboard"
@@ -34,7 +34,6 @@ export const GlobalMenuPage = () => {
 					onClick={() => window.ipc.invoke('global-menu<-open-download-dir')}
 				/>
 			</div>
-			<div className="absolute inset-0 bg-accent-500 -z-10"/>
 		</div>
 	);
 };

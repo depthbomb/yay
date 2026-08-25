@@ -1,5 +1,6 @@
 # Unreleased
 
+- Added native Mica backgrounds throughout the application on supported Windows 11 versions
 - Improved application naming and version details in the installer and Windows installed-app listing
 - Improved installer extraction performance
 - Improved the accuracy of installer progress reporting

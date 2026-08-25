@@ -118,6 +118,23 @@
 	-webkit-app-region: drag;
 }
 
+@property --accent-border-angle {
+	syntax: '<angle>';
+	initial-value: 0deg;
+	inherits: false;
+}
+
+@keyframes rotate-accent-border {
+	to {
+		--accent-border-angle: 360deg;
+	}
+}
+
+.animated-accent-border {
+	border-image: conic-gradient(from var(--accent-border-angle), transparent, var(--accent-500)) 1;
+	animation: rotate-accent-border 1s linear infinite;
+}
+
 :root {
 	color-scheme: dark;
 }

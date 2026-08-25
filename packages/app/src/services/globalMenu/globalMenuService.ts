@@ -1,6 +1,6 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
-import { isWindows11 } from '~/utils';
+import { isWindows11, supportsWindowsBackgroundMaterial } from '~/utils';
 import { PRELOAD_PATH } from '~/constants';
 import { IPCService } from '~/services/ipc';
 import { YtdlpService } from '~/services/ytdlp';
@@ -35,10 +35,14 @@ export class GlobalMenuService implements IBootstrappable {
 				show: false,
 				width: 210,
 				height: 110,
+				...(supportsWindowsBackgroundMaterial()
+					? { backgroundMaterial: 'mica' }
+					: { backgroundColor: '#191919' }),
 				resizable: false,
 				closable: false,
 				frame: false,
-				thickFrame: !isWindows11(),
+				thickFrame: isWindows11(),
+				roundedCorners: isWindows11(),
 				skipTaskbar: !import.meta.env.DEV,
 				alwaysOnTop: true,
 				webPreferences: {
@@ -52,7 +56,6 @@ export class GlobalMenuService implements IBootstrappable {
 				}
 			}
 		});
-
 		this.globalMenuWindow.on('blur', () => this.hideMenu());
 		this.globalMenuWindow.on('close', e => {
 			if (!this.lifecycle.shutdownInProgress) {

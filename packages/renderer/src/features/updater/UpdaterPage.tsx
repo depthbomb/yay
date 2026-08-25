@@ -83,15 +83,15 @@ export const UpdaterPage = () => {
 	};
 
 	return (
-		<WindowShell windowName="updater" title="Updater">
+		<WindowShell windowName="updater" title="Updater" titlebarClassName="bg-[color-mix(in_srgb,var(--color-gray-950)_50%,black)]">
 			{release ? (
-				<Root defaultValue="changelog" onValueChange={value => value === 'commits' && void loadCommits()} className="p-4 space-y-4 size-full flex flex-col bg-gray-950">
+				<Root defaultValue="changelog" onValueChange={value => value === 'commits' && void loadCommits()} className="p-4 space-y-4 size-full flex flex-col bg-gray-950/40">
 					<h1 className="font-display text-2xl">yay version <span className="font-mono">{release.tag_name}</span> is available</h1>
 					<List className="space-x-1.5 flex shrink-0">
 						<TabButton value="changelog">Changelog</TabButton>
 						<TabButton value="commits">Commits since your version</TabButton>
 					</List>
-					<Content value="changelog" className="p-3 size-full bg-gray-900 rounded-xs border border-gray-800 shadow overflow-y-auto">
+					<Content value="changelog" className="p-3 size-full bg-gray-900/75 rounded-xs border border-gray-800 shadow overflow-y-auto">
 						{changelog ? (
 							<div className="prose prose-p:text-white prose-li:text-white prose-headings:text-white prose-strong:text-white prose-a:text-brand-500 prose-a:hover:text-brand-400 prose-a:active:text-brand-600 prose-code:text-white prose-pre:bg-black/40 prose-table:text-white max-w-none">
 								<ReactMarkdown
