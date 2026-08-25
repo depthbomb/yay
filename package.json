@@ -2,7 +2,8 @@
 	"private": true,
 	"name": "yay-root",
 	"scripts": {
-		"typecheck": "yarn workspaces foreach -Apt run typecheck",
+		"test": "yarn workspace shared build:d && yarn workspace yay test && yarn workspace renderer test",
+		"typecheck": "yarn workspace shared build:d && yarn workspaces foreach -Apt run typecheck",
 		"lint": "yarn workspaces foreach -Apt run lint",
 		"dev": "yarn workspace yay run dev",
 		"watch": "yarn workspace renderer run watch",

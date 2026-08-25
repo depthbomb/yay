@@ -4,6 +4,7 @@
 	"author": "Caprine Logic",
 	"main": "dist/app.js",
 	"scripts": {
+		"test": "yarn run -T tsx --test src/**/*.test.ts",
 		"typecheck": "tsc --noEmit",
 		"dev": "cross-env NODE_ENV=development yarn build:d && yarn electron:test",
 		"build:d": "tsc --noEmit && vite build --mode development && vite build --config vite.preload.config.mts --mode development",

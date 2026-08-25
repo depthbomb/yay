@@ -1,6 +1,9 @@
 import { app } from 'electron';
 import { join, dirname } from 'node:path';
 import { product, GIT_HASH_SHORT } from 'shared';
+import { isAllowedExternalURL } from './externalURL';
+
+export { isAllowedExternalURL } from './externalURL';
 
 export const REPO_OWNER = 'depthbomb' as const;
 export const REPO_NAME  = 'yay' as const;
@@ -23,14 +26,4 @@ export const BROWSER_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) App
  * An array of functions that take a `URL` and return a `bool`, used as "rules" to determine if a
  * URL should be opened externally.
  */
-export const isAllowedExternalURL = (url: URL) => {
-	if (url.protocol !== 'https:') {
-		return false;
-	}
-
-	return url.hostname === 'github.com'
-		|| url.hostname === 'electronjs.org'
-		|| url.hostname.endsWith('.electronjs.org');
-};
-
 export const EXTERNAL_URL_RULES = [isAllowedExternalURL];

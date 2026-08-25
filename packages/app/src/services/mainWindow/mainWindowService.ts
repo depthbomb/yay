@@ -12,6 +12,7 @@ import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { SettingsService } from '~/services/settings';
+import { toTaskbarProgress } from './toTaskbarProgress';
 import { LifecycleService } from '~/services/lifecycle';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
@@ -185,6 +186,3 @@ export class MainWindowService implements IBootstrappable {
 		mainWindow.focus();
 	}
 }
-
-export const toTaskbarProgress = (percentage: number) =>
-	Number.isFinite(percentage) ? Math.min(100, Math.max(0, percentage)) / 100 : 0;

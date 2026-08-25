@@ -14,6 +14,7 @@ import { inject, injectable } from '@needle-di/core';
 import { Queue } from '@depthbomb/common/collections';
 import { SettingsService } from '~/services/settings';
 import { ThumbnailService } from '~/services/thumbnail';
+import { parseUpdateOutput } from './parseUpdateOutput';
 import { getExtraFilePath, getFilePathFromAsar } from '~/common';
 import { NotificationBuilder, NotificationsService } from '~/services/notifications';
 import type { IBootstrappable } from '~/common';
@@ -135,9 +136,8 @@ export class YtdlpService implements IBootstrappable {
 
 		try {
 			const ytDlpPath = this.settings.get<string>(ESettingsKey.YtdlpPath);
-			const output    = await this.runBinaryUpdate(ytDlpPath);
-			const version   = output.match(/\b(?:stable@)?\d{4}\.\d{2}\.\d{2}(?:\.\d+)?\b/i)?.[0] ?? 'unknown version';
-			const updated   = /\b(?:updating to|updated yt-dlp)\b/i.test(output);
+			const output = await this.runBinaryUpdate(ytDlpPath);
+			const { version, updated } = parseUpdateOutput(output);
 
 			if (!silent) {
 				await dialog.showMessageBox({

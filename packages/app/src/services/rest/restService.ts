@@ -3,13 +3,14 @@ import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
 import { IDGenerator } from '~/common';
 import { serve } from '@hono/node-server';
-import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { IPCService } from '~/services/ipc';
 import { YtdlpService } from '~/services/ytdlp';
 import { isValidURL, ESettingsKey } from 'shared';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
+import { isAllowedLocalApiHost, isValidBearerToken, LOCAL_API_HOSTNAME } from './restValidation';
 import type { Context } from 'hono';
 import type { Maybe } from 'shared';
 import type { IBootstrappable } from '~/common';
@@ -69,8 +70,7 @@ export class RestService implements IBootstrappable {
 			this.logger.trace('Sent HTTP response', { id, method, url, status });
 		});
 		this.hono.use(async (c, next) => {
-			const host = c.req.header('host')?.toLowerCase();
-			if (host !== `127.0.0.1:${port}` && host !== `localhost:${port}`) {
+			if (!isAllowedLocalApiHost(c.req.header('host'), port)) {
 				return this.createJSONResponse(c, 'Invalid Host header', {}, 400);
 			}
 
@@ -95,7 +95,7 @@ export class RestService implements IBootstrappable {
 
 			const authorization = c.req.header('authorization');
 			const token         = authorization?.startsWith('Bearer ') ? authorization.slice(7) : '';
-			if (!this.isValidToken(token)) {
+			if (!isValidBearerToken(token, this.apiToken)) {
 				return this.createJSONResponse(c, 'Unauthorized', {}, 401);
 			}
 
@@ -128,7 +128,7 @@ export class RestService implements IBootstrappable {
 		});
 
 		try {
-			this.server = serve({ fetch: this.hono.fetch, port, hostname: '127.0.0.1' });
+			this.server = serve({ fetch: this.hono.fetch, port, hostname: LOCAL_API_HOSTNAME });
 			this.server.on('error', error => this.logger.error('Local API server error', { error }));
 		} catch (error) {
 			this.logger.error('Failed to start local API server', { error });
@@ -136,13 +136,6 @@ export class RestService implements IBootstrappable {
 		}
 
 		eventBus.on('lifecycle:shutdown', () => this.server?.close());
-	}
-
-	private isValidToken(candidate: string) {
-		const actual   = Buffer.from(candidate);
-		const expected = Buffer.from(this.apiToken);
-
-		return actual.length === expected.length && timingSafeEqual(actual, expected);
 	}
 
 	private createJSONResponse(c: Context, message: string = '', results: object = {}, status: number = 200) {

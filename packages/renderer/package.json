@@ -3,6 +3,7 @@
 	"name": "renderer",
 	"type": "module",
 	"scripts": {
+		"test": "yarn run -T tsx --test src/**/*.test.ts",
 		"typecheck": "tsc -b --pretty false",
 		"dev": "vite",
 		"watch": "yarn dev",
