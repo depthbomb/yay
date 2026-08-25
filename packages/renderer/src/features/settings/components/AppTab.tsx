@@ -7,7 +7,7 @@ import { Button } from '~/components/Button';
 import { Switch } from '~/components/Switch';
 import { KeyCombo } from '~/components/KeyCombo';
 import { SectionSeparator } from './SectionSeparator';
-import { mdiBug, mdiImport, mdiExport, mdiFolderOpen, mdiMicrosoftWindows } from '@mdi/js';
+import { mdiBug, mdiExport, mdiImport, mdiFolderOpen, mdiMicrosoftWindows } from '@mdi/js';
 
 export const AppTab = () => {
 	const [importDisabled, setImportDisabled]                         = useState(false);

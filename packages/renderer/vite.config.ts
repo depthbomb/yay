@@ -1,10 +1,10 @@
 import { DEV_PORT } from 'shared';
 import { defineConfig } from 'vite';
 import { resolve } from 'node:path';
-import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import { URL, fileURLToPath } from 'node:url';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import type { UserConfig } from 'vite';
 
 let entryID = 0;

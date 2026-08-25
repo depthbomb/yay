@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useIPCEvent } from '~/hooks';
-import { GlobalMenuItem } from './components/GlobalMenuItem';
-import { GlobalMenuSeparator } from './components/GlobalMenuSeparator';
-
 import videoIcon from '~/assets/img/menu-icons/video.png';
+import { GlobalMenuItem } from './components/GlobalMenuItem';
 import audioIcon from '~/assets/img/menu-icons/music-note.png';
 import folderIcon from '~/assets/img/menu-icons/folder-open.png';
+import { GlobalMenuSeparator } from './components/GlobalMenuSeparator';
 
 export const GlobalMenuPage = () => {
 	const [isDownloadsDisabled, setIsDownloadsDisabled] = useState(false);

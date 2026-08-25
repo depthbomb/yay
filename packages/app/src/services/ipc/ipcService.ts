@@ -1,9 +1,9 @@
 import { ipcMain } from 'electron';
-import { DEV_PORT, IPCChannels } from 'shared';
-import { injectable } from '@needle-di/core';
+import { ROOT_PATH } from '~/constants';
 import { fileURLToPath } from 'node:url';
 import { join, normalize } from 'node:path';
-import { ROOT_PATH } from '~/constants';
+import { injectable } from '@needle-di/core';
+import { DEV_PORT, IPCChannels } from 'shared';
 import type { IIPCContract } from 'shared';
 import type { IpcMainEvent, IpcMainInvokeEvent } from 'electron';
 

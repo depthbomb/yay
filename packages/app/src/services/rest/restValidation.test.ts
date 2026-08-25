@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { isAllowedLocalApiHost, isValidBearerToken, LOCAL_API_HOSTNAME } from './restValidation';
+import { isValidBearerToken, LOCAL_API_HOSTNAME, isAllowedLocalApiHost } from './restValidation';
 
 test('local API uses loopback and accepts only expected Host headers', () => {
 	assert.equal(LOCAL_API_HOSTNAME, '127.0.0.1');

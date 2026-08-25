@@ -1,8 +1,7 @@
 import { cva } from 'cva';
 import { Icon } from '@mdi/react';
-import { mdiCancel } from '@mdi/js';
 import { Button } from '~/components/Button';
-import { mdiVideo, mdiMusicNote } from '@mdi/js';
+import { mdiVideo, mdiCancel, mdiMusicNote } from '@mdi/js';
 import type { FC } from 'react';
 
 export interface IDownloadButtonsProps {

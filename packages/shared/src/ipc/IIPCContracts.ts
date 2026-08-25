@@ -1,10 +1,9 @@
-import type { Nullable } from '../types';
 import type { ITweetMedia } from '../twitter';
 import type { ESettingsKey } from '../settings';
 import type { FeatureFlag } from '../featureFlags';
 import type { Unit, IPCResult } from './ipc-result';
+import type { Nullable, SystemInfo } from '../types';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
-import type { SystemInfo } from '../types';
 
 export interface IIPCContract {
 	'main<-show-message-box': {

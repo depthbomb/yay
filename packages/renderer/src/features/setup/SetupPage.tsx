@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useIPCEvent } from '~/hooks';
 import { Logo } from '~/components/Logo';
 import { Spinner } from '~/components/SpinnerV2';
-import { WindowShell } from '~/components/WindowShell';
 import { ProgressBar } from './components/ProgressBar';
+import { WindowShell } from '~/components/WindowShell';
 
 export const SetupPage = () => {
 	const [state, setState] = useState({

@@ -22,8 +22,8 @@ function assertChannelValid<K extends string>(channel: K, set: Set<K>) {
 }
 
 type IpcRendererListener = Parameters<typeof ipcRenderer.on>[1];
-const listenerMap = new WeakMap<object, IpcRendererListener>();
 
+const listenerMap = new WeakMap<object, IpcRendererListener>();
 const versionsAPI = Object.freeze({ ...process.versions }) satisfies VersionsAPI;
 
 const ipcAPI = Object.freeze({

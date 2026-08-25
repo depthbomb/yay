@@ -1,7 +1,6 @@
 import { cx } from 'cva';
-import type { FC, SVGAttributes } from 'react';
-
 import css from './spinner.module.css';
+import type { FC, SVGAttributes } from 'react';
 
 type SpinnerProps = SVGAttributes<SVGElement>;
 

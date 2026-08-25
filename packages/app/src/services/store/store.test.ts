@@ -1,11 +1,11 @@
 import test from 'node:test';
-import assert from 'node:assert/strict';
+import { Store } from './store';
 import { join } from 'node:path';
-import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { parse } from 'smol-toml';
+import assert from 'node:assert/strict';
 import { Path } from '@depthbomb/node-common/pathlib';
-import { Store } from './store';
+import { rm, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import type { LoggingService } from '~/services/logging';
 
 test('concurrent updates persist the latest complete settings snapshot', async t => {

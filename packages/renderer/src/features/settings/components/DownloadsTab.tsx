@@ -8,7 +8,6 @@ import { SectionSeparator } from './SectionSeparator';
 import { Select, TextInput } from '~/components/Input';
 import type { ChangeEvent } from 'react';
 
-
 export const DownloadsTab = () => {
 	const [downloadDir]                                         = useSetting<string>(ESettingsKey.DownloadDir);
 	const [downloadNameTemplate, setDownloadNameTemplate]       = useSetting<string>(ESettingsKey.DownloadNameTemplate, { reactive: false });

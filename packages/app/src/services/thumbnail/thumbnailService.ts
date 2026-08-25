@@ -3,14 +3,14 @@ import { ok } from 'shared/ipc';
 import { Readable } from 'node:stream';
 import { randomUUID } from 'node:crypto';
 import { USER_AGENT } from '~/constants';
+import { createWriteStream } from 'node:fs';
 import { IPCService } from '~/services/ipc';
 import { HTTPService } from '~/services/http';
-import { createWriteStream } from 'node:fs';
 import { pipeline } from 'node:stream/promises';
-import { readdir, rename, rm, stat, unlink } from 'node:fs/promises';
 import { LoggingService } from '~/services/logging';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
+import { rm, stat, rename, unlink, readdir } from 'node:fs/promises';
 import type { IBootstrappable } from '~/common';
 import type { HTTPClient } from '~/services/http';
 

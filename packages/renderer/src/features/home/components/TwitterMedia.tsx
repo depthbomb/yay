@@ -4,7 +4,7 @@ import { workingAtom } from '~/atoms/app';
 import { useState, useEffect } from 'react';
 import { Button } from '~/components/Button';
 import { Spinner } from '~/components/SpinnerV2';
-import { mdiCheck, mdiAlert, mdiTwitter, mdiDownload } from '@mdi/js';
+import { mdiAlert, mdiCheck, mdiTwitter, mdiDownload } from '@mdi/js';
 import type { FC } from 'react';
 import type { Nullable, ITweetMedia } from 'shared';
 
