@@ -1,7 +1,10 @@
 import { Hono } from 'hono';
+import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
 import { IDGenerator } from '~/common';
 import { serve } from '@hono/node-server';
+import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { IPCService } from '~/services/ipc';
 import { YtdlpService } from '~/services/ytdlp';
 import { isValidURL, ESettingsKey } from 'shared';
 import { LoggingService } from '~/services/logging';
@@ -17,16 +20,25 @@ import type { ContentfulStatusCode } from 'hono/utils/http-status';
 export class RestService implements IBootstrappable {
 	private hono?: Maybe<Hono>;
 	private server?: Maybe<ServerType>;
+	private apiToken = '';
 
 	private readonly requestID = new IDGenerator('req#');
 
 	public constructor(
 		private readonly logger   = inject(LoggingService),
+		private readonly ipc      = inject(IPCService),
 		private readonly settings = inject(SettingsService),
 		private readonly ytdlp    = inject(YtdlpService),
 	) {}
 
 	public async bootstrap() {
+		const storedToken = this.settings.get<string>(ESettingsKey.LocalApiServerToken, '', { secure: true });
+		this.apiToken     = storedToken || randomUUID();
+		this.ipc.registerHandler('rest<-get-api-token', () => ok(this.apiToken));
+		if (!storedToken) {
+			await this.settings.set(ESettingsKey.LocalApiServerToken, this.apiToken, { secure: true });
+		}
+
 		if (!this.settings.get<boolean>(ESettingsKey.EnableLocalApiServer)) {
 			return;
 		}
@@ -54,6 +66,19 @@ export class RestService implements IBootstrappable {
 
 			this.logger.trace('Sent HTTP response', { id, method, url, status });
 		});
+		this.hono.use(async (c, next) => {
+			if (c.req.header('origin')) {
+				return this.createJSONResponse(c, 'Browser-originated requests are not allowed', {}, 403);
+			}
+
+			const authorization = c.req.header('authorization');
+			const token         = authorization?.startsWith('Bearer ') ? authorization.slice(7) : '';
+			if (!this.isValidToken(token)) {
+				return this.createJSONResponse(c, 'Unauthorized', {}, 401);
+			}
+
+			return next();
+		});
 		this.hono.get('/ping', c => this.createJSONResponse(c, 'PONG'));
 		this.hono.get('/is-busy', c => this.createJSONResponse(c, '', { busy: this.ytdlp.isBusy }));
 		this.hono.post('/download', c => {
@@ -78,13 +103,21 @@ export class RestService implements IBootstrappable {
 		});
 
 		try {
-			this.server = serve({ fetch: this.hono.fetch, port });
+			this.server = serve({ fetch: this.hono.fetch, port, hostname: '127.0.0.1' });
+			this.server.on('error', error => this.logger.error('Local API server error', { error }));
 		} catch (error) {
 			this.logger.error('Failed to start local API server', { error });
 			return;
 		}
 
 		eventBus.on('lifecycle:shutdown', () => this.server?.close());
+	}
+
+	private isValidToken(candidate: string) {
+		const actual   = Buffer.from(candidate);
+		const expected = Buffer.from(this.apiToken);
+
+		return actual.length === expected.length && timingSafeEqual(actual, expected);
 	}
 
 	private createJSONResponse(c: Context, message: string = '', results: object = {}, status: number = 200) {

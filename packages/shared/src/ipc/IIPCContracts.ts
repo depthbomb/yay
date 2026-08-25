@@ -169,4 +169,9 @@ export interface IIPCContract {
 		args: [];
 		return: IPCResult<Unit, never>;
 	}
+	//
+	'rest<-get-api-token': {
+		args: [];
+		return: IPCResult<string, never>;
+	}
 }

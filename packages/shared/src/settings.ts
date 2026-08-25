@@ -16,6 +16,7 @@ export enum ESettingsKey {
 	UseNewTwitterVideoDownloader  = 'use-new-twitter-video-downloader',
 	EnableLocalApiServer          = 'enable-local-api-server',
 	LocalApiServerPort            = 'local-api-server-port',
+	LocalApiServerToken           = 'local-api-server-token',
 }
 
 export const SettingsKeys = Object.values(ESettingsKey);

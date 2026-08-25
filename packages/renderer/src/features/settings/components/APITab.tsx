@@ -26,10 +26,15 @@ export const APITab = () => {
 	const [enabled, setEnabled] = useSetting<boolean>(ESettingsKey.EnableLocalApiServer, { reactive: false });
 
 	const [portInput, setPortInput] = useState(String(port));
+	const [token, setToken]         = useState('');
 
 	useEffect(() => {
 		setPortInput(String(port));
 	}, [port]);
+
+	useEffect(() => {
+		window.ipc.invoke('rest<-get-api-token').then(result => setToken(result.data));
+	}, []);
 
 	const handleBlur = () => {
 		const parsed = parsePort(portInput);
@@ -56,6 +61,10 @@ export const APITab = () => {
 					readOnly={!enabled}
 					size="sm"
 				/>
+			</Section>
+			<Section title="Bearer token">
+				<TextInput value={token} type="password" className="w-full font-mono" readOnly size="sm"/>
+				<p className="text-xs text-gray-400">Send this value in the <code>Authorization: Bearer</code> header.</p>
 			</Section>
 		</div>
 	);

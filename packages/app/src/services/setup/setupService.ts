@@ -2,6 +2,7 @@ import { ok } from 'shared/ipc';
 import { ESettingsKey } from 'shared';
 import { PRELOAD_PATH } from '~/constants';
 import { spawn } from 'node:child_process';
+import { randomUUID } from 'node:crypto';
 import { CLIService } from '~/services/cli';
 import { getExtraFilePath } from '~/common';
 import { IPCService } from '~/services/ipc';
@@ -107,6 +108,7 @@ export class SetupService implements IBootstrappable {
 			[ESettingsKey.CookiesFilePath, null],
 			[ESettingsKey.EnableLocalApiServer, false],
 			[ESettingsKey.LocalApiServerPort, 9876],
+			[ESettingsKey.LocalApiServerToken, randomUUID(), { secure: true }],
 		]);
 	}
 
