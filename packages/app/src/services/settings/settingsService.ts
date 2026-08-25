@@ -6,6 +6,7 @@ import { IPCService } from '~/services/ipc';
 import { product, ESettingsKey } from 'shared';
 import { StoreService } from '~/services/store';
 import { WindowService } from '~/services/window';
+import { validateImportedSettings } from './validateImportedSettings';
 import { inject, injectable } from '@needle-di/core';
 import { Path } from '@depthbomb/node-common/pathlib';
 import { readFile, writeFile } from 'node:fs/promises';
@@ -20,7 +21,8 @@ type SettingsManagerGetOptions = {
 };
 type SettingsManagerSetOptions = SettingsManagerGetOptions;
 type ExportedSettings = {
-	date: Date;
+	formatVersion?: number;
+	date: string;
 	appVersion: string;
 	checksum: string;
 	data: string;
@@ -137,35 +139,56 @@ export class SettingsService implements IBootstrappable {
 	public async importFromFile(filepath: string) {
 		const json = await readFile(filepath, 'utf8');
 
-		let parsed: ExportedSettings;
+		let parsed: unknown;
 		try {
-			parsed = JSON.parse(json) as ExportedSettings;
+			parsed = JSON.parse(json) as unknown;
 		} catch {
 			throw new Error('Invalid exported settings file: malformed JSON');
 		}
 
-		if (typeof parsed.data !== 'string' || typeof parsed.checksum !== 'string') {
+		if (
+			typeof parsed !== 'object'
+			|| parsed === null
+			|| Array.isArray(parsed)
+			|| !isExportedSettings(parsed)
+			|| (parsed.formatVersion !== undefined && parsed.formatVersion !== 1)
+			|| typeof parsed.date !== 'string'
+			|| Number.isNaN(Date.parse(parsed.date))
+			|| typeof parsed.appVersion !== 'string'
+			|| typeof parsed.data !== 'string'
+			|| typeof parsed.checksum !== 'string'
+		) {
 			throw new Error('Invalid exported settings file: missing or invalid fields.');
 		}
 
 		const expected = createHash('sha512').update(parsed.data).digest();
 		const actual   = Buffer.from(parsed.checksum, 'base64');
 		if (expected.length !== actual.length) {
-			throw new Error('Settings data may be corrupted or tampered with.');
+			throw new Error('Settings data does not match its checksum.');
 		}
 
 		if (!timingSafeEqual(expected, actual)) {
-			throw new Error('Settings data may be corrupted or tampered with.');
+			throw new Error('Settings data does not match its checksum.');
 		}
 
-		await this.apply(JSON.parse(parsed.data));
+		let importedData: unknown;
+		try {
+			importedData = JSON.parse(parsed.data);
+		} catch {
+			throw new Error('Invalid exported settings file: settings data is malformed JSON.');
+		}
+
+		await this.internalStore.replace(validateImportedSettings(importedData));
 	}
 
 	public async exportToFile(filepath: string) {
 		const date = new Date();
-		const data = JSON.stringify(this.internalStore.store);
+		const settings = { ...this.internalStore.store };
+		delete settings[ESettingsKey.LocalApiServerToken];
+
+		const data = JSON.stringify(settings);
 		const hash = createHash('sha512').update(data).digest('base64');
-		const json = JSON.stringify({ date, appVersion: product.version, checksum: hash, data });
+		const json = JSON.stringify({ formatVersion: 1, date, appVersion: product.version, checksum: hash, data });
 		const path = join(filepath, 'yay-exported-settings.json');
 
 		await writeFile(path, json, 'utf8');
@@ -181,3 +204,6 @@ export class SettingsService implements IBootstrappable {
 		return JSON.parse(safeStorage.decryptString(Buffer.from(encrypted, 'base64'))) as T;
 	}
 }
+
+const isExportedSettings = (value: object): value is ExportedSettings =>
+	'data' in value && 'checksum' in value && 'date' in value && 'appVersion' in value;

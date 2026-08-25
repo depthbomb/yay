@@ -54,6 +54,12 @@ export class Store<S extends Record<string, any>> {
 		await this.save();
 	}
 
+	public async replace(data: S) {
+		this.store = data;
+
+		await this.save();
+	}
+
 	public async readAll() {
 		const data = await this.storePath.readText();
 		return parse(data) as S;

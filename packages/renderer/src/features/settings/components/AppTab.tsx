@@ -32,7 +32,7 @@ export const AppTab = () => {
 				await window.ipc.invoke('main<-show-message-box', {
 					title: 'Settings exporter',
 					type: 'info',
-					message: 'Settings successfully exported.'
+					message: 'Settings successfully imported.'
 				});
 			}
 		}
