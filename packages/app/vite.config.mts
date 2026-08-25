@@ -28,7 +28,6 @@ export default defineConfig(({ mode }) => {
 			lib: {
 				entry: {
 					app: resolve('./src/index.ts'),
-					preload: resolve('./src/preload.ts'),
 				},
 				formats: ['cjs']
 			},

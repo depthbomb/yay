@@ -127,7 +127,9 @@ export class SetupService implements IBootstrappable {
 				webPreferences: {
 					spellcheck: false,
 					enableWebSQL: false,
-					nodeIntegration: true,
+					nodeIntegration: false,
+					contextIsolation: true,
+					sandbox: true,
 					devTools: import.meta.env.DEV,
 					preload: PRELOAD_PATH,
 				}

@@ -4,6 +4,7 @@ import type { ESettingsKey } from '../settings';
 import type { FeatureFlag } from '../featureFlags';
 import type { Unit, IPCResult } from './ipc-result';
 import type { MessageBoxOptions, MessageBoxReturnValue } from 'electron';
+import type { SystemInfo } from '../types';
 
 export interface IIPCContract {
 	'main<-show-message-box': {
@@ -168,6 +169,10 @@ export interface IIPCContract {
 	'thumbnail<-clear-cache': {
 		args: [];
 		return: IPCResult<Unit, never>;
+	}
+	'system<-get-info': {
+		args: [];
+		return: IPCResult<SystemInfo, never>;
 	}
 	//
 	'rest<-get-api-token': {

@@ -14,6 +14,14 @@ export type IPCAPI = Readonly<{
 	removeAllListeners: (channel: IPCChannel) => void;
 }>;
 
+export type SystemInfo = Readonly<{
+	arch: string;
+	type: string;
+	release: string;
+	platform: NodeJS.Platform;
+	hostname: string;
+}>;
+
 export type SystemAPI = Readonly<{
 	arch: () => string;
 	type: () => string;

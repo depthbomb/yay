@@ -1,5 +1,6 @@
 import { ok } from 'shared/ipc';
 import { dirname } from 'node:path';
+import { arch, type, release, hostname, platform } from 'node:os';
 import { CLIService } from '~/services/cli';
 import { IPCService } from '~/services/ipc';
 import { RestService } from '~/services/rest';
@@ -52,6 +53,15 @@ export class MainService {
 
 	public async boot() {
 		this.logger.info('Bootstrapping services');
+		this.ipc.registerSyncHandler('system<-get-info', e => {
+			e.returnValue = ok({
+				arch: arch(),
+				type: type(),
+				release: release(),
+				platform: platform(),
+				hostname: hostname(),
+			});
+		});
 
 		await Promise.all([
 			this.lifecycle.bootstrap(),

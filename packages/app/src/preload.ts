@@ -1,6 +1,5 @@
 import { ipcRenderer, contextBridge } from 'electron';
 import { IPCEvents, IPCChannel, IPCChannels } from 'shared';
-import { arch, type, release, hostname, platform } from 'node:os';
 import type { IPCAPI, SystemAPI, IIPCEvents, VersionsAPI, IIPCContract, FeatureFlagsAPI } from 'shared';
 
 type IPCArgs<K extends keyof IIPCContract>   = IIPCContract[K]['args'];
@@ -83,7 +82,18 @@ const ipcAPI = Object.freeze({
 	}
 }) satisfies IPCAPI;
 
-const systemAPI = Object.freeze({ arch, type, release, platform, hostname }) satisfies SystemAPI;
+const systemInfo = ipcRenderer.sendSync('system<-get-info') as IIPCContract['system<-get-info']['return'];
+if (!systemInfo?.isOk) {
+	throw new Error('Unable to retrieve system information');
+}
+
+const systemAPI = Object.freeze({
+	arch:     () => systemInfo.data.arch,
+	type:     () => systemInfo.data.type,
+	release:  () => systemInfo.data.release,
+	platform: () => systemInfo.data.platform,
+	hostname: () => systemInfo.data.hostname,
+}) satisfies SystemAPI;
 
 const featureFlagsAPI = Object.freeze({
 	getFeatureFlags() {
