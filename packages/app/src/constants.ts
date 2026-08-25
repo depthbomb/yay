@@ -23,6 +23,14 @@ export const BROWSER_USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) App
  * An array of functions that take a `URL` and return a `bool`, used as "rules" to determine if a
  * URL should be opened externally.
  */
-export const EXTERNAL_URL_RULES = [
-	(url: URL) => url.host.endsWith('electronjs.org'),
-];
+export const isAllowedExternalURL = (url: URL) => {
+	if (url.protocol !== 'https:') {
+		return false;
+	}
+
+	return url.hostname === 'github.com'
+		|| url.hostname === 'electronjs.org'
+		|| url.hostname.endsWith('.electronjs.org');
+};
+
+export const EXTERNAL_URL_RULES = [isAllowedExternalURL];

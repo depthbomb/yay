@@ -8,7 +8,7 @@ import { TrayService } from '~/services/tray';
 import { SetupService } from '~/services/setup';
 import { TimerService } from '~/services/timer';
 import { YtdlpService } from '~/services/ytdlp';
-import { EXTERNAL_URL_RULES } from '~/constants';
+import { isAllowedExternalURL } from '~/constants';
 import { WindowService } from '~/services/window';
 import { LoggingService } from '~/services/logging';
 import { ThemingService } from '~/services/theming';
@@ -149,10 +149,6 @@ export class MainService {
 			return false;
 		}
 
-		if (parsed.protocol !== 'https:') {
-			return false;
-		}
-
-		return EXTERNAL_URL_RULES.some(rule => rule(parsed));
+		return isAllowedExternalURL(parsed);
 	}
 }
