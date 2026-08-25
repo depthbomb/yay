@@ -9,7 +9,7 @@ export class StoreService {
 		private readonly logger = inject(LoggingService),
 	) {}
 
-	public createStore<S extends Record<string, any>>(path: Path) {
+	public createStore<S extends Record<string, unknown>>(path: Path) {
 		return new Store<S>(this.logger, path);
 	}
 }

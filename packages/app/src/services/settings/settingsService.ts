@@ -124,7 +124,7 @@ export class SettingsService implements IBootstrappable {
 		}
 	}
 
-	public async apply(data: object) {
+	public async apply(data: Record<string, unknown>) {
 		return this.internalStore.apply(data);
 	}
 

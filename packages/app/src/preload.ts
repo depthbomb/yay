@@ -21,8 +21,8 @@ function assertChannelValid<K extends string>(channel: K, set: Set<K>) {
 	return true;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-const listenerMap = new WeakMap<Function, (event: Electron.IpcRendererEvent, payload: any) => void>();
+type IpcRendererListener = Parameters<typeof ipcRenderer.on>[1];
+const listenerMap = new WeakMap<object, IpcRendererListener>();
 
 const versionsAPI = Object.freeze({ ...process.versions }) satisfies VersionsAPI;
 

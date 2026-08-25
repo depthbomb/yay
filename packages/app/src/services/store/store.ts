@@ -3,7 +3,7 @@ import { rename, unlink, writeFile } from 'node:fs/promises';
 import type { LoggingService } from '~/services/logging';
 import type { Path } from '@depthbomb/node-common/pathlib';
 
-export class Store<S extends Record<string, any>> {
+export class Store<S extends Record<string, unknown>> {
 	public store: S;
 	private pendingWrite = Promise.resolve();
 	private pendingBatch?: ReturnType<typeof Promise.withResolvers<void>>;
@@ -27,7 +27,7 @@ export class Store<S extends Record<string, any>> {
 	}
 
 	public async set<T>(key: string, value: T) {
-		(this.store as Record<string, any>)[key] = value;
+		(this.store as Record<string, unknown>)[key] = value;
 
 		this.logger.trace('Set store value', { key, value });
 
@@ -49,9 +49,9 @@ export class Store<S extends Record<string, any>> {
 		await this.save();
 	}
 
-	public async apply(data: Record<string, any>) {
+	public async apply(data: Record<string, unknown>) {
 		for (const [key, value] of Object.entries(data)) {
-			this.store[key as keyof S] = value;
+			(this.store as Record<string, unknown>)[key] = value;
 		}
 
 		await this.save();
@@ -114,8 +114,8 @@ export class Store<S extends Record<string, any>> {
 		}
 	}
 
-	private sortSettingsAlphabetically(data: Record<string, any>): Record<string, any> {
-		const result = {} as Record<string, any>;
+	private sortSettingsAlphabetically(data: Record<string, unknown>): Record<string, unknown> {
+		const result = {} as Record<string, unknown>;
 		for (const key of Object.keys(data).sort()) {
 			result[key] = data[key];
 		}
