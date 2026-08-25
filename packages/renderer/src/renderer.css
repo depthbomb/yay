@@ -201,6 +201,28 @@
 
 :root {
 	color-scheme: dark;
+	--accent-50: rgb(230, 242, 251);
+	--accent-100: rgb(204, 228, 246);
+	--accent-200: rgb(153, 201, 238);
+	--accent-300: rgb(102, 174, 229);
+	--accent-400: rgb(51, 147, 221);
+	--accent-500: rgb(0, 120, 212);
+	--accent-600: rgb(0, 96, 170);
+	--accent-700: rgb(0, 72, 127);
+	--accent-800: rgb(0, 48, 85);
+	--accent-900: rgb(0, 30, 53);
+	--accent-950: rgb(0, 18, 32);
+	--accent-50-contrast: #000000;
+	--accent-100-contrast: #000000;
+	--accent-200-contrast: #000000;
+	--accent-300-contrast: #000000;
+	--accent-400-contrast: #000000;
+	--accent-500-contrast: #000000;
+	--accent-600-contrast: #ffffff;
+	--accent-700-contrast: #ffffff;
+	--accent-800-contrast: #ffffff;
+	--accent-900-contrast: #ffffff;
+	--accent-950-contrast: #ffffff;
 }
 
 body {
