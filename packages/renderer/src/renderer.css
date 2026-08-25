@@ -135,6 +135,70 @@
 	animation: rotate-accent-border 1s linear infinite;
 }
 
+@keyframes download-progress-sheen {
+	0% {
+		opacity: 0.26;
+		transform: scaleX(0);
+	}
+	100% {
+		opacity: 0;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes download-progress-fade {
+	to {
+		opacity: 0;
+	}
+}
+
+.download-progress-background {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.download-progress-background.is-fading {
+	animation: download-progress-fade 850ms ease-out forwards;
+}
+
+.download-progress-background-fill {
+	position: absolute;
+	inset-block: 0;
+	left: 0;
+	overflow: hidden;
+	background: linear-gradient(
+		90deg,
+		color-mix(in oklab, var(--accent-700) 24%, transparent),
+		color-mix(in oklab, var(--accent-500) 34%, transparent)
+	);
+	box-shadow: 10px 0 28px color-mix(in oklab, var(--accent-400) 18%, transparent);
+	transition: width 350ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.download-progress-background-fill::after {
+	position: absolute;
+	inset: 0;
+	content: '';
+	background: rgb(255 255 255 / 24%);
+	mix-blend-mode: screen;
+	transform-origin: left center;
+	animation: download-progress-sheen 950ms ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.download-progress-background,
+	.download-progress-background-fill::after {
+		animation: none;
+	}
+
+	.download-progress-background.is-fading {
+		opacity: 0;
+	}
+}
+
 :root {
 	color-scheme: dark;
 }

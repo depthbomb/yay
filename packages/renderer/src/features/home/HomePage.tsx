@@ -15,6 +15,7 @@ import { urlAtom, workingAtom, resetAppAtom, updatingAtom, updateAvailableAtom, 
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };
+type DownloadProgressPhase = 'hidden' | 'active' | 'fading';
 
 const Snowfall = lazy(() => import('~/components/effects/Snowfall'));
 const isWindows11 = window.system.platform() === 'win32' && parseInt(window.system.release().split('.')[2], 10) >= 22000;
@@ -46,6 +47,7 @@ const isSnowfall = () => {
 export const HomePage = () => {
 	const [isTweetURL, setIsTweetURL]           = useState(false);
 	const [progress, setProgress]               = useState(0); // TODO maybe add this to global state?
+	const [progressPhase, setProgressPhase]     = useState<DownloadProgressPhase>('hidden');
 	const [useNewTwitterVideoDownloader]        = useSetting<boolean>(ESettingsKey.UseNewTwitterVideoDownloader);
 	const [,clearLog]                           = useAtom(clearLogAtom);
 	const [,pushToLog]                          = useAtom(pushToLogAtom);
@@ -60,6 +62,7 @@ export const HomePage = () => {
 
 	const mediaURLEl  = useRef<HTMLInputElement>(null);
 	const logOutputEl = useRef<HTMLDivElement>(null);
+	const progressFadeTimer = useRef<number>(undefined);
 
 	const [isEnabled] = useFeatureFlags();
 
@@ -105,17 +108,34 @@ export const HomePage = () => {
 	useKeyPress(['ctrl.a'], () => trySelectingInput(), { exactMatch: true });
 
 	useIPCEvent('yt-dlp->download-started', ({ url }) => {
+		window.clearTimeout(progressFadeTimer.current);
 		setURL(url);
 		setIsWorking(true);
+		setProgress(0);
+		setProgressPhase('active');
 		clearLog();
 		pushToLog('OPERATION STARTED');
 	});
 	useIPCEvent('yt-dlp->stdout',            ({ lines }) => pushManyToLog(lines));
 	useIPCEvent('yt-dlp->download-progress', ({ progress }) => setProgress(progress));
-	useIPCEvent('yt-dlp->download-canceled', () => pushToLog('OPERATION CANCELED'));
+	useIPCEvent('yt-dlp->download-canceled', () => {
+		window.clearTimeout(progressFadeTimer.current);
+		setProgressPhase('fading');
+		progressFadeTimer.current = window.setTimeout(() => {
+			setProgressPhase('hidden');
+			setProgress(0);
+		}, 900);
+		pushToLog('OPERATION CANCELED');
+	});
 	useIPCEvent('yt-dlp->download-finished', () => {
+		window.clearTimeout(progressFadeTimer.current);
+		setProgress(100);
+		setProgressPhase('fading');
+		progressFadeTimer.current = window.setTimeout(() => {
+			setProgressPhase('hidden');
+			setProgress(0);
+		}, 900);
 		resetApp();
-		setProgress(0);
 		pushToLog('OPERATION FINISHED');
 	});
 	useIPCEvent('yt-dlp->updating-binary', () => setIsUpdating(true));
@@ -123,13 +143,26 @@ export const HomePage = () => {
 	useIPCEvent('updater->outdated',       () => setUpdateAvailable(true));
 
 	useEffect(() => {
-		logOutputEl.current!.scrollTop = logOutputEl.current!.scrollHeight;
+		const logOutput = logOutputEl.current;
+		if (logOutput) {
+			logOutput.scrollTop = logOutput.scrollHeight;
+		}
 	}, [logs]);
+
+	useEffect(() => () => window.clearTimeout(progressFadeTimer.current), []);
 
 	return (
 		<div className={windowCss}>
 			{isEnabled('SeasonalEffects') && isSnowfall() && <Snowfall/>}
-			<div className="flex flex-col size-full bg-transparent">
+			{progressPhase !== 'hidden' && (
+				<div className={cx('download-progress-background', { 'is-fading': progressPhase === 'fading' })} aria-hidden="true">
+					<div
+						className="download-progress-background-fill"
+						style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+					/>
+				</div>
+			)}
+			<div className="relative z-10 flex flex-col size-full bg-transparent">
 				{isUpdating ? (
 					<div className="flex flex-col items-center justify-center h-full">
 						<div className="space-x-2 flex items-center">
@@ -168,7 +201,6 @@ export const HomePage = () => {
 										onDownloadAudioClick={() => window.ipc.invoke('yt-dlp<-download-audio', url)}
 										onCancelDownloadClick={() => window.ipc.invoke('yt-dlp<-cancel-download')}
 										working={isWorking}
-										progress={progress}
 										disabled={!urlIsValid || isUpdating}
 									/>
 									<div className="grow bg-black/50 border border-gray-900 rounded-xs shadow overflow-hidden">
