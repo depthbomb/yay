@@ -1,5 +1,6 @@
 # Unreleased
 
+- Fixed failed downloads showing success notifications and improved thumbnail cache reliability
 - Fixed Twitter/X downloads showing false success and getting stuck after lookup errors
 - Fixed yt-dlp updates stalling or reporting incorrect results when the updater fails
 - Fixed unbounded download logs and reduced UI slowdowns during verbose downloads

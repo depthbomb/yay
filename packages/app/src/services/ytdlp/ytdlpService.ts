@@ -262,7 +262,9 @@ export class YtdlpService implements IBootstrappable {
 		args.push('--', session.url);
 
 		if (youtubeMatch) {
-			this.thumbnail.downloadThumbnail(youtubeMatch[1]);
+			void this.thumbnail.downloadThumbnail(youtubeMatch[1]).catch(error => {
+				this.logger.warn('Failed to cache video thumbnail', { error });
+			});
 		}
 
 		this.logger.info('Spawning yt-dlp', { args });
@@ -368,7 +370,7 @@ export class YtdlpService implements IBootstrappable {
 
 		eventBus.emit('ytdlp:download-finished', finished);
 
-		if (showNotification && youtubeID && downloadDir && !this.window.getMainWindow()?.isFocused()) {
+		if (finished.success && showNotification && youtubeID && downloadDir && !this.window.getMainWindow()?.isFocused()) {
 			const image = (await this.thumbnail.getThumbnail(youtubeID)) ?? getFilePathFromAsar('notifications', 'logo.png');
 			this.notifications.showNotification(
 				new NotificationBuilder()
