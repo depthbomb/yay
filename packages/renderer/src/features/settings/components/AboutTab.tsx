@@ -102,13 +102,15 @@ export const AboutTab = () => {
 			</div>
 			<SectionSeparator/>
 			<Section>
-				<Button onClick={() => void checkForUpdates()} size="lg" disabled={checking || !canCheckForUpdates}>
-					<Icon path={mdiUpdate} className="size-4"/>
-					<span>{checking ? 'Checking for updates...' : 'Check for updates'}</span>
-				</Button>
-				{!canCheckForUpdates && (
-					<p className="text-sm">Next check: <span className="font-mono">{new Date(nextManualCheck).toLocaleTimeString()}</span></p>
-				)}
+				<div className="flex space-x-4 items-center">
+					<Button onClick={() => void checkForUpdates()} size="lg" disabled={checking || !canCheckForUpdates}>
+						<Icon path={mdiUpdate} className="size-4"/>
+						<span>{checking ? 'Checking for updates...' : 'Check for updates'}</span>
+					</Button>
+					{!canCheckForUpdates && (
+						<p className="text-sm">Next check: <span className="font-mono">{new Date(nextManualCheck).toLocaleTimeString()}</span></p>
+					)}
+				</div>
 			</Section>
 			<SectionSeparator/>
 			<InfoSection title="Application" values={[
