@@ -162,7 +162,7 @@ export class MainWindowService implements IBootstrappable {
 		});
 
 		eventBus.on('ytdlp:download-started',  () => this.mainWindow.setProgressBar(1, { mode: 'indeterminate' }));
-		eventBus.on('ytdlp:download-progress', e => this.mainWindow.setProgressBar(e.progress, { mode: 'normal' }));
+		eventBus.on('ytdlp:download-progress', e => this.mainWindow.setProgressBar(toTaskbarProgress(e.progress), { mode: 'normal' }));
 		eventBus.on('ytdlp:download-finished', () => {
 			this.mainWindow.setProgressBar(0, { mode: 'none' });
 			this.mainWindow.flashFrame(true);
@@ -185,3 +185,6 @@ export class MainWindowService implements IBootstrappable {
 		mainWindow.focus();
 	}
 }
+
+export const toTaskbarProgress = (percentage: number) =>
+	Number.isFinite(percentage) ? Math.min(100, Math.max(0, percentage)) / 100 : 0;

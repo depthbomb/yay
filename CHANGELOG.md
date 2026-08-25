@@ -1,5 +1,6 @@
 # Unreleased
 
+- Fixed taskbar download progress showing as complete too early
 - Validated imported settings and made imports replace the existing configuration
 - Improved settings persistence reliability
 - Enabled renderer sandboxing and disabled Node.js integration
