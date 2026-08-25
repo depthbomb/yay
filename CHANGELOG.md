@@ -1,14 +1,12 @@
-# Unreleased
+# 1.42.0
 
-- Updated seasonal effects
 - Added spacing between the main window and the Windows 11 taskbar
-- Added a full-window animated download progress effect
 - Added native Mica backgrounds throughout the application on supported Windows 11 versions
 - Improved application naming and version details in the installer and Windows installed-app listing
-- Improved installer extraction performance
-- Improved the accuracy of installer progress reporting
 - Improved update installation reliability and prevented duplicate application launches
 - Preserved settings and other application data during uninstall unless removal is explicitly requested
+- Improved the accuracy of installer progress reporting
+- Improved installer extraction performance
 - Improved installer security by verifying downloaded application files before installation
 - Restored automatic and manual application updates with a safer Markdown changelog and verified installer downloads
 - Improved download cancellation for deeply nested process trees
@@ -18,10 +16,12 @@
 - Fixed yt-dlp updates stalling or reporting incorrect results when the updater fails
 - Fixed unbounded download logs and reduced UI slowdowns during verbose downloads
 - Fixed taskbar download progress showing as complete too early
+- Updated seasonal effects
 - Validated imported settings and made imports replace the existing configuration
 - Improved settings persistence reliability and reduced disk writes
 - Enabled renderer sandboxing and disabled Node.js integration
 - Restricted and rate-limited the local API server to authenticated connections from the local computer
+- Upgraded to [Electron 44.0.0](https://releases.electronjs.org/release/v44.0.0)
 
 ---
 
