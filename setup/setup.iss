@@ -2,7 +2,13 @@
 AppID={#AppID}
 AppName={#NameLong}
 AppVersion={#Version}
-AppVerName={#NameLong}
+AppVerName={cm:NameAndVersion,{#NameLong},{#Version}}
+VersionInfoCompany={#Company}
+VersionInfoCopyright={#Copyright}
+VersionInfoDescription={#Description}
+VersionInfoOriginalFileName={#ExeBasename}-setup.exe
+VersionInfoProductName={#NameLong}
+VersionInfoProductTextVersion={#Version}
 VersionInfoVersion={#NumericVersion}
 AppPublisher={#Company}
 AppCopyright={#Copyright}
@@ -27,7 +33,7 @@ MinVersion=10.0
 WizardStyle=modern dynamic
 ShowTasksTreeLines=yes
 UninstallDisplayIcon={app}\{#ExeBasename}.exe
-UninstallDisplayName={#Description}
+UninstallDisplayName={#NameLong}
 ArchiveExtraction=enhanced/nopassword
 
 [Languages]
