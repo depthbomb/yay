@@ -1,7 +1,5 @@
 # 1.41.0
 
-This is the final Electron-based release for _yay_ as the application is being completely rewritten from scratch.
-
 - Restricted the local API server to authenticated connections from the local computer
 - Improved Windows 11 support
 - Upgraded to [Electron 43.0.0](https://releases.electronjs.org/release/v43.0.0)

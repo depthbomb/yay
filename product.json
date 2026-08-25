@@ -13,7 +13,6 @@
 	"changelog": [
 		{
 			"version": "1.41.0",
-			"description": "This is the final Electron-based release for _yay_ as the application is being completely rewritten from scratch.",
 			"changes": [
 				"Restricted the local API server to authenticated connections from the local computer",
 				"Improved Windows 11 support",
