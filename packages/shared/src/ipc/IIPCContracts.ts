@@ -127,7 +127,7 @@ export interface IIPCContract {
 	//
 	'twitter<-get-tweet-media-info': {
 		args: [url: string];
-		return: IPCResult<Nullable<ITweetMedia>, never>;
+		return: IPCResult<Nullable<ITweetMedia>, string>;
 	}
 	'twitter<-download-media-url': {
 		args: [url: string];

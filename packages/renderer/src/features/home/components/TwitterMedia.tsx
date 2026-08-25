@@ -26,30 +26,47 @@ const extractResolution = (url: string): string => {
 
 export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 	const [loading, setLoading]               = useState(true);
-	const [error, setError]                   = useState(false);
+	const [error, setError]                   = useState<string>();
 	const [data, setData]                     = useState<Nullable<ITweetMedia>>(null);
 	const [downloadStates, setDownloadStates] = useState<Record<string, EVariantDownloadState>>({});
 	const [isWorking, setIsWorking]           = useAtom(workingAtom);
 
 	useEffect(() => {
+		let active = true;
+
 		const fetchMediaInfo = async () => {
 			setData(null);
-			setError(false);
+			setError(undefined);
 			setLoading(true);
+			setDownloadStates({});
 
-			const res = await window.ipc.invoke('twitter<-get-tweet-media-info', tweetURL);
+			try {
+				const res = await window.ipc.invoke('twitter<-get-tweet-media-info', tweetURL);
+				if (!active) {
+					return;
+				}
 
-			if (res.isErr) {
-				setError(true);
-			} else {
-				setData(res.data);
-				setError(false);
+				if (res.isErr) {
+					setError(res.error);
+				} else {
+					setData(res.data);
+				}
+			} catch (error) {
+				if (active) {
+					setError(error instanceof Error ? error.message : String(error));
+				}
+			} finally {
+				if (active) {
+					setLoading(false);
+				}
 			}
-
-			setLoading(false);
 		};
 
-		fetchMediaInfo();
+		void fetchMediaInfo();
+
+		return () => {
+			active = false;
+		};
 	}, [tweetURL]);
 
 	const setState = (url: string, state: EVariantDownloadState) => {
@@ -61,14 +78,14 @@ export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 		setIsWorking(true);
 
 		try {
-			await window.ipc.invoke('twitter<-download-media-url', url);
-			setState(url, EVariantDownloadState.Downloaded);
+			const res = await window.ipc.invoke('twitter<-download-media-url', url);
+			setState(url, res.isErr ? EVariantDownloadState.Error : EVariantDownloadState.Downloaded);
 		} catch (err) {
 			setState(url, EVariantDownloadState.Error);
 			console.error(err);
+		} finally {
+			setIsWorking(false);
 		}
-
-		setIsWorking(false);
 	};
 
 	const isDisabled = (state: EVariantDownloadState)=> state === EVariantDownloadState.Downloading || state === EVariantDownloadState.Downloaded;
@@ -100,7 +117,7 @@ export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 	if (error) {
 		return (
 			<div className="size-full flex flex-col">
-				<p className="text-red-500">Error retrieving Tweet info.</p>
+				<p className="text-red-500">Error retrieving Tweet info: {error}</p>
 			</div>
 		);
 	}
@@ -125,7 +142,7 @@ export const TwitterMedia: FC<ITwitterMediaProps> = ({ tweetURL }) => {
 					<div className="space-y-1 flex flex-col">
 						{details.video_info!.variants.filter(variant => variant.bitrate).map(variant => {
 							const resolution = extractResolution(variant.url);
-							const state      = downloadStates[variant.url] ?? 'idle';
+							const state      = downloadStates[variant.url] ?? EVariantDownloadState.Idle;
 
 							return (
 								<Button
