@@ -6,6 +6,9 @@ import type { Path } from '@depthbomb/node-common/pathlib';
 export class Store<S extends Record<string, any>> {
 	public store: S;
 	private pendingWrite = Promise.resolve();
+	private pendingBatch?: ReturnType<typeof Promise.withResolvers<void>>;
+	private saveTimer?: ReturnType<typeof setTimeout>;
+	private latestContents = '';
 	private writeID = 0;
 
 	public constructor(
@@ -74,11 +77,29 @@ export class Store<S extends Record<string, any>> {
 	public async save() {
 		this.logger.debug('Saving store object to disk', { store: this.store, storePath: this.storePath });
 
-		const contents = stringify(this.sortSettingsAlphabetically(this.store));
-		const write    = this.pendingWrite.then(() => this.writeAtomically(contents));
+		this.latestContents = stringify(this.sortSettingsAlphabetically(this.store));
+		this.pendingBatch ??= Promise.withResolvers<void>();
+		if (this.saveTimer) {
+			clearTimeout(this.saveTimer);
+		}
+		this.saveTimer = setTimeout(() => this.flushPendingBatch(), 50);
 
+		await this.pendingBatch.promise;
+	}
+
+	private flushPendingBatch() {
+		const batch = this.pendingBatch;
+		if (!batch) {
+			return;
+		}
+
+		const contents    = this.latestContents;
+		this.pendingBatch = undefined;
+		this.saveTimer    = undefined;
+
+		const write = this.pendingWrite.then(() => this.writeAtomically(contents));
 		this.pendingWrite = write.catch(() => {});
-		await write;
+		void write.then(batch.resolve, batch.reject);
 	}
 
 	private async writeAtomically(contents: string) {
