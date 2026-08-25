@@ -23,8 +23,6 @@
 
 # 1.40.0
 
-This is the final release for _yay_ for a while. My interest in Electron applications comes and goes, and my interest has currently gone. However, that's not to say that the project is entirely dead. I may be making a sort of spiritual successor in the near future.
-
 - Removed automatic and manual new release checks
 
 ---
