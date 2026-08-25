@@ -358,7 +358,7 @@ export class UpdaterService implements IBootstrappable {
 
 	private spawnInstaller(path: string) {
 		return new Promise<void>((resolve, reject) => {
-			const process = spawn(path, ['/UPDATE', '/SILENT'], {
+			const process = spawn(path, ['/UPDATE', '/SILENT', '/NORESTART'], {
 				detached: true,
 				shell: false,
 				stdio: 'ignore',

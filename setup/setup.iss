@@ -14,6 +14,7 @@ DefaultDirName={autopf}\{#Company}\{#NameLong}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
+RestartApplications=no
 OutputDir=..\build\release
 OutputBaseFilename={#ExeBasename}-setup
 SetupIconFile=..\static\icon.ico
@@ -44,7 +45,7 @@ Name: "{autodesktop}\{#NameLong}"; Filename: "{app}\{#ExeBasename}.exe"; Tasks: 
 
 [Run]
 Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringChange(NameLong, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
-Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringChange(NameLong, '&', '&&')}}"; Flags: nowait; Check: IsUpdate
+Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringChange(NameLong, '&', '&&')}}"; Flags: nowait skipifnotsilent; Check: IsUpdate
 
 [UninstallRun]
 Filename: "{app}\{#ExeBasename}"; Parameters: "--uninstall"; RunOnceId: "DisableAutoStart"; Flags: runhidden runascurrentuser
