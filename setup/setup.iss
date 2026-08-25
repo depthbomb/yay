@@ -29,6 +29,7 @@ LZMAUseSeparateProcess=yes
 ; Compression=none
 SolidCompression=yes
 ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 MinVersion=10.0
 WizardStyle=modern dynamic
 ShowTasksTreeLines=yes
