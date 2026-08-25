@@ -57,26 +57,26 @@ Filename: "{app}\{#ExeBasename}.exe"; Description: "{cm:LaunchProgram,{#StringCh
 [UninstallRun]
 Filename: "{app}\{#ExeBasename}"; Parameters: "--uninstall"; RunOnceId: "DisableAutoStart"; Flags: runhidden runascurrentuser
 
-[UninstallDelete]
-Type: filesandordirs; Name: "{userappdata}\{#Company}\{#NameLong}"; Check: ShouldRemoveUserData
-
 [Code]
 var
-  RemoveUserDataPrompted: Boolean;
   RemoveUserData: Boolean;
 
-function ShouldRemoveUserData(): Boolean;
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
 begin
-  if not RemoveUserDataPrompted then
+  if CurUninstallStep = usUninstall then
   begin
-    RemoveUserDataPrompted := True;
-    RemoveUserData := (not UninstallSilent) and
-      (SuppressibleMsgBox(
+    RemoveUserData := False;
+    if not UninstallSilent then
+      RemoveUserData := SuppressibleMsgBox(
         'Would you also like to remove your yay settings, logs, and cached data?',
-        mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES);
+        mbConfirmation, MB_YESNO or MB_DEFBUTTON2, IDNO) = IDYES;
+  end
+  else if (CurUninstallStep = usPostUninstall) and RemoveUserData then
+  begin
+    if not DelTree(ExpandConstant('{userappdata}\{#Company}\{#NameLong}'),
+      True, True, True) then
+      Log('Could not remove all yay user data.');
   end;
-
-  Result := RemoveUserData;
 end;
 
 function CmdLineParamExists(const value: string): Boolean;
