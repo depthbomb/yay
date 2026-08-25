@@ -123,7 +123,7 @@ export class GlobalMenuService implements IBootstrappable {
 			return;
 		}
 
-		const text = clipboard.readText('clipboard');
+		const text = await clipboard.readText();
 		if (!isValidURL(text)) {
 			this.logger.debug('Invalid URL in clipboard, ignoring');
 			return;

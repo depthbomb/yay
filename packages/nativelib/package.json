@@ -25,14 +25,14 @@
 		"version": "napi version"
 	},
 	"devDependencies": {
-		"@emnapi/core": "^1.11.2",
-		"@emnapi/runtime": "^1.11.2",
-		"@napi-rs/cli": "^3.7.2",
+		"@emnapi/core": "^1.11.3",
+		"@emnapi/runtime": "^1.11.3",
+		"@napi-rs/cli": "^3.8.6",
 		"@oxc-node/core": "^0.1.0",
 		"@taplo/cli": "^0.7.0",
-		"chalk": "^5.6.2",
-		"npm-run-all2": "^9.0.2",
-		"typescript": "^6.0.3"
+		"chalk": "^6.0.0",
+		"npm-run-all2": "^9.0.3",
+		"typescript": "^7.0.2"
 	},
 	"packageManager": "yarn@4.9.4"
 }

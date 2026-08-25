@@ -16,7 +16,7 @@ export default defineConfig((options) => ({
 	dts: true,
 	minify: true,
 	deps: {
-		skipNodeModulesBundle: false,
+		neverBundle: true,
 	},
 	splitting: true,
 	sourcemap: false,
