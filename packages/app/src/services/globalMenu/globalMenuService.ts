@@ -1,6 +1,5 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
-import { isWindows11, supportsWindowsBackgroundMaterial } from '~/utils';
 import { PRELOAD_PATH } from '~/constants';
 import { IPCService } from '~/services/ipc';
 import { YtdlpService } from '~/services/ytdlp';
@@ -11,6 +10,7 @@ import { inject, injectable } from '@needle-di/core';
 import { SettingsService } from '~/services/settings';
 import { LifecycleService } from '~/services/lifecycle';
 import { shell, screen, clipboard, globalShortcut } from 'electron';
+import { isWindows11, supportsWindowsBackgroundMaterial } from '~/utils';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
 

@@ -11,7 +11,7 @@ import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
 import { lazy, useRef, Fragment, useState, useEffect } from 'react';
 import { logAtom, clearLogAtom, pushToLogAtom, pushManyToLogAtom } from '~/atoms/log';
 import { useTitle, useSetting, useIPCEvent, useKeyPress, useFeatureFlags } from '~/hooks';
-import { urlAtom, workingAtom, resetAppAtom, updatingAtom, updateAvailableAtom, isURLValidAtom } from '~/atoms/app';
+import { urlAtom, workingAtom, resetAppAtom, updatingAtom, isURLValidAtom, updateAvailableAtom } from '~/atoms/app';
 import type { FC, ChangeEvent } from 'react';
 
 type LogLineProps = { line: string; };

@@ -1,7 +1,6 @@
 import { ok } from 'shared/ipc';
 import { eventBus } from '~/events';
 import { ESettingsKey } from 'shared';
-import { isWindows11, supportsWindowsBackgroundMaterial } from '~/utils';
 import { getExtraFilePath } from '~/common';
 import { IPCService } from '~/services/ipc';
 import { app, shell, dialog } from 'electron';
@@ -16,6 +15,7 @@ import { LifecycleService } from '~/services/lifecycle';
 import { toTaskbarProgress } from './toTaskbarProgress';
 import { PRELOAD_PATH, EXTERNAL_URL_RULES } from '~/constants';
 import { WindowPositionService } from '~/services/windowPosition';
+import { isWindows11, supportsWindowsBackgroundMaterial } from '~/utils';
 import type { BrowserWindow } from 'electron';
 import type { IBootstrappable } from '~/common';
 
