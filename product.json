@@ -24,7 +24,7 @@
 				"Validated imported settings and made imports replace the existing configuration",
 				"Improved settings persistence reliability",
 				"Enabled renderer sandboxing and disabled Node.js integration",
-				"Restricted the local API server to authenticated connections from the local computer"
+				"Restricted and rate-limited the local API server to authenticated connections from the local computer"
 			]
 		},
 		{

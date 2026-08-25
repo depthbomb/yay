@@ -21,6 +21,8 @@ export class RestService implements IBootstrappable {
 	private hono?: Maybe<Hono>;
 	private server?: Maybe<ServerType>;
 	private apiToken = '';
+	private rateLimitWindowStartedAt = 0;
+	private requestsInWindow = 0;
 
 	private readonly requestID = new IDGenerator('req#');
 
@@ -67,8 +69,28 @@ export class RestService implements IBootstrappable {
 			this.logger.trace('Sent HTTP response', { id, method, url, status });
 		});
 		this.hono.use(async (c, next) => {
+			const host = c.req.header('host')?.toLowerCase();
+			if (host !== `127.0.0.1:${port}` && host !== `localhost:${port}`) {
+				return this.createJSONResponse(c, 'Invalid Host header', {}, 400);
+			}
+
 			if (c.req.header('origin')) {
 				return this.createJSONResponse(c, 'Browser-originated requests are not allowed', {}, 403);
+			}
+
+			const contentLength = Number(c.req.header('content-length') ?? 0);
+			if (c.req.header('transfer-encoding') || !Number.isFinite(contentLength) || contentLength > 0) {
+				return this.createJSONResponse(c, 'Request bodies are not accepted', {}, 413);
+			}
+
+			const now = Date.now();
+			if (now - this.rateLimitWindowStartedAt >= 60_000) {
+				this.rateLimitWindowStartedAt = now;
+				this.requestsInWindow = 0;
+			}
+			if (++this.requestsInWindow > 60) {
+				c.header('Retry-After', '60');
+				return this.createJSONResponse(c, 'Too many requests', {}, 429);
 			}
 
 			const authorization = c.req.header('authorization');
@@ -81,23 +103,26 @@ export class RestService implements IBootstrappable {
 		});
 		this.hono.get('/ping', c => this.createJSONResponse(c, 'PONG'));
 		this.hono.get('/is-busy', c => this.createJSONResponse(c, '', { busy: this.ytdlp.isBusy }));
-		this.hono.post('/download', c => {
+		this.hono.post('/download', async c => {
 			const inputURL = c.req.query('url');
 			if (!inputURL) {
 				return this.createJSONResponse(c, 'Missing `url` search parameter', {}, 400);
 			}
 
 			const url = inputURL.trim();
-			if (!isValidURL(url)) {
+			if (url.length > 4_096 || !isValidURL(url)) {
 				return this.createJSONResponse(c, 'Invalid `url` search parameter', {}, 400);
 			}
 
 			const format = c.req.query('format') ?? 'video';
+			if (format !== 'audio' && format !== 'video') {
+				return this.createJSONResponse(c, '`format` must be either `audio` or `video`', {}, 400);
+			}
 			if (this.ytdlp.isBusy) {
 				return this.createJSONResponse(c, 'A download is currently in progress', {}, 423);
 			}
 
-			this.ytdlp.enqueue(url, format === 'audio');
+			await this.ytdlp.enqueue(url, format === 'audio');
 
 			return this.createJSONResponse(c, 'Download started', { url, format });
 		});
