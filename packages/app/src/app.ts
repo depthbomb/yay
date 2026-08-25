@@ -1,10 +1,12 @@
 import { join } from 'node:path';
 import { parse } from 'smol-toml';
 import { app, Menu, shell } from 'electron';
+import { CLIService } from '~/services/cli';
 import { Container } from '@needle-di/core';
 import { MainService } from '~/services/main';
 import { product, ESettingsKey } from 'shared';
 import { Path } from '@depthbomb/node-common/pathlib';
+import { AutoStartService } from '~/services/autoStart';
 import { EXE_PATH, MONOREPO_ROOT_PATH } from './constants';
 
 export class App {
@@ -20,6 +22,14 @@ export class App {
 	}
 
 	public async start() {
+		const cli = this.container.get(CLIService);
+		if (cli.flags.uninstall) {
+			await app.whenReady();
+			this.container.get(AutoStartService).setAutoStart(false);
+			app.exit(0);
+			return;
+		}
+
 		app.setAppUserModelId(product.appUserModelID);
 
 		Menu.setApplicationMenu(null);
