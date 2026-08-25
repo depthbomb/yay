@@ -3,7 +3,14 @@ import { RESET, atomWithReset } from 'jotai/utils';
 
 export const MAX_LOG_HISTORY_LENGTH = 250 as const;
 
-export const logAtom = atomWithReset<string[]>([]);
+export type LogEntry = {
+	id: number;
+	line: string;
+};
+
+let nextLogEntryID = 0;
+
+export const logAtom = atomWithReset<LogEntry[]>([]);
 
 export const shiftLogAtom = atom(null, (get, set) => {
 	const current = get(logAtom).slice(1);
@@ -11,13 +18,16 @@ export const shiftLogAtom = atom(null, (get, set) => {
 });
 
 export const pushToLogAtom = atom<null, [newItem: string], void>(null, (get, set, newItem) => {
-	const current = get(logAtom);
-	const next    = [...current, newItem];
-	if (next.length > MAX_LOG_HISTORY_LENGTH) {
-		next.shift();
-	}
+	set(logAtom, appendLogEntries(get(logAtom), [newItem]));
+});
 
-	set(logAtom, [...current, newItem]);
+export const pushManyToLogAtom = atom<null, [newItems: string[]], void>(null, (get, set, newItems) => {
+	set(logAtom, appendLogEntries(get(logAtom), newItems));
 });
 
 export const clearLogAtom = atom(null, (_get, set) => set(logAtom, RESET));
+
+export const appendLogEntries = (current: LogEntry[], newItems: string[]) => {
+	const entries = newItems.map(line => ({ id: nextLogEntryID++, line }));
+	return [...current, ...entries].slice(-MAX_LOG_HISTORY_LENGTH);
+};

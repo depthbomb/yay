@@ -20,10 +20,10 @@ export interface IIPCEvents {
 	// yt-dlp Events
 	'yt-dlp->download-queued':   IDownloadSession;
 	'yt-dlp->download-started':  IDownloadSession;
-	'yt-dlp->download-progress': IDownloadSession;
+	'yt-dlp->download-progress': Pick<IDownloadSession, 'id' | 'progress'>;
 	'yt-dlp->download-canceled': IDownloadSession;
 	'yt-dlp->download-finished': IDownloadSession;
-	'yt-dlp->stdout':            { line: string; };
+	'yt-dlp->stdout':            { lines: string[]; };
 	'yt-dlp->updating-binary':   void;
 	'yt-dlp->updated-binary':    void;
 	// Theming Events

@@ -3,6 +3,7 @@ import { dialog } from 'electron';
 import { eventBus } from '~/events';
 import { unlink } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
+import { createInterface } from 'node:readline';
 import { IPCService } from '~/services/ipc';
 import { join, posix, win32 } from 'node:path';
 import { isValidURL, ESettingsKey } from 'shared';
@@ -207,12 +208,6 @@ export class YtdlpService implements IBootstrappable {
 		const ffmpegPath           = getExtraFilePath('ffmpeg.exe');
 		const downloadPath         = join(downloadDir, downloadNameTemplate).replaceAll(win32.sep, posix.sep);
 
-		const emitLog = (line: string) => {
-			if (line.length > 0) {
-				this.window.emitMain('yt-dlp->stdout', { line });
-			}
-		};
-
 		const youtubeMatch = session.url.match(this.youtubeURLPattern);
 		const args         = [];
 
@@ -246,11 +241,63 @@ export class YtdlpService implements IBootstrappable {
 		this.proc = spawn(ytDlpPath, args);
 
 		const percentPattern = /\b(\d+(?:\.\d+)?)%/;
+		const logBuffer: string[] = [];
+		let logFlushTimer: ReturnType<typeof setTimeout> | undefined;
+		let progressTimer: ReturnType<typeof setTimeout> | undefined;
+		let lastProgressEmittedAt = 0;
+		let lastEmittedProgress = -1;
 
-		this.proc.stdout!.on('data', (buf: Buffer) => {
-			const line = buf.toString().trim();
+		const flushLogs = () => {
+			if (logFlushTimer) {
+				clearTimeout(logFlushTimer);
+				logFlushTimer = undefined;
+			}
 
-			emitLog(line);
+			if (logBuffer.length > 0) {
+				this.window.emitMain('yt-dlp->stdout', { lines: logBuffer.splice(0) });
+			}
+		};
+		const queueLog = (line: string) => {
+			const trimmed = line.trim();
+			if (trimmed.length === 0) {
+				return;
+			}
+
+			logBuffer.push(trimmed);
+			logFlushTimer ??= setTimeout(flushLogs, 75);
+		};
+		const emitProgress = () => {
+			progressTimer = undefined;
+			lastProgressEmittedAt = Date.now();
+			lastEmittedProgress = session.progress;
+			this.window.emitAll('yt-dlp->download-progress', { id: session.id, progress: session.progress });
+			eventBus.emit('ytdlp:download-progress', session);
+		};
+		const queueProgress = () => {
+			if (progressTimer) {
+				return;
+			}
+
+			const elapsed = Date.now() - lastProgressEmittedAt;
+			if (elapsed >= 100) {
+				emitProgress();
+			} else {
+				progressTimer = setTimeout(emitProgress, 100 - elapsed);
+			}
+		};
+		const flushOutput = () => {
+			flushLogs();
+			if (progressTimer) {
+				clearTimeout(progressTimer);
+				progressTimer = undefined;
+			}
+			if (session.progress !== lastEmittedProgress) {
+				emitProgress();
+			}
+		};
+
+		createInterface({ input: this.proc.stdout! }).on('line', line => {
+			queueLog(line);
 
 			const match = line.match(percentPattern);
 			if (!match) {
@@ -260,20 +307,20 @@ export class YtdlpService implements IBootstrappable {
 			const percent = Math.min(100, Math.max(0, parseFloat(match[1])));
 
 			session.progress = percent;
-
-			this.window.emitAll('yt-dlp->download-progress', session);
-			eventBus.emit('ytdlp:download-progress', session);
+			queueProgress();
 		});
 
-		this.proc.stderr!.on('data', (buf: Buffer) => emitLog(buf.toString().trim()));
+		createInterface({ input: this.proc.stderr! }).on('line', queueLog);
 
 		this.proc.once('close', code => {
+			flushOutput();
 			session.success = code === 0;
 			session.finishedAt = Date.now();
 			this.finishActive(showNotification, youtubeMatch?.[1], downloadDir);
 		});
 
 		this.proc.once('error', err => {
+			flushOutput();
 			session.success = false;
 			session.finishedAt = Date.now();
 			this.logger.error('yt-dlp error', { err });

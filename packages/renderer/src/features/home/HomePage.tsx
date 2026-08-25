@@ -7,7 +7,7 @@ import { Spinner } from '~/components/SpinnerV2';
 import { TwitterMedia } from './components/TwitterMedia';
 import { DownloadButtons } from './components/DownloadButtons';
 import { isValidURL, ESettingsKey, tweetURLPattern } from 'shared';
-import { logAtom, clearLogAtom, pushToLogAtom } from '~/atoms/log';
+import { logAtom, clearLogAtom, pushToLogAtom, pushManyToLogAtom } from '~/atoms/log';
 import { lazy, useRef, Fragment, useState, useEffect } from 'react';
 import { useTitle, useSetting, useIPCEvent, useFeatureFlags } from '~/hooks';
 import { urlAtom, workingAtom, resetAppAtom, updatingAtom, isURLValidAtom } from '~/atoms/app';
@@ -47,6 +47,7 @@ export const HomePage = () => {
 	const [useNewTwitterVideoDownloader]        = useSetting<boolean>(ESettingsKey.UseNewTwitterVideoDownloader);
 	const [,clearLog]                           = useAtom(clearLogAtom);
 	const [,pushToLog]                          = useAtom(pushToLogAtom);
+	const [,pushManyToLog]                      = useAtom(pushManyToLogAtom);
 	const [,resetApp]                           = useAtom(resetAppAtom);
 	const [url, setURL]                         = useAtom(urlAtom);
 	const [isWorking, setIsWorking]             = useAtom(workingAtom);
@@ -106,7 +107,7 @@ export const HomePage = () => {
 		clearLog();
 		pushToLog('OPERATION STARTED');
 	});
-	useIPCEvent('yt-dlp->stdout',            ({ line }) => pushToLog(line));
+	useIPCEvent('yt-dlp->stdout',            ({ lines }) => pushManyToLog(lines));
 	useIPCEvent('yt-dlp->download-progress', ({ progress }) => setProgress(progress));
 	useIPCEvent('yt-dlp->download-canceled', () => pushToLog('OPERATION CANCELED'));
 	useIPCEvent('yt-dlp->download-finished', () => {
@@ -158,8 +159,8 @@ export const HomePage = () => {
 									/>
 									<div className="grow bg-black/50 border border-gray-900 rounded-xs shadow overflow-hidden">
 										<div ref={logOutputEl} className="h-full overflow-y-auto select-text [scrollbar-width:thin]">
-											{logs.map((line, i) => (
-												<LogLine key={i} line={line}/>
+											{logs.map(({ id, line }) => (
+												<LogLine key={id} line={line}/>
 											))}
 										</div>
 									</div>
