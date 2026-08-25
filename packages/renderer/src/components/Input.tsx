@@ -1,4 +1,4 @@
-import { cva, compose } from 'cva';
+import { cva } from 'cva';
 import { forwardRef } from 'react';
 import type { VariantProps } from 'cva';
 import type { InputHTMLAttributes, SelectHTMLAttributes } from 'react';
@@ -23,7 +23,7 @@ const base = cva({
 	}
 });
 
-const textInput = compose(base, textInputBase);
+const textInput = cva({ composes: [base, textInputBase] });
 
 export const TextInput = forwardRef<HTMLInputElement, ITextInputProps>(({ size, className, ...props }, ref) => {
 	return (

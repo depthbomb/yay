@@ -1,5 +1,5 @@
 import { useId, useState } from 'react';
-import type { FC, InputHTMLAttributes, ReactElement } from 'react';
+import type { FC, ReactElement, InputHTMLAttributes } from 'react';
 
 export interface ISwitchProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'checked' | 'defaultChecked' | 'onChange' | 'type'> {
 	checked?: boolean;
@@ -36,7 +36,7 @@ export const Switch: FC<ISwitchProps> = ({ checked, className, defaultChecked = 
 					aria-hidden="true"
 					data-state={state}
 					data-disabled={disabled ? '' : undefined}
-					className={`relative h-6 w-12 shrink-0 cursor-default bg-gray-700 rounded-xs shadow outline-offset-2 outline-accent-500/50 transition-colors peer-focus:outline-2 peer-disabled:opacity-50 data-[state=checked]:bg-accent-500 ${className ?? ''}`}
+					className={`relative h-6 w-12 shrink-0 cursor-pointer bg-gray-700 rounded-xs shadow outline-offset-2 outline-accent-500/50 transition-colors peer-focus:outline-2 peer-disabled:opacity-50 data-[state=checked]:bg-accent-500 ${className ?? ''}`}
 				>
 					<span data-state={state} className="block size-5 translate-x-0.75 translate-y-0.5 data-[state=unchecked]:bg-white data-[state=checked]:bg-accent-500-contrast rounded-xs shadow-xs transition-all will-change-transform data-[state=checked]:translate-x-6.25" />
 				</span>

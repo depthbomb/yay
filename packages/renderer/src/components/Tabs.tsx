@@ -1,5 +1,5 @@
-import { createContext, useContext, useId, useState } from 'react';
-import type { FC, HTMLAttributes, KeyboardEvent, ButtonHTMLAttributes, ReactNode } from 'react';
+import { useId, useState, useContext, createContext } from 'react';
+import type { FC, ReactNode, KeyboardEvent, HTMLAttributes, ButtonHTMLAttributes } from 'react';
 
 type TabsOrientation = 'horizontal' | 'vertical';
 
