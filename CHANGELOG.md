@@ -1,5 +1,6 @@
 # Unreleased
 
+- Fixed yt-dlp updates stalling or reporting incorrect results when the updater fails
 - Fixed unbounded download logs and reduced UI slowdowns during verbose downloads
 - Fixed taskbar download progress showing as complete too early
 - Validated imported settings and made imports replace the existing configuration

@@ -1,4 +1,4 @@
-import { ok } from 'shared/ipc';
+import { ok, err } from 'shared/ipc';
 import { dialog } from 'electron';
 import { eventBus } from '~/events';
 import { unlink } from 'node:fs/promises';
@@ -133,51 +133,80 @@ export class YtdlpService implements IBootstrappable {
 		this.logger.info('Attempting to update yt-dlp binary');
 		this.window.emitAll('yt-dlp->updating-binary');
 
-		const { resolve, promise } = Promise.withResolvers<void>();
-		const ytDlpPath            = this.settings.get<string>(ESettingsKey.YtdlpPath);
-		const proc                 = spawn(ytDlpPath, ['-U']);
-		const versionPattern       = /\b\w+@\d{4}\.\d{2}\.\d{2}\b/;
-
-		let wasUpdated    = false;
-		let latestVersion = '';
-
-		proc.stdout.on('data', (data: Buffer) => {
-			const line = data.toString().trim();
-			this.logger.trace(`yt-dlp -U: ${line}`);
-
-			wasUpdated = !line.includes('is up to date');
-
-			const versionMatch = line.match(versionPattern);
-			if (versionMatch) {
-				latestVersion = versionMatch[0];
-			}
-		});
-		proc.once('close', async code => {
-			this.logger.info('yt-dlp update process exited', { code });
-			this.window.emitAll('yt-dlp->updated-binary');
+		try {
+			const ytDlpPath = this.settings.get<string>(ESettingsKey.YtdlpPath);
+			const output    = await this.runBinaryUpdate(ytDlpPath);
+			const version   = output.match(/\b(?:stable@)?\d{4}\.\d{2}\.\d{2}(?:\.\d+)?\b/i)?.[0] ?? 'unknown version';
+			const updated   = /\b(?:updating to|updated yt-dlp)\b/i.test(output);
 
 			if (!silent) {
-				if (wasUpdated) {
-					await dialog.showMessageBox({
-						type: 'info',
-						title: 'yt-dlp update',
-						message: `yt-dlp was updated to ${latestVersion}.`
-					});
-				} else {
-					await dialog.showMessageBox({
-						type: 'info',
-						title: 'yt-dlp update',
-						message: `You are using the latest version of yt-dlp (${latestVersion}).`
-					});
-				}
+				await dialog.showMessageBox({
+					type: 'info',
+					title: 'yt-dlp update',
+					message: updated
+						? `yt-dlp was updated to ${version}.`
+						: `You are using the latest version of yt-dlp (${version}).`
+				});
 			}
 
-			resolve();
+			return ok();
+		} catch (error) {
+			const message = error instanceof Error ? error.message : String(error);
+			this.logger.error('Failed to update yt-dlp', { error });
+
+			if (!silent) {
+				await dialog.showMessageBox({
+					type: 'error',
+					title: 'yt-dlp update',
+					message: `yt-dlp could not be updated: ${message}`
+				});
+			}
+
+			return err(message);
+		} finally {
+			this.window.emitAll('yt-dlp->updated-binary');
+		}
+	}
+
+	private runBinaryUpdate(ytDlpPath: string, timeoutMs = 120_000) {
+		return new Promise<string>((resolve, reject) => {
+			const proc = spawn(ytDlpPath, ['-U']);
+			let output = '';
+			let settled = false;
+
+			const settle = (error?: Error) => {
+				if (settled) {
+					return;
+				}
+
+				settled = true;
+				clearTimeout(timeout);
+				if (error) {
+					reject(error);
+				} else {
+					resolve(output);
+				}
+			};
+			const appendOutput = (data: Buffer) => {
+				const text = data.toString();
+				output += text;
+				this.logger.trace(`yt-dlp -U: ${text.trim()}`);
+			};
+			const timeout = setTimeout(() => {
+				void this.process.killProcessTree(proc.pid!).catch(error => {
+					this.logger.warn('Failed to kill timed-out yt-dlp update process', { error });
+				});
+				settle(new Error(`Update timed out after ${Math.round(timeoutMs / 1_000)} seconds.`));
+			}, timeoutMs);
+
+			proc.stdout?.on('data', appendOutput);
+			proc.stderr?.on('data', appendOutput);
+			proc.once('error', error => settle(error));
+			proc.once('close', code => {
+				this.logger.info('yt-dlp update process exited', { code });
+				settle(code === 0 ? undefined : new Error(`Update process exited with code ${code ?? 'unknown'}.`));
+			});
 		});
-
-		await promise;
-
-		return ok();
 	}
 
 	private async tryStartNext() {

@@ -122,7 +122,7 @@ export interface IIPCContract {
 	}
 	'yt-dlp<-update-binary': {
 		args: [];
-		return: IPCResult<Unit, never>;
+		return: IPCResult<Unit, string>;
 	}
 	//
 	'twitter<-get-tweet-media-info': {
