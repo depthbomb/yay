@@ -33,7 +33,7 @@
 	"devDependencies": {
 		"@eslint/js": "^10.0.1",
 		"@swc-node/sourcemap-support": "^0.6.1",
-		"@types/node": "^24.13.3",
+		"@types/node": "^26.2.0",
 		"@types/semver": "^7.8.0",
 		"cross-env": "^10.1.0",
 		"electron": "44.0.0",
