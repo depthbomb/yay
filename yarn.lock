@@ -7268,7 +7268,7 @@ __metadata:
     "@taplo/cli": "npm:^0.7.0"
     chalk: "npm:^6.0.0"
     npm-run-all2: "npm:^9.0.3"
-    typescript: "npm:^5.9.3"
+    typescript: "npm:^6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -8023,7 +8023,7 @@ __metadata:
     sass-embedded: "npm:^1.103.1"
     shared: "workspace:*"
     tailwindcss: "npm:^4.3.3"
-    typescript: "npm:^5.9.3"
+    typescript: "npm:^6.0.3"
     typescript-eslint: "npm:^8.68.0"
     vite: "npm:8.2.2"
   languageName: unknown
@@ -8537,7 +8537,7 @@ __metadata:
     "@depthbomb/common": "npm:^3.2.0"
     "@depthbomb/node-common": "npm:^2.4.0"
     tsdown: "npm:0.22.14"
-    typescript: "npm:^5.9.3"
+    typescript: "npm:^6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -9109,16 +9109,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.9.3":
-  version: 5.9.3
-  resolution: "typescript@npm:5.9.3"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/c089d9d3da2729fd4ac517f9b0e0485914c4b3c26f80dc0cffcb5de1719a17951e92425d55db59515c1a7ddab65808466debb864d0d56dcf43f27007d0709594
-  languageName: node
-  linkType: hard
-
 "typescript@npm:^6.0.3":
   version: 6.0.3
   resolution: "typescript@npm:6.0.3"
@@ -9126,16 +9116,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/0ef2357a4cffd916b52b683a021cdab0f81eea4e9aa35f2d254581c9a5106da02224e3392e1b0ed42b7a48f80c966e5f52b8e1a27941fa0523c1705a9c2e0330
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.9.3#optional!builtin<compat/typescript>":
-  version: 5.9.3
-  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10/696e1b017bc2635f4e0c94eb4435357701008e2f272f553d06e35b494b8ddc60aa221145e286c28ace0c89ee32827a28c2040e3a69bdc108b1a5dc8fb40b72e3
   languageName: node
   linkType: hard
 
@@ -9607,7 +9587,7 @@ __metadata:
     node-gyp: "npm:^13.0.1"
     ts-morph: "npm:28.0.0"
     tsx: "npm:^4.23.12"
-    typescript: "npm:^5.9.3"
+    typescript: "npm:^6.0.3"
   languageName: unknown
   linkType: soft
 
@@ -9638,7 +9618,7 @@ __metadata:
     shared: "workspace:*"
     smol-toml: "npm:1.8.0"
     terser: "npm:^5.50.0"
-    typescript: "npm:^5.9.3"
+    typescript: "npm:^6.0.3"
     typescript-eslint: "npm:^8.68.0"
     vite: "npm:^8.2.2"
   languageName: unknown
