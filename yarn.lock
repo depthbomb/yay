@@ -375,17 +375,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depthbomb/common@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@depthbomb/common@npm:3.2.0"
-  checksum: 10/b6eb29ee38b747a5dcf54fa551f30ccf58cce3d0bb87d42470d2ab12c3e63003a23a000e736073f7ba6c39af6ce30c441fdf889d0b4bebc34b71904caae73474
+"@depthbomb/common@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "@depthbomb/common@npm:3.3.0"
+  checksum: 10/6389f2f6d5b55f1f90d68d073b973adaad04178da5c1aa6c2bcc0b4828bde5dd759db1da7c779314ebd07b7f3d56f7d6398621739a5376d6fa4e0cc3e0e2dd06
   languageName: node
   linkType: hard
 
-"@depthbomb/node-common@npm:^2.4.0":
-  version: 2.4.0
-  resolution: "@depthbomb/node-common@npm:2.4.0"
-  checksum: 10/99a5314c8b10c63208dfdb93fe8e6817cfce64b443b4814eb65dcfae10581129db52ad65bede8fa53162d01e4fb42061d520d8688219d53c49f7077ca9f8d6f5
+"@depthbomb/node-common@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "@depthbomb/node-common@npm:2.5.0"
+  checksum: 10/fd424013a1b210dffe1ce04b95b6674c49cc16d0fc405921c9181985d493602acaf28249a0bee27e9f4af422e20bdc2c0fcda5053375c306bbfe1b2a305b61b5
   languageName: node
   linkType: hard
 
@@ -4787,9 +4787,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron@npm:44.0.0":
-  version: 44.0.0
-  resolution: "electron@npm:44.0.0"
+"electron@npm:44.1.0":
+  version: 44.1.0
+  resolution: "electron@npm:44.1.0"
   dependencies:
     "@electron-internal/extract-zip": "npm:^1.0.1"
     "@electron/get": "npm:^5.0.0"
@@ -4797,7 +4797,7 @@ __metadata:
   bin:
     electron: cli.js
     install-electron: install.js
-  checksum: 10/d2daa4127b4b080e796dcbebff2e39c517f6160567e918e8a0abd62aef90aa80bba3a6cc485f14b427369d7621d70955fd5a7996ffe100fd5ad7de26307bb188
+  checksum: 10/915d2cf0517b483c55b64c70ad0c8297603423f9acc49d85909989cabf8232c1f5b443e1a46bde70a6b6bd129bbf37dd4345f53dadabc6b9b6f84cf9ffaf825e
   languageName: node
   linkType: hard
 
@@ -8119,7 +8119,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^6.1.1"
     babel-plugin-react-compiler: "npm:^1.0.0"
     cva: "npm:^1.0.0-beta.8"
-    electron: "npm:44.0.0"
+    electron: "npm:44.1.0"
     eslint: "npm:^10.9.1"
     eslint-plugin-react-hooks: "npm:^7.1.1"
     eslint-plugin-react-refresh: "npm:^0.5.5"
@@ -8704,8 +8704,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "shared@workspace:packages/shared"
   dependencies:
-    "@depthbomb/common": "npm:^3.2.0"
-    "@depthbomb/node-common": "npm:^2.4.0"
+    "@depthbomb/common": "npm:^3.3.0"
+    "@depthbomb/node-common": "npm:^2.5.0"
     tsdown: "npm:0.22.14"
     typescript: "npm:^6.0.3"
   languageName: unknown
@@ -9217,9 +9217,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsx@npm:^4.23.12":
-  version: 4.23.12
-  resolution: "tsx@npm:4.23.12"
+"tsx@npm:^4.23.13":
+  version: 4.23.13
+  resolution: "tsx@npm:4.23.13"
   dependencies:
     esbuild: "npm:~0.28.0"
     fsevents: "npm:~2.3.3"
@@ -9228,7 +9228,7 @@ __metadata:
       optional: true
   bin:
     tsx: dist/cli.mjs
-  checksum: 10/167a5571cb211aff257d200cd75a1003b1e0e59d641c1e6ff99f6cdfada46ff6ce311e105722699b4763feb1371b2d8084bcc413c7e54aae3761c852817dc0b0
+  checksum: 10/064c7de2b3ad923fee8feeffc5698738a75f10d98d8a024c6c8efac5351a7825e84aa7a933778145c4f769405f8a95f8f49289a7bff698ba79fd92ff67e26289
   languageName: node
   linkType: hard
 
@@ -9756,7 +9756,7 @@ __metadata:
     electron-builder: "npm:26.15.7"
     node-gyp: "npm:^13.0.2"
     ts-morph: "npm:28.0.0"
-    tsx: "npm:^4.23.12"
+    tsx: "npm:^4.23.13"
     typescript: "npm:^6.0.3"
   languageName: unknown
   linkType: soft
@@ -9765,8 +9765,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "yay@workspace:packages/app"
   dependencies:
-    "@depthbomb/common": "npm:^3.2.0"
-    "@depthbomb/node-common": "npm:^2.4.0"
+    "@depthbomb/common": "npm:^3.3.0"
+    "@depthbomb/node-common": "npm:^2.5.0"
     "@eslint/js": "npm:^10.0.1"
     "@formatjs/fast-memoize": "npm:^3.1.7"
     "@hono/node-server": "npm:^2.1.1"
@@ -9777,7 +9777,7 @@ __metadata:
     "@types/semver": "npm:^7.8.0"
     cockatiel: "npm:^4.0.0"
     cross-env: "npm:^10.1.0"
-    electron: "npm:44.0.0"
+    electron: "npm:44.1.0"
     eslint: "npm:^10.9.1"
     globals: "npm:^17.11.0"
     hono: "npm:^4.13.5"
