@@ -1,3 +1,9 @@
+# 1.42.1
+
+- Upgraded to [Electron 44.2.0](https://releases.electronjs.org/release/v44.2.0)
+
+---
+
 # 1.42.0
 
 - Added spacing between the main window and the Windows 11 taskbar

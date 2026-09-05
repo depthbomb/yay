@@ -12,6 +12,12 @@
 	"repoURL": "https://github.com/depthbomb/yay",
 	"changelog": [
 		{
+			"version": "1.42.1",
+			"changes": [
+				"Upgraded to [Electron 44.2.0](https://releases.electronjs.org/release/v44.2.0)"
+			]
+		},
+		{
 			"version": "1.42.0",
 			"changes": [
 				"Added spacing between the main window and the Windows 11 taskbar",
