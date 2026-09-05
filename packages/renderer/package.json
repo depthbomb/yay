@@ -3,12 +3,12 @@
 	"name": "renderer",
 	"type": "module",
 	"scripts": {
-		"test": "yarn run -T tsx --test src/**/*.test.ts",
+		"test": "tsx --test src/**/*.test.ts",
 		"typecheck": "tsc -b --pretty false",
 		"dev": "vite",
-		"watch": "yarn dev",
-		"build:d": "yarn typecheck && vite build --mode development",
-		"build:p": "yarn typecheck && vite build --mode production",
+		"watch": "vite",
+		"build:d": "bun run typecheck && vite build --mode development",
+		"build:p": "bun run typecheck && vite build --mode production",
 		"lint": "eslint .",
 		"preview": "vite preview"
 	},

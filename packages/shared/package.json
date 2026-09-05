@@ -89,9 +89,9 @@
 	],
 	"scripts": {
 		"typecheck": "tsc --noEmit",
-		"build:d": "yarn gen:ipc && tsdown",
-		"build:p": "yarn gen:ipc && tsdown",
-		"gen:ipc": "yarn run -T tsx scripts/generate-ipc-helper.ts"
+		"build:d": "bun run gen:ipc && tsdown",
+		"build:p": "bun run gen:ipc && tsdown",
+		"gen:ipc": "tsx scripts/generate-ipc-helper.ts"
 	},
 	"dependencies": {
 		"@depthbomb/common": "^3.3.0",

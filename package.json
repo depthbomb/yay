@@ -2,24 +2,24 @@
 	"private": true,
 	"name": "yay-root",
 	"scripts": {
-		"test": "yarn workspace shared build:d && yarn workspace yay test && yarn workspace renderer test",
-		"audit": "yarn audit:production && yarn audit:development",
-		"audit:production": "yarn npm audit --all --recursive --environment production --no-deprecations",
-		"audit:development": "yarn npm audit --all --recursive --severity high --no-deprecations",
-		"typecheck": "yarn workspace shared build:d && yarn workspaces foreach -Apt run typecheck",
-		"lint": "yarn workspaces foreach -Apt run lint",
-		"dev": "yarn workspace yay run dev",
-		"watch": "yarn workspace renderer run watch",
-		"build": "yarn create-asars && yarn workspaces foreach -Apti run build:d",
-		"package": "yarn create-asars && cross-env ENV=PRODUCTION yarn build:p && cross-env ENV=PRODUCTION yarn workspace yay run electron:dist && yarn postpackage",
+		"test": "bun run --filter shared build:d && bun run --filter yay test && bun run --filter renderer test",
+		"audit": "bun run audit:production && bun run audit:development",
+		"audit:production": "bun audit --prod",
+		"audit:development": "bun audit --audit-level=high",
+		"typecheck": "bun run --filter shared build:d && bun run --workspaces --if-present typecheck",
+		"lint": "bun run --filter shared build:d && bun run --workspaces --if-present lint",
+		"dev": "bun run --filter yay dev",
+		"watch": "bun run --cwd packages/renderer watch",
+		"build": "bun run create-asars && bun run --workspaces build:d",
+		"package": "bun run create-asars && cross-env ENV=PRODUCTION bun run build:p && cross-env ENV=PRODUCTION bun run --filter yay electron:dist",
 		"postpackage": "asar-trim ./build/win-unpacked/resources",
-		"build:p": "yarn clean-dist && cross-env ENV=PRODUCTION yarn workspaces foreach -Apti run build:p",
-		"clean-dist": "yarn run -T tsx scripts/clean-dist.ts",
-		"create-asars": "yarn run -T tsx scripts/create-asars.ts",
-		"create-installer": "yarn create-online-files-archive && yarn run -T tsx scripts/create-installer.ts",
-		"create-online-files-archive": "yarn run -T tsx scripts/create-online-files-archive.ts",
-		"create-release": "yarn run -T tsx scripts/create-release.ts",
-		"generate-changelog": "yarn run -T tsx scripts/generate-changelog.ts"
+		"build:p": "bun run clean-dist && cross-env ENV=PRODUCTION bun run --workspaces build:p",
+		"clean-dist": "tsx scripts/clean-dist.ts",
+		"create-asars": "tsx scripts/create-asars.ts",
+		"create-installer": "bun run create-online-files-archive && tsx scripts/create-installer.ts",
+		"create-online-files-archive": "tsx scripts/create-online-files-archive.ts",
+		"create-release": "tsx scripts/create-release.ts",
+		"generate-changelog": "tsx scripts/generate-changelog.ts"
 	},
 	"repository": {
 		"type": "git",
@@ -36,6 +36,7 @@
 		"packages/nativelib"
 	],
 	"devDependencies": {
+		"@electron/asar": "^4.3.0",
 		"@octokit/rest": "^22.0.1",
 		"@types/node": "^24.13.3",
 		"asar-trim": "^1.2.3",
@@ -47,5 +48,10 @@
 		"tsx": "^4.23.13",
 		"typescript": "^6.0.3"
 	},
-	"packageManager": "yarn@4.18.0"
+	"packageManager": "bun@1.4.1",
+	"trustedDependencies": [
+		"@parcel/watcher",
+		"electron-winstaller",
+		"esbuild"
+	]
 }

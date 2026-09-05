@@ -4,10 +4,3 @@ node_modules/
 
 src/ipc-channels.generated.ts
 src/ipc-events.generated.ts
-
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions

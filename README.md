@@ -17,9 +17,15 @@ On first run, yay will automatically download the latest version of yt-dlp if it
 
 ## Development
 
-The Vite configs for the _app_ and _renderer_ both require the _shared_ package to be built. Run `yarn build` at least once before running any other development commands.
+Use [Bun 1.4.1](https://bun.com/docs/installation) for dependency management and scripts, with Node.js 24 and the Rust MSVC toolchain installed. Node.js and Electron remain the JavaScript runtimes for the existing tools and application.
 
-Run the renderer in watch mode with `yarn watch` and the application in development mode with `yarn dev`.
+Run `bun install --frozen-lockfile` to install the locked dependencies. After changing dependencies with Bun, include the updated `bun.lock` with your changes.
+
+Use `bun run test`, `bun run typecheck`, and `bun run lint` for validation. Use `bun run audit` for production vulnerabilities at any severity and high/critical vulnerabilities across all dependencies. Always use `bun run test` to invoke the existing Node.js tests.
+
+The Vite configs for the _app_ and _renderer_ both require the _shared_ package to be built. Run `bun run build` at least once before running any other development commands.
+
+Run the renderer in watch mode with `bun run watch` and the application in development mode with `bun run dev`.
 
 ## Distribution
 
@@ -28,7 +34,7 @@ The following must be installed on your system and added to the PATH:
 - [Inno Setup >= 6.7](https://jrsoftware.org/isinfo.php)
 - [7-Zip](https://7-zip.org)
 
-Run `yarn package` to build the application, and `yarn create-installer` to create both the online files archive and the setup binary.
+Run `bun run package` to build the application, and `bun run create-installer` to create both the online files archive and the setup binary.
 
 ## Feature Flags
 

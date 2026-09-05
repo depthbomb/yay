@@ -29,12 +29,11 @@
 			"**/CVS": true,
 			"**/.DS_Store": true,
 			"**/Thumbs.db": true,
-			".yarn": true,
 			"**/build": true,
 			"dist": true,
 			"node_modules": true
 		},
-		"typescript.tsdk": "Root\\node_modules\\typescript\\lib",
+		"js/ts.tsdk.path": "Root\\node_modules\\typescript\\lib",
 		"markdown.validate.enabled": true,
 	},
 	"extensions": {

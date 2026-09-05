@@ -33,6 +33,5 @@
 		"chalk": "^6.0.0",
 		"npm-run-all2": "^9.0.3",
 		"typescript": "^6.0.3"
-	},
-	"packageManager": "yarn@4.9.4"
+	}
 }

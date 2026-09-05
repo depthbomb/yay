@@ -1,7 +1,7 @@
 version: 2
 
 updates:
-  - package-ecosystem: "npm"
+  - package-ecosystem: "bun"
     directory: "/"
     schedule:
       interval: "daily"
@@ -15,14 +15,14 @@ updates:
     commit-message:
       prefix: "deps"
     groups:
-      npm-minor-and-patch:
+      bun-minor-and-patch:
         applies-to: "version-updates"
         patterns:
           - "*"
         update-types:
           - "minor"
           - "patch"
-      npm-security:
+      bun-security:
         applies-to: "security-updates"
         patterns:
           - "*"
