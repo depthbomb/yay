@@ -22,7 +22,7 @@ namespace
         const Json state = {
             {"system", {{"arch", "x64"}, {"type", "Windows_NT"}, {"release", "10.0.22000"},
                         {"platform", "win32"}, {"hostname", "test-host"}}},
-            {"versions", {{"webview2", "test"}, {"chrome", "test"}, {"native", "test"}}},
+            {"versions", {{"webview2", "test"}}},
             {"flags", Json::array()}, {"buildDate", "2026-10-18T00:00:00Z"}
         };
         std::vector<std::string> calls;
@@ -31,7 +31,7 @@ namespace
         bool installFails = false;
         bool installRejected = false;
         ApplicationActions actions;
-        actions.bootstrap = [&] { return state; };
+        actions.bootstrap = [&] { return Json(state); };
         actions.rendererReady = [&](const std::string& name)
         {
             expect(std::this_thread::get_id() == mainThread, "ready must run on the dispatching thread");
@@ -42,9 +42,9 @@ namespace
             calls.push_back("diagnostics:" + name);
             diagnostics = data;
         };
-        actions.resetSettings = [&] { calls.push_back("reset"); };
-        actions.recheckBinaries = [&] { calls.push_back("recheck"); };
-        actions.cancelSetup = [&] { calls.push_back("cancel"); };
+        actions.resetSettings = [&] { calls.emplace_back("reset"); };
+        actions.recheckBinaries = [&] { calls.emplace_back("recheck"); };
+        actions.cancelSetup = [&] { calls.emplace_back("cancel"); };
         actions.latestRelease = [] { return Json(nullptr); };
         actions.showUpdater = [&](const bool requestedPreview)
         {

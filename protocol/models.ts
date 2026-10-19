@@ -84,10 +84,8 @@ export const models = {
         commit: s.ref('GitHubCommitMessage'),
     }),
     NativeVersions: s.object({
-        chrome: s.string,
         webview2: s.string,
-        native: s.string,
-    }, ['webview2', 'chrome', 'native']),
+    }, ['webview2']),
     BootstrapState: s.object({
         flags: s.array(s.ref('FeatureFlag')),
         system: s.ref('SystemInfo'),

@@ -118,6 +118,7 @@ export const AboutTab = () => {
 			<SectionSeparator/>
 			<InfoSection title="Application" values={[
 				['Product version', product.version],
+				['WebView2 version', native.versions.webview2],
 				['Commit', <Anchor href={`https://github.com/depthbomb/yay/commit/${GIT_HASH}`} target="_blank">{GIT_HASH_SHORT}</Anchor>],
 				['Build date', native.buildDate.toLocaleString()],
 				[
@@ -126,11 +127,6 @@ export const AboutTab = () => {
 						<span>{product.repositoryUrl}</span>
 					</Anchor>
 				]
-			]}/>
-			<InfoSection title="Framework" values={[
-				['WebView2 version', native.versions.webview2],
-				['Chromium version', native.versions.chrome],
-				['Native host', native.versions.native],
 			]}/>
 			<InfoSection title="System" values={[
 				['Platform', `${native.system.type} (${native.system.platform})`],

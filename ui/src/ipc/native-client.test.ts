@@ -30,7 +30,7 @@ function fixture() {
 function bootstrap(release = '10.0.22000'): BootstrapState {
 	return {
 		system: { arch: 'x64', type: 'Windows_NT', release, platform: 'win32', hostname: 'test-host' },
-		versions: { webview2: 'test-webview', chrome: 'test-chrome', native: 'C++23 / MSVC' },
+		versions: { webview2: 'test-webview' },
 		buildDate: '2026-10-18T00:00:00Z',
 		flags: [{ uuid: 'flag', description: 'Test flag', enabled: true }],
 		diagnostics: true,

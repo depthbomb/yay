@@ -356,5 +356,5 @@ Json WindowManager::bootstrapState() const
     return {{"system", systemInfo()},
             {"flags", m_settings.flags()},
             {"buildDate", BuildDate},
-            {"versions", {{"webview2", m_runtimeVersion}, {"chrome", m_runtimeVersion}, {"native", "C++23 / MSVC"}}}};
+            {"versions", {{"webview2", m_runtimeVersion}}}};
 }

@@ -181,9 +181,7 @@ export type GitHubCommit = {
     commit: GitHubCommitMessage;
 };
 export type NativeVersions = {
-    chrome: string;
     webview2: string;
-    native: string;
 };
 export type BootstrapState = {
     flags: Array<FeatureFlag>;

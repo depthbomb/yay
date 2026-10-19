@@ -393,9 +393,7 @@ void to_json(Json& output, const GitHubCommit& value);
 struct NativeVersions
 {
 public:
-    std::string chrome{};
     std::string webview2{};
-    std::string native{};
 };
 void from_json(const Json& input, NativeVersions& value);
 void to_json(Json& output, const NativeVersions& value);

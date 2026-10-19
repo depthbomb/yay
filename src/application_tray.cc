@@ -48,19 +48,20 @@ void Application::createTray()
 {
     if (!m_trayIcon)
     {
+        // Keep the ICO's original size to avoid scaling up before the shell scales it for the tray.
         m_trayIcon = static_cast<HICON>(LoadImageW(nullptr,
                                                    (m_paths.directory / "assets/tray/tray.ico").c_str(),
                                                    IMAGE_ICON,
                                                    0,
                                                    0,
-                                                   LR_LOADFROMFILE | LR_DEFAULTSIZE));
+                                                   LR_LOADFROMFILE));
         m_downloadingIcon =
             static_cast<HICON>(LoadImageW(nullptr,
                                           (m_paths.directory / "assets/tray/tray-downloading.ico").c_str(),
                                           IMAGE_ICON,
                                           0,
                                           0,
-                                          LR_LOADFROMFILE | LR_DEFAULTSIZE));
+                                          LR_LOADFROMFILE));
     }
 
     m_tray.cbSize = sizeof(m_tray);
@@ -108,9 +109,10 @@ void Application::showTrayMenu()
     AppendMenuW(menu, MF_STRING, 3, L"Quit");
     std::vector<HBITMAP> bitmaps;
     constexpr std::array icons{"logo-16.png", "open-in-new.png", "cog.png", "close.png"};
+    const auto iconSize = static_cast<UINT>(MulDiv(16, static_cast<int>(GetDpiForWindow(m_host)), 96));
     for (UINT id = 0; id < icons.size(); ++id)
     {
-        if (const auto bitmap = loadMenuBitmap(m_paths.directory / "assets/tray/action-icons" / icons[id], MulDiv(16, GetDpiForWindow(m_host), 96)))
+        if (const auto bitmap = loadMenuBitmap(m_paths.directory / "assets/tray/action-icons" / icons[id], iconSize))
         {
             MENUITEMINFOW item{.cbSize = sizeof(item)};
             item.fMask = MIIM_BITMAP;
