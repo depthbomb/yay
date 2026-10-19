@@ -38,6 +38,8 @@ try {
     ctest --test-dir $BuildDirectory -C Release --output-on-failure
     if ($LASTEXITCODE -ne 0) { throw 'Release tests failed.' }
 
+    & (Join-Path $projectRoot 'tests/installer_upgrade.ps1') -Compiler $compiler
+
     if (Test-Path -LiteralPath $packageDirectory) {
         $resolvedPackage = (Resolve-Path -LiteralPath $packageDirectory).Path
         $resolvedDistribution = (Resolve-Path -LiteralPath $distributionDirectory).Path

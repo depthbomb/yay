@@ -47,6 +47,37 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
+[InstallDelete]
+; Only remove known v1 payloads. Settings, media, and Inno's uninstall logs must survive upgrades.
+Type: filesandordirs; Name: "{app}\resources"
+Type: filesandordirs; Name: "{app}\locales"
+Type: filesandordirs; Name: "{app}\swiftshader"
+Type: files; Name: "{app}\chrome_100_percent.pak"
+Type: files; Name: "{app}\chrome_200_percent.pak"
+Type: files; Name: "{app}\chrome_elf.dll"
+Type: files; Name: "{app}\d3dcompiler_47.dll"
+Type: files; Name: "{app}\dxcompiler.dll"
+Type: files; Name: "{app}\dxil.dll"
+Type: files; Name: "{app}\ffmpeg.dll"
+Type: files; Name: "{app}\icudtl.dat"
+Type: files; Name: "{app}\libEGL.dll"
+Type: files; Name: "{app}\libGLESv2.dll"
+Type: files; Name: "{app}\LICENSE.electron.txt"
+Type: files; Name: "{app}\LICENSES.chromium.html"
+Type: files; Name: "{app}\natives_blob.bin"
+Type: files; Name: "{app}\resources.pak"
+Type: files; Name: "{app}\snapshot_blob.bin"
+Type: files; Name: "{app}\v8_context_snapshot.bin"
+Type: files; Name: "{app}\vk_swiftshader_icd.json"
+Type: files; Name: "{app}\vk_swiftshader.dll"
+Type: files; Name: "{app}\vulkan-1.dll"
+; v2 keeps its utilities in bin; missing tools are handled by the app's normal setup flow.
+Type: files; Name: "{app}\7za.exe"
+Type: files; Name: "{app}\yt-dlp.exe"
+Type: files; Name: "{app}\deno.exe"
+Type: files; Name: "{app}\ffmpeg.exe"
+Type: files; Name: "{app}\ffprobe.exe"
+
 [Files]
 Source: "{#PackageDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
