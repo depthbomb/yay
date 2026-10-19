@@ -1,6 +1,0 @@
-dist/
-
-node_modules/
-
-src/ipc-channels.generated.ts
-src/ipc-events.generated.ts

@@ -1,0 +1,24 @@
+#include <windows.h>
+1 ICON "@PROJECT_SOURCE_DIR@/assets/icon.ico"
+1 VERSIONINFO
+FILEVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,@PROJECT_VERSION_PATCH@,0
+PRODUCTVERSION @PROJECT_VERSION_MAJOR@,@PROJECT_VERSION_MINOR@,@PROJECT_VERSION_PATCH@,0
+FILETYPE VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "@YAY_COMPANY@"
+            VALUE "FileDescription", "@YAY_DESCRIPTION@"
+            VALUE "FileVersion", "@PROJECT_VERSION@"
+            VALUE "ProductName", "@YAY_NAME@"
+            VALUE "ProductVersion", "@PROJECT_VERSION@"
+            VALUE "OriginalFilename", "@YAY_EXECUTABLE_NAME@"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

@@ -1,0 +1,38 @@
+# Inspect imports at install time, then copy matching files from the redistributable SDK.
+cmake_policy(VERSION 4.4)
+set(CMAKE_GET_RUNTIME_DEPENDENCIES_PLATFORM windows+pe)
+set(CMAKE_GET_RUNTIME_DEPENDENCIES_TOOL dumpbin)
+set(CMAKE_GET_RUNTIME_DEPENDENCIES_COMMAND "@YAY_COMPILER_DIRECTORY@/dumpbin.exe")
+set(runtime_candidates "@CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS@")
+set(runtime_directories)
+foreach(candidate IN LISTS runtime_candidates)
+    get_filename_component(directory "${candidate}" DIRECTORY)
+    list(APPEND runtime_directories "${directory}")
+endforeach()
+list(REMOVE_DUPLICATES runtime_directories)
+
+# Windows normalizes DLL names to lowercase before applying these filters.
+file(GET_RUNTIME_DEPENDENCIES
+    EXECUTABLES "${YAY_EXECUTABLE}"
+    DIRECTORIES ${runtime_directories}
+    PRE_INCLUDE_REGEXES "^(msvcp|vcruntime|concrt)[0-9_].*\\.dll$"
+    PRE_EXCLUDE_REGEXES ".*"
+    RESOLVED_DEPENDENCIES_VAR runtime_dependencies)
+
+foreach(dependency IN LISTS runtime_dependencies)
+    get_filename_component(name "${dependency}" NAME)
+    string(TOLOWER "${name}" name)
+    set(redistributable "")
+    foreach(candidate IN LISTS runtime_candidates)
+        get_filename_component(candidate_name "${candidate}" NAME)
+        string(TOLOWER "${candidate_name}" candidate_name)
+        if(candidate_name STREQUAL name)
+            set(redistributable "${candidate}")
+            break()
+        endif()
+    endforeach()
+    if(NOT redistributable)
+        message(FATAL_ERROR "No redistributable SDK file found for ${name}")
+    endif()
+    file(INSTALL "${redistributable}" DESTINATION "${CMAKE_INSTALL_PREFIX}" TYPE SHARED_LIBRARY)
+endforeach()

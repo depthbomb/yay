@@ -1,0 +1,24 @@
+{
+  "version": 10,
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Visual Studio 18 2026",
+      "architecture": "x64"
+    },
+    { "name": "debug", "inherits": "base", "binaryDir": "${sourceDir}/build/debug", "cacheVariables": { "CMAKE_CONFIGURATION_TYPES": "Debug", "BUILD_TESTING": "ON" } },
+    { "name": "release", "inherits": "base", "binaryDir": "${sourceDir}/build/release", "cacheVariables": { "CMAKE_CONFIGURATION_TYPES": "Release", "BUILD_TESTING": "OFF" } },
+    { "name": "distribution", "displayName": "Distribution", "inherits": "release", "binaryDir": "${sourceDir}/build/distribution" }
+  ],
+  "buildPresets": [
+    { "name": "debug", "displayName": "Debug", "description": "Build the application, embedded frontend, and Debug tests", "configurePreset": "debug", "configuration": "Debug" },
+    { "name": "release", "displayName": "Release", "description": "Build the application and embedded frontend", "configurePreset": "release", "configuration": "Release" },
+    { "name": "distribution", "displayName": "Distribution", "description": "Build Release and package the app and installer under dist", "configurePreset": "distribution", "configuration": "Release", "targets": ["yay_distribution"] }
+  ],
+  "testPresets": [
+    { "name": "debug", "configurePreset": "debug", "configuration": "Debug", "output": { "outputOnFailure": true } },
+    { "name": "release", "configurePreset": "release", "configuration": "Release", "output": { "outputOnFailure": true } },
+    { "name": "distribution", "configurePreset": "distribution", "configuration": "Release", "output": { "outputOnFailure": true } }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "version": "2.0.0",
+  "name": "yay",
+  "company": "Caprine Logic",
+  "description": "Yet Another YouTube Downloader",
+  "directoryName": "yay",
+  "installerId": "B1626C8A-95AF-4CB6-A6A2-6902B3E8FD3E",
+  "notificationClsid": "A1C754B6-B342-44D5-AD12-B67208AC34A9",
+  "appUserModelId": "CaprineLogic.yay",
+  "urlProtocol": "yay",
+  "repository": "depthbomb/yay",
+  "executable": "yay.exe",
+  "installerAsset": "yay-setup.exe",
+  "webviewRuntimeUrl": "https://go.microsoft.com/fwlink/p/?LinkId=2124703"
+}

@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **App info:**
  - OS: [e.g. Windows 10, Windows 11]
- - Version [e.g. 1.13.0] <!-- version can be found in Settings > Developer -->
+ - Version [e.g. 2.0.0] <!-- version can be found in Settings > About -->
 
 **Additional context**
 Add any other context about the problem here.

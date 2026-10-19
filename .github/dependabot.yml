@@ -2,10 +2,9 @@ version: 2
 
 updates:
   - package-ecosystem: "bun"
-    directory: "/"
+    directory: "/ui"
     schedule:
       interval: "daily"
-      day: "monday"
       time: "09:00"
       timezone: "America/Chicago"
     open-pull-requests-limit: 5
@@ -13,7 +12,7 @@ updates:
       - "dependencies"
       - "javascript"
     commit-message:
-      prefix: "deps"
+      prefix: "chore(deps)"
     groups:
       bun-minor-and-patch:
         applies-to: "version-updates"
@@ -27,27 +26,3 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: "cargo"
-    directory: "/packages/nativelib"
-    schedule:
-      interval: "daily"
-      day: "monday"
-      time: "09:00"
-      timezone: "America/Chicago"
-    open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-    commit-message:
-      prefix: "deps"
-    groups:
-      cargo-minor-and-patch:
-        applies-to: "version-updates"
-        patterns:
-          - "*"
-        update-types:
-          - "minor"
-          - "patch"
-      cargo-security:
-        applies-to: "security-updates"
-        patterns:
-          - "*"

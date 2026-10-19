@@ -1,3 +1,12 @@
+# 2.0.0
+
+- Completely rewritten in C++ and Microsoft Edge WebView2
+  - You won't notice a difference functionally but things should generally be faster and the overall size is significantly lower
+- Removed the local API server
+- Improved error handling
+
+---
+
 # 1.42.1
 
 - Upgraded to [Electron 44.2.0](https://releases.electronjs.org/release/v44.2.0)

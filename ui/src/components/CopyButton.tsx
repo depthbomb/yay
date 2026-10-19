@@ -1,0 +1,58 @@
+import { Button } from './Button';
+import { Icon } from '@mdi/react';
+import { native } from '~/native';
+import { mdiCheck, mdiContentCopy } from '@mdi/js';
+import { useRef, useState, useEffect } from 'react';
+import type { IButtonProps } from './Button';
+
+export interface ICopyButtonProps extends Omit<IButtonProps, 'children' | 'onClick' | 'type'> {
+	value: string;
+}
+
+export const CopyButton = ({ value, disabled, ...props }: ICopyButtonProps) => {
+	const [copied, setCopied]  = useState(false);
+	const [error, setError]    = useState<string | null>(null);
+	const feedbackTimer       = useRef<number | null>(null);
+
+	useEffect(() => {
+		return () => {
+			if (feedbackTimer.current !== null) {
+				window.clearTimeout(feedbackTimer.current);
+			}
+		};
+	}, []);
+
+	const copy = async () => {
+		try {
+			await native.clipboard.writeText(value);
+			setCopied(true);
+			setError(null);
+		}
+		catch (error) {
+			setCopied(false);
+			setError(error instanceof Error ? error.message : String(error));
+		}
+
+		if (feedbackTimer.current !== null) {
+			window.clearTimeout(feedbackTimer.current);
+		}
+
+		feedbackTimer.current = window.setTimeout(() => {
+			setCopied(false);
+			feedbackTimer.current = null;
+		}, 2_000);
+	};
+
+	return (
+		<Button
+			{...props}
+			type={error ? 'danger' : copied ? 'success' : 'accent'}
+			title={error ?? props.title}
+			disabled={disabled || !value}
+			onClick={() => void copy()}
+		>
+			<Icon path={copied ? mdiCheck : mdiContentCopy} className="size-4"/>
+			<span aria-live="polite">{error ? 'Copy failed' : copied ? 'Copied' : 'Copy'}</span>
+		</Button>
+	);
+};

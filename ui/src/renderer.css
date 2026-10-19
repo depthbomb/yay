@@ -1,0 +1,238 @@
+@import '@fontsource/momo-trust-display';
+@import '@fontsource/momo-trust-sans/400.css';
+@import '@fontsource/momo-trust-sans/600.css';
+@import '@fontsource-variable/jetbrains-mono';
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/typography';
+
+@theme {
+	/**
+	* Colors
+	*/
+	--color-gray-50: oklch(0.966 0.002 196.28);
+	--color-gray-100: oklch(0.93 0.003 247.81);
+	--color-gray-200: oklch(0.861 0.008 241.63);
+	--color-gray-300: oklch(0.784 0.011 234.81);
+	--color-gray-400: oklch(0.715 0.011 238.54);
+	--color-gray-500: oklch(0.646 0.009 236.59);
+	--color-gray-600: oklch(0.577 0.009 241.73);
+	--color-gray-700: oklch(0.508 0.007 239.88);
+	--color-gray-800: oklch(0.439 0.006 228.87);
+	--color-gray-900: oklch(0.366 0.005 236.6);
+	--color-gray-950: oklch(0.25 0.004 228.87);
+
+	--color-brand-50: #fef1f8;
+	--color-brand-100: #fee5f3;
+	--color-brand-200: #ffcae9;
+	--color-brand-300: #ff9fd4;
+	--color-brand-400: #ff63b6;
+	--color-brand-500: #ff2790;
+	--color-brand-600: #f01273;
+	--color-brand-700: #d10558;
+	--color-brand-800: #ad0749;
+	--color-brand-900: #8f0c40;
+	--color-brand-950: #580021;
+
+	--color-brand-red-50: #ffe5eb;
+	--color-brand-red-100: #ffccd6;
+	--color-brand-red-200: #ff99ad;
+	--color-brand-red-300: #ff6685;
+	--color-brand-red-400: #ff335c;
+	--color-brand-red-500: #ff0033;
+	--color-brand-red-600: #cc0029;
+	--color-brand-red-700: #99001f;
+	--color-brand-red-800: #660014;
+	--color-brand-red-900: #33000a;
+	--color-brand-red-950: #190005;
+
+	--color-accent-50: var(--accent-50);
+	--color-accent-100: var(--accent-100);
+	--color-accent-200: var(--accent-200);
+	--color-accent-300: var(--accent-300);
+	--color-accent-400: var(--accent-400);
+	--color-accent-500: var(--accent-500);
+	--color-accent-600: var(--accent-600);
+	--color-accent-700: var(--accent-700);
+	--color-accent-800: var(--accent-800);
+	--color-accent-900: var(--accent-900);
+	--color-accent-950: var(--accent-950);
+
+	--color-accent-50-contrast: var(--accent-50-contrast);
+	--color-accent-100-contrast: var(--accent-100-contrast);
+	--color-accent-200-contrast: var(--accent-200-contrast);
+	--color-accent-300-contrast: var(--accent-300-contrast);
+	--color-accent-400-contrast: var(--accent-400-contrast);
+	--color-accent-500-contrast: var(--accent-500-contrast);
+	--color-accent-600-contrast: var(--accent-600-contrast);
+	--color-accent-700-contrast: var(--accent-700-contrast);
+	--color-accent-800-contrast: var(--accent-800-contrast);
+	--color-accent-900-contrast: var(--accent-900-contrast);
+	--color-accent-950-contrast: var(--accent-950-contrast);
+
+	/**
+	* Fonts
+	*/
+	--font-display: 'Momo Trust Display', sans-serif;
+	--font-os: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+	--font-mono: 'JetBrains Mono Variable', monospace;
+	--font-sans: 'Momo Trust Sans', sans-serif;
+
+	/**
+	* Animations
+	*/
+	--animate-hue-rotate: hue-rotate 5s linear infinite;
+
+	@keyframes hue-rotate {
+		from {
+			filter: hue-rotate(0deg);
+		}
+		to {
+			filter: hue-rotate(359deg);
+		}
+	}
+
+	--animate-heartbeat: heartbeat 1.25s ease-in-out infinite;
+
+	@keyframes heartbeat {
+		0%, 100% {
+			transform: scale(1);
+		}
+		20% {
+			transform: scale(1.15);
+		}
+		40% {
+			transform: scale(1);
+		}
+		60% {
+			transform: scale(1.15);
+		}
+	}
+}
+
+@utility popup-* {
+	box-shadow: inset 0 -2px 0 0 --value(--color-*);
+}
+
+@utility draggable {
+	/* WebView2 uses this vendor property for the native drag region. */
+	/*noinspection CssUnknownProperty*/
+	-webkit-app-region: drag;
+}
+
+@property --accent-border-angle {
+	syntax: '<angle>';
+	initial-value: 0deg;
+	inherits: false;
+}
+
+@keyframes rotate-accent-border {
+	to {
+		--accent-border-angle: 360deg;
+	}
+}
+
+.animated-accent-border {
+	border-image: conic-gradient(from var(--accent-border-angle), transparent, var(--accent-500)) 1;
+	animation: rotate-accent-border 1s linear infinite;
+}
+
+@keyframes download-progress-sheen {
+	0% {
+		opacity: 0.26;
+		transform: scaleX(0);
+	}
+	100% {
+		opacity: 0;
+		transform: scaleX(1);
+	}
+}
+
+@keyframes download-progress-fade {
+	to {
+		opacity: 0;
+	}
+}
+
+.download-progress-background {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.download-progress-background.is-fading {
+	animation: download-progress-fade 850ms ease-out forwards;
+}
+
+.download-progress-background-fill {
+	position: absolute;
+	inset-block: 0;
+	left: 0;
+	overflow: hidden;
+	background: linear-gradient(
+		90deg,
+		color-mix(in oklab, var(--accent-700) 24%, transparent),
+		color-mix(in oklab, var(--accent-500) 34%, transparent)
+	);
+	box-shadow: 10px 0 28px color-mix(in oklab, var(--accent-400) 18%, transparent);
+	transition: width 350ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.download-progress-background-fill::after {
+	position: absolute;
+	inset: 0;
+	content: '';
+	background: rgb(255 255 255 / 24%);
+	mix-blend-mode: screen;
+	transform-origin: left center;
+	animation: download-progress-sheen 950ms ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.download-progress-background,
+	.download-progress-background-fill::after {
+		animation: none;
+	}
+
+	.download-progress-background.is-fading {
+		opacity: 0;
+	}
+}
+
+:root {
+	color-scheme: dark;
+	--accent-50: rgb(230, 242, 251);
+	--accent-100: rgb(204, 228, 246);
+	--accent-200: rgb(153, 201, 238);
+	--accent-300: rgb(102, 174, 229);
+	--accent-400: rgb(51, 147, 221);
+	--accent-500: rgb(0, 120, 212);
+	--accent-600: rgb(0, 96, 170);
+	--accent-700: rgb(0, 72, 127);
+	--accent-800: rgb(0, 48, 85);
+	--accent-900: rgb(0, 30, 53);
+	--accent-950: rgb(0, 18, 32);
+	--accent-50-contrast: #000000;
+	--accent-100-contrast: #000000;
+	--accent-200-contrast: #000000;
+	--accent-300-contrast: #000000;
+	--accent-400-contrast: #000000;
+	--accent-500-contrast: #000000;
+	--accent-600-contrast: #ffffff;
+	--accent-700-contrast: #ffffff;
+	--accent-800-contrast: #ffffff;
+	--accent-900-contrast: #ffffff;
+	--accent-950-contrast: #ffffff;
+}
+
+body {
+	@apply select-none;
+	@apply overflow-hidden;
+}
+
+a,
+button {
+	@apply cursor-pointer;
+}

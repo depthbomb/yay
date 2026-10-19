@@ -1,0 +1,92 @@
+import { cx } from 'cva';
+import { lazy } from 'react';
+import { useAtom } from 'jotai';
+import { Icon } from '@mdi/react';
+import { native } from '~/native';
+import { useIPCEvent } from '~/hooks';
+import { AppTab } from './components/AppTab';
+import { AboutTab } from './components/AboutTab';
+import { EventChannel } from '~/ipc/ipc.generated';
+import { YoutubeTab } from './components/YoutubeTab';
+import { AdvancedTab } from './components/AdvancedTab';
+import { WindowShell } from '~/components/WindowShell';
+import { workingAtom, updatingAtom } from '~/atoms/app';
+import { DownloadsTab } from './components/DownloadsTab';
+import { List, Root, Content, Trigger } from '~/components/Tabs';
+import { mdiCogs, mdiTools, mdiYoutube, mdiDownload, mdiInformation, mdiApplicationCog } from '@mdi/js';
+import type { FC } from 'react';
+import type { TabsTriggerProps } from '~/components/Tabs';
+
+export interface ITabButtonProps extends TabsTriggerProps {
+	value: string;
+	title: string;
+	icon: string;
+}
+
+const DebugTab = __YAY_DEBUG__ ? lazy(() => import('./components/DebugTab')) : null;
+
+const TabButton: FC<ITabButtonProps> = ({ title, icon, value, className }) => {
+	return (
+		<Trigger
+			value={value}
+			className={cx(
+				'flex items-center py-2 px-3 font-display text-sm transition-all',
+				'data-[state=inactive]:text-gray-300 data-[state=inactive]:hover:text-white',
+				'data-[state=active]:bg-accent-600 data-[state=active]:text-accent-600-contrast',
+				className,
+			)}
+		>
+			<Icon className="mr-auto size-5" path={icon}/>
+			<span>{title}</span>
+		</Trigger>
+	);
+};
+
+export const SettingsPage = () => {
+	const [,setIsWorking]         = useAtom(workingAtom);
+	const [,setIsUpdating]        = useAtom(updatingAtom);
+
+	useIPCEvent(EventChannel.YtDlpDownloadStarted,  () => setIsWorking(true));
+	useIPCEvent(EventChannel.YtDlpDownloadFinished, () => setIsWorking(false));
+	useIPCEvent(EventChannel.YtDlpUpdatingBinary,   () => setIsUpdating(true));
+	useIPCEvent(EventChannel.YtDlpUpdatedBinary,    () => setIsUpdating(false));
+
+	return (
+		<WindowShell windowName="settings" title="Settings" titlebarClassName="bg-[color-mix(in_srgb,var(--color-gray-950)_50%,black)]">
+			<Root defaultValue="app" orientation="vertical" className="h-[calc(100vh-34px)] flex items-stretch overflow-y-auto">
+				<List className="py-3 w-36 flex flex-col shrink-0 bg-[color-mix(in_srgb,var(--color-gray-950)_50%,black)]">
+					<TabButton value="app" title="Application" icon={mdiApplicationCog}/>
+					<TabButton value="downloads" title="Downloads" icon={mdiDownload}/>
+					<TabButton value="youtube" title="YouTube" icon={mdiYoutube}/>
+					<TabButton value="advanced" title="Advanced" icon={mdiCogs}/>
+					<TabButton value="about" title="About" icon={mdiInformation}/>
+					{__YAY_DEBUG__ && native.development && <TabButton value="debug" title="Debug" icon={mdiTools}/>}
+				</List>
+				<div className="p-3 w-full bg-transparent overflow-y-auto scrollbar-thin">
+					<Content value="app">
+						<AppTab/>
+					</Content>
+					<Content value="downloads">
+						<DownloadsTab/>
+					</Content>
+					<Content value="youtube">
+						<YoutubeTab/>
+					</Content>
+					<Content value="advanced">
+						<AdvancedTab/>
+					</Content>
+					<Content value="about">
+						<AboutTab/>
+					</Content>
+					{DebugTab && native.development && (
+						<Content value="debug">
+							<DebugTab/>
+						</Content>
+					)}
+				</div>
+			</Root>
+		</WindowShell>
+	);
+};
+
+export default SettingsPage;

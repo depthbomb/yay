@@ -1,0 +1,27 @@
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+    "${PROJECT_SOURCE_DIR}/protocol/product.json" "${PROJECT_SOURCE_DIR}/protocol/changelog.json"
+    "${PROJECT_SOURCE_DIR}/scripts/generate_product.mjs")
+execute_process(COMMAND "${BUN_EXECUTABLE}" "${PROJECT_SOURCE_DIR}/scripts/generate_product.mjs"
+    COMMAND_ERROR_IS_FATAL ANY)
+string(JSON YAY_COMPANY GET "${YAY_PRODUCT_JSON}" company)
+string(JSON YAY_NAME GET "${YAY_PRODUCT_JSON}" name)
+string(JSON YAY_DESCRIPTION GET "${YAY_PRODUCT_JSON}" description)
+string(JSON YAY_APP_ID GET "${YAY_PRODUCT_JSON}" appUserModelId)
+string(JSON YAY_EXECUTABLE_NAME GET "${YAY_PRODUCT_JSON}" executable)
+string(TIMESTAMP YAY_BUILD_DATE "%Y-%m-%dT%H:%M:%SZ" UTC)
+set(YAY_GIT_HASH "native")
+find_package(Git QUIET)
+if(Git_FOUND)
+    execute_process(COMMAND "${GIT_EXECUTABLE}" rev-parse HEAD WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        OUTPUT_VARIABLE YAY_GIT_HASH OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+endif()
+if(NOT YAY_GIT_HASH)
+    set(YAY_GIT_HASH "native")
+endif()
+configure_file(src/resources/metadata.h.in generated/metadata.h @ONLY)
+configure_file(src/resources/yay.manifest.in generated/yay.manifest @ONLY)
+foreach(variable YAY_COMPANY YAY_NAME YAY_DESCRIPTION)
+    string(REPLACE "\\" "\\\\" ${variable} "${${variable}}")
+    string(REPLACE "\"" "\\\"" ${variable} "${${variable}}")
+endforeach()
+configure_file(src/resources/yay.rc.in generated/yay.rc @ONLY)

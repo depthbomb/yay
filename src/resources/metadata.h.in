@@ -1,0 +1,4 @@
+#pragma once
+#include "generated/product.h"
+inline constexpr char BuildDate[] = "@YAY_BUILD_DATE@";
+inline constexpr char GitHash[] = "@YAY_GIT_HASH@";
